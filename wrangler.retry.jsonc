@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nirmaan-webworks-retry",
+  "main": "workers/retry-worker.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "triggers": {
+    // Cloudflare Free plan permits a limited number of Cron Triggers per
+    // account; one trigger on one small worker fits comfortably. Every 30
+    // minutes is frequent enough that a failed lead email is retried well
+    // within the same business day without adding meaningful load.
+    "crons": ["*/30 * * * *"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nirmaan_leads",
+      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "EMAIL_PROVIDER": "resend",
+    "RESEND_DAILY_CAP": "100",
+    "LEAD_NOTIFICATION_EMAIL": "leads@nirmaanwebworks.in",
+    "FROM_EMAIL": "Nirmaan Webworks <leads@nirmaanwebworks.in>"
+  }
+}

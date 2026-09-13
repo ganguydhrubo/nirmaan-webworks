@@ -1,0 +1,19 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*", "worker-configuration.d.ts"],
+  // src/scripts (browser-only islands) is checked separately via tsconfig.client.json:
+  // worker-configuration.d.ts declares a global `Element` (for HTMLRewriter) that
+  // conflicts with lib.dom's `Element`, so browser code can't share this tsconfig.
+  "exclude": ["dist", "node_modules", "src/scripts"],
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@config/*": ["config/*"]
+    }
+  }
+}

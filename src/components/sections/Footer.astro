@@ -1,0 +1,89 @@
+---
+import Logo from "@/components/ui/Logo.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, mailLink, waLink } from "@/lib/contact-links";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-ink-200 bg-ink-950 text-ink-200">
+  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="grid gap-10 md:grid-cols-4">
+      <div class="md:col-span-1">
+        <Logo variant="light" />
+        <p class="mt-4 max-w-xs text-sm text-ink-400">{siteConfig.shortDescription}</p>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Company</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/about" class="hover:text-cream">About us</a></li>
+          <li><a href="/work-process" class="hover:text-cream">Our process</a></li>
+          <li><a href="/pricing" class="hover:text-cream">Pricing</a></li>
+          <li><a href="/faq" class="hover:text-cream">FAQ</a></li>
+          <li><a href="/contact" class="hover:text-cream">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Industries we build for</h3>
+        <ul class="space-y-2 text-sm">
+          {siteConfig.industryRegistry.map((i) => (
+            <li><a href={`/industries/${i.slug}`} class="hover:text-cream">{i.shortName}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Get in touch</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href={telLink()} class="flex items-center gap-2 hover:text-cream" data-analytics-event="call_click">
+              <Icon name="phone" class="h-4 w-4 shrink-0" /> {siteConfig.phoneDisplay}
+            </a>
+          </li>
+          <li>
+            <a href={waLink(siteConfig.whatsappMessageTemplates.footer)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp (opens WhatsApp)" class="flex items-center gap-2 hover:text-cream" data-analytics-event="whatsapp_click">
+              <Icon name="whatsapp" class="h-4 w-4 shrink-0" /> WhatsApp us
+            </a>
+          </li>
+          <li>
+            <a href={mailLink()} class="flex items-center gap-2 hover:text-cream">
+              <Icon name="mail" class="h-4 w-4 shrink-0" /> {siteConfig.primaryEmail}
+            </a>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.pin}</span>
+          </li>
+          <li class="flex items-start gap-2 text-ink-400">
+            <Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{siteConfig.businessHours.display}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 border-t border-ink-800 pt-6 text-xs text-ink-500">
+      <p>Serving businesses in {siteConfig.serviceAreas.join(", ")}. {siteConfig.gstNote}</p>
+      {siteConfig.isPlaceholderIdentity && (
+        <p class="mt-2 text-ink-600">
+          Note: this build uses a placeholder business identity for demonstration. See README.md.
+        </p>
+      )}
+    </div>
+
+    <div class="mt-6 flex flex-col gap-3 border-t border-ink-800 pt-6 text-xs text-ink-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {siteConfig.legalEntityName}. All rights reserved.</p>
+      <nav aria-label="Legal">
+        <ul class="flex flex-wrap gap-x-4 gap-y-1">
+          <li><a href="/privacy" class="hover:text-cream">Privacy policy</a></li>
+          <li><a href="/terms" class="hover:text-cream">Terms</a></li>
+          <li><a href="/refund-policy" class="hover:text-cream">Refund policy</a></li>
+          <li><a href="/sitemap.xml" class="hover:text-cream">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,177 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/*
+ * Design tokens — Nirmaan Webworks brand.
+ * Warm, human, premium palette (terracotta + marigold on warm cream/ink)
+ * deliberately avoiding the black/grey-dominant "corporate" look and the
+ * purple-blue-gradient "AI slop" look. Contrast ratios verified against
+ * WCAG 2.2 AA and recorded in ARCHITECTURE.md / AUDIT.md.
+ */
+@theme {
+  --font-display: "Fraunces", "Fraunces Fallback", ui-serif, Georgia, serif;
+  --font-body: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Brand: warm terracotta. Contrast verified (see ARCHITECTURE.md):
+     brand-600 on cream = 6.01:1 (safe for solid buttons/small text/links);
+     brand-500 on cream = 4.32:1 (large text/icons/accents ONLY, not small
+     body text or small button labels — use brand-600 for those). */
+  --color-brand-50: #fdf3ee;
+  --color-brand-100: #fbe3d6;
+  --color-brand-200: #f5c3a9;
+  --color-brand-300: #eb9d76;
+  --color-brand-400: #dd7548;
+  --color-brand-500: #c1522e; /* primary CTA */
+  --color-brand-600: #a13f22;
+  --color-brand-700: #7f311b;
+  --color-brand-800: #642817;
+  --color-brand-900: #4f2113;
+
+  /* Marigold accent (secondary highlight, badges, focus of attention) */
+  --color-gold-50: #fdf7e9;
+  --color-gold-100: #faecc4;
+  --color-gold-300: #eec672;
+  --color-gold-400: #dfa93f;
+  --color-gold-500: #c8912c;
+  --color-gold-700: #8f6413;
+
+  /* Deep teal (secondary brand colour — trust, used sparingly for depth) */
+  --color-teal-500: #2b5f5c;
+  --color-teal-700: #1c403e;
+  --color-teal-900: #102726;
+
+  /* Warm neutrals — never pure grey */
+  --color-ink-50: #fbf8f5;
+  --color-ink-100: #f4ede4;
+  --color-ink-200: #e5d9cb;
+  --color-ink-300: #cdbba7;
+  --color-ink-400: #a89680;
+  --color-ink-500: #83725f;
+  --color-ink-600: #665748;
+  --color-ink-700: #4a3f34;
+  --color-ink-800: #332b23;
+  --color-ink-900: #211a15;
+  --color-ink-950: #16110d;
+
+  --color-cream: #fbf6ee;
+  --color-success: #2f6f4f;
+  --color-error: #b3401f;
+  --color-warning: #a1740f;
+
+  /* Fluid type scale (clamp between mobile and desktop viewport) */
+  --text-xs: clamp(0.76rem, 0.74rem + 0.1vw, 0.82rem);
+  --text-sm: clamp(0.87rem, 0.85rem + 0.1vw, 0.94rem);
+  --text-base: clamp(1rem, 0.97rem + 0.15vw, 1.09rem);
+  --text-lg: clamp(1.13rem, 1.08rem + 0.25vw, 1.27rem);
+  --text-xl: clamp(1.27rem, 1.19rem + 0.4vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.36rem + 0.7vw, 1.9rem);
+  --text-3xl: clamp(1.85rem, 1.6rem + 1.2vw, 2.5rem);
+  --text-4xl: clamp(2.3rem, 1.9rem + 2vw, 3.4rem);
+  --text-5xl: clamp(2.8rem, 2.2rem + 3vw, 4.5rem);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 450ms;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink-900);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink-950);
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* Visible, high-contrast focus ring everywhere — never outline:none without a replacement. */
+  :focus-visible {
+    outline: 3px solid var(--color-teal-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-gold-300);
+    color: var(--color-ink-950);
+  }
+
+  /* Inputs at 16px+ to prevent iOS auto-zoom on focus. */
+  input, select, textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-ink-950);
+    color: var(--color-cream);
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 var(--radius-md) 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  /* Reveal-on-scroll primitive — driven by an IntersectionObserver island,
+     degrades to fully visible with no JS and under prefers-reduced-motion. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity var(--duration-slow) var(--ease-out-soft), transform var(--duration-slow) var(--ease-out-soft);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+  html:not(.js) .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

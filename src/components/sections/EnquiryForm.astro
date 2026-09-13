@@ -1,0 +1,182 @@
+---
+import { siteConfig } from "@config/site";
+import { buyerIntentValues } from "@/lib/validation";
+
+interface Props {
+  defaultCategory?: string;
+  compact?: boolean;
+  id?: string;
+}
+
+const { defaultCategory = "", compact = false, id = "enquiry-form" } = Astro.props;
+
+const needsLabels: Record<(typeof buyerIntentValues)[number], string> = {
+  "new-website": "A new website",
+  redesign: "Redesign of my current website",
+  ecommerce: "Online ordering / e-commerce",
+  "landing-page": "A single landing page",
+  "not-sure": "Not sure yet",
+};
+
+const categories = siteConfig.industryRegistry.map((i) => i.shortName);
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
+---
+
+<div data-enquiry-wrapper data-whatsapp-number={siteConfig.whatsappNumber}>
+  <form
+    id={id}
+    method="POST"
+    action="/api/enquiry"
+    novalidate
+    data-enquiry-form
+    class:list={["flex flex-col gap-5", compact && "gap-4"]}
+  >
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for={`${id}-name`} class="mb-1.5 block text-sm font-medium text-ink-800">Your name<span aria-hidden="true" class="text-brand-600"> *</span></label>
+        <input
+          id={`${id}-name`}
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          maxlength="80"
+          class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-brand-500"
+          aria-describedby={`${id}-name-error`}
+        />
+        <p id={`${id}-name-error`} class="mt-1 text-sm text-error" role="alert" hidden></p>
+      </div>
+
+      <div>
+        <label for={`${id}-phone`} class="mb-1.5 block text-sm font-medium text-ink-800">WhatsApp / phone number<span aria-hidden="true" class="text-brand-600"> *</span></label>
+        <input
+          id={`${id}-phone`}
+          name="phone"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel"
+          required
+          maxlength="16"
+          placeholder="98765 43210"
+          class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-brand-500"
+          aria-describedby={`${id}-phone-error`}
+        />
+        <p id={`${id}-phone-error`} class="mt-1 text-sm text-error" role="alert" hidden></p>
+      </div>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for={`${id}-email`} class="mb-1.5 block text-sm font-medium text-ink-800">Email <span class="font-normal text-ink-500">(optional)</span></label>
+        <input
+          id={`${id}-email`}
+          name="email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          maxlength="120"
+          class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-brand-500"
+          aria-describedby={`${id}-email-error`}
+        />
+        <p id={`${id}-email-error`} class="mt-1 text-sm text-error" role="alert" hidden></p>
+      </div>
+
+      <div>
+        <label for={`${id}-business`} class="mb-1.5 block text-sm font-medium text-ink-800">Business name <span class="font-normal text-ink-500">(optional)</span></label>
+        <input
+          id={`${id}-business`}
+          name="businessName"
+          type="text"
+          autocomplete="organization"
+          maxlength="120"
+          class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-brand-500"
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for={`${id}-category`} class="mb-1.5 block text-sm font-medium text-ink-800">Business category<span aria-hidden="true" class="text-brand-600"> *</span></label>
+        <select
+          id={`${id}-category`}
+          name="category"
+          required
+          class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 focus:border-brand-500"
+        >
+          <option value="" disabled selected={!defaultCategory}>Choose one</option>
+          {categories.map((c) => <option value={c} selected={c === defaultCategory}>{c}</option>)}
+          <option value="Other">Something else</option>
+        </select>
+      </div>
+
+      <div>
+        <label for={`${id}-needs`} class="mb-1.5 block text-sm font-medium text-ink-800">What do you need?<span aria-hidden="true" class="text-brand-600"> *</span></label>
+        <select id={`${id}-needs`} name="needs" required class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 focus:border-brand-500">
+          <option value="" disabled selected>Choose one</option>
+          {buyerIntentValues.map((v) => <option value={v}>{needsLabels[v]}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label for={`${id}-message`} class="mb-1.5 block text-sm font-medium text-ink-800">Anything else we should know? <span class="font-normal text-ink-500">(optional)</span></label>
+      <textarea
+        id={`${id}-message`}
+        name="message"
+        rows="3"
+        maxlength="1000"
+        class="w-full rounded-md border border-ink-300 bg-white px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-brand-500"
+      ></textarea>
+    </div>
+
+    <label class="flex items-start gap-3 text-sm text-ink-700">
+      <input type="checkbox" name="consent" required class="mt-0.5 h-5 w-5 rounded border-ink-300 text-brand-600 focus:ring-brand-500" />
+      <span>
+        I agree to be contacted by phone, WhatsApp or email about this enquiry. See our
+        <a href="/privacy" class="underline hover:text-brand-600">privacy policy</a> for how we use and retain this information.
+      </span>
+    </label>
+
+    <!-- Honeypot: visually hidden but present in the accessibility tree removal is intentional — bots that fill every field will trip this. -->
+    <div class="absolute -left-[9999px]" aria-hidden="true">
+      <label for={`${id}-website`}>Leave this field empty</label>
+      <input id={`${id}-website`} name="honeypot" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <input type="hidden" name="pageSource" value={Astro.url.pathname} />
+    <input type="hidden" name="formRenderedAt" value="" data-field="formRenderedAt" />
+    <input type="hidden" name="referrer" value="" data-field="referrer" />
+    <input type="hidden" name="utmSource" value="" data-field="utmSource" />
+    <input type="hidden" name="utmMedium" value="" data-field="utmMedium" />
+    <input type="hidden" name="utmCampaign" value="" data-field="utmCampaign" />
+    <input type="hidden" name="utmTerm" value="" data-field="utmTerm" />
+    <input type="hidden" name="utmContent" value="" data-field="utmContent" />
+    <input type="hidden" name="turnstileToken" value="" data-field="turnstileToken" />
+
+    {turnstileSiteKey && (
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
+    )}
+
+    <div role="alert" data-form-error class="hidden rounded-md bg-red-50 px-4 py-3 text-sm text-error"></div>
+
+    <button
+      type="submit"
+      data-submit-btn
+      class="inline-flex items-center justify-center rounded-md bg-brand-600 px-6 py-3.5 text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700 focus-visible:outline-teal-500 disabled:cursor-not-allowed disabled:opacity-70"
+    >
+      <span data-btn-label>Send enquiry</span>
+    </button>
+
+    <p class="text-sm text-ink-500">{siteConfig.responseCommitment} Prefer WhatsApp? Use the button at the bottom of your screen.</p>
+  </form>
+
+  <div data-enquiry-success hidden class="rounded-lg border border-teal-500/30 bg-teal-500/5 p-6 text-center">
+    <h3 class="font-display text-xl font-semibold text-ink-950">Thanks — we've got your enquiry.</h3>
+    <p class="mt-2 text-ink-700">{siteConfig.responseCommitment}</p>
+    <a data-success-wa-link href="#" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-3 font-semibold text-white hover:opacity-90" data-analytics-event="whatsapp_click">
+      Message us on WhatsApp now
+    </a>
+  </div>
+</div>
+
+<script src="../../scripts/enquiry-form.ts"></script>

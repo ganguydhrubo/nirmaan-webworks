@@ -1,0 +1,23 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+/**
+ * Desktop/tablet only (lg+). On mobile, the sticky bottom action bar already
+ * offers WhatsApp — adding a second floating bubble there would risk
+ * covering content or a form's submit button on small screens, which
+ * Section 15 explicitly forbids. See ARCHITECTURE.md.
+ */
+---
+
+<a
+  href={waLink(siteConfig.whatsappMessageTemplates.heroSecondary)}
+  target="_blank"
+  rel="noopener"
+  aria-label="Chat with us on WhatsApp (opens WhatsApp in a new tab)"
+  class="fixed bottom-6 right-6 z-30 hidden h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition hover:scale-105 lg:flex"
+  data-analytics-event="whatsapp_click"
+>
+  <Icon name="whatsapp" class="h-7 w-7" />
+</a>

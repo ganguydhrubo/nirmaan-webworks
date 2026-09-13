@@ -1,0 +1,74 @@
+---
+import Header from "@/components/sections/Header.astro";
+import Footer from "@/components/sections/Footer.astro";
+import MobileStickyBar from "@/components/sections/MobileStickyBar.astro";
+import WhatsAppFloating from "@/components/sections/WhatsAppFloating.astro";
+import { siteConfig } from "@config/site";
+import { organizationJsonLd, websiteJsonLd, localBusinessJsonLd } from "@/lib/seo";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+  ogImage?: string;
+  hideStickyBar?: boolean;
+}
+
+const { title, description, noindex = false, jsonLd = [], ogImage, hideStickyBar = false } = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString().replace(/\/$/, "") || siteConfig.siteUrl;
+const fullTitle = title.includes(siteConfig.businessName) ? title : `${title} | ${siteConfig.businessName}`;
+const ogImageUrl = ogImage ?? `${siteConfig.siteUrl}/images/og-default.jpg`;
+
+const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJsonLd(), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#c1522e" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:site_name" content={siteConfig.businessName} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Preload only the two weights used above the fold to avoid FOIT/CLS. -->
+    <link rel="preload" href="/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/fraunces-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    {structuredData.map((data) => <script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />)}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    {!hideStickyBar && <MobileStickyBar />}
+    <WhatsAppFloating />
+
+    <script src="../scripts/reveal.ts"></script>
+    <script src="../scripts/analytics-client.ts"></script>
+    <script src="../scripts/mobile-nav.ts"></script>
+  </body>
+</html>

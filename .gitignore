@@ -1,0 +1,28 @@
+# build
+dist/
+.astro/
+node_modules/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# wrangler
+.wrangler/
+.dev.vars
+
+# testing
+playwright-report/
+test-results/
+coverage/
+
+# editor / os
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+npm-debug.log*
+*.log
