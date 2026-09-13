@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, waLink } from "@/lib/contact-links";
+
+export const prerender = false;
+---
+
+<BaseLayout title="Something went wrong" description="An unexpected error occurred." noindex>
+  <section class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">
+    <p class="font-display text-6xl font-semibold text-brand-500">500</p>
+    <h1 class="mt-4 font-display text-2xl font-semibold text-ink-950 sm:text-3xl">Something went wrong on our side</h1>
+    <p class="mt-3 max-w-md text-ink-600">This isn't something you did. Please try again in a moment, or reach us directly below.</p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href={waLink(siteConfig.whatsappMessageTemplates.header)} target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 font-semibold text-white hover:opacity-90" data-analytics-event="whatsapp_click">
+        <Icon name="whatsapp" class="h-5 w-5" /> Message us on WhatsApp
+      </a>
+      <a href={telLink()} class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 px-6 py-3.5 font-semibold text-ink-800 hover:border-brand-500" data-analytics-event="call_click">
+        <Icon name="phone" class="h-5 w-5" /> Call {siteConfig.phoneDisplay}
+      </a>
+    </div>
+    <a href="/" class="mt-6 text-sm font-medium text-ink-500 hover:text-brand-600">Back to homepage</a>
+  </section>
+</BaseLayout>

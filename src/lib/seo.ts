@@ -74,7 +74,7 @@ export function faqJsonLd(items: { question: string; answer: string }[]) {
   };
 }
 
-export function serviceJsonLd(name: string, description: string, areaServed: string[]) {
+export function serviceJsonLd(name: string, description: string, areaServed: readonly string[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",

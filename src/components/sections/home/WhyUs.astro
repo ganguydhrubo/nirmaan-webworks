@@ -1,0 +1,59 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const reasons = [
+  {
+    icon: "bolt" as const,
+    title: "Speed we publish, not promise",
+    body: "Every page we ship is measured with Lighthouse on a throttled mobile connection before launch, and we'll show you the number.",
+  },
+  {
+    icon: "smartphone" as const,
+    title: "Built mobile-first, checked on real devices",
+    body: "We design for a 360px-wide Android screen first, then scale up — not the other way round.",
+  },
+  {
+    icon: "shield" as const,
+    title: "No lock-in",
+    body: "The domain, hosting account and code are yours. We'll hand over access, not hold it hostage for renewals.",
+  },
+  {
+    icon: "rupee" as const,
+    title: "Rupee pricing, shown upfront",
+    body: "You can see our starting price bands on this site before you ever talk to us — see Pricing below.",
+  },
+];
+---
+
+<section class="bg-cream py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-start">
+      <div class="reveal min-w-0">
+        <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Why businesses choose us over a freelancer or a template</h2>
+        <p class="mt-4 max-w-lg text-lg text-ink-700">
+          Not because we're the cheapest — because you can verify what you're getting before you pay for it.
+        </p>
+        <div class="mt-8 rounded-xl border border-ink-200 bg-white p-6">
+          <h3 class="font-semibold text-ink-950">What we don't do</h3>
+          <ul class="mt-3 space-y-2 text-sm text-ink-600">
+            <li>— We don't build login systems, user accounts or payment checkouts. If you need those, we'll tell you upfront and point you to what does.</li>
+            <li>— We don't offer unlimited free revisions forever — scope is agreed before we start, so timelines stay honest.</li>
+            <li>— We don't guarantee a specific Google ranking. Anyone who promises "#1 on Google" is guessing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid min-w-0 gap-6 sm:grid-cols-2">
+        {reasons.map((r) => (
+          <div class="reveal rounded-xl border border-ink-200 bg-white p-5">
+            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+              <Icon name={r.icon} class="h-5 w-5" />
+            </div>
+            <h3 class="font-semibold text-ink-950">{r.title}</h3>
+            <p class="mt-1.5 text-sm text-ink-600">{r.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

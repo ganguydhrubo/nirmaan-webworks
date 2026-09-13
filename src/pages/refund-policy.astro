@@ -1,0 +1,43 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { mailLink } from "@/lib/contact-links";
+
+export const prerender = true;
+---
+
+<BaseLayout title="Refund policy" description="Our payment milestones and refund terms for website projects.">
+  <section class="bg-white py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950">Refund policy</h1>
+      <p class="mt-2 text-sm text-ink-500">Last updated: 13 September 2026</p>
+
+      <div class="mt-8 space-y-8 text-ink-700">
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Payment structure</h2>
+          <p class="mt-2">Projects are typically split into two milestones: 50% to begin work after scope is confirmed, and 50% before final handover and domain connection. For smaller Starter packages, we may request full payment upfront — this is always stated clearly in your quote before you accept it.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Before work begins</h2>
+          <p class="mt-2">If you cancel before we begin any design or development work, your initial payment is refunded in full, minus any payment-processing fees already incurred.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">After work has started</h2>
+          <p class="mt-2">Once design or development work has started, the initial milestone payment is non-refundable, as it covers time and resources already committed. If you cancel partway through, we'll deliver whatever work is complete at that point.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">If we can't deliver</h2>
+          <p class="mt-2">In the rare case we're unable to complete a project we've accepted, we'll refund any payment for work not yet delivered.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Requesting a refund</h2>
+          <p class="mt-2">Email <a href={mailLink("Refund request")} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a> with your project details. We aim to resolve refund requests within 7 business days.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

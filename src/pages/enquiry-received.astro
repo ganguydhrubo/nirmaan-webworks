@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+export const prerender = false;
+
+// Populated only by the no-JS (progressive enhancement) form submission
+// redirect in src/pages/api/enquiry.ts — never contains anything beyond
+// what the visitor themselves just typed into the form.
+const name = Astro.url.searchParams.get("name") ?? "";
+const category = Astro.url.searchParams.get("category") ?? "";
+const phone = Astro.url.searchParams.get("phone") ?? "";
+
+const confirmationMessage = name && category
+  ? siteConfig.whatsappMessageTemplates.postEnquiryConfirmation(name, category)
+  : siteConfig.whatsappMessageTemplates.enquiryForm;
+---
+
+<BaseLayout title="Enquiry received" description="Thanks for your enquiry — we've received it and will be in touch." noindex>
+  <section class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">
+    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-teal-500/10 text-teal-600">
+      <Icon name="check" class="h-8 w-8" />
+    </div>
+    <h1 class="mt-6 font-display text-3xl font-semibold text-ink-950 sm:text-4xl">
+      Thanks{name ? `, ${name}` : ""} — we've got your enquiry.
+    </h1>
+    <p class="mt-4 max-w-md text-lg text-ink-700">{siteConfig.responseCommitment}</p>
+    {phone && <p class="mt-1 text-sm text-ink-500">We'll reach out on {phone}.</p>}
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a
+        href={waLink(confirmationMessage)}
+        target="_blank"
+        rel="noopener"
+        aria-label="Message us on WhatsApp now (opens WhatsApp)"
+        class="inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 font-semibold text-white hover:opacity-90"
+        data-analytics-event="whatsapp_click"
+      >
+        <Icon name="whatsapp" class="h-5 w-5" /> Message us on WhatsApp now
+      </a>
+      <a href="/" class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 px-6 py-3.5 font-semibold text-ink-800 hover:border-brand-500">
+        Back to homepage
+      </a>
+    </div>
+  </section>
+</BaseLayout>

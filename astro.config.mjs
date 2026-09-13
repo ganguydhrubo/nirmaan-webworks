@@ -1,5 +1,6 @@
 import { defineConfig, envField } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
@@ -9,6 +10,14 @@ export default defineConfig({
     imageService: "compile",
     platformProxy: { enabled: true },
   }),
+  integrations: [
+    sitemap({
+      // Demo sites are deliberately noindex (see ARCHITECTURE.md / SEO.md) —
+      // they must not compete with the indexable /industries/[slug] pages,
+      // so they're excluded from the sitemap as well as noindexed in meta.
+      filter: (page) => !page.includes("/demos/") && !page.includes("/api/") && !page.includes("/enquiry-"),
+    }),
+  ],
   image: {
     remotePatterns: [],
   },

@@ -1,0 +1,35 @@
+---
+const steps = [
+  { n: "01", title: "Enquiry & scoping call", body: "You tell us about your business and what you need. We confirm pages, features and a fixed price in INR — usually within one business day.", time: "1 day" },
+  { n: "02", title: "Content & structure", body: "We collect your photos, prices and details (or help you shape them), and map out every page before any design starts.", time: "2–4 days" },
+  { n: "03", title: "Design & build", body: "We design and build the site, and share a private preview link so you can see real progress, not just a static mockup.", time: "1–3 weeks" },
+  { n: "04", title: "Review & revisions", body: "You review the live preview on your own phone. We make the agreed number of revision rounds.", time: "3–5 days" },
+  { n: "05", title: "Launch & handover", body: "We connect your domain, go live, and hand over every login and credential — the site is yours.", time: "1 day" },
+];
+---
+
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">How a project actually runs</h2>
+      <p class="mt-4 text-lg text-ink-700">Realistic timelines, not "as fast as possible."</p>
+    </div>
+
+    <ol class="mt-14 space-y-10 sm:space-y-0">
+      {steps.map((step, i) => (
+        <li class="reveal relative flex gap-6 pb-10 sm:pb-14">
+          {i < steps.length - 1 && <span class="absolute left-6 top-14 hidden h-full w-px bg-ink-200 sm:block" aria-hidden="true"></span>}
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink-950 font-display text-sm font-semibold text-cream">{step.n}</span>
+          <div class="min-w-0 flex-1 border-b border-ink-100 pb-8 sm:border-none sm:pb-0">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-xl font-semibold text-ink-950">{step.title}</h3>
+              <span class="rounded-full bg-ink-100 px-2.5 py-1 text-xs font-medium text-ink-600">{step.time}</span>
+            </div>
+            <p class="mt-2 max-w-2xl text-ink-600">{step.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="text-sm text-ink-500">Total timeline for a Starter or Business site: typically 3–6 weeks from signed scope to launch, depending on how quickly content is ready.</p>
+  </div>
+</section>

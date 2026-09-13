@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
+
+export const prerender = true;
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Industries", url: `${siteConfig.siteUrl}/industries` },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Industries we build websites for"
+  description="Website design for Indian real estate, hotels, clinics, coaching institutes, dental clinics and restaurants — see live demos for each."
+  jsonLd={jsonLd}
+>
+  <section class="bg-cream py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Industries we build for</h1>
+      <p class="mt-4 text-lg text-ink-700">Six businesses, six buying patterns — see what a properly built site looks like for each.</p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {siteConfig.industryRegistry.map((industry) => (
+          <a href={`/industries/${industry.slug}`} class="group min-w-0 rounded-xl border border-ink-200 bg-cream p-6 transition hover:border-brand-500">
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{industry.shortName}</p>
+            <h2 class="mt-2 font-display text-lg font-semibold text-ink-950">{industry.heroQuestion}</h2>
+            <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 group-hover:text-brand-600">
+              See details <Icon name="chevron-right" class="h-4 w-4" />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

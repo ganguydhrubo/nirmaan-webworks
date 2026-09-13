@@ -1,0 +1,53 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { mailLink } from "@/lib/contact-links";
+
+export const prerender = true;
+---
+
+<BaseLayout title="Terms of service" description="The terms that apply to using this website and engaging Nirmaan Webworks for a project.">
+  <section class="bg-white py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950">Terms of service</h1>
+      <p class="mt-2 text-sm text-ink-500">Last updated: 13 September 2026</p>
+
+      <div class="mt-8 space-y-8 text-ink-700">
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Using this website</h2>
+          <p class="mt-2">This website, its demo sites, and their content are provided by {siteConfig.legalEntityName} for the purpose of showcasing our web design and development services. The six demo websites linked from this site are illustrative work built for fictional businesses — they are not real companies, and any resemblance to an actual business is coincidental.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Project engagements</h2>
+          <p class="mt-2">Submitting the enquiry form does not create a contract. A project begins only once we've confirmed scope, price, and timeline with you in writing (typically over email or WhatsApp) and you've accepted it.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Ownership on completion</h2>
+          <p class="mt-2">On full payment for a completed project, ownership of the delivered code, content, and domain (where registered through us) transfers to you. We retain no ongoing licence over your finished site beyond what's needed to provide agreed maintenance.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Revisions and scope changes</h2>
+          <p class="mt-2">Each package includes a fixed number of revision rounds, agreed before work starts. Requests beyond agreed scope are quoted and billed separately.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Liability</h2>
+          <p class="mt-2">We build sites to the specification agreed with you and test them before launch. We are not liable for losses arising from third-party services (hosting providers, domain registrars, payment processors, etc.) outside our direct control, or for content you provide.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Governing law</h2>
+          <p class="mt-2">These terms are governed by the laws of India, with courts in {siteConfig.address.city}, {siteConfig.address.state} having jurisdiction.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Contact</h2>
+          <p class="mt-2">Questions about these terms: <a href={mailLink()} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a></p>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

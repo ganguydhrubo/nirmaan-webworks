@@ -1,0 +1,41 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const points = [
+  {
+    icon: "smartphone" as const,
+    title: "Your customers search on their phone, not Google Maps alone.",
+    body: "If your site takes more than a few seconds to load on an average Android phone, most visitors leave before they see your menu, your rooms or your price list.",
+  },
+  {
+    icon: "whatsapp" as const,
+    title: "A phone number in a photo isn't a way to take enquiries.",
+    body: "Customers now expect a proper enquiry form and a WhatsApp button, not a screenshot of a visiting card pinned to your Instagram bio.",
+  },
+  {
+    icon: "quote" as const,
+    title: "Your competitor with real photos is winning the comparison.",
+    body: "When someone compares three options before calling, the one with a clear site, real photos and visible pricing gets picked first — even if your work is better.",
+  },
+];
+---
+
+<section class="bg-cream py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">What a weak website actually costs you</h2>
+      <p class="mt-4 text-lg text-ink-700">Not a vague "poor impression" — specific, everyday enquiries that go to someone else instead.</p>
+    </div>
+    <div class="mt-12 grid gap-8 sm:grid-cols-3">
+      {points.map((p) => (
+        <div class="reveal min-w-0 rounded-xl border border-ink-200 bg-white p-6">
+          <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+            <Icon name={p.icon} class="h-5 w-5" />
+          </div>
+          <h3 class="font-display text-lg font-semibold text-ink-950">{p.title}</h3>
+          <p class="mt-2 text-ink-600">{p.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

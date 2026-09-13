@@ -1,0 +1,34 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const deliverables = [
+  { icon: "bolt" as const, title: "A site that loads fast on a real phone", body: "Built and measured on a mid-range Android over a throttled connection, not just tested on office WiFi." },
+  { icon: "whatsapp" as const, title: "WhatsApp, call and map built in", body: "Every page makes it obvious how to reach you — no hunting for a contact page." },
+  { icon: "shield" as const, title: "You own the domain, the code and the content", body: "No lock-in. If you ever want to move host or hand it to another developer, you can." },
+  { icon: "rupee" as const, title: "One clear rupee price before you commit", body: "You'll know what's included, what's not, and what renewal costs before any work starts." },
+  { icon: "check" as const, title: "Real content, not lorem ipsum left in", body: "We write or adapt the words with you — no site ships with placeholder text." },
+  { icon: "star" as const, title: "Basic SEO and a Google Business Profile set up", body: "So people searching your category and city can actually find you." },
+];
+---
+
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">What you actually get</h2>
+      <p class="mt-4 text-lg text-ink-700">Concrete deliverables, not adjectives.</p>
+    </div>
+    <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {deliverables.map((d) => (
+        <div class="reveal min-w-0 flex gap-4">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal-500/10 text-teal-700">
+            <Icon name={d.icon} class="h-5 w-5" />
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-semibold text-ink-950">{d.title}</h3>
+            <p class="mt-1 text-sm text-ink-600">{d.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

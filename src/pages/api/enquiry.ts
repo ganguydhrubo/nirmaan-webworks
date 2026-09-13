@@ -26,12 +26,17 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const requestId = crypto.randomUUID();
   const noJs = isFormEncoded(request);
 
-  const fail = (status: number, code: string, message: string, referer?: string) => {
+  const fail = (status: number, code: string, message: string) => {
     console.error(JSON.stringify({ requestId, level: "error", code, message }));
     if (noJs) {
-      const back = referer ?? request.headers.get("referer") ?? "/contact";
-      const url = new URL(back);
-      url.searchParams.set("enquiry_error", code);
+      // Most pages that embed the enquiry form (home, industry pages) are
+      // statically prerendered, so a redirect back to them can't render a
+      // query-param error inline — a static file ignores query strings.
+      // Instead we send no-JS failures to a small server-rendered page that
+      // can actually read the error and show the WhatsApp/phone fallback.
+      const url = new URL("/enquiry-error", request.url);
+      url.searchParams.set("code", code);
+      url.searchParams.set("message", message);
       return redirect(url.toString(), 303);
     }
     return json({ ok: false, code, message, requestId }, status);

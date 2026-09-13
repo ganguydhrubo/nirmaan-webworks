@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, mailLink, waLink } from "@/lib/contact-links";
+import { breadcrumbJsonLd } from "@/lib/seo";
+
+export const prerender = true;
+
+const jsonLd = [breadcrumbJsonLd([{ name: "Home", url: siteConfig.siteUrl }, { name: "Contact", url: `${siteConfig.siteUrl}/contact` }])];
+---
+
+<BaseLayout title="Contact us" description="Get a free, scoped quote for your website — reply within one business day. Call, WhatsApp or fill in the form." jsonLd={jsonLd}>
+  <section class="bg-cream py-14 sm:py-20">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <div class="min-w-0">
+        <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Tell us about your business</h1>
+        <p class="mt-4 text-lg text-ink-700">No sales call required to get a price. {siteConfig.responseCommitment}</p>
+
+        <div class="mt-8 space-y-4">
+          <a href={telLink()} class="flex items-center gap-3 text-ink-800 hover:text-brand-600" data-analytics-event="call_click">
+            <Icon name="phone" class="h-5 w-5 text-brand-600" /> {siteConfig.phoneDisplay}
+          </a>
+          <a href={waLink(siteConfig.whatsappMessageTemplates.header)} target="_blank" rel="noopener" class="flex items-center gap-3 text-ink-800 hover:text-teal-700" data-analytics-event="whatsapp_click">
+            <Icon name="whatsapp" class="h-5 w-5 text-[#25D366]" /> WhatsApp us
+          </a>
+          <a href={mailLink()} class="flex items-center gap-3 text-ink-800 hover:text-brand-600">
+            <Icon name="mail" class="h-5 w-5 text-brand-600" /> {siteConfig.primaryEmail}
+          </a>
+          <p class="flex items-start gap-3 text-ink-700">
+            <Icon name="map-pin" class="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
+            {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.pin}
+          </p>
+          <p class="flex items-start gap-3 text-ink-700">
+            <Icon name="clock" class="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
+            {siteConfig.businessHours.display}
+          </p>
+        </div>
+      </div>
+
+      <div class="min-w-0 rounded-2xl border border-ink-200 bg-white p-6 shadow-sm sm:p-8">
+        <EnquiryForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

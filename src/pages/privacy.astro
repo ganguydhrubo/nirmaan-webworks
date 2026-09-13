@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { mailLink } from "@/lib/contact-links";
+
+export const prerender = true;
+---
+
+<BaseLayout title="Privacy policy" description="How Nirmaan Webworks collects, uses, retains and deletes personal data submitted through this website.">
+  <section class="bg-white py-14 sm:py-20">
+    <div class="prose-content mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950">Privacy policy</h1>
+      <p class="mt-2 text-sm text-ink-500">Last updated: 13 September 2026</p>
+
+      <div class="mt-8 space-y-8 text-ink-700">
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">What we collect</h2>
+          <p class="mt-2">When you submit our enquiry form, we collect your name, phone number, and — if you choose to provide them — your email address, business name, and any message you write. We do not require account creation, and we don't collect payment information anywhere on this site.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Why we collect it</h2>
+          <p class="mt-2">Solely to respond to your enquiry — to contact you about a website project, provide a quote, and follow up on that specific conversation. We do not use this information for unrelated marketing without asking you separately first.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Consent</h2>
+          <p class="mt-2">We only collect and use your information after you explicitly check the consent box on our enquiry form. That checkbox is never pre-ticked, and submitting the form is optional at every step.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">How long we keep it</h2>
+          <p class="mt-2">We retain enquiry data for up to 12 months to respond to your request and for reasonable follow-up, after which it is deleted unless you've engaged us as a client — in which case it becomes part of your project records and is retained per our client agreement. You can request earlier deletion at any time (see below).</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Where it's stored</h2>
+          <p class="mt-2">Enquiry data is stored in a Cloudflare D1 database and, as an email notification, in our business inbox. We do not sell, rent, or share your information with third parties for their own marketing purposes.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Your rights and how to request deletion</h2>
+          <p class="mt-2">
+            You can ask to see, correct, or delete the personal data we hold about you at any time by emailing
+            <a href={mailLink("Data request")} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a>.
+            We aim to respond to any such request within 7 business days.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Analytics</h2>
+          <p class="mt-2">We use privacy-friendly, cookieless analytics to understand overall traffic to this site. This does not track you individually across other websites, and no personal data from the enquiry form is sent to any analytics provider.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Contact</h2>
+          <p class="mt-2">
+            For any privacy question, write to <a href={mailLink()} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a> or call {siteConfig.phoneDisplay}.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

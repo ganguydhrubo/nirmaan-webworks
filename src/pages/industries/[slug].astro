@@ -1,0 +1,132 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { industryContent } from "@/content/industries";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo";
+import { waLink } from "@/lib/contact-links";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return siteConfig.industryRegistry.map((industry) => ({ params: { slug: industry.slug }, props: { industry } }));
+}
+
+const { industry } = Astro.props;
+const content = industryContent[industry.slug];
+if (!content) {
+  throw new Error(`Missing industry content for slug "${industry.slug}" — add an entry in src/content/industries.ts`);
+}
+const demo = siteConfig.demoRegistry.find((d) => d.industrySlug === industry.slug);
+const siblings = siteConfig.industryRegistry.filter((i) => i.slug !== industry.slug).slice(0, 2);
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Industries", url: `${siteConfig.siteUrl}/industries` },
+    { name: industry.name, url: `${siteConfig.siteUrl}/industries/${industry.slug}` },
+  ]),
+  serviceJsonLd(`Website design for ${industry.name}`, content.intro, siteConfig.serviceAreas),
+];
+---
+
+<BaseLayout title={industry.metaTitle} description={industry.metaDescription} jsonLd={jsonLd}>
+  <section class="bg-cream py-14 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand-600">{industry.shortName}</p>
+      <h1 class="mt-3 font-display text-3xl font-semibold text-ink-950 sm:text-4xl">{industry.heroQuestion}</h1>
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-ink-700">{content.intro}</p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={`/contact?category=${encodeURIComponent(industry.shortName)}`} class="inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 font-semibold text-cream hover:bg-brand-700" data-analytics-event="cta_click" data-category={industry.shortName}>
+          Get a quote for a {industry.shortName.toLowerCase()} website
+        </a>
+        {demo && (
+          <a href={`/demos/${demo.slug}`} class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-6 py-3.5 font-semibold text-ink-800 hover:border-brand-500">
+            See the {demo.businessName} demo <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950 sm:text-3xl">What's probably costing you enquiries right now</h2>
+      <ul class="mt-6 space-y-3">
+        {content.painPoints.map((p) => (
+          <li class="flex items-start gap-3 rounded-lg border border-ink-200 bg-cream p-4 text-ink-700">
+            <Icon name="quote" class="mt-0.5 h-5 w-5 shrink-0 text-brand-500" /> {p}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-cream py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950 sm:text-3xl">What we build for {industry.shortName.toLowerCase()}</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        {content.features.map((f) => (
+          <div class="min-w-0 rounded-xl border border-ink-200 bg-white p-6">
+            <h3 class="font-semibold text-ink-950">{f.title}</h3>
+            <p class="mt-1.5 text-sm text-ink-600">{f.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {demo && (
+    <section class="bg-ink-950 py-16 sm:py-20">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <h2 class="font-display text-2xl font-semibold text-cream sm:text-3xl">See it built, not just described</h2>
+        <p class="mx-auto mt-3 max-w-xl text-ink-300">
+          {demo.businessName} is a full working demo built for this exact industry — every page, filter and form actually works.
+        </p>
+        <a href={`/demos/${demo.slug}`} class="mt-6 inline-flex items-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 font-semibold text-cream hover:bg-brand-700">
+          Open the {demo.businessName} demo <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-ink-200 bg-cream p-6 sm:p-8">
+        <h2 class="font-display text-xl font-semibold text-ink-950">Where we make you findable</h2>
+        <p class="mt-2 text-ink-700">{content.localSeoBlurb}</p>
+        <p class="mt-4 text-sm text-ink-500">Serving {siteConfig.serviceAreas.join(", ")}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream py-16 sm:py-24" id="enquire">
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm sm:p-8">
+        <h2 class="font-display text-2xl font-semibold text-ink-950">Get a scoped quote for your {industry.shortName.toLowerCase()} website</h2>
+        <p class="mt-2 text-ink-600">Category is pre-filled below — just fill in the rest.</p>
+        <div class="mt-6">
+          <EnquiryForm defaultCategory={industry.shortName} id={`enquiry-${industry.slug}`} />
+        </div>
+        <p class="mt-4 text-center text-sm text-ink-500">
+          Prefer WhatsApp?
+          <a href={waLink(siteConfig.whatsappMessageTemplates.industryPage(industry.name))} target="_blank" rel="noopener" class="font-medium text-brand-600 hover:text-brand-700" data-analytics-event="whatsapp_click">Message us directly →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <p class="text-sm font-semibold uppercase tracking-wide text-ink-500">Related industries</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {siblings.map((s) => (
+          <a href={`/industries/${s.slug}`} class="rounded-full border border-ink-200 px-4 py-2 text-sm font-medium text-ink-700 hover:border-brand-500 hover:text-brand-600">{s.name}</a>
+        ))}
+        <a href="/pricing" class="rounded-full border border-ink-200 px-4 py-2 text-sm font-medium text-ink-700 hover:border-brand-500 hover:text-brand-600">Pricing</a>
+        <a href="/contact" class="rounded-full border border-ink-200 px-4 py-2 text-sm font-medium text-ink-700 hover:border-brand-500 hover:text-brand-600">Contact</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

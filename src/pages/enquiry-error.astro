@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, waLink } from "@/lib/contact-links";
+
+export const prerender = false;
+
+// Reached only via the no-JS (progressive enhancement) form submission path
+// in src/pages/api/enquiry.ts when a submission could not be processed.
+const message = Astro.url.searchParams.get("message") ?? "Something went wrong on our side. Please message us on WhatsApp or call us and we'll pick it up straight away.";
+---
+
+<BaseLayout title="We couldn't process that" description="There was a problem with your enquiry submission." noindex>
+  <section class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">
+    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-error/10 text-error">
+      <Icon name="close" class="h-8 w-8" />
+    </div>
+    <h1 class="mt-6 font-display text-3xl font-semibold text-ink-950 sm:text-4xl">We couldn't process that enquiry</h1>
+    <p class="mt-4 max-w-md text-lg text-ink-700">{message}</p>
+
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a
+        href={waLink(siteConfig.whatsappMessageTemplates.enquiryForm)}
+        target="_blank"
+        rel="noopener"
+        aria-label="Message us on WhatsApp (opens WhatsApp)"
+        class="inline-flex items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 font-semibold text-white hover:opacity-90"
+        data-analytics-event="whatsapp_click"
+      >
+        <Icon name="whatsapp" class="h-5 w-5" /> Message us on WhatsApp
+      </a>
+      <a href={telLink()} class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 px-6 py-3.5 font-semibold text-ink-800 hover:border-brand-500" data-analytics-event="call_click">
+        <Icon name="phone" class="h-5 w-5" /> Call {siteConfig.phoneDisplay}
+      </a>
+    </div>
+    <a href="/contact" class="mt-6 text-sm font-medium text-ink-500 hover:text-brand-600">Try the form again →</a>
+  </section>
+</BaseLayout>

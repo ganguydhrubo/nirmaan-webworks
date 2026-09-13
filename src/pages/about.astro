@@ -1,0 +1,67 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, waLink, mailLink } from "@/lib/contact-links";
+
+export const prerender = true;
+---
+
+<BaseLayout title="About us" description="Nirmaan Webworks builds fast, mobile-first websites for Indian businesses — who we are, how we work, and what we don't do.">
+  <section class="bg-cream py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Built by people who test on real phones, not just office WiFi</h1>
+      <p class="mt-5 text-lg text-ink-700">
+        {siteConfig.businessName} is a small web design and development studio based in {siteConfig.address.city}, {siteConfig.address.state}, building websites for Indian shops, clinics, restaurants, jewellers, builders and coaching institutes.
+      </p>
+      <p class="mt-4 text-ink-700">
+        We started this studio because too many small businesses in India get one of two bad options: a freelancer who disappears after the first invoice, or a template-based site that looks the same as every competitor's. We build one thing well — fast, honest, mobile-first websites — and say no to work outside that.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950">How we work</h2>
+      <div class="mt-6 space-y-6 text-ink-700">
+        <p>Every project starts with a scoping conversation, not a sales pitch. We ask what your business actually needs, quote it in rupees, and put the scope in writing before any design starts.</p>
+        <p>We design mobile-first because that's how your customers will actually see the site — on a mid-range Android phone, often on a slow connection. We test there, not just in a wide desktop browser window.</p>
+        <p>We hand over full ownership at launch: domain, hosting access, and code. If you ever want another developer to take over, nothing stops you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream py-16 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl border border-ink-200 bg-white p-6 sm:p-8">
+        <h2 class="font-display text-xl font-semibold text-ink-950">What we don't do</h2>
+        <ul class="mt-4 space-y-3 text-ink-600">
+          <li>— Login systems, user accounts, or payment checkouts. We'll say so upfront if your project needs one.</li>
+          <li>— Guaranteed Google rankings. Nobody can honestly promise a specific position.</li>
+          <li>— Unlimited free revisions forever. Scope is agreed before we start, so timelines stay honest.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950">Where we are</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <div class="flex items-start gap-3">
+          <Icon name="map-pin" class="mt-1 h-5 w-5 shrink-0 text-brand-600" />
+          <p class="text-ink-700">{siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.pin}<br />Serving {siteConfig.serviceAreas.join(", ")}.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <Icon name="clock" class="mt-1 h-5 w-5 shrink-0 text-brand-600" />
+          <p class="text-ink-700">{siteConfig.businessHours.display}<br />{siteConfig.responseCommitment}</p>
+        </div>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={telLink()} class="inline-flex items-center gap-2 rounded-md border border-ink-300 px-5 py-2.5 text-sm font-semibold text-ink-800 hover:border-brand-500" data-analytics-event="call_click"><Icon name="phone" class="h-4 w-4" /> {siteConfig.phoneDisplay}</a>
+        <a href={mailLink()} class="inline-flex items-center gap-2 rounded-md border border-ink-300 px-5 py-2.5 text-sm font-semibold text-ink-800 hover:border-brand-500"><Icon name="mail" class="h-4 w-4" /> {siteConfig.primaryEmail}</a>
+        <a href={waLink(siteConfig.whatsappMessageTemplates.header)} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90" data-analytics-event="whatsapp_click"><Icon name="whatsapp" class="h-4 w-4" /> WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

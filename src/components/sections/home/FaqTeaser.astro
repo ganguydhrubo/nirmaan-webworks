@@ -1,0 +1,32 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+const faqs = [
+  { q: "Do I own the website after it's built?", a: "Yes. The domain, hosting account and code are registered in your name or handed over to you at launch. We keep no ongoing claim on it." },
+  { q: "What happens after launch — do I need you every month?", a: "No. Maintenance is optional. If you never contact us again after launch, the site keeps working — you just won't get updates or fixes from us." },
+  { q: "I already have a website. Can you just redesign it?", a: "Yes — tell us the current site's link and what's not working, and we'll quote a redesign rather than a full rebuild." },
+  { q: "Do you write the content, or do I?", a: "Either. Most clients give us rough details and photos, and we write and structure the final copy. If you'd rather write it yourself, we'll build around it." },
+];
+---
+
+<section class="bg-cream py-16 sm:py-24">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal text-center">
+      <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Common questions</h2>
+    </div>
+    <div class="mt-10 divide-y divide-ink-200 rounded-xl border border-ink-200 bg-white">
+      {faqs.map((faq, i) => (
+        <details class="reveal group p-5 sm:p-6" open={i === 0}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink-900 marker:content-none">
+            {faq.q}
+            <Icon name="chevron-down" class="h-5 w-5 shrink-0 text-ink-400 transition-transform group-open:rotate-180" />
+          </summary>
+          <p class="mt-3 text-ink-600">{faq.a}</p>
+        </details>
+      ))}
+    </div>
+    <p class="reveal mt-8 text-center">
+      <a href="/faq" class="text-sm font-semibold text-brand-600 hover:text-brand-700">Read the full FAQ →</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Process from "@/components/sections/home/Process.astro";
+import Icon from "@/components/ui/Icon.astro";
+
+export const prerender = true;
+
+const whatWeNeed = [
+  { title: "Your content", body: "Photos, price lists, service details — whatever you have. We'll help fill gaps and write copy where needed." },
+  { title: "A decision-maker", body: "One point of contact who can approve the scope and sign off on the design preview, to keep revisions moving." },
+  { title: "Domain access (or a plan to buy one)", body: "If you already own a domain, we'll need access to point it live. If not, we'll guide you through buying one." },
+];
+---
+
+<BaseLayout title="Our process" description="How a Nirmaan Webworks project actually runs, week by week — from enquiry to launch and handover.">
+  <section class="bg-cream py-14 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">How a project actually runs</h1>
+      <p class="mt-4 text-lg text-ink-700">No vague "let's hop on a call" loop — a clear sequence with realistic timelines.</p>
+    </div>
+  </section>
+
+  <Process />
+
+  <section class="bg-cream py-16 sm:py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950">What we need from you</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        {whatWeNeed.map((item) => (
+          <div class="min-w-0 rounded-xl border border-ink-200 bg-white p-6">
+            <h3 class="font-semibold text-ink-950">{item.title}</h3>
+            <p class="mt-2 text-sm text-ink-600">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-2xl font-semibold text-ink-950">Revisions and communication</h2>
+      <p class="mt-4 text-ink-700">
+        Each package includes a fixed number of design revision rounds (see Pricing). A revision round means you review the live preview link and send back consolidated feedback — not unlimited back-and-forth edits stretched over months. Extra rounds beyond what's included are quoted separately, so timelines stay predictable for both sides.
+      </p>
+      <p class="mt-4 text-ink-700">
+        We communicate over WhatsApp and email — whichever you prefer — and share a private preview link as soon as there's something real to look at, not just at the very end.
+      </p>
+      <div class="mt-8 text-center">
+        <a href="/contact" class="inline-flex items-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 font-semibold text-cream hover:bg-brand-700" data-analytics-event="cta_click">
+          Start with a scoping enquiry <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
