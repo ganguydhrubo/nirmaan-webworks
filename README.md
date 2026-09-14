@@ -13,7 +13,7 @@ Rather than selling vague agency promises or generic templates, Nirmaan demonstr
 1. **Six Interactive Industry Demos (`/demos/*`):**
    - **Shivalik Homes** (Real Estate & Builders, Dehradun): Interactive EMI calculator, RERA disclosures, floor plans, and site visit booking.
    - **Kayal Backwaters** (Hotels & Resorts, Alleppey): Indicative stay planner, room specifications, experience showcase, and direct inquiry booking.
-   - **Sanjeevani Clinic** (Healthcare & Doctors, Jaipur): Doctor credentials, OPD consulting schedules, clinical focus areas, and appointments.
+   - **Sanjeevani Clinic** (Healthcare & Doctors, Nagpur): Doctor credentials, OPD consulting schedules, clinical focus areas, and appointments.
    - **Manthan Institute** (Education & Coaching, Kota): Batch details, fee structures, faculty profiles, and scholarship information.
    - **Ivory Smiles** (Dental Clinics, Indore): Treatment pricing catalog, interactive before/after smile comparison slider, aftercare guides, and dentist hours.
    - **Anaar — The Awadhi Table** (Restaurants & Fine Dining, Lucknow): Full digital menu with dietary filters, culinary story, and table reservations.
