@@ -6,6 +6,7 @@ interface Props {
 }
 const { class: className = "", variant = "default" } = Astro.props;
 const textColor = variant === "light" ? "text-cream" : "text-ink-950";
+const brandColor = variant === "light" ? "text-brand-300" : "text-brand-600";
 ---
 
 <a href="/" class:list={["inline-flex items-center gap-2.5 group", className]} aria-label={`${siteConfig.businessName} — home`}>
@@ -14,6 +15,6 @@ const textColor = variant === "light" ? "text-cream" : "text-ink-950";
     <path d="M11 27V17.5L20 11l9 6.5V27h-6v-7h-6v7h-6Z" fill="var(--color-cream)"></path>
   </svg>
   <span class:list={["font-display text-lg font-semibold leading-none", textColor]}>
-    Nirmaan<span class="text-brand-500">Webworks</span>
+    Nirmaan<span class={brandColor}>Webworks</span>
   </span>
 </a>

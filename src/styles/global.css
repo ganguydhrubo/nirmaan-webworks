@@ -46,7 +46,7 @@
   --color-ink-200: #e5d9cb;
   --color-ink-300: #cdbba7;
   --color-ink-400: #a89680;
-  --color-ink-500: #83725f;
+  --color-ink-500: #776553;
   --color-ink-600: #665748;
   --color-ink-700: #4a3f34;
   --color-ink-800: #332b23;
@@ -69,12 +69,16 @@
   --text-4xl: clamp(2.3rem, 1.9rem + 2vw, 3.4rem);
   --text-5xl: clamp(2.8rem, 2.2rem + 3vw, 4.5rem);
 
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  /* Spacing / radii */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
 
-  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Motion */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 450ms;
@@ -90,11 +94,11 @@
   --color-shivalik-50: #f6f4f1;
   --color-shivalik-100: #eae4dc;
   --color-shivalik-300: #c7b8a3;
-  --color-shivalik-500: #7c6a52;
-  --color-shivalik-600: #63533f;
+  --color-shivalik-500: #685741;
+  --color-shivalik-600: #574733;
   --color-shivalik-700: #4d4130;
   --color-shivalik-900: #2c2519;
-  --color-shivalik-brass: #a9812f;
+  --color-shivalik-brass: #825e14;
 
   /* Kayal Backwaters — hotel/resort, Kerala: lagoon teal + sand */
   --color-kayal-50: #f3f7f5;
@@ -129,10 +133,10 @@
   --color-ivory-50: #f2fbf9;
   --color-ivory-100: #ddf4ee;
   --color-ivory-300: #92d9c5;
-  --color-ivory-500: #199b7a;
-  --color-ivory-600: #147d63;
-  --color-ivory-700: #10614d;
-  --color-ivory-coral: #ef7e60;
+  --color-ivory-500: #147d63;
+  --color-ivory-600: #10614d;
+  --color-ivory-700: #0c4a3b;
+  --color-ivory-coral: #c84824;
   --color-ivory-ink: #1f2a28;
 
   /* Anaar — The Awadhi Table — restaurant, Lucknow: pomegranate wine + gold, fine-dining dark */

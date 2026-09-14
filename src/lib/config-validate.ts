@@ -34,5 +34,6 @@ export function getRateLimits(env: EnquiryRuntimeEnv) {
     perPhonePerDay: Number(env.ENQUIRY_RATE_LIMIT_PER_PHONE_PER_DAY ?? "3"),
     globalPerHour: Number(env.ENQUIRY_RATE_LIMIT_GLOBAL_PER_HOUR ?? "40"),
     resendDailyCap: Number(env.RESEND_DAILY_CAP ?? "100"),
+    resendMonthlyCap: Number((env as unknown as Record<string, unknown>).RESEND_MONTHLY_CAP ?? "3000"),
   };
 }
