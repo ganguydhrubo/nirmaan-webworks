@@ -1,0 +1,70 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Header from "../_components/Header.astro";
+import Footer from "../_components/Footer.astro";
+import { treatments, treatmentCategories } from "@/content/demos/ivory-smiles/treatments";
+
+export const prerender = true;
+---
+
+<DemoLayout
+  demoSlug="ivory-smiles"
+  title="Treatments & Pricing — Ivory Smiles Dental Clinic"
+  description="Full treatment catalogue with indicative pricing and aftercare guidance at Ivory Smiles Dental Clinic, Indore."
+  fontsHref="/fonts/demos/ivory-smiles/fonts.css"
+  themeColor="#147d63"
+>
+  <div class="min-h-screen bg-ivory-50 font-['Mulish'] text-ivory-ink">
+    <Header active="treatments" />
+
+    <section class="bg-white py-14 sm:py-16">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6">
+        <h1 class="font-['Sora'] text-3xl font-bold text-ivory-ink sm:text-4xl">Treatments &amp; pricing</h1>
+        <p class="mt-3 text-ivory-ink/70">Every price below is an indicative range — your exact cost depends on the specific tooth and case, confirmed at your first visit.</p>
+      </div>
+    </section>
+
+    <section class="bg-ivory-50 py-12 sm:py-16">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6">
+        <div class="flex flex-wrap justify-center gap-2" data-treatment-filters role="group" aria-label="Filter treatments by category">
+          <button type="button" data-filter="All" class="rounded-full bg-ivory-500 px-4 py-2 text-sm font-bold text-white" aria-pressed="true">All</button>
+          {treatmentCategories.map((cat) => (
+            <button type="button" data-filter={cat} class="rounded-full bg-white px-4 py-2 text-sm font-bold text-ivory-ink/70 hover:bg-ivory-100" aria-pressed="false">{cat}</button>
+          ))}
+        </div>
+
+        <div class="mt-8 grid gap-5 sm:grid-cols-2" data-treatment-list>
+          {treatments.map((t) => (
+            <div class="min-w-0 rounded-2xl border border-ivory-100 bg-white p-6" data-treatment-card data-category={t.category}>
+              <p class="text-xs font-bold uppercase tracking-wide text-ivory-500">{t.category}</p>
+              <h2 class="mt-1 font-['Sora'] text-lg font-bold text-ivory-ink">{t.name}</h2>
+              <p class="mt-2 text-sm text-ivory-ink/70">{t.description}</p>
+              <p class="mt-4 font-['Sora'] text-xl font-bold text-ivory-700">₹{t.priceMinInr.toLocaleString("en-IN")}–₹{t.priceMaxInr.toLocaleString("en-IN")}</p>
+              <p class="text-xs text-ivory-ink/80">{t.priceUnit}</p>
+              <details class="mt-4 rounded-lg bg-ivory-50 p-3">
+                <summary class="cursor-pointer text-xs font-bold text-ivory-700">Aftercare tips</summary>
+                <p class="mt-2 text-xs text-ivory-ink/70">{t.aftercare}</p>
+              </details>
+            </div>
+          ))}
+        </div>
+        <p data-no-results hidden class="mt-8 text-center text-ivory-ink/60">No treatments in this category yet — check back soon.</p>
+      </div>
+    </section>
+
+    <section class="bg-white py-14 sm:py-16">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <Icon name="rupee" class="mx-auto h-8 w-8 text-ivory-500" />
+        <h2 class="mt-3 font-['Sora'] text-xl font-bold text-ivory-ink">EMI &amp; financing</h2>
+        <p class="mt-2 text-ivory-ink/70">EMI options are available on treatments above ₹20,000 through most major credit cards and health EMI cards. Ask our front desk for current terms before your treatment begins.</p>
+        <a href="/demos/ivory-smiles/contact/" class="mt-6 inline-flex items-center gap-2 rounded-full bg-ivory-coral px-6 py-3.5 font-bold text-white hover:opacity-90">
+          <Icon name="calendar" class="h-5 w-5" /> Book a consultation
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </div>
+  <script src="../../../../scripts/demos/ivory-smiles-treatments.ts"></script>
+</DemoLayout>

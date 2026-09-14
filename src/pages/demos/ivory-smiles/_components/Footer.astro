@@ -1,0 +1,31 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+---
+
+<footer class="bg-ivory-ink py-12 text-ivory-100">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 md:grid-cols-3">
+    <div class="min-w-0">
+      <span class="font-['Sora'] text-lg font-bold text-white">Ivory Smiles Dental Clinic</span>
+      <p class="mt-2 text-sm text-ivory-100/70">Dentistry without the dread. Indore, Madhya Pradesh.</p>
+    </div>
+    <div class="min-w-0">
+      <h3 class="mb-2 text-sm font-bold uppercase tracking-wide text-ivory-300">Visit</h3>
+      <p class="flex items-start gap-2 text-sm text-ivory-100/80"><Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0" /> 14 Race Course Road, Indore, Madhya Pradesh 452001</p>
+      <p class="mt-2 flex items-start gap-2 text-sm text-ivory-100/80"><Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0" /> Mon–Sat: 9:30 AM–1:30 PM &amp; 4:30 PM–8:30 PM<br />Sunday: by appointment only</p>
+    </div>
+    <div class="min-w-0">
+      <h3 class="mb-2 text-sm font-bold uppercase tracking-wide text-ivory-300">Get in touch</h3>
+      <a href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric("Ivory Smiles Dental Clinic"))} target="_blank" rel="noopener" aria-label="WhatsApp Ivory Smiles (demo — opens WhatsApp to Nirmaan Webworks)" class="flex items-center gap-2 text-sm text-ivory-100/80 hover:text-white">
+        <Icon name="whatsapp" class="h-4 w-4" /> WhatsApp us
+      </a>
+      <a href="/demos/ivory-smiles/contact/" class="mt-2 flex items-center gap-2 text-sm text-ivory-100/80 hover:text-white">
+        <Icon name="calendar" class="h-4 w-4" /> Book an appointment
+      </a>
+    </div>
+  </div>
+  <p class="mx-auto mt-8 max-w-6xl px-4 text-xs text-ivory-100/80 sm:px-6">
+    Ivory Smiles Dental Clinic is a fictional demonstration business built by {siteConfig.businessName} to showcase website design and development work.
+  </p>
+</footer>

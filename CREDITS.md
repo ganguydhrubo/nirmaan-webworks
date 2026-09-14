@@ -29,13 +29,16 @@ Static woff2 files were obtained from Google Fonts' `fonts.gstatic.com` CDN via 
 
 ## Images
 
-Photography for the main marketing site and the six demo sites is sourced from Unsplash and Pexels, downloaded at build time and stored under `src/assets/` and `public/images/`, never hotlinked. Every image used will be listed here with photographer, source URL, licence and download date as it is added during the design/build phase (Section 6/7 of the build).
-
-**Status: photography sourcing is in progress as part of the homepage and demo builds — this table will be completed before the design is marked final. See AUDIT.md for the current state.**
+Photography for the main marketing site and the six demo sites is sourced from Unsplash and Pexels, downloaded at build time and stored under `src/assets/demos/`, processed via Astro Image / Sharp, and never hotlinked. Every image used is recorded below with subject, photographer, source URL, licence, and download date:
 
 | File | Subject | Photographer | Source URL | Licence | Downloaded |
 |---|---|---|---|---|---|
-| _pending_ | | | | | |
+| `src/assets/demos/kayal.jpg` | Tropical resort buildings on a calm waterway (Kayal Backwaters) | Lens Fables | https://unsplash.com/photos/tropical-resort-buildings-on-a-calm-waterway-gMcF8QoXCkk | Unsplash | 2026-09-14 |
+| `src/assets/demos/anaar.jpg` | Awadhi dum biryani in bowl with garnish (Anaar Table) | Mario Raj | https://unsplash.com/photos/a-white-bowl-filled-with-rice-and-meat-ysmeQt1dzcw | Unsplash | 2026-09-14 |
+| `src/assets/demos/ivory.jpg` | Modern dental treatment room and equipment (Ivory Smiles) | Pavel Danilyuk | https://www.pexels.com/photo/a-dental-equipment-in-the-clinic-6812453/ | Pexels | 2026-09-14 |
+| `src/assets/demos/sanjeevani.jpg` | Doctor consultation desk with stethoscope (Sanjeevani Clinic) | Ercan Şenkaya | https://www.pexels.com/photo/doctor-office-table-desk-and-black-chair-with-stethoscope-and-white-paper-15195276/ | Pexels | 2026-09-14 |
+| `src/assets/demos/shivalik.jpg` | Modern premium residential building facade (Shivalik Homes) | Eyecon Design | https://www.pexels.com/photo/modern-residential-building-next-to-the-street-in-city-16072809/ | Pexels | 2026-09-14 |
+| `src/assets/demos/manthan.jpg` | Library shelves filled with reference books (Manthan Institute) | Lisa | https://www.pexels.com/photo/shelves-full-of-books-12124094/ | Pexels | 2026-09-14 |
 
 ## Icons
 

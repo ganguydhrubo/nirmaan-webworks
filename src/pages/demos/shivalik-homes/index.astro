@@ -1,0 +1,128 @@
+---
+import DemoPhoto from "@/components/ui/DemoPhoto.astro";
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import { projects } from "@/content/demos/shivalik-homes/projects";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+export const prerender = true;
+
+function formatInr(n: number): string {
+  return `₹${(n / 100000).toFixed(1)} L`;
+}
+
+const waMsg = waLink(siteConfig.whatsappMessageTemplates.demoGeneric("Shivalik Homes & Developers"));
+const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
+---
+
+<DemoLayout
+  demoSlug="shivalik-homes"
+  title="Shivalik Homes & Developers — Foothill homes, built to last"
+  description="Residential projects in Dehradun by Shivalik Homes & Developers — floor plans, EMI calculator, amenities and site-visit booking."
+  fontsHref="/fonts/demos/shivalik-homes/fonts.css"
+  themeColor="#63533f"
+>
+  <div class="font-['Work_Sans'] bg-shivalik-50 text-shivalik-900">
+    <header class="sticky top-9 z-40 border-b border-shivalik-300/40 bg-shivalik-50/95 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/demos/shivalik-homes" class="flex items-center gap-2.5">
+          <svg viewBox="0 0 40 40" class="h-9 w-9 shrink-0" aria-hidden="true">
+            <rect x="2" y="2" width="36" height="36" rx="4" fill="var(--color-shivalik-700)"></rect>
+            <path d="M6 28 14 15l6 8 5-11 9 16Z" fill="var(--color-shivalik-brass)"></path>
+          </svg>
+          <span class="font-['Spectral'] text-lg font-semibold leading-none text-shivalik-900">Shivalik Homes<span class="block text-xs font-normal tracking-wide text-shivalik-600">& Developers</span></span>
+        </a>
+        <nav aria-label="Primary" class="hidden gap-6 text-sm font-medium md:flex">
+          <a href="/demos/shivalik-homes/projects" class="hover:text-shivalik-brass">Projects</a>
+          <a href="/demos/shivalik-homes#amenities" class="hover:text-shivalik-brass">Amenities</a>
+          <a href="/demos/shivalik-homes#credentials" class="hover:text-shivalik-brass">Credentials</a>
+        </nav>
+        <a href={contactHref} class="rounded-md bg-shivalik-700 px-4 py-2.5 text-sm font-semibold text-shivalik-50 hover:bg-shivalik-900">Book a site visit</a>
+      </div>
+    </header>
+
+    <section class="relative overflow-hidden border-b border-shivalik-300/40">
+      <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+        <rect width="1200" height="420" fill="var(--color-shivalik-100)"></rect>
+        <path d="M0 300 L150 180 L280 260 L420 140 L560 240 L700 120 L860 250 L1000 160 L1200 280 L1200 420 L0 420 Z" fill="var(--color-shivalik-300)" opacity="0.6"></path>
+        <path d="M0 360 L200 260 L360 320 L520 220 L680 310 L840 230 L1000 330 L1200 260 L1200 420 L0 420 Z" fill="var(--color-shivalik-500)" opacity="0.5"></path>
+      </svg>
+      <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-widest text-shivalik-brass">Dehradun, Uttarakhand</p>
+        <h1 class="mt-4 max-w-2xl font-['Spectral'] text-4xl font-semibold leading-tight text-shivalik-900 sm:text-5xl">Foothill homes, built to last.</h1>
+        <p class="mt-5 max-w-xl text-lg text-shivalik-700">
+          Three generations of building in Dehradun. Shivalik Homes designs residences around how families in this city actually live — close to schools, away from traffic, facing the hills.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/demos/shivalik-homes/projects" class="rounded-md bg-shivalik-700 px-6 py-3.5 text-center font-semibold text-shivalik-50 hover:bg-shivalik-900">Browse current projects</a>
+          <a href={contactHref} class="rounded-md border border-shivalik-500 px-6 py-3.5 text-center font-semibold text-shivalik-800 hover:bg-shivalik-100">Book a site visit</a>
+        </div>
+      </div>
+    </section>
+    <DemoPhoto name="shivalik" />
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-4">
+        <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">Current projects</h2>
+        <a href="/demos/shivalik-homes/projects" class="text-sm font-semibold text-shivalik-brass hover:underline">See all with filters →</a>
+      </div>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {projects.map((p) => (
+          <a href={`/demos/shivalik-homes/projects/${p.slug}`} class="min-w-0 overflow-hidden rounded-xl border border-shivalik-300/50 bg-white transition hover:border-shivalik-brass hover:shadow-md">
+            <div class="flex h-36 items-center justify-center bg-shivalik-100 px-4 text-center">
+              <p class="font-['Spectral'] text-lg font-semibold text-shivalik-800">{p.heroTagline}</p>
+            </div>
+            <div class="p-5">
+              <p class="text-xs font-semibold uppercase tracking-wide text-shivalik-brass">{p.status.replace(/-/g, " ")}</p>
+              <h3 class="mt-1 font-['Spectral'] text-lg font-semibold">{p.name}</h3>
+              <p class="mt-1 text-sm text-shivalik-600">{p.locality}</p>
+              <p class="mt-3 text-sm text-shivalik-700">{p.configLabel} · {formatInr(p.unitTypes[0]!.priceMinInr)}–{formatInr(p.unitTypes[p.unitTypes.length - 1]!.priceMaxInr)}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="amenities" class="border-y border-shivalik-300/40 bg-shivalik-100/60 py-16">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">What every Shivalik home includes</h2>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {["24x7 security with CCTV", "Covered car parking", "Rainwater harvesting", "Backup power for common areas"].map((a) => (
+            <div class="min-w-0 rounded-lg border border-shivalik-300/50 bg-white p-5">
+              <p class="font-medium text-shivalik-800">{a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="credentials" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+      <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">Builder credentials</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <div class="min-w-0 rounded-xl border border-shivalik-300/50 bg-white p-6">
+          <p class="font-semibold text-shivalik-800">RERA registration</p>
+          <p class="mt-2 text-sm text-shivalik-600">Every current project is registered with Uttarakhand RERA. Registration numbers are listed on each project page — verify any builder's number on the official UKRERA portal before booking.</p>
+        </div>
+        <div class="min-w-0 rounded-xl border border-shivalik-300/50 bg-white p-6">
+          <p class="font-semibold text-shivalik-800">Past handovers</p>
+          <p class="mt-2 text-sm text-shivalik-600">Shivalik Ridge Residences, our first project near Clement Town, was handed over on schedule in 2023 and is fully occupied today.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-shivalik-300/40 bg-shivalik-900 py-16 text-shivalik-50">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <h2 class="font-['Spectral'] text-2xl font-semibold text-white sm:text-3xl">Considering a project?</h2>
+        <p class="mt-3 text-shivalik-300">Book a site visit or ask us anything — no obligation.</p>
+        <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+          <a href={contactHref} class="rounded-md bg-shivalik-brass px-6 py-3.5 font-bold text-white hover:opacity-90">Book a site visit</a>
+          <a href={waMsg} target="_blank" rel="noopener" aria-label="Ask on WhatsApp (opens WhatsApp)" class="rounded-md border border-shivalik-300 px-6 py-3.5 font-semibold text-shivalik-50 hover:bg-shivalik-800">Ask on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="border-t border-shivalik-800 bg-shivalik-900 py-8 text-center text-sm text-shivalik-400">
+      <p>Shivalik Homes & Developers — Dehradun, Uttarakhand (demo site)</p>
+    </footer>
+  </div>
+</DemoLayout>

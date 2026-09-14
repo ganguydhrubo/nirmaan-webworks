@@ -1,0 +1,93 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import { projects } from "@/content/demos/shivalik-homes/projects";
+
+export const prerender = true;
+
+const statusLabels: Record<string, string> = { "ready-to-move": "Ready to move", "under-construction": "Under construction", "new-launch": "New launch" };
+const budgetLabels: Record<string, string> = { "under-60L": "Under ₹60 L", "60L-1Cr": "₹60 L – ₹1 Cr", "above-1Cr": "Above ₹1 Cr" };
+---
+
+<DemoLayout
+  demoSlug="shivalik-homes"
+  title="Projects — Shivalik Homes & Developers"
+  description="Browse current Shivalik Homes projects in Dehradun by configuration, budget and possession status."
+  fontsHref="/fonts/demos/shivalik-homes/fonts.css"
+  themeColor="#63533f"
+>
+  <div class="font-['Work_Sans'] min-h-screen bg-shivalik-50 text-shivalik-900">
+    <header class="sticky top-9 z-40 border-b border-shivalik-300/40 bg-shivalik-50/95 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/demos/shivalik-homes" class="font-['Spectral'] text-lg font-semibold">Shivalik Homes</a>
+        <a href="/contact?category=Real%20Estate&demo=shivalik-homes" class="rounded-md bg-shivalik-700 px-4 py-2.5 text-sm font-semibold text-shivalik-50 hover:bg-shivalik-900">Book a site visit</a>
+      </div>
+    </header>
+
+    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <h1 class="font-['Spectral'] text-3xl font-semibold sm:text-4xl">All projects</h1>
+
+      <div data-project-filters class="mt-8">
+        <div class="flex flex-wrap items-end gap-4 rounded-xl border border-shivalik-300/50 bg-white p-5">
+          <div>
+            <label for="filter-status" class="mb-1 block text-xs font-semibold uppercase text-shivalik-600">Status</label>
+            <select id="filter-status" name="filter-status" class="rounded-md border border-shivalik-300 bg-white px-3 py-2 text-sm">
+              <option value="">All</option>
+              <option value="ready-to-move">Ready to move</option>
+              <option value="under-construction">Under construction</option>
+              <option value="new-launch">New launch</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-budget" class="mb-1 block text-xs font-semibold uppercase text-shivalik-600">Budget</label>
+            <select id="filter-budget" name="filter-budget" class="rounded-md border border-shivalik-300 bg-white px-3 py-2 text-sm">
+              <option value="">All</option>
+              <option value="under-60L">Under ₹60 L</option>
+              <option value="60L-1Cr">₹60 L – ₹1 Cr</option>
+              <option value="above-1Cr">Above ₹1 Cr</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-config" class="mb-1 block text-xs font-semibold uppercase text-shivalik-600">Configuration</label>
+            <select id="filter-config" name="filter-config" class="rounded-md border border-shivalik-300 bg-white px-3 py-2 text-sm">
+              <option value="">All</option>
+              <option value="2 BHK">2 BHK</option>
+              <option value="3 BHK">3 BHK</option>
+              <option value="4 BHK">4 BHK</option>
+            </select>
+          </div>
+          <button type="button" data-filter-reset class="rounded-md border border-shivalik-400 px-4 py-2 text-sm font-medium text-shivalik-700 hover:bg-shivalik-100">Reset</button>
+          <p class="ml-auto text-sm text-shivalik-500" data-filter-count>{projects.length} projects</p>
+        </div>
+
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          {projects.map((p) => (
+            <a
+              href={`/demos/shivalik-homes/projects/${p.slug}`}
+              data-project-card
+              data-status={p.status}
+              data-budget={p.budgetBand}
+              data-configs={p.unitTypes.map((u) => u.config).join(",")}
+              class="min-w-0 overflow-hidden rounded-xl border border-shivalik-300/50 bg-white transition hover:border-shivalik-brass hover:shadow-md"
+            >
+              <div class="flex h-32 items-center justify-center bg-shivalik-100 px-4 text-center">
+                <p class="font-['Spectral'] font-semibold text-shivalik-800">{p.name}</p>
+              </div>
+              <div class="p-5">
+                <p class="text-xs font-semibold uppercase tracking-wide text-shivalik-brass">{statusLabels[p.status]}</p>
+                <p class="mt-1 text-sm text-shivalik-600">{p.locality}</p>
+                <p class="mt-3 text-sm font-medium text-shivalik-800">{p.configLabel} · {budgetLabels[p.budgetBand]}</p>
+                <p class="mt-1 text-xs text-shivalik-500">Possession: {p.possessionDate}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <p data-filter-empty hidden class="mt-8 rounded-lg border border-dashed border-shivalik-300 p-8 text-center text-shivalik-500">
+          No projects match those filters right now. <button type="button" data-filter-reset class="underline">Reset filters</button>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script src="../../../../scripts/demos/shivalik-homes-filters.ts"></script>
+</DemoLayout>

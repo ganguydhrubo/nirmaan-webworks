@@ -1,0 +1,69 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+
+
+interface Props {
+  active?: "home" | "menu" | "reservations" | "story";
+}
+const { active } = Astro.props;
+
+const nav = [
+  { href: "/demos/anaar-awadhi-table/", label: "Home", key: "home" },
+  { href: "/demos/anaar-awadhi-table/menu/", label: "Menu", key: "menu" },
+  { href: "/demos/anaar-awadhi-table/our-story/", label: "Our Story", key: "story" },
+  { href: "/demos/anaar-awadhi-table/reservations/", label: "Reservations", key: "reservations" },
+];
+
+
+---
+
+<header class="border-b border-anaar-gold/25 bg-anaar-900">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <a href="/demos/anaar-awadhi-table/" class="flex min-w-0 items-center gap-2.5">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-anaar-gold/60 bg-anaar-700 text-anaar-gold" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
+          <path d="M12 2c.6 1 1 1.7 1.9 2.1-.3.5-.6 1-.8 1.5A6.6 6.6 0 0 1 18.5 12c0 4-3 7.8-6.5 9-3.5-1.2-6.5-5-6.5-9a6.6 6.6 0 0 1 5.4-6.4c-.2-.5-.5-1-.8-1.5.9-.4 1.3-1.1 1.9-2.1Zm0 6.4a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Zm-3 3.4a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Zm6 0a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Zm-3 3.2a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" />
+        </svg>
+      </span>
+      <span class="min-w-0 truncate font-['Playfair_Display'] text-lg font-bold text-anaar-cream">Anaar <span class="text-anaar-gold">·</span> The Awadhi Table</span>
+    </a>
+    <nav aria-label="Primary" class="hidden gap-1 md:flex">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          aria-current={active === item.key ? "page" : undefined}
+          class:list={[
+            "rounded-md px-3 py-2 text-sm font-semibold text-anaar-cream/80 hover:bg-anaar-700 hover:text-anaar-cream",
+            active === item.key && "bg-anaar-700 text-anaar-gold",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <a
+      href="/demos/anaar-awadhi-table/reservations"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-anaar-gold px-4 py-2.5 text-sm font-bold text-anaar-900 shadow-sm transition hover:brightness-95"
+      data-analytics-event="cta_click"
+    >
+      <Icon name="whatsapp" class="h-4 w-4" /> Reserve
+    </a>
+  </div>
+  <nav aria-label="Primary mobile" class="flex gap-1 overflow-x-auto border-t border-anaar-gold/20 px-4 py-2 md:hidden">
+    {nav.map((item) => (
+      <a
+        href={item.href}
+        aria-current={active === item.key ? "page" : undefined}
+        class:list={[
+          "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold",
+          active === item.key ? "bg-anaar-gold text-anaar-950 font-bold" : "bg-anaar-700/60 text-anaar-cream/80",
+        ]}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>

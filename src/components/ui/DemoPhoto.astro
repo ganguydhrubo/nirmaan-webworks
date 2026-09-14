@@ -1,0 +1,22 @@
+---
+import { Picture } from 'astro:assets';
+import anaar from '@/assets/demos/anaar.jpg';
+import ivory from '@/assets/demos/ivory.jpg';
+import shivalik from '@/assets/demos/shivalik.jpg';
+import manthan from '@/assets/demos/manthan.jpg';
+import kayal from '@/assets/demos/kayal.jpg';
+import sanjeevani from '@/assets/demos/sanjeevani.jpg';
+interface Props { name: 'anaar' | 'ivory' | 'shivalik' | 'manthan' | 'kayal' | 'sanjeevani'; eager?: boolean }
+const { name, eager = false } = Astro.props;
+const sources = { anaar, ivory, shivalik, manthan, kayal, sanjeevani };
+const alt = {
+  anaar: 'A bowl of chicken biryani with herbs and spices',
+  ivory: 'A bright dental treatment room with a chair and examination equipment',
+  shivalik: 'Balconies and landscaped frontage of a residential building in Ahmedabad',
+  manthan: 'Books arranged on wooden library shelves',
+  kayal: 'A tranquil backwater resort with palm trees and a boat on the water',
+  sanjeevani: 'A doctor desk with stethoscope and consultation space',
+};
+---
+<figure class="demo-photo"><Picture src={sources[name]} alt={alt[name]} formats={['avif','webp']} widths={[480,800,1200]} quality={75} sizes="(min-width: 1200px) 1180px, 100vw" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} /><figcaption>Licensed setting inspiration for this fictional business.</figcaption></figure>
+<style>.demo-photo{width:min(1180px,calc(100% - 40px));margin:32px auto}.demo-photo :global(img){width:100%;height:clamp(220px,35vw,430px);object-fit:cover;border-radius:4px}.demo-photo figcaption{font:12px/1.5 sans-serif;padding-block:8px;color:inherit;opacity:.8}</style>

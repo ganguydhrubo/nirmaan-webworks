@@ -1,0 +1,16 @@
+---
+// Original SVG motif: a repeating Mughal-arch silhouette, used as a section
+// divider throughout the Anaar demo instead of photography.
+interface Props {
+  class?: string;
+  flip?: boolean;
+}
+const { class: className = "", flip = false } = Astro.props;
+---
+
+<svg viewBox="0 0 400 40" preserveAspectRatio="none" class:list={[className, flip && "rotate-180"]} aria-hidden="true">
+  <path
+    d="M0 40 V20 Q0 0 20 0 Q40 0 40 20 V40 H0Z M40 40 V20 Q40 0 60 0 Q80 0 80 20 V40 H40Z M80 40 V20 Q80 0 100 0 Q120 0 120 20 V40 H80Z M120 40 V20 Q120 0 140 0 Q160 0 160 20 V40 H120Z M160 40 V20 Q160 0 180 0 Q200 0 200 20 V40 H160Z M200 40 V20 Q200 0 220 0 Q240 0 240 20 V40 H200Z M240 40 V20 Q240 0 260 0 Q280 0 280 20 V40 H240Z M280 40 V20 Q280 0 300 0 Q320 0 320 20 V40 H280Z M320 40 V20 Q320 0 340 0 Q360 0 360 20 V40 H320Z M360 40 V20 Q360 0 380 0 Q400 0 400 20 V40 H360Z"
+    fill="currentColor"
+  ></path>
+</svg>

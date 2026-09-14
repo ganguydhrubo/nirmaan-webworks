@@ -1,0 +1,34 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+---
+
+<footer class="border-t border-manthan-800 bg-manthan-900 py-12 text-manthan-300">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <div class="min-w-0">
+        <p class="font-['Domine'] text-lg font-bold text-white">Manthan Institute</p>
+        <p class="mt-2 text-sm">of Competitive Studies</p>
+        <p class="mt-3 text-sm">Discipline, then results.</p>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold uppercase tracking-wide text-manthan-gold">Visit us</p>
+        <p class="mt-2 flex items-start gap-2 text-sm"><Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0" /> Talwandi, Kota, Rajasthan 324005</p>
+        <p class="mt-2 flex items-start gap-2 text-sm"><Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0" /> Mon–Sat, 6:00 AM – 8:00 PM · Sun test day</p>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold uppercase tracking-wide text-manthan-gold">Ask about admissions</p>
+        <a href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric("Manthan Institute"))} target="_blank" rel="noopener" aria-label="Ask on WhatsApp (opens WhatsApp)" class="mt-2 flex items-center gap-2 text-sm hover:text-white" data-analytics-event="whatsapp_click" data-demo-slug="manthan-institute">
+          <Icon name="whatsapp" class="h-4 w-4" /> Chat on WhatsApp
+        </a>
+        <a href="/demos/manthan-institute/admissions" class="mt-2 flex items-center gap-2 text-sm hover:text-white">
+          <Icon name="chevron-right" class="h-4 w-4" /> Admission process & fees
+        </a>
+      </div>
+    </div>
+    <p class="mt-10 border-t border-manthan-800 pt-6 text-xs text-manthan-300">
+      Manthan Institute of Competitive Studies is a fictional demo business built by {siteConfig.businessName} to show our web design work — not a real institute.
+    </p>
+  </div>
+</footer>

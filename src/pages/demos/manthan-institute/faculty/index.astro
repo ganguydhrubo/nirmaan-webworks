@@ -1,0 +1,58 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import SiteHeader from "../_shared/SiteHeader.astro";
+import SiteFooter from "../_shared/SiteFooter.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { faculty } from "@/content/demos/manthan-institute/faculty";
+
+export const prerender = true;
+---
+
+<DemoLayout
+  demoSlug="manthan-institute"
+  title="Faculty | Manthan Institute of Competitive Studies"
+  description="Meet the Physics, Chemistry, Mathematics and Biology faculty at Manthan Institute, Kota — qualifications and years of JEE/NEET teaching experience."
+  fontsHref="/fonts/demos/manthan-institute/fonts.css"
+  themeColor="#232a51"
+>
+  <div class="bg-white font-['Nunito'] text-manthan-900">
+    <SiteHeader />
+
+    <section class="border-b border-manthan-100 bg-manthan-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h1 class="font-['Domine'] text-3xl font-bold text-manthan-900 sm:text-4xl">Faculty</h1>
+        <p class="mt-2 max-w-xl text-manthan-700">Every faculty member here teaches one subject only — depth over breadth.</p>
+      </div>
+    </section>
+
+    <section class="py-10 sm:py-14">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 sm:grid-cols-2">
+          {faculty.map((f) => (
+            <div class="reveal min-w-0 flex gap-5 rounded-xl border border-manthan-100 p-6">
+              <span class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-manthan-600 font-['Domine'] text-lg font-bold text-white">{f.initials}</span>
+              <div class="min-w-0">
+                <h2 class="font-['Domine'] text-lg font-bold text-manthan-900">{f.name}</h2>
+                <p class="text-sm font-semibold text-manthan-500">{f.subject}</p>
+                <p class="mt-1 text-xs text-manthan-600">{f.qualification} · {f.experienceYears} years teaching experience</p>
+                <p class="mt-3 text-sm text-manthan-700">{f.bio}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-manthan-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <Icon name="shield" class="mx-auto h-8 w-8 text-manthan-600" />
+        <h2 class="mt-3 font-['Domine'] text-2xl font-bold text-manthan-900">How we track progress</h2>
+        <p class="mt-3 text-manthan-700">
+          We don't publish selection percentages or named-student rank claims — in a city with as much coaching-marketing noise as Kota, those numbers are easy to print and impossible for a parent to verify. What we do instead: cap every batch at 40 students, run a full test series every Sunday from the first month, and call parents once a month with an honest progress update — not just when something's wrong.
+        </p>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+</DemoLayout>

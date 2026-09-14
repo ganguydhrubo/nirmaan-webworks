@@ -1,0 +1,67 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+const navItems = [
+  { href: "/demos/manthan-institute", label: "Home" },
+  { href: "/demos/manthan-institute/courses", label: "Courses" },
+  { href: "/demos/manthan-institute/faculty", label: "Faculty" },
+  { href: "/demos/manthan-institute/admissions", label: "Admissions" },
+];
+const current = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<header class="border-b border-manthan-100 bg-white">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+    <a href="/demos/manthan-institute" class="flex items-center gap-2.5">
+      <span class="flex h-10 w-10 items-center justify-center rounded-md bg-manthan-600 font-['Domine'] text-lg font-bold text-white">M</span>
+      <span class="font-['Domine'] text-lg font-bold text-manthan-900">Manthan Institute</span>
+    </a>
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={current === item.href ? "page" : undefined}
+              class:list={["rounded-md px-3 py-2 text-sm font-semibold text-manthan-700 hover:bg-manthan-50", current === item.href && "bg-manthan-50 text-manthan-900"]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a
+        href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric("Manthan Institute"))}
+        target="_blank"
+        rel="noopener"
+        aria-label="Ask about admissions on WhatsApp (opens WhatsApp)"
+        class="hidden items-center gap-1.5 text-sm font-semibold text-manthan-700 hover:text-manthan-900 sm:flex"
+        data-analytics-event="whatsapp_click"
+        data-demo-slug="manthan-institute"
+      >
+        <Icon name="whatsapp" class="h-4 w-4" /> Ask a question
+      </a>
+      <a
+        href="/demos/manthan-institute/admissions"
+        class="rounded-md bg-manthan-gold px-4 py-2 text-sm font-bold text-manthan-900 hover:brightness-95"
+      >
+        Admissions
+      </a>
+    </div>
+  </div>
+  <nav aria-label="Primary mobile" class="border-t border-manthan-100 md:hidden">
+    <ul class="flex overflow-x-auto px-2">
+      {navItems.map((item) => (
+        <li class="shrink-0">
+          <a href={item.href} class:list={["block px-3 py-2.5 text-sm font-semibold text-manthan-700", current === item.href && "text-manthan-900 underline decoration-manthan-gold decoration-2 underline-offset-4"]}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>

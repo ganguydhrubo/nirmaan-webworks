@@ -9,6 +9,7 @@
  */
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
+import "@/styles/global.css";
 
 interface Props {
   demoSlug: string;
@@ -43,6 +44,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
+    <a href="#demo-content" class="skip-link">Skip to demo content</a>
     <div data-demo-banner class="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-ink-950 px-4 py-2 text-center text-xs font-medium text-cream sm:text-sm">
       <span>Demo site — built by {siteConfig.businessName}.</span>
       <a
@@ -66,7 +68,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
       </a>
     </div>
 
-    <slot />
+    <div id="demo-content" tabindex="-1"><slot /></div>
 
     <script src="../scripts/analytics-client.ts"></script>
     <script src="../scripts/reveal.ts"></script>

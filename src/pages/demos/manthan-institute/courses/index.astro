@@ -1,0 +1,98 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import SiteHeader from "../_shared/SiteHeader.astro";
+import SiteFooter from "../_shared/SiteFooter.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { courses } from "@/content/demos/manthan-institute/courses";
+import { waLink } from "@/lib/contact-links";
+
+export const prerender = true;
+
+const exams = ["All", "JEE", "NEET", "Foundation"] as const;
+---
+
+<DemoLayout
+  demoSlug="manthan-institute"
+  title="Courses — JEE, NEET & Foundation Batches | Manthan Institute"
+  description="JEE and NEET two-year foundation and one-year target batches, plus a Class 9-10 foundation course and a 45-day crash course — fees, subjects and batch timings."
+  fontsHref="/fonts/demos/manthan-institute/fonts.css"
+  themeColor="#232a51"
+>
+  <div class="bg-white font-['Nunito'] text-manthan-900">
+    <SiteHeader />
+
+    <section class="border-b border-manthan-100 bg-manthan-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h1 class="font-['Domine'] text-3xl font-bold text-manthan-900 sm:text-4xl">Courses</h1>
+        <p class="mt-2 max-w-xl text-manthan-700">Six batches across JEE, NEET and school foundation — filter by exam below.</p>
+      </div>
+    </section>
+
+    <section class="py-10 sm:py-14">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div role="group" aria-label="Filter courses by exam" class="flex flex-wrap gap-2" data-course-filters>
+          {exams.map((exam, i) => (
+            <button
+              type="button"
+              data-filter-btn
+              data-filter-value={exam}
+              aria-pressed={i === 0 ? "true" : "false"}
+              class:list={[
+                "rounded-full border-2 px-4 py-2 text-sm font-bold transition",
+                i === 0 ? "border-manthan-600 bg-manthan-600 text-white" : "border-manthan-200 text-manthan-700 hover:border-manthan-500",
+              ]}
+            >
+              {exam}
+            </button>
+          ))}
+        </div>
+
+        <div class="mt-8 grid gap-6 sm:grid-cols-2" data-course-list>
+          {courses.map((c) => (
+            <article data-course-card data-exam={c.exam} class="min-w-0 rounded-xl border border-manthan-100 p-6">
+              <p class="text-xs font-bold uppercase tracking-wide text-manthan-500">{c.exam} · {c.durationLabel}</p>
+              <h2 class="mt-1 font-['Domine'] text-lg font-bold text-manthan-900">{c.name}</h2>
+              <p class="mt-1 text-sm text-manthan-600">Eligibility: {c.eligibility}</p>
+              <p class="mt-1 text-sm text-manthan-600">Subjects: {c.subjects.join(", ")}</p>
+
+              <ul class="mt-4 space-y-1.5 text-sm text-manthan-700">
+                {c.covers.map((item) => (
+                  <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-manthan-600" /> {item}</li>
+                ))}
+              </ul>
+
+              <div class="mt-4 rounded-lg bg-manthan-50 p-3">
+                <p class="text-xs font-bold uppercase tracking-wide text-manthan-500">Batch timings</p>
+                {c.batches.map((b) => (
+                  <p class="text-sm text-manthan-700">{b.name}: {b.days}, {b.time}</p>
+                ))}
+              </div>
+
+              <div class="mt-4 flex items-baseline justify-between">
+                <div>
+                  <p class="font-['Domine'] text-xl font-bold text-manthan-900">₹{c.feeInr.toLocaleString("en-IN")}</p>
+                  <p class="text-xs text-manthan-500">{c.feeNote}</p>
+                </div>
+                <a
+                  href={waLink(`Hi, I'd like to know more about the ${c.name} at Manthan Institute.`)}
+                  target="_blank" rel="noopener"
+                  aria-label={`Ask about ${c.name} on WhatsApp (opens WhatsApp)`}
+                  class="inline-flex items-center gap-1.5 rounded-md bg-manthan-600 px-4 py-2 text-sm font-bold text-white hover:bg-manthan-700"
+                  data-analytics-event="whatsapp_click" data-demo-slug="manthan-institute"
+                >
+                  Ask about this <Icon name="whatsapp" class="h-4 w-4" />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p data-no-results hidden class="mt-8 text-center text-manthan-500">No courses in this category yet — ask us on WhatsApp about upcoming batches.</p>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+
+  <script src="../../../../scripts/demos/manthan-institute-course-filter.ts"></script>
+</DemoLayout>

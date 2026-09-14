@@ -6,16 +6,17 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://www.nirmaanwebworks.in",
   output: "server",
+  session: false,
+  trailingSlash: "never",
   adapter: cloudflare({
     imageService: "compile",
-    platformProxy: { enabled: true },
   }),
   integrations: [
     sitemap({
       // Demo sites are deliberately noindex (see ARCHITECTURE.md / SEO.md) —
       // they must not compete with the indexable /industries/[slug] pages,
       // so they're excluded from the sitemap as well as noindexed in meta.
-      filter: (page) => !page.includes("/demos/") && !page.includes("/api/") && !page.includes("/enquiry-"),
+      filter: (page) => !page.includes("/demos/") && !page.includes("/api/") && !page.includes("/enquiry-") && !/\/(404|500|privacy|terms|refund-policy)(\/|$)/.test(page),
     }),
   ],
   image: {

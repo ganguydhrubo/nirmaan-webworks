@@ -1,0 +1,119 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import SiteHeader from "../_shared/SiteHeader.astro";
+import SiteFooter from "../_shared/SiteFooter.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { courses } from "@/content/demos/manthan-institute/courses";
+import { waLink } from "@/lib/contact-links";
+import { siteConfig } from "@config/site";
+
+export const prerender = true;
+
+const steps = [
+  { title: "Enquire", body: "Message us on WhatsApp or fill the enquiry form with the exam and class you're considering." },
+  { title: "Counselling call", body: "A 15-minute call to understand the student's current level and recommend a batch." },
+  { title: "Placement test", body: "A short diagnostic test (no pass/fail — it's only used to place the student in the right batch)." },
+  { title: "Enrolment & fee payment", body: "Complete enrolment and pay the course fee — instalment options are available on request." },
+];
+---
+
+<DemoLayout
+  demoSlug="manthan-institute"
+  title="Admissions & Fees | Manthan Institute of Competitive Studies"
+  description="Admission process, batch fees and enquiry details for JEE, NEET and Foundation courses at Manthan Institute, Kota."
+  fontsHref="/fonts/demos/manthan-institute/fonts.css"
+  themeColor="#232a51"
+>
+  <div class="bg-white font-['Nunito'] text-manthan-900">
+    <SiteHeader />
+
+    <section class="border-b border-manthan-100 bg-manthan-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h1 class="font-['Domine'] text-3xl font-bold text-manthan-900 sm:text-4xl">Admissions & fees</h1>
+        <p class="mt-2 max-w-xl text-manthan-700">A straightforward four-step process — no hidden charges.</p>
+      </div>
+    </section>
+
+    <section class="py-10 sm:py-14">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <ol class="grid gap-6 sm:grid-cols-4">
+          {steps.map((s, i) => (
+            <li class="reveal min-w-0 rounded-xl border border-manthan-100 p-5">
+              <span class="flex h-9 w-9 items-center justify-center rounded-full bg-manthan-600 font-['Domine'] text-sm font-bold text-white">{i + 1}</span>
+              <h2 class="mt-3 font-['Domine'] font-bold text-manthan-900">{s.title}</h2>
+              <p class="mt-1.5 text-sm text-manthan-600">{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="bg-manthan-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <h2 class="font-['Domine'] text-2xl font-bold text-manthan-900">Fee structure</h2>
+        <div class="mt-6 overflow-x-auto rounded-xl border border-manthan-200 bg-white focus:outline-none focus:ring-2 focus:ring-manthan-600" tabindex="0" role="region" aria-label="Fee structure table">
+          <table class="w-full min-w-[560px] text-left text-sm">
+            <thead class="bg-manthan-900 text-white">
+              <tr>
+                <th scope="col" class="px-4 py-3 font-bold">Course</th>
+                <th scope="col" class="px-4 py-3 font-bold">Duration</th>
+                <th scope="col" class="px-4 py-3 font-bold">Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map((c, i) => (
+                <tr class:list={[i % 2 === 0 ? "bg-white" : "bg-manthan-50"]}>
+                  <td class="px-4 py-3 font-semibold text-manthan-900">{c.name}</td>
+                  <td class="px-4 py-3 text-manthan-600">{c.durationLabel}</td>
+                  <td class="px-4 py-3 font-bold text-manthan-900">₹{c.feeInr.toLocaleString("en-IN")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-sm text-manthan-500">Fees include study material and the full test series noted per course. Instalment payment plans available on request — ask during your counselling call.</p>
+      </div>
+    </section>
+
+    <section class="py-10 sm:py-14">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="rounded-xl border border-manthan-100 p-6 sm:p-8">
+          <div class="flex items-start gap-4">
+            <Icon name="external" class="mt-1 h-6 w-6 shrink-0 text-manthan-600" />
+            <div class="min-w-0">
+              <h2 class="font-['Domine'] text-lg font-bold text-manthan-900">Want the detailed syllabus?</h2>
+              <p class="mt-1.5 text-sm text-manthan-600">
+                This demo doesn't have a real PDF to send — on the live site this would be an instant download. For now, message us on WhatsApp and we'll treat it as a real syllabus request.
+              </p>
+              <a
+                href={waLink("Hi, could you send me the detailed syllabus for a course at Manthan Institute?")}
+                target="_blank" rel="noopener"
+                aria-label="Request the syllabus on WhatsApp (opens WhatsApp)"
+                class="mt-4 inline-flex items-center gap-2 rounded-md bg-manthan-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-manthan-700"
+                data-analytics-event="whatsapp_click" data-demo-slug="manthan-institute"
+              >
+                <Icon name="whatsapp" class="h-4 w-4" /> Request syllabus on WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-manthan-900 py-14 text-center sm:py-20">
+      <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+        <h2 class="font-['Domine'] text-2xl font-bold text-white sm:text-3xl">Ready to enquire about admission?</h2>
+        <p class="mt-3 text-manthan-300">This is a demo site built by {siteConfig.businessName} — enquiries here go to our real enquiry form, tagged for this demo.</p>
+        <a
+          href="/contact?category=Coaching%20Institutes&demo=manthan-institute"
+          class="mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-manthan-gold px-7 py-3.5 font-bold text-manthan-900 hover:brightness-95"
+          data-analytics-event="cta_click" data-demo-slug="manthan-institute"
+        >
+          Enquire about admission <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </section>
+
+    <SiteFooter />
+  </div>
+</DemoLayout>

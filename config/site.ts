@@ -56,6 +56,8 @@ export interface DemoRegistryEntry {
   noindex: true;
 }
 
+const whatsappNumber = "919876543210";
+
 export const siteConfig = {
   businessName: "Nirmaan Webworks",
   legalEntityName: "Nirmaan Webworks",
@@ -70,9 +72,9 @@ export const siteConfig = {
   leadNotificationEmail: "leads@nirmaanwebworks.in",
   supportEmail: "hello@nirmaanwebworks.in",
 
-  phoneDisplay: "+91 98765 43210",
-  phoneE164: "+919876543210",
-  whatsappNumber: "919876543210",
+  phoneDisplay: `+${whatsappNumber.slice(0,2)} ${whatsappNumber.slice(2,7)} ${whatsappNumber.slice(7)}`,
+  phoneE164: `+${whatsappNumber}`,
+  whatsappNumber,
 
   address: {
     line1: "C-Scheme",
@@ -137,13 +139,13 @@ export const siteConfig = {
       priceMaxInr: 200000,
       bestFor: "A business that needs online ordering, a large catalogue, or custom functionality",
       includes: [
-        "Unlimited standard pages",
+        "Page count agreed in the written scope",
         "Online catalogue or ordering flow",
         "Custom calculators/tools where useful (e.g. EMI, quote estimator)",
         "Performance and accessibility audit before launch",
         "3 rounds of design revisions",
       ],
-      excludes: ["Ongoing content writing after launch (available as a add-on)"],
+      excludes: ["Ongoing content writing after launch (available as an add-on)"],
       indicativeTimelineWeeks: [5, 9] as [number, number],
     },
   ] satisfies PriceBand[],

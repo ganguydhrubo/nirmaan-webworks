@@ -1,0 +1,145 @@
+---
+import DemoPhoto from "@/components/ui/DemoPhoto.astro";
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Header from "./_components/Header.astro";
+import Footer from "./_components/Footer.astro";
+import { treatments } from "@/content/demos/ivory-smiles/treatments";
+
+export const prerender = true;
+
+const featured = treatments.filter((t) => ["scaling-polishing", "teeth-whitening", "clear-aligners", "dental-implant"].includes(t.id));
+---
+
+<DemoLayout
+  demoSlug="ivory-smiles"
+  title="Ivory Smiles Dental Clinic — Indore"
+  description="Dentistry without the dread. Transparent pricing, real treatment info and easy appointment booking at Ivory Smiles Dental Clinic, Indore."
+  fontsHref="/fonts/demos/ivory-smiles/fonts.css"
+  themeColor="#147d63"
+>
+  <div class="min-h-screen bg-ivory-50 font-['Mulish'] text-ivory-ink">
+    <Header active="home" />
+
+    <section class="overflow-hidden bg-white">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:py-24">
+        <div class="reveal min-w-0">
+          <p class="inline-flex items-center gap-1.5 rounded-full bg-ivory-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-ivory-700">
+            <Icon name="sparkle" class="h-3.5 w-3.5" /> Indore's calm, modern dental clinic
+          </p>
+          <h1 class="mt-4 font-['Sora'] text-4xl font-bold leading-[1.1] text-ivory-ink sm:text-5xl">Dentistry without the dread.</h1>
+          <p class="mt-5 max-w-md text-lg text-ivory-ink/70">
+            See our treatments and prices before you ever step in. No surprises, no jargon — just a clear plan for a healthier smile.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="/demos/ivory-smiles/contact/" class="inline-flex items-center justify-center gap-2 rounded-full bg-ivory-coral px-6 py-3.5 font-bold text-white shadow-sm hover:opacity-90">
+              <Icon name="calendar" class="h-5 w-5" /> Book an appointment
+            </a>
+            <a href="/demos/ivory-smiles/treatments/" class="inline-flex items-center justify-center gap-2 rounded-full border-2 border-ivory-500 px-6 py-3.5 font-bold text-ivory-700 hover:bg-ivory-50">
+              See treatments &amp; pricing
+            </a>
+          </div>
+        </div>
+        <div class="reveal min-w-0">
+          <div class="mx-auto grid max-w-sm grid-cols-2 gap-4">
+            <div class="col-span-2 rounded-3xl bg-ivory-500 p-8 text-center text-white">
+              <Icon name="tooth" class="mx-auto h-12 w-12" />
+              <p class="mt-3 font-['Sora'] text-lg font-bold">8+ treatments,<br />priced upfront</p>
+            </div>
+            <div class="rounded-2xl bg-ivory-coral/10 p-5 text-center">
+              <p class="font-['Sora'] text-2xl font-bold text-ivory-coral">15+</p>
+              <p class="mt-1 text-xs font-semibold text-ivory-ink/80">years combined dentist experience</p>
+            </div>
+            <div class="rounded-2xl bg-ivory-100 p-5 text-center">
+              <p class="font-['Sora'] text-2xl font-bold text-ivory-700">EMI</p>
+              <p class="mt-1 text-xs font-semibold text-ivory-ink/80">available on treatments above ₹20,000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <DemoPhoto name="ivory" />
+
+    <section class="bg-ivory-50 py-16 sm:py-20">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="reveal mx-auto max-w-2xl text-center">
+          <h2 class="font-['Sora'] text-2xl font-bold text-ivory-ink sm:text-3xl">Popular treatments, real prices</h2>
+          <p class="mt-3 text-ivory-ink/70">A sample of what we offer — see the full catalogue with all 8 treatments and aftercare guidance.</p>
+        </div>
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {featured.map((t) => (
+            <div class="min-w-0 rounded-2xl border border-ivory-100 bg-white p-5">
+              <h3 class="font-['Sora'] text-base font-bold text-ivory-ink">{t.name}</h3>
+              <p class="mt-2 text-sm text-ivory-ink/80">{t.description}</p>
+              <p class="mt-3 font-['Sora'] text-lg font-bold text-ivory-700">₹{t.priceMinInr.toLocaleString("en-IN")}–₹{t.priceMaxInr.toLocaleString("en-IN")}</p>
+              <p class="text-xs text-ivory-ink/80">{t.priceUnit}</p>
+            </div>
+          ))}
+        </div>
+        <div class="reveal mt-8 text-center">
+          <a href="/demos/ivory-smiles/treatments/" class="inline-flex items-center gap-1.5 font-bold text-ivory-700 hover:text-ivory-600">
+            See all treatments &amp; pricing <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6">
+        <div class="reveal text-center">
+          <h2 class="font-['Sora'] text-2xl font-bold text-ivory-ink sm:text-3xl">See the kind of result we aim for</h2>
+          <p class="mt-3 text-ivory-ink/70">Drag the slider — an illustrative example, not a real patient photo.</p>
+        </div>
+        <div class="reveal mt-8" data-comparison-widget>
+          <div class="relative mx-auto aspect-[16/9] max-w-2xl overflow-hidden rounded-2xl border border-ivory-100 select-none">
+            <div class="absolute inset-0 flex items-center justify-center bg-ivory-ink/90 text-center text-ivory-100">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-ivory-300">Before</p>
+                <div class="mx-auto mt-3 flex gap-1.5" aria-hidden="true">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <span class:list={["h-9 w-6 rounded-sm", i % 3 === 0 ? "bg-yellow-700/70" : "bg-ivory-100/40"]}></span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div data-comparison-after class="absolute inset-0 flex w-1/2 items-center justify-center overflow-hidden bg-ivory-500 text-center text-white">
+              <div class="w-[calc(2*24rem)] max-w-none">
+                <p class="text-xs font-bold uppercase tracking-widest text-white">After</p>
+                <div class="mx-auto mt-3 flex gap-1.5" aria-hidden="true">
+                  {Array.from({ length: 8 }).map(() => (
+                    <span class="h-9 w-6 rounded-sm bg-white"></span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div data-comparison-handle class="absolute inset-y-0 left-1/2 flex w-1 -translate-x-1/2 items-center justify-center bg-white shadow">
+              <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-ivory-700 shadow"><Icon name="chevron-right" class="h-4 w-4" /></span>
+            </div>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            data-comparison-slider
+            aria-label="Drag to compare before and after illustration"
+            class="mx-auto mt-4 block w-full max-w-2xl accent-ivory-600"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-ivory-ink py-16 sm:py-20">
+      <div class="mx-auto max-w-6xl px-4 text-center sm:px-6">
+        <h2 class="font-['Sora'] text-2xl font-bold text-white sm:text-3xl">Meet the dentists</h2>
+        <p class="mx-auto mt-3 max-w-xl text-ivory-100/70">Two dentists, two specialisations — see qualifications and consulting hours.</p>
+        <a href="/demos/ivory-smiles/dentist/" class="mt-6 inline-flex items-center gap-2 rounded-full bg-ivory-coral px-6 py-3.5 font-bold text-white hover:opacity-90">
+          Meet Dr. Rathi &amp; Dr. Bhalerao <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </div>
+  <script src="../../../scripts/demos/ivory-smiles-comparison.ts"></script>
+</DemoLayout>

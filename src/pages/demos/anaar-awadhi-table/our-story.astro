@@ -1,0 +1,63 @@
+---
+import DemoLayout from "@/layouts/DemoLayout.astro";
+import Header from "./_components/Header.astro";
+import Footer from "./_components/Footer.astro";
+import DemoPhoto from "@/components/ui/DemoPhoto.astro";
+
+export const prerender = true;
+---
+
+<DemoLayout
+  demoSlug="anaar-awadhi-table"
+  title="Our Story | Anaar — The Awadhi Table"
+  description="The history, philosophy, and khansama culinary heritage behind Anaar — The Awadhi Table in Hazratganj, Lucknow."
+  fontsHref="/fonts/demos/anaar-awadhi-table/fonts.css"
+  themeColor="#6f2224"
+>
+  <Header active="story" />
+
+  <main class="bg-anaar-cream py-12 font-['Lato'] text-anaar-900 sm:py-16">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.25em] text-anaar-600">Heritage & Tradition</p>
+        <h1 class="mt-2 font-['Playfair_Display'] text-3xl font-bold sm:text-4xl">A kitchen that still cooks the slow way</h1>
+        <p class="mt-3 text-sm text-anaar-700">Hazratganj, Lucknow · Est. 2018</p>
+      </div>
+
+      <div class="mt-10">
+        <DemoPhoto name="anaar" eager />
+      </div>
+
+      <div class="prose prose-stone mx-auto mt-12 max-w-2xl space-y-6 leading-relaxed">
+        <h2 class="font-['Playfair_Display'] text-2xl font-bold text-anaar-900">The Art of Dum Pukht</h2>
+        <p>
+          In an era of commercial pressure and thirty-minute deliveries, Anaar exists for people who remember that Lucknow’s kitchen was never designed to be rushed. The term <em>dum pukht</em> literally means to breathe and cook slowly in its own steam.
+        </p>
+        <p>
+          Every evening at 10:00 PM, our heavy copper <em>degchi</em> are sealed with whole-wheat dough to simmer the next day's Nihari overnight over glowing charcoal. The marrow softens, the whole spices release their delicate essential oils, and the gravy acquires that unmistakable silkiness that no pressure cooker can reproduce.
+        </p>
+
+        <h2 class="mt-10 font-['Playfair_Display'] text-2xl font-bold text-anaar-900">Purity of Spices</h2>
+        <p>
+          Awadhi cuisine is famous not for fire, but for aroma. We source our potli spices — dried rose petals, vetiver root (khus), star anise, mace, and long pepper (pipli) — directly from heritage growers. Nothing is bought pre-ground. Every blend is roasted and hand-pounded in small batches each week.
+        </p>
+
+        <h2 class="mt-10 font-['Playfair_Display'] text-2xl font-bold text-anaar-900">Plated for Contemporary Diners</h2>
+        <p>
+          While our cooking techniques honour 200-year-old royal khansama traditions, our dining room in Hazratganj provides a warm, contemporary sanctuary. Whether celebrating an anniversary or sharing a quiet Sunday lunch with family, every plate is an invitation to pause and savour.
+        </p>
+      </div>
+
+      <div class="mt-16 flex flex-col items-center justify-center gap-4 text-center sm:flex-row">
+        <a href="/demos/anaar-awadhi-table/menu/" class="rounded-full bg-anaar-600 px-6 py-3 font-semibold text-white hover:bg-anaar-700">
+          Explore the menu
+        </a>
+        <a href="/demos/anaar-awadhi-table/reservations/" class="rounded-full border border-anaar-600 px-6 py-3 font-semibold text-anaar-600 hover:bg-anaar-100">
+          Plan a table preview
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</DemoLayout>
