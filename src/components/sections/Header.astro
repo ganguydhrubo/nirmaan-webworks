@@ -17,7 +17,19 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/95 backdrop-blur">
+<header>
+  <!--
+    The sticky/blur bar is deliberately a plain inner div, not the <header>
+    itself: `backdrop-filter` (Tailwind's `backdrop-blur`) makes an element a
+    CSS containing block for `position: fixed` descendants, exactly like
+    `transform` or `filter` do. With backdrop-blur on <header>, the mobile
+    nav panel below (fixed, inset-y-0) was resolving its top/bottom against
+    the ~68px-tall header instead of the viewport — it "opened" but rendered
+    as an unusable sliver. Keeping <header> itself filter-free means its
+    fixed-position descendants (the panel, the scrim) correctly position
+    against the viewport instead.
+  -->
+  <div class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/95 backdrop-blur">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
     <Logo />
 
@@ -65,8 +77,9 @@ const currentPath = Astro.url.pathname;
       <Icon name="menu" class="h-6 w-6" />
     </button>
   </div>
+  </div>
 
-  <!-- Mobile nav overlay -->
+  <!-- Mobile nav overlay: deliberately outside the sticky/blur div above, see the comment on <header> for why. -->
   <div data-nav-scrim hidden class="fixed inset-0 z-40 bg-ink-950/40 lg:hidden"></div>
   <div
     id="mobile-nav-panel"

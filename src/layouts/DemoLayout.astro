@@ -9,6 +9,7 @@
  */
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
+import Icon from "@/components/ui/Icon.astro";
 import "@/styles/global.css";
 
 interface Props {
@@ -45,8 +46,18 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
   </head>
   <body>
     <a href="#demo-content" class="skip-link">Skip to demo content</a>
-    <div data-demo-banner class="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-ink-950 px-4 py-2 text-center text-xs font-medium text-cream sm:text-sm">
-      <span>Demo site — built by {siteConfig.businessName}.</span>
+    <div data-demo-banner class="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 bg-ink-950 px-3 py-2.5 text-center text-xs font-medium text-cream sm:gap-x-3 sm:text-sm">
+      <a
+        href="/"
+        class="inline-flex shrink-0 items-center gap-1 rounded-md border border-ink-700 bg-ink-900 px-2.5 py-1.5 font-semibold text-cream hover:border-brand-500 hover:text-brand-300"
+        aria-label={`Back to ${siteConfig.businessName} homepage`}
+        data-analytics-event="cta_click"
+      >
+        <Icon name="chevron-left" class="h-3.5 w-3.5 shrink-0" /> {siteConfig.businessName}
+      </a>
+      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
+      <span>Demo site</span>
+      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
       <a
         href={`/contact?category=${encodeURIComponent(industry?.shortName ?? "")}&demo=${demo.slug}`}
         class="underline decoration-brand-400 decoration-2 underline-offset-2 hover:text-brand-300"
@@ -55,6 +66,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
       >
         Want one for your business?
       </a>
+      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
       <a
         href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric(demo.businessName))}
         target="_blank"
