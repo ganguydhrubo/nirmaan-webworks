@@ -1,16 +1,25 @@
 import { defineConfig, envField } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
+import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+
+// Vercel sets process.env.VERCEL=1 in its own build environment automatically
+// — nothing to configure. This is a deliberate, documented dual-target setup
+// (see ARCHITECTURE.md): the "real" architecture is Cloudflare (D1, Workers),
+// but the site also needs to run on Vercel where D1 isn't available. See
+// src/lib/runtime-env.ts for how server code reads env/bindings without
+// hard-depending on either platform, and api/enquiry.ts for how the lead
+// pipeline degrades to email-only (no persistence, no D1-backed rate limit)
+// when D1 isn't present.
+const isVercel = !!process.env.VERCEL;
 
 export default defineConfig({
   site: "https://webjobs.site",
   output: "server",
   session: false,
   trailingSlash: "never",
-  adapter: cloudflare({
-    imageService: "compile",
-  }),
+  adapter: isVercel ? vercel({ webAnalytics: { enabled: false } }) : cloudflare({ imageService: "compile" }),
   integrations: [
     sitemap({
       // Demo sites are deliberately noindex (see ARCHITECTURE.md / SEO.md) —

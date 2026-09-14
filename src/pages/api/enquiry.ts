@@ -1,12 +1,12 @@
 import type { APIRoute } from "astro";
-import { env as runtimeEnv } from "cloudflare:workers";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 import { enquirySchema, MAX_ENQUIRY_PAYLOAD_BYTES } from "@/lib/validation";
 import { getClientIp, hashIp } from "@/lib/ip";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { checkGlobalRateLimit, checkIpRateLimit, checkPhoneRateLimit } from "@/lib/rate-limit";
 import { findRecentDuplicateLead, getDailyEmailCount, reserveEmailQuota, insertLead, leadFromInput, logSpam, updateLeadEmailStatus } from "@/lib/leads";
 import { createEmailProvider, sendWithRetry, type LeadEmailPayload } from "@/lib/email";
-import { ConfigError, getIpHashSalt, getRateLimits, requireD1 } from "@/lib/config-validate";
+import { getRateLimits } from "@/lib/config-validate";
 import { siteConfig } from "@config/site";
 
 export const prerender = false;
@@ -26,6 +26,7 @@ function isFormEncoded(request: Request): boolean {
 export const POST: APIRoute = async ({ request, redirect }) => {
   const requestId = crypto.randomUUID();
   const noJs = isFormEncoded(request);
+  const runtimeEnv = await getRuntimeEnv();
 
   const fail = (status: number, code: string, message: string) => {
     console.error(JSON.stringify({ requestId, level: "error", code, message }));
@@ -100,25 +101,28 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return fail(400, "bad_body", "We couldn't read that submission.");
   }
 
-  let db;
-  let ipHashSalt;
-  try {
-    db = requireD1(runtimeEnv);
-    ipHashSalt = getIpHashSalt(runtimeEnv);
-  } catch (err) {
-    if (err instanceof ConfigError) {
-      console.error(JSON.stringify({ requestId, level: "fatal", message: err.message }));
-      return fail(500, "server_misconfigured", "Something went wrong on our side. Please message us on WhatsApp or call us and we'll pick it up straight away.");
-    }
-    throw err;
-  }
+  // D1 is only bound on Cloudflare (see ARCHITECTURE.md/src/lib/runtime-env.ts)
+  // — on Vercel this is legitimately undefined, not a misconfiguration. Every
+  // D1-touching step below is skipped when `db` is absent, and the lead
+  // pipeline falls back to "email-only, not persisted, no D1-backed rate
+  // limit" — the same degraded state the Cloudflare path already uses when
+  // D1 itself errors out (see step 8's persisted=false handling), just
+  // reached from a different cause.
+  const db = runtimeEnv.DB;
+  const ipHashSalt = runtimeEnv.IP_HASH_SALT || "no-d1-runtime-ip-hashing-still-useful-for-log-correlation";
 
   const ip = getClientIp(request);
   const ipHash = await hashIp(ip, ipHashSalt);
   const limits = getRateLimits(runtimeEnv);
-  const recordSpam = (reason: string) => logSpam(db, reason, ipHash, String(formData.pageSource ?? "").slice(0, 200)).catch(() => {
-    console.warn(JSON.stringify({ requestId, code: "spam_log_unavailable" }));
-  });
+  const recordSpam = (reason: string) => {
+    if (!db) {
+      console.warn(JSON.stringify({ requestId, level: "warn", code: "spam_no_d1", reason }));
+      return Promise.resolve();
+    }
+    return logSpam(db, reason, ipHash, String(formData.pageSource ?? "").slice(0, 200)).catch(() => {
+      console.warn(JSON.stringify({ requestId, code: "spam_log_unavailable" }));
+    });
+  };
 
   // 3. Honeypot.
   if (formData.honeypot && formData.honeypot.length > 0) {
@@ -154,20 +158,32 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const input = parsed.data;
 
   // 7. Rate limiting (stricter effective limits when Turnstile is degraded).
+  // No D1 on this runtime (e.g. Vercel) => no D1-backed counter store; fall
+  // back to a small in-memory-per-instance flood guard and rely on
+  // Turnstile as the primary defence, same as the D1-store-unavailable path.
   const degradeFactor = turnstileDegraded ? 0.4 : 1;
-  try {
-  const [ipLimit, phoneLimit, globalLimit] = await Promise.all([
-    checkIpRateLimit(db, ipHash, Math.max(1, Math.floor(limits.perIpPerHour * degradeFactor))),
-    checkPhoneRateLimit(db, input.phone, Math.max(1, Math.floor(limits.perPhonePerDay * degradeFactor))),
-    checkGlobalRateLimit(db, limits.globalPerHour),
-  ]);
-  if (!ipLimit.allowed || !phoneLimit.allowed || !globalLimit.allowed) {
-    return fail(429, "rate_limited", "You've submitted a few times already — please wait a bit, or message us directly on WhatsApp.");
-  }
-  } catch {
-    // D1 quota exhaustion affects counters as well as lead storage. Continue
-    // to the documented email fallback instead of throwing an uncaught 500.
-    console.warn(JSON.stringify({ requestId, code: "rate_limit_store_unavailable" }));
+  if (db) {
+    try {
+      const [ipLimit, phoneLimit, globalLimit] = await Promise.all([
+        checkIpRateLimit(db, ipHash, Math.max(1, Math.floor(limits.perIpPerHour * degradeFactor))),
+        checkPhoneRateLimit(db, input.phone, Math.max(1, Math.floor(limits.perPhonePerDay * degradeFactor))),
+        checkGlobalRateLimit(db, limits.globalPerHour),
+      ]);
+      if (!ipLimit.allowed || !phoneLimit.allowed || !globalLimit.allowed) {
+        return fail(429, "rate_limited", "You've submitted a few times already — please wait a bit, or message us directly on WhatsApp.");
+      }
+    } catch {
+      // D1 quota exhaustion affects counters as well as lead storage. Continue
+      // to the documented email fallback instead of throwing an uncaught 500.
+      console.warn(JSON.stringify({ requestId, code: "rate_limit_store_unavailable" }));
+      const now = Date.now();
+      degradedSubmissions = degradedSubmissions.filter((t) => now - t < 60000);
+      if (degradedSubmissions.length >= 10) {
+        return fail(429, "rate_limited", "High traffic detected. Please wait a bit or message us directly on WhatsApp.");
+      }
+      degradedSubmissions.push(now);
+    }
+  } else {
     const now = Date.now();
     degradedSubmissions = degradedSubmissions.filter((t) => now - t < 60000);
     if (degradedSubmissions.length >= 10) {
@@ -177,29 +193,33 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   }
 
   // 7b. Deduplication check: if a lead from the same phone in the same category was submitted within 15 min, succeed idempotently.
-  try {
-    const existing = await findRecentDuplicateLead(db, input.phone, input.category, 15);
-    if (existing) {
-      console.log(JSON.stringify({ requestId, code: "duplicate_submission_idempotent", leadId: existing.id }));
-      return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
+  if (db) {
+    try {
+      const existing = await findRecentDuplicateLead(db, input.phone, input.category, 15);
+      if (existing) {
+        console.log(JSON.stringify({ requestId, code: "duplicate_submission_idempotent", leadId: existing.id }));
+        return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
+      }
+    } catch {
+      // Non-blocking if D1 lookup fails
     }
-  } catch {
-    // Non-blocking if D1 lookup fails
   }
 
-  // 8. Persist FIRST.
+  // 8. Persist FIRST (when a database is actually available on this runtime).
   const lead = leadFromInput(input, { ipHash, turnstileStatus: turnstile.outcome });
-  let persisted = true;
-  try {
-    await insertLead(db, lead);
-  } catch (err) {
-    persisted = false;
-    console.error(JSON.stringify({ requestId, level: "error", message: "d1_insert_failed", error: String(err) }));
+  let persisted = false;
+  if (db) {
+    try {
+      await insertLead(db, lead);
+      persisted = true;
+    } catch (err) {
+      console.error(JSON.stringify({ requestId, level: "error", message: "d1_insert_failed", error: String(err) }));
+    }
   }
 
   // 9. Send notification email (persisted or not — a lead must never be silently dropped).
   const dateUtc = new Date().toISOString().slice(0, 10);
-  const sentToday = persisted ? await getDailyEmailCount(db, dateUtc).catch(() => 0) : 0;
+  const sentToday = persisted && db ? await getDailyEmailCount(db, dateUtc).catch(() => 0) : 0;
   const quotaWarning = sentToday >= Math.floor(limits.resendDailyCap * 0.8);
 
   const payload: LeadEmailPayload = {
@@ -222,7 +242,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   let emailOk = false;
   let quotaAvailable = true;
-  if (persisted) {
+  if (persisted && db) {
     try { quotaAvailable = await reserveEmailQuota(db, dateUtc, limits.resendDailyCap); }
     catch { quotaAvailable = false; console.warn(JSON.stringify({ requestId, code: "quota_store_unavailable_queued" })); }
   }
@@ -235,7 +255,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const provider = createEmailProvider(runtimeEnv.EMAIL_PROVIDER ?? "resend", runtimeEnv.RESEND_API_KEY);
     const result = await sendWithRetry(provider, payload, siteConfig.leadNotificationEmail, `${siteConfig.businessName} <leads@${siteConfig.domain}>`);
     emailOk = result.ok;
-    if (persisted) {
+    if (persisted && db) {
       await updateLeadEmailStatus(db, lead.id, result.ok ? "sent" : "failed", result.error);
     }
   } catch (err) {

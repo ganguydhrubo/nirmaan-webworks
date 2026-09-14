@@ -1,12 +1,12 @@
 import type { APIRoute } from "astro";
-import { env as runtimeEnv } from "cloudflare:workers";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 import { getDailyEmailCount, getMonthlyEmailCount } from "@/lib/leads";
 import { getRateLimits } from "@/lib/config-validate";
 
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
-
+  const runtimeEnv = await getRuntimeEnv();
   const checks: Record<string, { ok: boolean; detail?: string }> = {};
 
   // D1 reachability.

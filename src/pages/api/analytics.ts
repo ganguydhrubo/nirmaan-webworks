@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
+import { getRuntimeEnv } from "@/lib/runtime-env";
 import { siteConfig } from "@config/site";
 
 export const prerender = false;
@@ -17,6 +17,7 @@ let recentEvents: number[] = [];
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const env = await getRuntimeEnv();
     const db = env.DB;
     if (!db) return new Response(null, { status: 204 });
 
