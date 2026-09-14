@@ -15,7 +15,7 @@ import tailwindcss from "@tailwindcss/vite";
 const isVercel = !!process.env.VERCEL;
 
 export default defineConfig({
-  site: "https://webjobs.site",
+  site: "https://atittle.com",
   output: "server",
   session: false,
   trailingSlash: "never",

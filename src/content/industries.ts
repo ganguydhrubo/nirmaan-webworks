@@ -113,6 +113,42 @@ const raw: IndustryContent[] = [
     ],
     localSeoBlurb: "We target \"[cuisine] restaurant in [locality]\" and \"[restaurant name] menu\" queries — the exact searches that happen right before someone decides where to eat.",
   },
+  {
+    slug: "jewellery",
+    intro: "A jewellery purchase starts with a feeling, then becomes a set of practical questions about materials, budget and fit. A considered catalogue makes room for both.",
+    painPoints: ["Collections disappear into an unstructured social feed", "Customers cannot compare materials and price ranges before visiting", "Every enquiry starts from scratch without a named piece or collection"],
+    features: [
+      { title: "Collection and budget filters", body: "Help customers explore necklaces, earrings, rings and bangles within a comfortable range." },
+      { title: "Detailed product pages", body: "Give each piece space for materials, dimensions, care notes and clearly labelled pricing." },
+      { title: "Personal enquiry handoff", body: "Connect the catalogue to your real enquiry or WhatsApp flow without pretending to take payment." },
+      { title: "An editorial brand identity", body: "Bring your own photography, craft story and visual language into a distinctive storefront." },
+    ],
+    localSeoBlurb: "We structure real store pages around collection, material and city searches, with accurate showroom information supplied by the business. Fictional demo pages remain noindex.",
+  },
+  {
+    slug: "interior-design",
+    intro: "A prospective client wants more than a beautiful room. They want to understand the brief, the choices, the scope and whether their budget belongs in the conversation.",
+    painPoints: ["Portfolio images lack the brief and reasoning behind the work", "Design fees and execution budgets are confused", "New enquiries arrive with no area, scope or budget context"],
+    features: [
+      { title: "Project case studies", body: "Tell the story of each space through its brief, plan, material choices and constraints." },
+      { title: "A browsable project index", body: "Separate residential, retail and workspace projects so visitors find relevant work quickly." },
+      { title: "Transparent scope and process", body: "Explain what happens from the initial survey through design and site coordination." },
+      { title: "Budget planning tools", body: "Offer a labelled estimate with explicit inclusions and exclusions before the first conversation." },
+    ],
+    localSeoBlurb: "We organise your real portfolio around project type and location, with dedicated case studies rather than a single undifferentiated gallery.",
+  },
+  {
+    slug: "salon-spa",
+    intro: "Choosing a salon is personal. Guests want a sense of the atmosphere, a clear service menu and enough practical detail to plan a visit with confidence.",
+    painPoints: ["Prices and service durations are buried in image menus", "Guests struggle to combine services into a visit that fits their day", "The booking step leaves people unsure whether a slot has actually been confirmed"],
+    features: [
+      { title: "A complete service menu", body: "Group hair, colour, skin and body services with durations and understandable starting prices." },
+      { title: "A visit planner", body: "Let guests add services and see the combined sample time and price before enquiring." },
+      { title: "Ritual and occasion pages", body: "Explain combinations, inclusions and who each visit is designed for." },
+      { title: "Honest appointment enquiries", body: "Route requests to a real contact channel and make confirmation status clear." },
+    ],
+    localSeoBlurb: "We build around the services and neighbourhoods your real salon serves, backed by accurate opening hours, pricing and contact details supplied by you.",
+  },
 ];
 
 export const industryContent: Record<string, IndustryContent> = Object.fromEntries(

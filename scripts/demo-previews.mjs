@@ -12,5 +12,22 @@ for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','mant
 }
 await browser.close();
 await sharp('public/favicon.svg').resize(180).png().toFile('public/apple-touch-icon.png');
-const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#fbf6ee"/><rect x="70" y="80" width="90" height="9" fill="#a13f22"/><text x="70" y="205" font-family="Georgia" font-size="66" fill="#211a15">webjobs.site</text><text x="70" y="300" font-family="Arial" font-size="36" fill="#665748">Websites for Indian businesses.</text><text x="70" y="390" font-family="Arial" font-size="30" fill="#a13f22">Six industries. Six working demos.</text><path d="M70 470H1130" stroke="#cdbba7"/><text x="70" y="540" font-family="Arial" font-size="25" fill="#665748">Explore the work. Plan your website.</text></svg>';
-await sharp(Buffer.from(svg)).jpeg({quality:85}).toFile('public/images/og-default.jpg');
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+<defs>
+  <linearGradient id="a" x1="10" y1="6" x2="90" y2="96" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#eef4ff"/><stop offset="0.45" stop-color="#5b8def"/><stop offset="1" stop-color="#1548c9"/></linearGradient>
+  <linearGradient id="b" x1="90" y1="6" x2="10" y2="96" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#eef4ff"/><stop offset="0.45" stop-color="#4f7fe8"/><stop offset="1" stop-color="#0f3aa8"/></linearGradient>
+</defs>
+<rect width="1200" height="630" fill="#0a1330"/>
+<g transform="translate(70,95) scale(2.2)">
+  <rect x="1" y="1" width="98" height="98" rx="24" fill="#0d1a3f"/>
+  <path d="M50 16 20 86" stroke="url(#a)" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 16 80 86" stroke="url(#b)" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 62 67 62" stroke="url(#a)" stroke-width="11" fill="none" stroke-linecap="round"/>
+</g>
+<text x="320" y="200" font-family="Arial" font-weight="bold" font-size="80" letter-spacing="4" fill="#ffffff">ATITTLE</text>
+<text x="70" y="360" font-family="Georgia" font-size="46" fill="#ffffff">Websites that <tspan fill="#5b8def">move your world</tspan>.</text>
+<text x="70" y="420" font-family="Arial" font-size="28" fill="#9db3e8">Fast, mobile-first websites for Indian businesses — priced in plain rupees.</text>
+<path d="M70 470H1130" stroke="#22305e"/>
+<text x="70" y="530" font-family="Arial" font-size="26" fill="#9db3e8">Six industries. Six working demos. Explore the work.</text>
+</svg>`;
+await sharp(Buffer.from(svg)).jpeg({quality:88}).toFile('public/images/og-default.jpg');

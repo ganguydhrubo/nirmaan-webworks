@@ -1,6 +1,6 @@
 # TESTING.md — Quality Assurance & Testing Architecture
 
-This document outlines the test strategy, automated test suites, quality audit tooling, and verification procedures for **webjobs.site**.
+This document outlines the test strategy, automated test suites, quality audit tooling, and verification procedures for **atittle.com**.
 
 ---
 

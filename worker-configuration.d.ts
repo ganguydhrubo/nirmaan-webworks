@@ -4,7 +4,7 @@
 interface __BaseEnv_Env {
 	DB: D1Database;
 	ASSETS: Fetcher;
-	PUBLIC_SITE_URL: "https://webjobs.site";
+	PUBLIC_SITE_URL: "https://atittle.com";
 	AI_PROVIDER: "none";
 	ENQUIRY_RATE_LIMIT_PER_IP_PER_HOUR: "5";
 	ENQUIRY_RATE_LIMIT_PER_PHONE_PER_DAY: "3";

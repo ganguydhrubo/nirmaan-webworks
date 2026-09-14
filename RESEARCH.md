@@ -1,6 +1,6 @@
-# RESEARCH.md — webjobs.site Phase 0 Market & Competitive Research
+# RESEARCH.md — atittle.com Phase 0 Market & Competitive Research
 
-Verified-on date for cited figures: **2026-09-13**, unless otherwise noted. "webjobs.site" is a placeholder/fictional brand name invented for this project — it is not a real company being impersonated.
+Verified-on date for cited figures: **2026-09-13**, unless otherwise noted. "atittle.com" is a placeholder/fictional brand name invented for this project — it is not a real company being impersonated.
 
 ---
 
@@ -76,7 +76,7 @@ Method: found via web search, content reviewed via direct page fetch on 2026-09-
 ### Template/builder showcases
 **10. Wix Templates** — [wix.com/website/templates](https://www.wix.com/website/templates). Dual-axis filtering (page-type × industry, 2000+ templates across categories like Restaurants & Food, Health & Wellness, Beauty & Hair). Each template card carries a "Good For" industry tag and dual "Edit"/"View" CTAs — optimized for immediate self-serve customization, not lead capture. No pricing shown on the showcase itself.
 **11. Framer Templates** — [framer.com/templates](https://www.framer.com/templates/). Marketplace model: mixed free/paid ($49–$149) templates from named creators, filterable by price/style, 50+ categories including Real Estate and Hospitality. Notably, this is the only reviewed site where **price is shown directly on each item**, because it's a marketplace transaction, not a lead-gen funnel.
-**12. Squarespace** — [squarespace.com/templates](https://www.squarespace.com/templates). Organizes by business type first (e.g., under "Beauty": Hair Salons, Makeup Artists, Tattoo/Piercing) rather than by visual style — arguably the closest structural analog to what webjobs.site should do with its six industry demos, since it lets a visitor self-identify by trade before seeing any design.
+**12. Squarespace** — [squarespace.com/templates](https://www.squarespace.com/templates). Organizes by business type first (e.g., under "Beauty": Hair Salons, Makeup Artists, Tattoo/Piercing) rather than by visual style — arguably the closest structural analog to what atittle.com should do with its six industry demos, since it lets a visitor self-identify by trade before seeing any design.
 
 ### Freelance individual portfolios — methodology note
 Individual Indian freelance-developer portfolio sites proved **hard to pin to a single stable, representative URL** during this research pass — personal sites are frequently rebranded, taken down, or hosted on shifting subdomains, and searches surfaced mostly marketplace profile pages (Upwork, Freelancer.com) and generic "best portfolio examples" roundup articles rather than one canonical individual worth citing as representative. Rather than fabricate a specific named freelancer as a case study, the pattern is summarized from marketplace-listing conventions and multiple independent 2026 roundup articles that converged on the same observations: personal portfolios tend to be minimal single-page sites, lead with a skills/tech-stack list and 3-6 project case studies (problem/process/outcome format), show an hourly or "starting at" rate far more often than agencies do, and convert via a direct contact form or a scheduling link rather than a phone number. This is flagged explicitly as **a synthesized pattern from secondary sources, not a first-hand review of one named individual's site** — the honest caveat itself is a data point: individual freelancer web presence in India is fragmented and inconsistent, which is itself part of the market gap this project can exploit (a studio brand outlasts and out-organizes a solo freelancer's shifting personal site).
@@ -93,7 +93,7 @@ Sources: [Colorlib — 21 Best Developer Portfolio Websites 2026](https://colorl
 
 ## Differentiation strategy
 
-Based on the gaps observed above, webjobs.site' site should differentiate by:
+Based on the gaps observed above, atittle.com' site should differentiate by:
 
 1. **Live, interactive industry-specific demos, not static screenshots.** Every competitor and template showcase reviewed shows either a flat screenshot or a generic editable template — none let a visitor experience a real, navigable demo built specifically for their trade (e.g., an actual bookable-feeling clinic demo, an actual browsable jewellery catalogue demo). This is the single clearest gap found.
 2. **Transparent INR pricing bands.** Zero of the 6 Indian agencies reviewed show pricing. Publishing honest starting-price bands (even as ranges, e.g., "₹X–₹Y for a demo-quality site in this category") directly contradicts the "always-a-black-box-consultation" norm and reduces friction for a price-anchored MSME buyer.

@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('webjobs.site Smoke Tests', () => {
+test.describe('atittle.com Smoke Tests', () => {
   test('homepage loads and renders critical sections', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/webjobs.site/i);
+    await expect(page).toHaveTitle(/atittle.com/i);
 
     // Skip to main content link
     const skipLink = page.locator('a[href="#main-content"]');

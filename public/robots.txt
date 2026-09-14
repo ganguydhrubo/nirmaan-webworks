@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://webjobs.site/sitemap-index.xml
+Sitemap: https://atittle.com/sitemap-index.xml

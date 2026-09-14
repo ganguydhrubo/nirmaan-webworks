@@ -1,4 +1,4 @@
-# webjobs.site · End-to-End Handover Brief & Production Deployment Guide
+# atittle.com · End-to-End Handover Brief & Production Deployment Guide
 
 ---
 
@@ -6,10 +6,10 @@
 
 | Attribute | Value / Details |
 | :--- | :--- |
-| **Project Name** | **webjobs.site** (Bespoke Web Engineering for Indian MSMEs & Local Businesses) |
+| **Project Name** | **atittle.com** (Bespoke Web Engineering for Indian MSMEs & Local Businesses) |
 | **Version** | `0.1.0` (Production Ready) |
 | **Active Local Server** | `http://127.0.0.1:4321` (Self-hosted preview running on Cloudflare Workers runtime) |
-| **GitHub Repository** | [https://github.com/ganguydhrubo/webjobs-site](https://github.com/ganguydhrubo/webjobs-site) |
+| **GitHub Repository** | [https://github.com/ganguydhrubo/atittle](https://github.com/ganguydhrubo/atittle) |
 | **Target Vercel Account** | [https://vercel.com/dhrubojyoti](https://vercel.com/dhrubojyoti) |
 | **Core Tech Stack** | Astro 7 (Server SSR & Static Prerender), Tailwind CSS 4, TypeScript 5.9, Groq AI (GPT-OSS 120B), Cloudflare Workers / Vercel Edge |
 | **Audited Routes** | **37 total routes** (Main site, 6 bespoke industry demos, AI Evaluator tool, legal policies) |
@@ -20,7 +20,7 @@
 ## 2. GitHub Repository & Commit History
 
 The repository has been initialized, configured, and pushed directly to your personal GitHub account:
-- **Repository Link:** [https://github.com/ganguydhrubo/webjobs-site](https://github.com/ganguydhrubo/webjobs-site)
+- **Repository Link:** [https://github.com/ganguydhrubo/atittle](https://github.com/ganguydhrubo/atittle)
 - **Primary Branch:** `master`
 - **Tracked Commits:**
   1. `788e2c9` — *feat: foundation and architecture setup with Cloudflare D1 and Astro*
@@ -45,7 +45,7 @@ The project is configured for one-click import and deployment on Vercel:
 ### Step-by-Step Vercel Setup:
 1. Open your Vercel Dashboard at [https://vercel.com/dhrubojyoti](https://vercel.com/dhrubojyoti).
 2. Click **"Add New..."** → **"Project"**.
-3. Select your GitHub account `ganguydhrubo` and import `webjobs-site`.
+3. Select your GitHub account `ganguydhrubo` and import `atittle`.
 4. In the **Configure Project** screen:
    - **Framework Preset:** Select `Astro` (or `Other`).
    - **Root Directory:** `./` (leave default).
@@ -55,7 +55,7 @@ The project is configured for one-click import and deployment on Vercel:
 
 | Key | Example Value | Description |
 | :--- | :--- | :--- |
-| `PUBLIC_SITE_URL` | `https://webjobs.site` (or your Vercel URL) | Canonical URL root |
+| `PUBLIC_SITE_URL` | `https://atittle.com` (or your Vercel URL) | Canonical URL root |
 | `GROQ_API_KEY` | `gsk_...` | Groq Cloud AI inference key |
 | `EMAIL_PROVIDER` | `resend` (or `none`) | Outbound email dispatcher |
 | `RESEND_API_KEY` | `re_...` | Resend API key for lead routing |
@@ -97,15 +97,15 @@ Located at **`/tools/website-evaluator`** and powered by API endpoint **`/api/ev
    - **Complete Markdown Audit Report:** Formatted report with a **1-Click "Copy Full Report"** button with visual confirmation.
 6. **Dual-Engine Architecture (Zero-Downtime Guarantee):**
    - When a `GROQ_API_KEY` is provided, queries Groq Cloud `openai/gpt-oss-120b` with JSON schema enforcement.
-   - If no API key is supplied or the API is unreachable, seamlessly activates webjobs.site's built-in deterministic heuristic CRO engine, guaranteeing the tool always renders instant, accurate reports.
+   - If no API key is supplied or the API is unreachable, seamlessly activates atittle.com's built-in deterministic heuristic CRO engine, guaranteeing the tool always renders instant, accurate reports.
 7. **End-to-End Lead Engine Integration:**
-   - Direct CTA links pre-filled with the audit score and business name to webjobs.site's `/contact#enquiry` form and WhatsApp desk.
+   - Direct CTA links pre-filled with the audit score and business name to atittle.com's `/contact#enquiry` form and WhatsApp desk.
 
 ---
 
 ## 5. Master Checklist of All Required Tools & Accounts
 
-To run webjobs.site and client projects at maximum efficiency, here is the full breakdown of required tools across categories:
+To run atittle.com and client projects at maximum efficiency, here is the full breakdown of required tools across categories:
 
 ### A. Core Development & Deployment Tools
 - [x] **Git & GitHub CLI (`gh`)**: Installed and authenticated as `ganguydhrubo`.
@@ -120,22 +120,22 @@ To run webjobs.site and client projects at maximum efficiency, here is the full 
   - *Usage:* Powers real-time AI website audits.
 - [ ] **Resend Transactional Email API Key (`RESEND_API_KEY`)**:
   - *Where to get:* [https://resend.com](https://resend.com) (Free tier: 3,000 emails/month).
-  - *Usage:* Instant lead notification delivery to `founder@webjobs.site`.
+  - *Usage:* Instant lead notification delivery to `founder@atittle.com`.
 - [ ] **Cloudflare Turnstile Bot Protection**:
   - *Where to get:* Cloudflare Dashboard → Turnstile (100% free).
   - *Usage:* `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` for spam-free form submissions.
 
 ### C. Client Acquisition & Marketing Tools
 - [x] **AI Website Brand Alignment Evaluator** (`/tools/website-evaluator`): Agency lead-magnet tool.
-- [ ] **WhatsApp Business App**: Set up with business profile, catalog, and automated greeting matching webjobs.site's templates.
-- [ ] **Google Business Profile (GBP)**: Register webjobs.site with address `Salt Lake, Sector V, Kolkata 700091` to capture local agency searches.
-- [ ] **Google Search Console**: Submit sitemap `https://webjobs.site/sitemap-index.xml`.
+- [ ] **WhatsApp Business App**: Set up with business profile, catalog, and automated greeting matching atittle.com's templates.
+- [ ] **Google Business Profile (GBP)**: Register atittle.com with address `Salt Lake, Sector V, Kolkata 700091` to capture local agency searches.
+- [ ] **Google Search Console**: Submit sitemap `https://atittle.com/sitemap-index.xml`.
 
 ---
 
 ## 6. Verification & Health Commands
 
-Run these commands inside `C:\Users\Dhrubo\webjobs-site` to verify the codebase at any time:
+Run these commands inside `C:\Users\Dhrubo\atittle` to verify the codebase at any time:
 
 ```powershell
 # 1. Typecheck Astro and client TypeScript

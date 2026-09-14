@@ -2,7 +2,7 @@
 @import "./fonts.css";
 
 /*
- * Design tokens — webjobs.site brand.
+ * Design tokens — atittle.com brand.
  * Warm, human, premium palette (terracotta + marigold on warm cream/ink)
  * deliberately avoiding the black/grey-dominant "corporate" look and the
  * purple-blue-gradient "AI slop" look. Contrast ratios verified against
@@ -148,6 +148,20 @@
   --color-anaar-900: #2c0e10;
   --color-anaar-gold: #c79a4b;
   --color-anaar-cream: #f6ecd9;
+  /* Sunehri Atelier — Jaipur: forest ink, champagne and parchment */
+  --color-sunehri-ink: #161d19;
+  --color-sunehri-gold: #d8bd81;
+  --color-sunehri-paper: #f2ecdd;
+  /* Aangan / Form — Ahmedabad: drafting paper, graphite and vermilion */
+  --color-aangan-paper: #eeece5;
+  --color-aangan-ink: #282b27;
+  --color-aangan-red: #ad3824;
+  --color-aangan-sand: #d9c9b2;
+  /* Mogra House — Pune: aubergine, lilac, butter and petal */
+  --color-mogra-plum: #382239;
+  --color-mogra-lilac: #d5c4e6;
+  --color-mogra-butter: #f2edb8;
+  --color-mogra-petal: #f7ede7;
 }
 
 @layer base {

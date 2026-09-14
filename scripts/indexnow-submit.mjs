@@ -11,7 +11,7 @@
  * Re-run this any time a meaningful set of pages changes.
  */
 const KEY = "be61a9df67e95b1f027caa4216bb65b1"; // matches public/<key>.txt
-const host = process.argv[2] ?? "https://webjobs.site";
+const host = process.argv[2] ?? "https://atittle.com";
 
 const paths = [
   "/", "/about", "/pricing", "/work-process", "/faq", "/contact",

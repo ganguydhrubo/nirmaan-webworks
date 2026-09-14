@@ -1,7 +1,7 @@
 /**
  * config/site.ts — the ONLY place non-secret business facts live.
  *
- * This is the real, live business identity for webjobs.site. Every
+ * This is the real, live business identity for atittle.com. Every
  * component/page/email template imports from here — changing the business
  * name, phone, WhatsApp number, email or address is a one-line edit in this
  * file, not a find-and-replace across the codebase.
@@ -55,14 +55,14 @@ export interface DemoRegistryEntry {
 const whatsappNumber = "919330393298";
 
 export const siteConfig = {
-  businessName: "webjobs.site",
-  legalEntityName: "webjobs.site",
+  businessName: "ATITTLE",
+  legalEntityName: "ATITTLE",
   isPlaceholderIdentity: false,
-  tagline: "Websites for Indian businesses that turn visitors into WhatsApp enquiries.",
+  tagline: "Websites that move your world.",
   shortDescription:
     "We design and build fast, mobile-first websites for Indian shops, clinics, restaurants, jewellers, builders and studios, priced and explained in plain rupees.",
-  domain: "webjobs.site",
-  siteUrl: "https://webjobs.site",
+  domain: "atittle.com",
+  siteUrl: "https://atittle.com",
 
   primaryEmail: "hhimanish@gmail.com",
   leadNotificationEmail: "hhimanish@gmail.com",
@@ -181,7 +181,7 @@ export const siteConfig = {
       name: "Real Estate & Builders",
       shortName: "Real Estate",
       demoSlug: "shivalik-homes",
-      metaTitle: "Website Design for Real Estate & Builders in India | webjobs.site",
+      metaTitle: "Website Design for Real Estate & Builders in India | atittle.com",
       metaDescription:
         "Property listing websites with floor plans, EMI calculators and site-visit booking for Indian builders and real estate developers. See a live demo.",
       heroQuestion: "Are buyers finding your projects on Google, or only on property portals you don't control?",
@@ -191,7 +191,7 @@ export const siteConfig = {
       name: "Hotels, Resorts & Homestays",
       shortName: "Hotels & Resorts",
       demoSlug: "kayal-backwaters",
-      metaTitle: "Website Design for Hotels, Resorts & Homestays in India | webjobs.site",
+      metaTitle: "Website Design for Hotels, Resorts & Homestays in India | atittle.com",
       metaDescription:
         "Direct-booking websites for Indian hotels, resorts and homestays that reduce OTA commission and showcase rooms, experiences and packages properly.",
       heroQuestion: "How much of every booking are you giving away in OTA commission that a direct-booking website could keep?",
@@ -201,7 +201,7 @@ export const siteConfig = {
       name: "Healthcare Clinics",
       shortName: "Clinics",
       demoSlug: "sanjeevani-clinic",
-      metaTitle: "Website Design for Clinics & Multi-Specialty Hospitals in India | webjobs.site",
+      metaTitle: "Website Design for Clinics & Multi-Specialty Hospitals in India | atittle.com",
       metaDescription:
         "Appointment-ready clinic websites with doctor profiles, specialisations and mobile-first booking for Indian healthcare practices.",
       heroQuestion: "When someone searches for a doctor near them at 11pm, does your clinic show up — and can they book?",
@@ -211,7 +211,7 @@ export const siteConfig = {
       name: "Education & Coaching Institutes",
       shortName: "Coaching Institutes",
       demoSlug: "manthan-institute",
-      metaTitle: "Website Design for Coaching Institutes & Schools in India | webjobs.site",
+      metaTitle: "Website Design for Coaching Institutes & Schools in India | atittle.com",
       metaDescription:
         "Websites for Indian coaching institutes and schools with batch schedules, faculty profiles and admission enquiry forms parents actually trust.",
       heroQuestion: "Do parents comparing coaching institutes online find a real website, or just a Facebook page?",
@@ -221,7 +221,7 @@ export const siteConfig = {
       name: "Dental Clinics",
       shortName: "Dental Clinics",
       demoSlug: "ivory-smiles",
-      metaTitle: "Website Design for Dental Clinics in India | webjobs.site",
+      metaTitle: "Website Design for Dental Clinics in India | atittle.com",
       metaDescription:
         "Treatment-catalogue websites for Indian dental clinics with pricing clarity, appointment booking and a real clinic tour gallery.",
       heroQuestion: "Can a nervous new patient see your treatments, prices and dentist's qualifications before they even call?",
@@ -231,10 +231,37 @@ export const siteConfig = {
       name: "Restaurants & Cafés",
       shortName: "Restaurants",
       demoSlug: "anaar-awadhi-table",
-      metaTitle: "Website Design for Restaurants & Cafés in India | webjobs.site",
+      metaTitle: "Website Design for Restaurants & Cafés in India | atittle.com",
       metaDescription:
         "Menu-first restaurant websites with reservations, location and gallery — built so hungry customers find you on Google, not just food apps.",
       heroQuestion: "If someone Googles your restaurant right now, do they land on your menu — or on someone else's aggregator listing?",
+    },
+    {
+      slug: "jewellery",
+      name: "Jewellery & Luxury Retail",
+      shortName: "Jewellery",
+      demoSlug: "sunehri-atelier",
+      metaTitle: "Website Design for Jewellery Stores in India | atittle.com",
+      metaDescription: "Considered jewellery catalogue websites with collection filters, material details, clear pricing and personal enquiry flows. Explore a fictional Jaipur atelier.",
+      heroQuestion: "Can a customer explore your collections and shortlist a piece before visiting your showroom?",
+    },
+    {
+      slug: "interior-design",
+      name: "Interior Design & Architecture Studios",
+      shortName: "Interior Design",
+      demoSlug: "aangan-form",
+      metaTitle: "Website Design for Interior Designers & Architects in India | atittle.com",
+      metaDescription: "Portfolio websites for interior design and architecture studios with project stories, scope clarity and budget-planning tools. Explore an Ahmedabad studio concept.",
+      heroQuestion: "Does your portfolio explain the thinking behind a space, or only show a gallery of rooms?",
+    },
+    {
+      slug: "salon-spa",
+      name: "Salons, Spas & Beauty Studios",
+      shortName: "Salon & Spa",
+      demoSlug: "mogra-house",
+      metaTitle: "Website Design for Salons & Spas in India | atittle.com",
+      metaDescription: "Expressive salon and spa websites with service menus, rupee pricing, appointment planners and clear enquiry handoffs. Explore a fictional beauty house in Pune.",
+      heroQuestion: "Can a new guest find the right service, understand the price and plan their visit without a long message exchange?",
     },
   ] satisfies IndustryRegistryEntry[],
 
@@ -245,6 +272,9 @@ export const siteConfig = {
     { slug: "manthan-institute", businessName: "Manthan Institute of Competitive Studies", industrySlug: "education-coaching", tagline: "Discipline, then results.", city: "Kota, Rajasthan", noindex: true },
     { slug: "ivory-smiles", businessName: "Ivory Smiles Dental Clinic", industrySlug: "dental-clinics", tagline: "Dentistry without the dread.", city: "Indore, Madhya Pradesh", noindex: true },
     { slug: "anaar-awadhi-table", businessName: "Anaar — The Awadhi Table", industrySlug: "restaurants-cafes", tagline: "Lucknow's kitchen, plated properly.", city: "Lucknow, Uttar Pradesh", noindex: true },
+    { slug: "sunehri-atelier", businessName: "Sunehri Atelier", industrySlug: "jewellery", tagline: "Objects of tomorrow’s memories.", city: "Jaipur, Rajasthan", noindex: true },
+    { slug: "aangan-form", businessName: "Aangan / Form", industrySlug: "interior-design", tagline: "Space to live, room to become.", city: "Ahmedabad, Gujarat", noindex: true },
+    { slug: "mogra-house", businessName: "Mogra House", industrySlug: "salon-spa", tagline: "A little time, entirely yours.", city: "Pune, Maharashtra", noindex: true },
   ] satisfies DemoRegistryEntry[],
 } as const;
 

@@ -6,24 +6,28 @@ interface Props {
 }
 const { class: className = "", variant = "default" } = Astro.props;
 const textColor = variant === "light" ? "text-cream" : "text-ink-950";
-const brandColor = variant === "light" ? "text-gold-300" : "text-brand-600";
 ---
 
 <a href="/" class:list={["inline-flex items-center gap-2.5 group", className]} aria-label={`${siteConfig.businessName} — home`}>
-  <svg viewBox="0 0 40 40" class="h-9 w-9 shrink-0 transition-transform duration-300 group-hover:scale-105" aria-hidden="true">
+  <svg viewBox="0 0 100 100" class="h-9 w-9 shrink-0 transition-transform duration-300 group-hover:scale-105" aria-hidden="true">
     <defs>
-      <linearGradient id="wjs-mark" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="var(--color-brand-500)"></stop>
-        <stop offset="1" stop-color="var(--color-brand-700)"></stop>
+      <linearGradient id="atittle-mark" x1="10" y1="6" x2="90" y2="96" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#eef4ff"></stop>
+        <stop offset="0.45" stop-color="#5b8def"></stop>
+        <stop offset="1" stop-color="#1548c9"></stop>
+      </linearGradient>
+      <linearGradient id="atittle-mark-2" x1="90" y1="6" x2="10" y2="96" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#eef4ff"></stop>
+        <stop offset="0.45" stop-color="#4f7fe8"></stop>
+        <stop offset="1" stop-color="#0f3aa8"></stop>
       </linearGradient>
     </defs>
-    <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="url(#wjs-mark)"></rect>
-    <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"></rect>
-    <path d="M16.5 12.5 9 20l7.5 7.5" stroke="var(--color-cream)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
-    <path d="M23.5 12.5 31 20l-7.5 7.5" stroke="var(--color-cream)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
-    <circle cx="20" cy="20" r="2.1" fill="var(--color-gold-400)"></circle>
+    <rect x="1" y="1" width="98" height="98" rx="24" fill="#0a1330"></rect>
+    <path d="M50 16 20 86" stroke="url(#atittle-mark)" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M50 16 80 86" stroke="url(#atittle-mark-2)" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M33 62 67 62" stroke="url(#atittle-mark)" stroke-width="11" fill="none" stroke-linecap="round"></path>
   </svg>
-  <span class:list={["font-display text-lg font-semibold leading-none tracking-tight", textColor]}>
-    webjobs<span class={brandColor}>.site</span>
+  <span class:list={["font-display text-lg font-bold uppercase leading-none tracking-wide", textColor]}>
+    ATITTLE
   </span>
 </a>

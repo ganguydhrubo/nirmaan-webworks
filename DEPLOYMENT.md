@@ -1,11 +1,11 @@
 # DEPLOYMENT.md
 
-This repo is **deployment-ready, not deployed**. No live Cloudflare account, GitHub remote, or Resend account was available during this build. The business identity is real and confirmed (`webjobs.site` — see `config/site.ts` for the full record: name, domain, address, phone, and the `hhimanish@gmail.com` contact/enquiry address), so no brand-identity find-and-replace is needed before deploying — only real infrastructure accounts and secrets. Everything below is written so a competent developer with those accounts can go from this repo to a live site in well under 30 minutes.
+This repo is **deployment-ready, not deployed**. No live Cloudflare account, GitHub remote, or Resend account was available during this build. The business identity is real and confirmed (`atittle.com` — see `config/site.ts` for the full record: name, domain, address, phone, and the `hhimanish@gmail.com` contact/enquiry address), so no brand-identity find-and-replace is needed before deploying — only real infrastructure accounts and secrets. Everything below is written so a competent developer with those accounts can go from this repo to a live site in well under 30 minutes.
 
 ## 0. Prerequisites
 
 - A Cloudflare account (free tier is sufficient — see INFRASTRUCTURE.md for exactly what that covers).
-- Ownership/DNS control of `webjobs.site` (or update `config/site.ts`, `wrangler.jsonc`, `wrangler.retry.jsonc`, and `astro.config.mjs`'s `site` field first if a different domain is actually being used for this launch).
+- Ownership/DNS control of `atittle.com` (or update `config/site.ts`, `wrangler.jsonc`, `wrangler.retry.jsonc`, and `astro.config.mjs`'s `site` field first if a different domain is actually being used for this launch).
 - Node.js 20+, npm.
 - A Resend account (free tier — see INFRASTRUCTURE.md).
 - `npm install -g wrangler` or use the project's `npx wrangler`.
@@ -20,7 +20,7 @@ npx wrangler login
 ## 2. Create the D1 database
 
 ```
-npx wrangler d1 create webjobs_site_leads
+npx wrangler d1 create atittle_leads
 ```
 
 Copy the returned `database_id` into **both** `wrangler.jsonc` and `wrangler.retry.jsonc` (`d1_databases[0].database_id`), replacing `REPLACE_WITH_REAL_D1_DATABASE_ID` in each.
@@ -83,7 +83,7 @@ npx wrangler deploy
 npx wrangler deploy --config wrangler.retry.jsonc
 ```
 
-Verify its Cron Trigger is active: Cloudflare dashboard → Workers & Pages → `webjobs-site-retry` → Triggers. It should show `*/30 * * * *`.
+Verify its Cron Trigger is active: Cloudflare dashboard → Workers & Pages → `atittle-retry` → Triggers. It should show `*/30 * * * *`.
 
 ## 9. Analytics
 
@@ -93,7 +93,7 @@ Cloudflare Web Analytics: dashboard → Analytics & Logs → Web Analytics → A
 
 - [ ] `https://yourdomain.com/` loads, HTTPS, no console errors.
 - [ ] `https://yourdomain.com/api/health` returns `{"ok":true,...}` — this confirms D1 and the email/Turnstile secrets are actually wired up in production, not just locally.
-- [ ] Submit a real test enquiry through the live `/contact` form. Confirm: (a) the email arrives in the real inbox (check spam folder — if it lands there, recheck SPF/DKIM in the Resend dashboard), (b) the lead row exists in D1: `npx wrangler d1 execute webjobs_site_leads --remote --command "SELECT * FROM leads ORDER BY created_at DESC LIMIT 1"`.
+- [ ] Submit a real test enquiry through the live `/contact` form. Confirm: (a) the email arrives in the real inbox (check spam folder — if it lands there, recheck SPF/DKIM in the Resend dashboard), (b) the lead row exists in D1: `npx wrangler d1 execute atittle_leads --remote --command "SELECT * FROM leads ORDER BY created_at DESC LIMIT 1"`.
 - [ ] Submit with JavaScript disabled (browser dev tools → disable JS) — confirm the no-JS path still redirects to `/enquiry-received` on success.
 - [ ] Open a wa.me link on a real Android phone, a real iPhone, and desktop — confirm the pre-filled text is correct and the number is right.
 - [ ] Run Lighthouse (mobile, throttled) against the live homepage and one demo page; record the numbers in TESTING.md and `src/data/performance.ts` (see that file's comment — this is what makes the homepage's "Proof" section show real numbers instead of the honest placeholder).

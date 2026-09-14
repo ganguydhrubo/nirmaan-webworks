@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — webjobs.site
+# ARCHITECTURE.md — atittle.com
 
 Decisions made during this build, the alternatives considered, and why. Cross-reference INFRASTRUCTURE.md for the underlying free-tier evidence.
 

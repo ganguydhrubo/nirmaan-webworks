@@ -5,7 +5,7 @@
  * 9 standard breakpoints for horizontal overflow — not just home + demo
  * homepages, which is all the existing audit-pages.mjs covers by default.
  *
- * Usage: AUDIT_URL=https://webjobs-site.vercel.app node scripts/audit-all-breakpoints.mjs
+ * Usage: AUDIT_URL=https://atittle.vercel.app node scripts/audit-all-breakpoints.mjs
  */
 import { chromium } from "playwright-core";
 
