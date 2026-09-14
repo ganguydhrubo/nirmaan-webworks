@@ -31,7 +31,6 @@ export const POST: APIRoute = async ({ request }) => {
     const city = (body.city ?? "").toString().trim() || "India";
     const websiteUrl = (body.websiteUrl ?? "").toString().trim();
     const copyText = (body.copyText ?? "").toString().trim();
-    const groqApiKey = (body.groqApiKey ?? "").toString().trim();
 
     if (!businessName) {
       return json({ ok: false, error: "Please enter your business or company name." }, 400);
@@ -47,14 +46,14 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Call evaluator (Groq AI with auto-fallback to deterministic CRO heuristics)
+    // Call evaluator (server-side AI key only — no client-supplied key path,
+    // see AUDIT.md: bring-your-own-key was removed at the user's request).
     const result = await evaluateWebsiteWithGroq({
       businessName,
       category,
       city,
       websiteUrl,
       copyText,
-      groqApiKey: groqApiKey || undefined,
     });
 
     return json({ ok: true, data: result }, 200);

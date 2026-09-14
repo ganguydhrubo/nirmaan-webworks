@@ -43,11 +43,10 @@ export interface EvaluationInput {
   city?: string;
   websiteUrl?: string;
   copyText: string;
-  groqApiKey?: string;
 }
 
 export async function evaluateWebsiteWithGroq(input: EvaluationInput): Promise<EvaluationResult> {
-  const apiKey = input.groqApiKey || process.env.GROQ_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
     return evaluateWithHeuristics(input);

@@ -6,7 +6,7 @@ import { waLink } from "@/lib/contact-links";
 const meta = {
   title: "AI Website Brand Alignment Evaluator | webjobs.site",
   description:
-    "Evaluate whether your website reflects your genuine trade craft or looks like generic corporate slop. 100-point audit powered by Groq GPT-OSS 120B AI with visual score gauges and copy rewrites.",
+    "Evaluate whether your website reflects your genuine trade craft or looks like generic corporate slop. 100-point AI audit with visual score gauges and copy rewrites.",
 };
 
 const industries = [
@@ -27,7 +27,7 @@ const industries = [
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
       <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700">
         <span class="inline-block h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span>
-        Groq GPT-OSS 120B AI Engine &middot; Conversion CRO Auditor
+        AI Engine &middot; Conversion CRO Auditor
       </div>
 
       <h1 class="font-serif mt-4 text-3xl font-semibold tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">
@@ -150,35 +150,13 @@ const industries = [
           ></textarea>
         </div>
 
-        <!-- Advanced: override the server's own AI key with your own (rarely needed) -->
-        <div class="mt-4">
-          <details class="group rounded-lg border border-ink-200 bg-cream-50/50 p-3">
-            <summary class="cursor-pointer text-xs font-medium text-ink-600 hover:text-ink-900 flex items-center justify-between">
-              <span>Advanced: use a different Groq API key</span>
-              <Icon name="chevron-down" class="h-3.5 w-3.5 transition group-open:rotate-180" />
-            </summary>
-            <div class="mt-2.5">
-              <input
-                type="password"
-                id="groqApiKey"
-                name="groqApiKey"
-                placeholder="gsk_..."
-                class="w-full rounded-md border border-ink-300 bg-cream px-3 py-1.5 text-xs text-ink-900 placeholder:text-ink-400 focus:border-brand-600 focus:outline-none"
-              />
-              <p class="mt-1 text-[11px] text-ink-500">
-                Not required — AI scoring already runs on webjobs.site's own Groq account by default. Only fill this in if you specifically want to use your own Groq quota instead. Your key is sent for this request only and never stored.
-              </p>
-            </div>
-          </details>
-        </div>
-
         <!-- Error box -->
         <div id="form-error" class="mt-4 hidden rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"></div>
 
         <!-- Submit Button -->
         <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p class="text-xs text-ink-500">
-            AI-powered by Groq (GPT-OSS 120B) &middot; Instant 5-pillar CRO scoring
+            AI-powered &middot; Instant 5-pillar CRO scoring
           </p>
 
           <button
@@ -251,7 +229,7 @@ const industries = [
                 Analyzing...
               </span>
               <span id="engine-badge" class="text-[11px] text-ink-400 font-mono">
-                Evaluated via Groq AI
+                Evaluated via AI
               </span>
             </div>
           </div>
@@ -479,6 +457,26 @@ const industries = [
 </BaseLayout>
 
 <script>
+  // Never let the mobile sticky action bar cover this form's own submit
+  // button — the shared EnquiryForm component has this built in via
+  // scripts/enquiry-form.ts, but that script isn't loaded on this page
+  // since the evaluator uses its own form, not <EnquiryForm />.
+  (() => {
+    const stickyBar = document.querySelector<HTMLElement>("[data-mobile-sticky-bar]");
+    const form = document.getElementById("evaluator-form");
+    if (stickyBar && form && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          stickyBar.classList.toggle("opacity-0", visible);
+          stickyBar.classList.toggle("pointer-events-none", visible);
+        },
+        { threshold: 0.15 },
+      );
+      io.observe(form);
+    }
+  })();
+
   // Presets Data
   const PRESETS = {
     clinic: {
@@ -630,7 +628,6 @@ Direct Developer Desk on WhatsApp: Immediate PDF floorplan & physical private vi
       city: formData.get("city")?.toString().trim(),
       websiteUrl: formData.get("websiteUrl")?.toString().trim(),
       copyText: formData.get("copyText")?.toString().trim(),
-      groqApiKey: formData.get("groqApiKey")?.toString().trim(),
     };
 
     submitBtn.disabled = true;
@@ -682,7 +679,7 @@ Direct Developer Desk on WhatsApp: Immediate PDF floorplan & physical private vi
       // Engine badge
       engineBadge.textContent =
         res.evaluatedVia === "groq-gpt-oss-120b"
-          ? "Evaluated via Groq GPT-OSS 120B AI"
+          ? "Evaluated via AI Engine"
           : "Evaluated via Heuristic CRO Engine";
 
       // Business & summary
