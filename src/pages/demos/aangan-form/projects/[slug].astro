@@ -1,0 +1,14 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Space from '../_components/Space.astro';
+import { projects, enquiry, type Project } from '@/content/demos/aangan-form/projects';
+import '../_components/theme.css';
+export const prerender = true;
+export function getStaticPaths(){return projects.map(project=>({params:{slug:project.slug},props:{project}}));}
+interface Props {project:Project;}
+const {project:p}=Astro.props;
+const next=projects[(projects.findIndex(item=>item.slug===p.slug)+1)%projects.length]!;
+---
+<DemoLayout demoSlug="aangan-form" title={`${p.name} — A spatial study | Aangan / Form`} description={p.brief} fontsHref="/fonts/demos/aangan-form/fonts.css" themeColor="#eeece5"><div class="aangan"><Header active="projects"/><main class="af-wrap"><div class="af-page-head"><a class="af-mono" href="/demos/aangan-form/projects">← All studies</a><h1>{p.name}</h1></div><dl class="af-facts"><div><dt>Setting</dt><dd>{p.setting}</dd></div><div><dt>Area</dt><dd>{p.area.toLocaleString('en-IN')} sq ft</dd></div><div><dt>Typology</dt><dd>{p.type}</dd></div><div><dt>Status</dt><dd>{p.year} · Unbuilt</dd></div></dl><Space id={p.slug} tone={p.tone} variant={p.type}/><section class="af-story"><h2 class="reveal">The brief.</h2><div class="reveal"><p>{p.brief}</p><p>{p.response}</p></div></section><section class="af-story"><h2 class="reveal">A constraint.<br/>An opportunity.</h2><div class="reveal"><p>{p.challenge}</p><p>{p.resolution}</p><div class="af-materials">{p.materials.map(m=><span>{m}</span>)}</div></div></section><section class="af-section"><div class="af-section-head"><p class="af-mono">A reading of the space</p><div><h2>The layers of a day.</h2><p class="af-note">Programme: {p.rooms.join(' · ')}.</p><p class="af-note">Original atmosphere study; conceptual zoning notes below are not construction drawings.</p></div></div><div class="af-scope"><div><Space id={`${p.slug}-detail`} tone={p.tone} variant={p.type}/></div><div><h3>From threshold to retreat</h3><ol class="af-zones">{p.rooms.map((room,i)=><li><span class="af-mono">0{i+1}</span><span>{room}</span></li>)}</ol><p class="af-note">A real plan would follow measured site dimensions, circulation requirements and a detailed client brief.</p></div></div></section><section class="af-story"><h2>A space of your own?</h2><div><p>All studies are fictional. Explore the budget planner, or speak to ATITTLE about a portfolio website for your studio.</p><a class="af-link" href="/demos/aangan-form/plan">Explore a sample budget ↗</a><br/><a class="af-link" href={enquiry}>Enquire about a website ↗</a></div></section><section class="af-section"><p class="af-mono">Next study</p><h2 style="margin-top:22px"><a href={`/demos/aangan-form/projects/${next.slug}`}>{next.name} ↗</a></h2></section></main><Footer/></div></DemoLayout>

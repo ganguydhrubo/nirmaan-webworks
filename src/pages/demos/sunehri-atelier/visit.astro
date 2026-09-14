@@ -1,0 +1,11 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from './_components/Header.astro';
+import Footer from './_components/Footer.astro';
+import { enquiry } from '@/content/demos/sunehri-atelier/catalogue';
+import { siteConfig } from '@config/site';
+import { waLink } from '@/lib/contact-links';
+import './_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="sunehri-atelier" title="Your visit | Sunehri Atelier, Jaipur" description="Explore an imagined jewellery appointment and the questions to bring. All enquiries go to atittle.com." fontsHref="/fonts/demos/sunehri-atelier/fonts.css" themeColor="#161d19"><div class="sunehri"><Header active="visit"/><main class="sun-wrap"><div class="sun-page-head"><p class="sun-kicker">Make room for a little wonder</p><h1>Your time.<br/>Your kind of gold.</h1><p>A considered appointment begins with your own story: the occasion, the things you already wear, and the budget you feel comfortable with.</p></div><section class="sun-visit"><div class="reveal"><h2>An imagined appointment</h2><p>Set in Jaipur, Rajasthan. No physical showroom or visiting address is represented by this demo.</p><ul><li><strong>First 10 minutes:</strong> explore silhouettes, colours and the occasion.</li><li><strong>Next 20 minutes:</strong> compare proportions and discuss fit.</li><li><strong>Final 15 minutes:</strong> review an itemised estimate and practical questions.</li></ul><p class="sun-note">Sample appointment length: 45 minutes. No appointment availability or booking is offered here.</p></div><div class="reveal"><p class="sun-kicker">For your own jewellery business</p><h2>Let’s make<br/>something yours.</h2><p>Sunehri is fictional. These actions connect you to {siteConfig.businessName} about a catalogue website with this level of detail.</p><a class="sun-button" href={enquiry} data-analytics-event="cta_click" data-demo-slug="sunehri-atelier">Enquire about a website ↗</a><br/><a class="sun-button" href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric('Sunehri Atelier'))} target="_blank" rel="noopener" data-analytics-event="whatsapp_click" data-demo-slug="sunehri-atelier">Talk on WhatsApp ↗</a><p class="sun-note">{siteConfig.responseCommitment}</p></div></section></main><Footer/></div></DemoLayout>

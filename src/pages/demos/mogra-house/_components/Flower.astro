@@ -1,0 +1,9 @@
+---
+interface Props {id:string; colour?:string;}
+const {id,colour='#f2edb8'}=Astro.props;
+---
+<svg viewBox="0 0 700 720" fill="none" aria-hidden="true" class="mh-flower">
+<defs><linearGradient id={`petal-${id}`} x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff8e9"/><stop offset=".45" stop-color={colour}/><stop offset="1" stop-color="#b8959a"/></linearGradient><radialGradient id={`heart-${id}`}><stop stop-color="#d9a45d"/><stop offset="1" stop-color="#f2edb8"/></radialGradient></defs>
+<path d="M348 698C335 599 420 535 345 380" stroke="#79805e" stroke-width="8"/><path d="M363 624Q222 603 194 501Q328 495 363 624Z" fill="#888c67"/><path d="M371 570Q503 530 515 441Q387 452 371 570Z" fill="#63704f"/><path d="M361 620L212 517M376 565L493 460" stroke="#d7d0a1" stroke-width="2"/>
+<g transform="translate(350 313)">{Array.from({length:8},(_,i)=><g transform={`rotate(${i*45})`}><path d="M0 18C-111-18-135-154-63-228C-21-271 34-232 45-196C69-126 43-31 0 18Z" fill={`url(#petal-${id})`} stroke="#f7ede7" stroke-opacity=".5"/><path d="M0 0Q-20-133-43-211" stroke="#b59ca2" stroke-opacity=".35"/></g>)}{Array.from({length:6},(_,i)=><g transform={`rotate(${i*60+18}) scale(.55)`}><path d="M0 18C-111-18-135-154-63-228C-21-271 34-232 45-196C69-126 43-31 0 18Z" fill={`url(#petal-${id})`} stroke="#fff8e9" stroke-opacity=".7"/></g>)}<circle r="37" fill={`url(#heart-${id})`}/>{Array.from({length:12},(_,i)=><circle cx={Math.cos(i*Math.PI/6)*24} cy={Math.sin(i*Math.PI/6)*24} r="3" fill="#a47a43"/>)}</g>
+</svg>

@@ -84,10 +84,13 @@
   --duration-slow: 450ms;
 
   /*
-   * Demo-site palettes — defined centrally here (not per-demo) so the six
-   * demo builds never need to touch shared theme files. Each is a distinct,
-   * industry-appropriate identity, deliberately unlike the main brand and
-   * unlike each other. Use as ordinary Tailwind classes, e.g. bg-shivalik-600.
+   * Demo-site palettes for the original six demos — defined centrally here
+   * so those builds never need to touch shared theme files. Each is a
+   * distinct, industry-appropriate identity, deliberately unlike the main
+   * brand and unlike each other. Use as ordinary Tailwind classes, e.g.
+   * bg-shivalik-600. Newer demos (sunehri-atelier, aangan-form, mogra-house)
+   * instead scope their own palette in a local theme.css — either approach
+   * is fine, just don't mix the two within one demo.
    */
 
   /* Shivalik Homes — real estate, Dehradun: stone + brass, structural */

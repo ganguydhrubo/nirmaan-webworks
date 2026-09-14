@@ -1,0 +1,16 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from './_components/Header.astro';
+import Footer from './_components/Footer.astro';
+import Space from './_components/Space.astro';
+import { projects } from '@/content/demos/aangan-form/projects';
+import './_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="aangan-form" title="Aangan / Form — Space to live, room to become" description="An imagined Ahmedabad interior design studio. Four original spatial studies, materials, process and a transparent budget planner." fontsHref="/fonts/demos/aangan-form/fonts.css" themeColor="#eeece5">
+<div class="aangan"><Header/><main>
+  <section class="af-wrap"><div class="af-hero-head"><div><p class="af-mono reveal">Independent spaces · Ahmedabad · A studio concept</p><h1 class="reveal">Life happens<br/>in the <span>in-between.</span></h1></div><div class="af-hero-side reveal"><p>A patch of sun. A well-worn table. A quiet corner that becomes your favourite room.</p><a href="/demos/aangan-form/projects">Explore the spatial studies ↗</a></div></div><div class="af-hero-image reveal"><Space id="home"/><span class="af-image-label">01 / THE COURT HOUSE<br/>A study in light, shade & everyday life</span></div><div class="af-caption"><span>Original architectural illustration</span><span>23.02° N / 72.57° E</span></div></section>
+  <section class="af-wrap af-section"><div class="af-section-head reveal"><p class="af-mono">01 — Selected studies</p><h2>Different briefs.<br/>One considered approach.</h2></div><div class="af-project-grid">{projects.map(p=><article class="af-project-card reveal"><a href={`/demos/aangan-form/projects/${p.slug}`}><Space id={p.slug} tone={p.tone} variant={p.type}/><h3>{p.name} ↗</h3></a><div class="af-project-meta"><span>{p.number} / {p.type}</span><span>{p.area.toLocaleString('en-IN')} sq ft · Concept</span></div></article>)}</div></section>
+  <section class="af-dark af-section"><div class="af-wrap af-manifesto"><span class="af-mono">02 — The point of view</span><div class="reveal"><h2>Not every square foot<br/>needs filling.</h2><p>Our imagined practice starts with how a day unfolds. Where you put down your keys. Where the afternoon light lands. How a room changes when everyone is home. Materials and furniture follow those answers.</p><a class="af-link" href="/demos/aangan-form/studio">Inside the approach ↗</a></div></div></section>
+  <section class="af-wrap af-section af-section-head"><p class="af-mono">03 — Before the first sketch</p><div class="reveal"><h2>Good spaces begin<br/>with clear questions.</h2><p style="margin-top:25px">Explore the area, scope and budget behind a project. A useful starting point for the first conversation.</p><a class="af-link" href="/demos/aangan-form/plan">Plan your space ↗</a></div></section>
+</main><Footer/></div></DemoLayout>

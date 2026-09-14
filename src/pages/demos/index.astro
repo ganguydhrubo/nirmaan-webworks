@@ -8,11 +8,11 @@ export const prerender = true;
 const demoByIndustry = Object.fromEntries(siteConfig.demoRegistry.map((d) => [d.industrySlug, d]));
 ---
 
-<BaseLayout title="Live demo websites" description="Six full, working demo websites — one for each industry we build for. Every page, filter and form actually works.">
+<BaseLayout title="Live demo websites" description={`${siteConfig.demoRegistry.length} full, working demo websites — one for each industry we build for. Every page, filter and form actually works.`}>
   <section class="bg-cream py-14 sm:py-20">
     <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">See the work, not a pitch</h1>
-      <p class="mt-4 text-lg text-ink-700">Six full demo websites, one per industry. Click through — every page, filter and form actually works.</p>
+      <p class="mt-4 text-lg text-ink-700">{siteConfig.demoRegistry.length} full demo websites, one per industry. Click through — every page, filter and form actually works.</p>
       <p class="mt-2 text-sm text-ink-500">These are demonstration sites built for fictional businesses, not real clients.</p>
     </div>
   </section>

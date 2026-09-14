@@ -1,0 +1,9 @@
+---
+import { siteConfig } from '@config/site';
+import { waLink } from '@/lib/contact-links';
+---
+<footer class="sun-footer">
+  <div><a href="/demos/sunehri-atelier" class="sun-wordmark">SUNEHRI<span>Objects of tomorrow’s memories.</span></a><p>Jaipur, Rajasthan · A fictional jewellery atelier.</p></div>
+  <nav aria-label="Sunehri footer"><a href="/demos/sunehri-atelier/collections">The collection</a><a href="/demos/sunehri-atelier/atelier">Materials & care</a><a href="/demos/sunehri-atelier/visit">Plan your visit</a><a href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric('Sunehri Atelier'))} target="_blank" rel="noopener" data-analytics-event="whatsapp_click" data-demo-slug="sunehri-atelier">Ask {siteConfig.businessName} on WhatsApp ↗</a></nav>
+  <p class="sun-disclosure">An original concept by {siteConfig.businessName}. All pieces are illustrations; prices and specifications are fictional examples. No jewellery is sold here.</p>
+</footer>

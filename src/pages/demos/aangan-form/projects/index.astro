@@ -1,0 +1,10 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Space from '../_components/Space.astro';
+import { projects } from '@/content/demos/aangan-form/projects';
+import '../_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="aangan-form" title="Project index | Aangan / Form" description="Browse four fictional residential, workspace and retail design studies with original drawings and detailed briefs." fontsHref="/fonts/demos/aangan-form/fonts.css" themeColor="#eeece5"><div class="aangan"><Header active="projects"/><main class="af-wrap af-section" style="padding-top:0"><div class="af-page-head"><p class="af-mono">The project index / 2026 concept series</p><h1>A place for<br/>every kind of day.</h1><p>Four imagined briefs. Follow the constraints, the material choices and the small decisions that give each space its character.</p></div><div data-af-projects><div class="af-filters" role="group" aria-label="Project type">{['All','Residential','Workspace','Retail'].map(t=><button type="button" data-af-filter={t} aria-pressed={t==='All'}>{t}</button>)}</div><p class="af-note" data-af-count role="status" style="margin-bottom:30px">4 studies</p><div class="af-index">{projects.map(p=><article class="af-index-row" data-af-project data-type={p.type}><a href={`/demos/aangan-form/projects/${p.slug}`} aria-label={`View ${p.name}`}><Space id={p.slug} tone={p.tone} variant={p.type}/></a><div><p class="af-mono">{p.number} / {p.type} / {p.area.toLocaleString('en-IN')} sq ft</p><h2><a href={`/demos/aangan-form/projects/${p.slug}`}>{p.name} ↗</a></h2><p>{p.brief}</p><p class="af-note">{p.setting} · {p.year}</p></div></article>)}</div></div></main><Footer/></div><script src="../../../../scripts/demos/aangan-form-projects.ts"/></DemoLayout>

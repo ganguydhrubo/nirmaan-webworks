@@ -1,6 +1,6 @@
 # atittle.com
 
-> atittle.com is a web design and development studio based in Kolkata, India, building fast, mobile-first websites for Indian small and medium businesses — real estate developers, hotels and resorts, healthcare clinics, coaching institutes, dental clinics, and restaurants — with transparent INR pricing and a WhatsApp-first response commitment.
+> atittle.com is a web design and development studio based in Kolkata, India, building fast, mobile-first websites for Indian small and medium businesses — real estate developers, hotels and resorts, healthcare clinics, coaching institutes, dental clinics, restaurants, jewellers, interior designers, and salons & spas — with transparent INR pricing and a WhatsApp-first response commitment.
 
 atittle.com does not build login systems, user accounts, or payment checkouts, and does not guarantee specific search-engine rankings. Pricing starts around ₹25,000 for a brochure site and scales with scope; exact quotes are given after a short scoping conversation.
 
@@ -20,10 +20,13 @@ atittle.com does not build login systems, user accounts, or payment checkouts, a
 - [Education & Coaching Institutes](/industries/education-coaching)
 - [Dental Clinics](/industries/dental-clinics)
 - [Restaurants & Cafés](/industries/restaurants-cafes)
+- [Jewellery](/industries/jewellery)
+- [Interior Design](/industries/interior-design)
+- [Salon & Spa](/industries/salon-spa)
 
 ## Demos
 
-Six full working demo websites, one per industry above, built for fictional example businesses to demonstrate design and engineering quality (index: [/demos](/demos)). These are not real, currently-operating companies.
+Nine full working demo websites, one per industry above, built for fictional example businesses to demonstrate design and engineering quality (index: [/demos](/demos)). These are not real, currently-operating companies.
 
 ## Tools
 

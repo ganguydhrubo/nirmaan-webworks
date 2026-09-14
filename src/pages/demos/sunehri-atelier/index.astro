@@ -1,0 +1,23 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from './_components/Header.astro';
+import Footer from './_components/Footer.astro';
+import Jewel from './_components/Jewel.astro';
+import { jewels, inr } from '@/content/demos/sunehri-atelier/catalogue';
+import './_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="sunehri-atelier" title="Sunehri Atelier — Objects of tomorrow’s memories | Jaipur" description="A fictional Jaipur jewellery atelier. Discover illustrated gold collections, considered details and transparent sample pricing." fontsHref="/fonts/demos/sunehri-atelier/fonts.css" themeColor="#161d19">
+  <div class="sunehri"><Header />
+    <main>
+      <section class="sun-wrap sun-hero">
+        <div class="sun-hero-copy"><p class="sun-kicker reveal">Fine jewellery · An imagined Jaipur atelier</p><h1 class="reveal">For all that<br/>you’ll <span>remember.</span></h1><p class="reveal">A little of the Pink City. A little of you.<br/>Considered gold pieces for the everyday, the once-in-a-lifetime, and everything between.</p><a class="sun-button reveal" href="/demos/sunehri-atelier/collections">Enter the collection <span aria-hidden="true">↗</span></a></div>
+        <div class="sun-hero-art reveal"><Jewel id="hero"/><span class="sun-art-label">01 / CHAND BAOLI · ORIGINAL DESIGN STUDY</span></div>
+      </section>
+      <div class="sun-ticker"><span>Jaipur, reimagined</span><span aria-hidden="true">✧</span><span>Objects of tomorrow’s memories</span><span aria-hidden="true">✧</span><span>Collection No. 01</span></div>
+      <section class="sun-wrap sun-section"><div class="sun-heading reveal"><div><p class="sun-kicker">The first chapter</p><h2>Quietly unforgettable.</h2></div><a href="/demos/sunehri-atelier/collections">Discover all eight pieces ↗</a></div><div class="sun-grid">{jewels.slice(0,3).map(j=><article class="sun-card reveal"><a href={`/demos/sunehri-atelier/collections/${j.slug}`}><div class="sun-card-art"><Jewel id={j.slug} shape={j.shape} stone={j.stone}/></div><h3>{j.name}</h3></a><div class="sun-card-meta"><span>{j.category} · 18K gold concept</span><span>{inr(j.price)}</span></div></article>)}</div><p class="sun-note" style="margin-top:30px">Illustrated concept pieces. All ₹ prices are sample estimates, inclusive of assumed making charges and taxes; not live gold quotations.</p></section>
+      <section class="sun-paper sun-section"><div class="sun-wrap sun-editorial"><div class="sun-arch reveal"><Jewel id="editorial" shape="earrings" stone="#c98a92"/></div><div class="reveal"><p class="sun-kicker">A city, in miniature</p><h2>Stepwells.<br/>Pink walls.<br/>Golden hours.</h2><p>Jaipur gives this imagined collection its vocabulary: the descending geometry of a baoli, the shade of a jali, the warm pink of an evening facade. Translated into things you can hold.</p><p>Every illustration begins with a line. The point is to make that line worth keeping.</p><a class="sun-button" style="color:#76602f;border-color:#76602f" href="/demos/sunehri-atelier/atelier">Inside the atelier ↗</a></div></div></section>
+      <section class="sun-section sun-wrap reveal"><p class="sun-kicker">The personal part</p><h2>Some things deserve<br/>a conversation.</h2><p style="margin-top:25px">Explore fit, materials and the questions to bring to a jewellery appointment.</p><a class="sun-button" href="/demos/sunehri-atelier/visit">Before your visit ↗</a></section>
+    </main><Footer />
+  </div>
+</DemoLayout>

@@ -1,0 +1,15 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Jewel from '../_components/Jewel.astro';
+import { jewels, categories, inr } from '@/content/demos/sunehri-atelier/catalogue';
+import '../_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="sunehri-atelier" title="The collection | Sunehri Atelier" description="Eight original jewellery concepts across necklaces, earrings, rings and bangles, with material details and illustrative rupee pricing." fontsHref="/fonts/demos/sunehri-atelier/fonts.css" themeColor="#161d19">
+<div class="sunehri"><Header active="collections"/><main class="sun-wrap sun-section" style="padding-top:0"><div class="sun-page-head"><p class="sun-kicker">Collection No. 01 · Eight objects</p><h1>A small world<br/>of precious things.</h1><p>Choose a silhouette. Find a colour. Follow the details. Every piece has its own page and its own point of view.</p></div>
+<div data-sun-catalogue><div class="sun-tools"><div class="sun-filters" role="group" aria-label="Jewellery category">{['All',...categories].map(c=><button type="button" data-sun-filter={c} aria-pressed={c==='All'}>{c}</button>)}</div><label>Sample budget<select data-sun-budget><option value="0">Any budget</option><option value="60000">Up to ₹60,000</option><option value="100000">Up to ₹1,00,000</option><option value="150000">Up to ₹1,50,000</option></select></label><label>Sort by<select data-sun-sort><option value="featured">Collection order</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label></div>
+<p class="sun-result" data-sun-count role="status" aria-live="polite">8 pieces in this selection</p><div class="sun-grid" data-sun-list>{jewels.map((j,i)=><article class="sun-card" data-sun-card data-category={j.category} data-price={j.price} data-order={i}><a href={`/demos/sunehri-atelier/collections/${j.slug}`}><div class="sun-card-art"><Jewel id={j.slug} shape={j.shape} stone={j.stone}/></div><h2>{j.name}</h2></a><div class="sun-card-meta"><span>{j.collection}</span><span>{inr(j.price)}</span></div><p class="sun-note" style="margin-top:10px">{j.description}</p></article>)}</div><p data-sun-empty hidden>No pieces match this combination. Choose another category or a higher budget.</p><noscript><p>All eight pieces are shown. Category, budget and sorting controls need JavaScript.</p></noscript></div>
+<p class="sun-note" style="margin-top:55px">All objects are original illustrations for a fictional catalogue. Prices include assumed making charges and taxes. Metal rates, sizing and material choices would require a fresh quotation from a real jeweller.</p></main><Footer/></div><script src="../../../../scripts/demos/sunehri-atelier-catalogue.ts"/>
+</DemoLayout>

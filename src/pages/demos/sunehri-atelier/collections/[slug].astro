@@ -1,0 +1,15 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Jewel from '../_components/Jewel.astro';
+import { jewels, enquiry, inr, type Jewel as JewelData } from '@/content/demos/sunehri-atelier/catalogue';
+import '../_components/theme.css';
+export const prerender = true;
+export function getStaticPaths() { return jewels.map(jewel => ({ params: {slug:jewel.slug}, props: {jewel} })); }
+interface Props { jewel: JewelData; }
+const { jewel:j } = Astro.props;
+---
+<DemoLayout demoSlug="sunehri-atelier" title={`${j.name} | Sunehri Atelier`} description={`${j.description} An original illustrated jewellery concept with material and sample price details.`} fontsHref="/fonts/demos/sunehri-atelier/fonts.css" themeColor="#161d19">
+<div class="sunehri"><Header active="collections"/><main class="sun-wrap"><nav aria-label="Breadcrumb" class="sun-breadcrumb"><a href="/demos/sunehri-atelier/collections">Collection</a> / {j.name}</nav><section class="sun-product"><div class="sun-product-art reveal"><Jewel id={j.slug} shape={j.shape} stone={j.stone}/></div><div><p class="sun-kicker">{j.collection} · {j.category}</p><h1>{j.name}</h1><p>{j.description}</p><p class="sun-price">{inr(j.price)}</p><p class="sun-note">Illustrative price including assumed making charges and taxes. This piece is a design concept and is not for sale.</p><dl><div><dt>Material</dt><dd>{j.material}</dd></div><div><dt>Weight</dt><dd>{j.weight}</dd></div><div><dt>Finish</dt><dd>Polished edges · satin gold surfaces</dd></div><div><dt>Fit</dt><dd>{j.shape==='ring'?'Sample Indian sizes 10–18; confirm a real fitting.':j.shape==='bangle'?'Sample inner diameter 58 mm; confirm wrist fit.':j.shape==='necklace'?'Illustrative chain length 42 cm + 3 cm extender.':'Illustrative drop length 42 mm; post closure.'}</dd></div></dl><a class="sun-button" href={enquiry} data-analytics-event="cta_click" data-demo-slug="sunehri-atelier">Enquire about this demo ↗</a><p class="sun-note">Opens the real {"atittle.com"} website enquiry flow.</p></div></section><section class="sun-editorial sun-section" style="border-top:1px solid #d8bd8133"><h2 class="reveal">The thought<br/>behind the piece.</h2><div class="reveal"><p>{j.detail}</p><p class="sun-note">Illustrated design specifications only. A real quotation should identify metal purity, stone treatment, net metal weight, making charges and taxes separately.</p><a class="sun-button" href="/demos/sunehri-atelier/atelier">Materials & care ↗</a></div></section></main><Footer/></div>
+</DemoLayout>

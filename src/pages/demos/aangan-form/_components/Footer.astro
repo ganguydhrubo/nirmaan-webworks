@@ -1,0 +1,5 @@
+---
+import {siteConfig} from '@config/site';
+import {waLink} from '@/lib/contact-links';
+---
+<footer class="af-footer"><div><p class="af-mono">AANGAN / FORM</p><h2>Space to live.<br/>Room to become.</h2></div><div><p>Ahmedabad, Gujarat<br/>A fictional interior design studio.</p><a href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric('Aangan / Form'))} target="_blank" rel="noopener" data-analytics-event="whatsapp_click" data-demo-slug="aangan-form">Talk to {siteConfig.businessName} ↗</a><nav aria-label="Aangan footer"><a href="/demos/aangan-form/projects">Project index</a><a href="/demos/aangan-form/studio">Approach</a><a href="/demos/aangan-form/plan">Budget planner</a></nav></div><p class="af-disclosure">An original demonstration by {siteConfig.businessName}. All projects, briefs, drawings and budgets are fictional design studies, not completed commissions. No professional registration or project delivery is claimed.</p></footer>

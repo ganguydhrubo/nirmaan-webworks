@@ -1,0 +1,32 @@
+---
+interface Props { shape?: 'necklace' | 'earrings' | 'ring' | 'bangle'; stone?: string; id: string; }
+const { shape = 'necklace', stone = '#638876', id } = Astro.props;
+const gold = `url(#gold-${id})`;
+---
+<svg viewBox="0 0 600 660" fill="none" aria-hidden="true" class="jewel-art">
+  <defs>
+    <linearGradient id={`gold-${id}`} x1="120" y1="130" x2="490" y2="570" gradientUnits="userSpaceOnUse"><stop stop-color="#705024"/><stop offset=".25" stop-color="#f9e4aa"/><stop offset=".5" stop-color="#b18442"/><stop offset=".72" stop-color="#ffecc0"/><stop offset="1" stop-color="#89612e"/></linearGradient>
+    <radialGradient id={`glow-${id}`}><stop stop-color="#b99152" stop-opacity=".17"/><stop offset="1" stop-color="#b99152" stop-opacity="0"/></radialGradient>
+  </defs>
+  <ellipse cx="300" cy="340" rx="285" ry="310" fill={`url(#glow-${id})`} />
+  <ellipse cx="300" cy="590" rx="145" ry="12" fill="#000" opacity=".2"/>
+  {shape === 'necklace' && (<g>
+    <path d="M147 46C103 286 111 382 300 472C489 382 497 286 453 46" stroke={gold} stroke-width="5"/>
+    <path d="M140 46C94 290 115 403 300 488C485 403 506 290 460 46" stroke={gold} stroke-width="2"/>
+    {Array.from({length: 17}, (_, i) => <g transform={`translate(${300 - 169 * Math.cos(Math.PI * (.12 + i * .76 / 16))} ${310 + 158 * Math.sin(Math.PI * (.12 + i * .76 / 16))}) rotate(${(i - 8) * -6})`}><rect x="-11" y="-10" width="22" height="35" rx="9" stroke={gold} stroke-width="3" /><path d="M-6 0H6M-6 6H6" stroke={gold} /><circle cy="31" r="3" fill={gold} /></g>)}
+    <path d="M300 451L332 482L332 524L300 554L268 524L268 482Z" fill={stone} stroke={gold} stroke-width="9"/>
+    <path d="M300 463L321 486L313 517L300 542L281 520L279 488Z" stroke="#fff" opacity=".4"/><path d="M279 488L321 486L313 517L281 520Z" fill="#fff" opacity=".12"/>
+    {[-1,1].map(s => <path d={`M${300+s*42} 463q${s*42} 15 ${s*20} 56q${-s*24} -8 ${-s*20} -56Z`} stroke={gold} stroke-width="3"/>)}
+    <circle cx="300" cy="568" r="7" fill={gold} />
+  </g>)}
+  {shape === 'earrings' && [195,405].map((x,i) => <g transform={`translate(${x} 175) rotate(${i ? 9 : -9})`}>
+    <circle r="19" fill={stone} stroke={gold} stroke-width="6"/><path d="M0 22V57" stroke={gold} stroke-width="4"/>
+    <path d="M0 54L62 128L62 219L0 289L-62 219L-62 128Z" stroke={gold} stroke-width="7"/>
+    <path d="M0 78L45 137L45 211L0 264L-45 211L-45 137Z" stroke={gold} stroke-width="2"/>
+    <path d="M0 114Q-65 207 0 239Q65 207 0 114Z" fill={stone} stroke={gold} stroke-width="4"/>
+    <path d="M0 131L-23 202L0 226L21 199Z" fill="#fff" opacity=".14"/>
+    {[-35,-18,0,18,35].map((dx,j)=><g><path d={`M${dx} ${277-Math.abs(dx)}v22`} stroke={gold} /><circle cx={dx} cy={306-Math.abs(dx)} r={j===2?7:5} fill={gold} /></g>)}
+  </g>)}
+  {shape === 'ring' && <g transform="rotate(-23 300 350)"><ellipse cx="300" cy="381" rx="118" ry="145" stroke={gold} stroke-width="30"/><ellipse cx="300" cy="381" rx="118" ry="145" stroke="#f6da99" stroke-width="2"/><rect x="232" y="190" width="136" height="132" rx="48" fill={stone} stroke={gold} stroke-width="12"/><path d="M264 210L338 215L347 270L311 306L254 279Z" stroke="#fff" opacity=".45"/><path d="M264 210L311 259L338 215M254 279L311 259L347 270" stroke="#fff" opacity=".2"/>{Array.from({length:9},(_,i)=><circle cx={243+i*14} cy="322" r="4" fill={gold} />)}</g>}
+  {shape === 'bangle' && <g transform="rotate(-28 300 350)"><ellipse cx="300" cy="350" rx="188" ry="125" stroke={gold} stroke-width="18"/><ellipse cx="300" cy="350" rx="166" ry="105" stroke={gold} stroke-width="6"/><path d="M134 346Q300 520 466 346" stroke={gold} stroke-width="6"/><rect x="430" y="315" width="37" height="58" rx="16" fill={stone} stroke={gold} stroke-width="5"/></g>}
+</svg>

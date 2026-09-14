@@ -1,0 +1,9 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from './_components/Header.astro';
+import Footer from './_components/Footer.astro';
+import {categories,services,inr} from '@/content/demos/mogra-house/services';
+import './_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="mogra-house" title="The service menu — Prices & time | Mogra House" description="Twelve sample services across hair, colour, skin, body and nails. Clear rupee prices, durations and inclusions." fontsHref="/fonts/demos/mogra-house/fonts.css" themeColor="#f7ede7"><div class="mogra"><Header active="services"/><main class="mh-wrap"><div class="mh-page-head"><p class="mh-kicker">The menu / Choose what feels good</p><h1>A little of this.<br/><em>A moment of that.</em></h1><p>Start with what you need. Add what you have time for. All prices below are fictional starting prices, including assumed taxes; actual length, products and scope would be agreed before a real service.</p></div><div class="mh-menu-layout"><nav class="mh-menu-nav" aria-label="Service categories">{categories.map(c=><a href={`#${c.toLowerCase()}`}>{c}</a>)}<a href="/demos/mogra-house/visit">Build a visit ↗</a></nav><div>{categories.map(c=><section id={c.toLowerCase()} class="mh-service-category"><h2>{c}</h2>{services.filter(s=>s.category===c).map(s=><article class="mh-service-row"><div><h3>{s.name}</h3><p>{s.description}</p></div><div class="mh-service-price">From {inr(s.price)}<small>{s.minutes} minutes</small><a class="mh-link" href={`/demos/mogra-house/visit?services=${s.id}`} aria-label={`Plan a visit with ${s.name}`}>Add to visit ↗</a></div></article>)}</section>)}<p class="mh-note">Colour services require a prior consultation and any product sensitivity test specified by the actual salon or manufacturer. These sample services offer no medical treatment or guaranteed result.</p></div></div></main><Footer/></div></DemoLayout>

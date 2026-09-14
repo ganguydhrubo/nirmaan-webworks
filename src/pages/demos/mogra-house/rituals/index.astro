@@ -1,0 +1,10 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Flower from '../_components/Flower.astro';
+import {rituals,selectedServices,inr} from '@/content/demos/mogra-house/services';
+import '../_components/theme.css';
+export const prerender = true;
+---
+<DemoLayout demoSlug="mogra-house" title="The house rituals | Mogra House" description="Three imagined salon and spa combinations, from an everyday reset to a celebratory finish, with prices and complete inclusions." fontsHref="/fonts/demos/mogra-house/fonts.css" themeColor="#d5c4e6"><div class="mogra"><Header active="rituals"/><main class="mh-wrap"><div class="mh-page-head"><p class="mh-kicker">The house rituals</p><h1>Put a little<br/><em>occasion in it.</em></h1><p>Services that sit happily together. Pick a mood, explore what is included, then make the visit your own.</p></div><div class="mh-ritual-grid">{rituals.map(r=><article class="mh-ritual reveal" style={`background:${r.colour}`}><Flower id={r.slug} colour={r.colour}/><p class="mh-kicker">{r.line}</p><h2 style="font-size:40px"><a href={`/demos/mogra-house/rituals/${r.slug}`}>{r.name}</a></h2><p>{r.intro}</p><p>From {inr(selectedServices(r.serviceIds).reduce((sum,s)=>sum+s.price,0))} · {selectedServices(r.serviceIds).reduce((sum,s)=>sum+s.minutes,0)} minutes</p><a class="mh-link" href={`/demos/mogra-house/rituals/${r.slug}`}>Explore the ritual ↗</a></article>)}</div><section class="mh-section mh-intro"><h2>Prefer your own combination?</h2><p>No package rules. The ritual prices are the sum of their sample services; the visit planner lets you add or remove anything.</p><a class="mh-button" href="/demos/mogra-house/visit">Create your own visit ↗</a></section></main><Footer/></div></DemoLayout>

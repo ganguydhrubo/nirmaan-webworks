@@ -1,0 +1,14 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import Header from '../_components/Header.astro';
+import Footer from '../_components/Footer.astro';
+import Flower from '../_components/Flower.astro';
+import {rituals,selectedServices,inr,type Ritual} from '@/content/demos/mogra-house/services';
+import '../_components/theme.css';
+export const prerender = true;
+export function getStaticPaths(){return rituals.map(ritual=>({params:{slug:ritual.slug},props:{ritual}}));}
+interface Props{ritual:Ritual;}
+const {ritual:r}=Astro.props;
+const items=selectedServices(r.serviceIds);
+---
+<DemoLayout demoSlug="mogra-house" title={`${r.name} — A house ritual | Mogra House`} description={r.intro} fontsHref="/fonts/demos/mogra-house/fonts.css" themeColor="#f7ede7"><div class="mogra"><Header active="rituals"/><main class="mh-wrap"><section class="mh-detail-hero"><div><a class="mh-kicker" href="/demos/mogra-house/rituals">← All rituals</a><h1 style="margin-top:30px">{r.name}</h1><p>{r.intro}</p><p>From {inr(items.reduce((sum,s)=>sum+s.price,0))} · {items.reduce((sum,s)=>sum+s.minutes,0)} minutes of services</p><a class="mh-button" href={`/demos/mogra-house/visit?services=${r.serviceIds.join(',')}`}>Add ritual to visit ↗</a><p class="mh-note">Fictional inclusive starting price. Allow an additional 15 minutes to settle in and move between services.</p></div><div class="mh-detail-art reveal" style={`background:${r.colour}`}><Flower id={r.slug} colour={r.colour}/></div></section><section class="mh-inclusions"><h2>What’s in<br/><em>your afternoon.</em></h2><div>{items.map(s=><article class="mh-service-row"><div><h3>{s.name}</h3><p>{s.description}</p></div><div class="mh-service-price">{inr(s.price)}<small>{s.minutes} minutes</small></div></article>)}<p class="mh-note" style="margin-top:25px">No hidden package discount: this sample ritual totals its individual services. You can change your selection in the planner.</p></div></section><section class="mh-inclusions"><h2>One moment<br/><em>at a time.</em></h2><ol>{r.sequence.map(s=><li>{s}</li>)}</ol></section><section class="mh-section mh-intro"><h2>Comfort comes first.</h2><p>Share your preferences before a real service: pressure, fragrance, conversation or quiet. You can ask to pause, change a product or skip a step.</p><a class="mh-link" href="/demos/mogra-house/house">The house notes ↗</a></section></main><Footer/></div></DemoLayout>

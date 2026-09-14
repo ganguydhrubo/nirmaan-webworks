@@ -47,3 +47,17 @@ All interface icons are original inline SVGs authored for this project (`src/ico
 ## Illustrations / decorative graphics
 
 Any decorative graphics (dividers, background textures, brand marks for the six fictional demo businesses) are original SVGs authored for this project.
+
+## Additional demo assets — 2026-09-14
+
+The Sunehri Atelier, Aangan / Form and Mogra House demos use original inline SVG jewellery, architectural and botanical illustrations, authored for this project. No stock photography, staff portraits or third-party illustration assets are used in these three demos.
+
+Their self-hosted fonts were fetched using the existing `scripts/fetch-google-fonts.mjs`, with Latin and Latin Extended subsets (including U+20B9, the rupee sign), and are served from `public/fonts/demos/<slug>/`.
+
+| Font | Weights / styles | Use | Source URL | Licence | Downloaded |
+|---|---|---|---|---|---|
+| Bodoni Moda | 400, 500 normal | Sunehri Atelier display | https://fonts.google.com/specimen/Bodoni+Moda | SIL Open Font License 1.1 | 2026-09-14 |
+| Jost | 400, 500, 600 normal | Sunehri Atelier body | https://fonts.google.com/specimen/Jost | SIL Open Font License 1.1 | 2026-09-14 |
+| DM Sans | 400, 500, 600 normal | Aangan / Form display and body; Mogra House body | https://fonts.google.com/specimen/DM+Sans | SIL Open Font License 1.1 | 2026-09-14 |
+| IBM Plex Mono | 400, 500 normal | Aangan / Form labels | https://fonts.google.com/specimen/IBM+Plex+Mono | SIL Open Font License 1.1 | 2026-09-14 |
+| Instrument Serif | 400 normal and italic | Mogra House display | https://fonts.google.com/specimen/Instrument+Serif | SIL Open Font License 1.1 | 2026-09-14 |

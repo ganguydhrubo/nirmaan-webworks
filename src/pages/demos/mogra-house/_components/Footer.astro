@@ -1,0 +1,5 @@
+---
+import {siteConfig} from '@config/site';
+import {waLink} from '@/lib/contact-links';
+---
+<footer class="mh-footer"><div class="mh-footer-top"><h2>A little time,<br/><em>entirely yours.</em></h2><div><p>Pune, Maharashtra<br/>An imagined salon & spa.</p><a class="mh-link" href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric('Mogra House'))} target="_blank" rel="noopener" data-analytics-event="whatsapp_click" data-demo-slug="mogra-house">Talk to {siteConfig.businessName} ↗</a><nav aria-label="Mogra footer"><a href="/demos/mogra-house/services">Services & prices</a><a href="/demos/mogra-house/rituals">The rituals</a><a href="/demos/mogra-house/visit">Plan a visit</a></nav></div></div><p class="mh-disclosure">Mogra House is a fictional business, created by {siteConfig.businessName}. Original botanical illustrations; all services, durations and prices are examples. No appointments are booked here.</p><p class="mh-footer-word" aria-hidden="true">mogra house</p></footer>

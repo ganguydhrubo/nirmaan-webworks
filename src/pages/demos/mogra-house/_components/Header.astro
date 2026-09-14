@@ -1,0 +1,6 @@
+---
+import {enquiry} from '@/content/demos/mogra-house/services';
+interface Props {active?:string;}
+const {active='home'}=Astro.props;
+---
+<header class="mh-header"><a href="/demos/mogra-house" class="mh-logo">mogra<span>HOUSE / PUNE</span></a><nav aria-label="Mogra primary">{[['services','The menu'],['rituals','Rituals'],['house','Our house'],['visit','Your visit']].map(([s,t])=><a href={`/demos/mogra-house/${s}`} aria-current={active===s?'page':undefined}>{t}</a>)}</nav><a class="mh-book" href={enquiry} data-analytics-event="cta_click" data-demo-slug="mogra-house">Enquire ↗</a></header>

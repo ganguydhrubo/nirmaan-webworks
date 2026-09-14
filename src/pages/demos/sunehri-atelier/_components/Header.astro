@@ -1,0 +1,11 @@
+---
+import { enquiry } from '@/content/demos/sunehri-atelier/catalogue';
+interface Props { active?: string; }
+const { active = 'home' } = Astro.props;
+const nav = [['collections','Collections'],['atelier','The atelier'],['visit','Your visit']];
+---
+<header class="sun-header">
+  <a class="sun-wordmark" href="/demos/sunehri-atelier" aria-label="Sunehri Atelier home">SUNEHRI<span>J A I P U R · A T E L I E R</span></a>
+  <nav aria-label="Sunehri primary">{nav.map(([slug,label]) => <a href={`/demos/sunehri-atelier/${slug}`} aria-current={active === slug ? 'page' : undefined}>{label}</a>)}</nav>
+  <a class="sun-header-cta" href={enquiry} data-analytics-event="cta_click" data-demo-slug="sunehri-atelier">Enquire <span aria-hidden="true">↗</span></a>
+</header>

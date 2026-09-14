@@ -1,0 +1,6 @@
+---
+import {enquiry} from '@/content/demos/aangan-form/projects';
+interface Props { active?:string; }
+const {active='home'}=Astro.props;
+---
+<header class="af-header"><a class="af-logo" href="/demos/aangan-form">aangan <span>/</span> form<span class="af-logo-note">INTERIORS & SPACES · AHMEDABAD</span></a><nav aria-label="Aangan primary">{[['projects','Selected work'],['studio','The studio'],['plan','Plan a space']].map(([s,t])=><a href={`/demos/aangan-form/${s}`} aria-current={active===s?'page':undefined}>{t}</a>)}</nav><a class="af-enquire" href={enquiry} data-analytics-event="cta_click" data-demo-slug="aangan-form">Start a conversation ↗</a></header>

@@ -1,0 +1,25 @@
+---
+interface Props { id:string; tone?:string; variant?:string; plan?:boolean; }
+const {id,tone='#b76a47',variant='Residential',plan=false}=Astro.props;
+---
+<svg viewBox="0 0 1200 780" fill="none" class="af-space" aria-hidden="true">
+<defs><linearGradient id={`wall-${id}`} x2="1" y2="1"><stop stop-color="#ddd5c7"/><stop offset="1" stop-color="#a99d87"/></linearGradient><linearGradient id={`floor-${id}`} x2="0" y2="1"><stop stop-color="#b7ad98"/><stop offset="1" stop-color="#e3d7bc"/></linearGradient><pattern id={`slats-${id}`} width="19" height="20" patternUnits="userSpaceOnUse"><rect width="19" height="20" fill={tone}/><path d="M0 0V20" stroke="#453b2b" stroke-opacity=".4" stroke-width="4"/></pattern></defs>
+{plan ? <g>
+<rect width="1200" height="780" fill="#eeeae0"/>{Array.from({length:25},(_,i)=><path d={`M${i*50} 0V780M0 ${i*50}H1200`} stroke="#777" stroke-opacity=".1"/>)}
+<g stroke="#333b32" stroke-width="9"><path d="M160 120H1040V660H160ZM510 120V290M510 370V660M770 120V305M770 390V660M160 390H390M465 390H510M770 390H1040"/><rect x="545" y="240" width="190" height="215" fill="#b6b99a" stroke-width="3"/></g><g stroke="#7a806b" stroke-width="2"><circle cx="640" cy="343" r="58"/><circle cx="616" cy="320" r="33"/><circle cx="663" cy="327" r="39"/></g>
+<g stroke="#71675a" stroke-width="3"><rect x="205" y="167" width="210" height="72"/><rect x="205" y="167" width="38" height="72"/><rect x="375" y="167" width="40" height="72"/><rect x="260" y="270" width="110" height="60" rx="20"/><rect x="207" y="465" width="215" height="118" rx="8"/>{[230,290,350,405].map(x=><path d={`M${x} 447v-15M${x} 599v15`}/>)}<rect x="812" y="165" width="178" height="175"/><path d="M812 214H990M901 165V214"/><rect x="812" y="452" width="178" height="154"/><path d="M812 495H990M901 452V495"/><path d="M530 490H742V638H530Z"/></g>
+<g stroke="#ad3824" stroke-width="2"><path d="M160 85H1040M160 73V97M1040 73V97M1080 120V660M1068 120H1092M1068 660H1092"/><path d="M70 680V600L61 618M70 600L79 618"/></g>
+</g> : <g>
+<rect width="1200" height="780" fill="#cdc4b1"/><path d="M0 0H1200L940 163H252Z" fill="#e7decb"/><path d="M0 0L252 163V558L0 780Z" fill="#b2a68f"/><path d="M1200 0L940 163V558L1200 780Z" fill={`url(#wall-${id})`}/><path d="M0 780L252 558H940L1200 780Z" fill={`url(#floor-${id})`}/><rect x="252" y="163" width="688" height="395" fill="#e1d7c5"/>
+<path d="M315 558V300A136 136 0 0 1 587 300V558Z" fill="#77856d"/>
+<path d="M326 558V300A125 125 0 0 1 576 300V558Z" fill="#7f8b71"/>
+<path d="M333 558V300A118 118 0 0 1 569 300V558Z" fill="#c2c4a3"/>
+<path d="M333 512L569 467V558H333Z" fill="#888b70"/>
+<g stroke="#495b45" stroke-width="5"><path d="M438 541Q476 390 458 253M466 409Q412 372 398 318M469 371Q522 338 526 290"/></g>
+{[[453,278,-15],[401,324,-55],[520,299,45],[455,350,10],[495,363,45],[423,371,-40],[473,300,25]].map(([x,y,r])=><ellipse cx={x} cy={y} rx="21" ry="49" transform={`rotate(${r} ${x} ${y})`} fill="#677c59"/>)}
+<rect x="656" y="163" width="170" height="395" fill={`url(#slats-${id})`}/><path d="M846 220H913V447H846Z" fill="#c7b99c" stroke="#aa9d82"/>
+<path d="M565 558L927 649L1106 780H669L352 558Z" fill="#f4e5be" opacity=".48"/><g stroke="#9e937b" stroke-opacity=".4"><path d="M252 558L0 780M390 558L258 780M527 558L509 780M665 558L760 780M802 558L1010 780M940 558L1200 780M139 658H1056"/></g>
+{variant==='Workspace' ? <g><path d="M219 518L683 495L928 588L395 636Z" fill="#b29670"/><path d="M240 528V663M887 596V714M407 632V735M656 513V626" stroke="#514636" stroke-width="12"/>{[335,465,595].map(x=><g><path d={`M${x} 507l13 -65h70l-8 62Z`} fill="#514f43"/><path d={`M${x+14} 456h57v37h-62Z`} fill="#8d9a94"/></g>)}</g> : variant==='Retail' ? <g>{[[270,490,135],[480,525,180],[755,460,115]].map(([x,y,w])=><g><path d={`M${x} ${y}h${w}v160h-${w}Z`} fill="#d0b598"/><ellipse cx={x!+w!/2} cy={y} rx={w!/2} ry="18" fill="#e6d2b8"/><path d={`M${x!+w!/2-23} ${y!-14}q-25 -30 -6 -75h58q19 45 -6 75Z`} fill={tone}/><ellipse cx={x!+w!/2} cy={y!-89} rx="29" ry="8" fill="#845741"/></g>)}</g> : <g><path d="M80 520L319 481L494 558L218 613Z" fill="#e4d6b9"/><path d="M80 520V621L218 697V613Z" fill="#b8a586"/><path d="M218 613L494 558V651L218 697Z" fill="#ccbea3"/><path d="M87 505L299 468L324 509L104 551Z" fill="#ece2cc"/><path d="M104 551L104 592L218 646L219 604Z" fill="#ded1b6"/><path d="M324 509L469 564L431 595L277 539Z" fill="#ecdfc4"/><path d="M207 494L272 484L313 511L246 525Z" fill={tone}/><ellipse cx="623" cy="633" rx="116" ry="42" fill="#9c7852"/><path d="M515 636L548 712M723 636L690 712" stroke="#6e573d" stroke-width="12"/><ellipse cx="623" cy="624" rx="116" ry="39" fill="#bca27c"/><path d="M619 598Q600 566 610 548H642Q652 566 633 598Z" fill="#635c47"/></g>}
+<path d="M928 398V632" stroke="#655b43" stroke-width="5"/><path d="M864 408L893 360H965L994 408Z" fill="#eee0be"/><ellipse cx="929" cy="408" rx="65" ry="9" fill="#c4b68f"/><path d="M895 640H961" stroke="#655b43" stroke-width="7"/>
+</g>}
+</svg>
