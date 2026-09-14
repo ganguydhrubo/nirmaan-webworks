@@ -34,7 +34,7 @@ export interface EvaluationResult {
   };
   missingTrustSignals: string[];
   detailedCopyReport: string;
-  evaluatedVia: "groq-llama-70b" | "deterministic-heuristic";
+  evaluatedVia: "groq-gpt-oss-120b" | "deterministic-heuristic";
 }
 
 export interface EvaluationInput {
@@ -137,7 +137,12 @@ Return ONLY valid JSON matching this exact structure:
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        // openai/gpt-oss-120b: as of Aug 2026 the old llama-3.3-70b-versatile
+        // model was moved to Groq's enterprise-only tier and 403s on a free
+        // key. gpt-oss-120b is the largest model still on Groq's free tier
+        // (30 RPM / 1,000 RPD / 200K TPD — verified against Groq's own docs),
+        // with a 131K context window and native JSON response_format support.
+        model: "openai/gpt-oss-120b",
         messages: [
           {
             role: "system",
@@ -149,6 +154,12 @@ Return ONLY valid JSON matching this exact structure:
           },
         ],
         temperature: 0.2,
+        // gpt-oss-120b is a reasoning model that spends tokens on a hidden
+        // "reasoning" field before the actual answer; "low" keeps that
+        // overhead small so this stays fast for a synchronous UI request and
+        // comfortably inside the free tier's 30K-tokens/minute budget.
+        reasoning_effort: "low",
+        max_tokens: 3000,
         response_format: { type: "json_object" },
       }),
     });
@@ -165,7 +176,7 @@ Return ONLY valid JSON matching this exact structure:
     }
     const parsed = JSON.parse(rawContent);
 
-    return assembleResult(parsed, input, "groq-llama-70b");
+    return assembleResult(parsed, input, "groq-gpt-oss-120b");
   } catch (err) {
     console.warn("Groq evaluation failed, falling back to heuristics:", err);
     return evaluateWithHeuristics(input);
@@ -175,7 +186,7 @@ Return ONLY valid JSON matching this exact structure:
 function assembleResult(
   data: Partial<EvaluationResult>,
   input: EvaluationInput,
-  evaluatedVia: "groq-llama-70b" | "deterministic-heuristic",
+  evaluatedVia: "groq-gpt-oss-120b" | "deterministic-heuristic",
 ): EvaluationResult {
   const totalScore = Math.min(100, Math.max(0, Math.round(data.totalScore ?? 68)));
   let tier: EvaluationResult["tier"] = "Solid & Functional";

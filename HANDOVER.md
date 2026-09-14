@@ -11,7 +11,7 @@
 | **Active Local Server** | `http://127.0.0.1:4321` (Self-hosted preview running on Cloudflare Workers runtime) |
 | **GitHub Repository** | [https://github.com/ganguydhrubo/webjobs-site](https://github.com/ganguydhrubo/webjobs-site) |
 | **Target Vercel Account** | [https://vercel.com/dhrubojyoti](https://vercel.com/dhrubojyoti) |
-| **Core Tech Stack** | Astro 7 (Server SSR & Static Prerender), Tailwind CSS 4, TypeScript 5.9, Groq AI LLaMA-3.3-70B, Cloudflare Workers / Vercel Edge |
+| **Core Tech Stack** | Astro 7 (Server SSR & Static Prerender), Tailwind CSS 4, TypeScript 5.9, Groq AI (GPT-OSS 120B), Cloudflare Workers / Vercel Edge |
 | **Audited Routes** | **37 total routes** (Main site, 6 bespoke industry demos, AI Evaluator tool, legal policies) |
 | **Quality Audit Score** | 0 Broken links, 0 Missing images, 0 Axe accessibility violations, 51/51 automated tests passing, 0 ESLint warnings |
 
@@ -28,7 +28,7 @@ The repository has been initialized, configured, and pushed directly to your per
   3. `72f9d9f` — *feat: six bespoke client demo sites with deep authentic trade content*
   4. `7966dbb` — *feat: automated playwright crawler audit and accessibility validation*
   5. `91ab758` — *docs: production architecture, credits, testing, and deployment guide*
-  6. `cb66fc1` — *feat(ai): integrate Groq LLaMA 3.3 website alignment evaluator, wow graphics, and vercel config*
+  6. `cb66fc1` — *feat(ai): integrate Groq GPT-OSS 120B website alignment evaluator, wow graphics, and vercel config*
 
 To pull or push future updates:
 ```powershell
@@ -96,7 +96,7 @@ Located at **`/tools/website-evaluator`** and powered by API endpoint **`/api/ev
    - **Primary CTA:** Before ("Submit") vs After ("Chat on WhatsApp · 15-Min Response") with friction-reduction analysis.
    - **Complete Markdown Audit Report:** Formatted report with a **1-Click "Copy Full Report"** button with visual confirmation.
 6. **Dual-Engine Architecture (Zero-Downtime Guarantee):**
-   - When a `GROQ_API_KEY` is provided, queries Groq Cloud `llama-3.3-70b-versatile` with JSON schema enforcement.
+   - When a `GROQ_API_KEY` is provided, queries Groq Cloud `openai/gpt-oss-120b` with JSON schema enforcement.
    - If no API key is supplied or the API is unreachable, seamlessly activates webjobs.site's built-in deterministic heuristic CRO engine, guaranteeing the tool always renders instant, accurate reports.
 7. **End-to-End Lead Engine Integration:**
    - Direct CTA links pre-filled with the audit score and business name to webjobs.site's `/contact#enquiry` form and WhatsApp desk.
@@ -116,7 +116,7 @@ To run webjobs.site and client projects at maximum efficiency, here is the full 
 
 ### B. Third-Party API Keys & Services
 - [ ] **Groq Cloud API Key (`GROQ_API_KEY`)**:
-  - *Where to get:* [https://console.groq.com/keys](https://console.groq.com/keys) (Free tier provides 14,400 req/day for LLaMA 3.3 70B).
+  - *Where to get:* [https://console.groq.com/keys](https://console.groq.com/keys) (free tier provides 1,000 req/day for GPT-OSS 120B).
   - *Usage:* Powers real-time AI website audits.
 - [ ] **Resend Transactional Email API Key (`RESEND_API_KEY`)**:
   - *Where to get:* [https://resend.com](https://resend.com) (Free tier: 3,000 emails/month).
