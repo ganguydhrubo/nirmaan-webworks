@@ -1,0 +1,36 @@
+# webjobs.site
+
+> webjobs.site is a web design and development studio based in Kolkata, India, building fast, mobile-first websites for Indian small and medium businesses — real estate developers, hotels and resorts, healthcare clinics, coaching institutes, dental clinics, and restaurants — with transparent INR pricing and a WhatsApp-first response commitment.
+
+webjobs.site does not build login systems, user accounts, or payment checkouts, and does not guarantee specific search-engine rankings. Pricing starts around ₹25,000 for a brochure site and scales with scope; exact quotes are given after a short scoping conversation.
+
+## Company
+
+- [About](/about): who runs webjobs.site and how projects are scoped and delivered
+- [Pricing](/pricing): starting price bands in INR, what's included and excluded per tier
+- [Our process](/work-process): the week-by-week sequence from enquiry to launch
+- [FAQ](/faq): direct answers on cost, timeline, ownership, hosting, and support
+- [Contact](/contact): enquiry form, phone, WhatsApp and email
+
+## Industries served
+
+- [Real Estate & Builders](/industries/real-estate)
+- [Hotels, Resorts & Homestays](/industries/hotels-resorts)
+- [Healthcare Clinics](/industries/healthcare-clinics)
+- [Education & Coaching Institutes](/industries/education-coaching)
+- [Dental Clinics](/industries/dental-clinics)
+- [Restaurants & Cafés](/industries/restaurants-cafes)
+
+## Demos
+
+Six full working demo websites, one per industry above, built for fictional example businesses to demonstrate design and engineering quality (index: [/demos](/demos)). These are not real, currently-operating companies.
+
+## Tools
+
+- [AI Website Brand Alignment Evaluator](/tools/website-evaluator): a free tool that scores whether a business's existing website copy reflects its genuine trade craft, across value proposition, industry authenticity, trust signals, pricing transparency, and mobile actionability.
+
+## Policies
+
+- [Privacy policy](/privacy)
+- [Terms of service](/terms)
+- [Refund policy](/refund-policy)
