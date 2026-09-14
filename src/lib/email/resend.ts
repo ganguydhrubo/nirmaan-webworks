@@ -23,6 +23,7 @@ export class ResendEmailProvider implements EmailProvider {
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
           "Content-Type": "application/json",
+          "Idempotency-Key": `lead/${payload.leadId}`,
         },
         body: JSON.stringify({
           from,
@@ -55,6 +56,7 @@ export async function sendWithRetry(provider: EmailProvider, payload: LeadEmailP
     const result = await provider.sendLeadEmail(payload, to, from);
     if (result.ok) return result;
     lastError = result.error;
+    if (lastError === "email_provider_disabled" || /^resend_http_4(?!29)/.test(lastError ?? "")) return result;
     if (attempt < maxAttempts) {
       const backoffMs = 300 * 2 ** (attempt - 1);
       const jitterMs = Math.random() * 150;

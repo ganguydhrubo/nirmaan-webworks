@@ -4,7 +4,7 @@ import { enquirySchema, MAX_ENQUIRY_PAYLOAD_BYTES } from "@/lib/validation";
 import { getClientIp, hashIp } from "@/lib/ip";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { checkGlobalRateLimit, checkIpRateLimit, checkPhoneRateLimit } from "@/lib/rate-limit";
-import { getDailyEmailCount, incrementDailyEmailCount, insertLead, leadFromInput, logSpam, updateLeadEmailStatus } from "@/lib/leads";
+import { findRecentDuplicateLead, getDailyEmailCount, reserveEmailQuota, insertLead, leadFromInput, logSpam, updateLeadEmailStatus } from "@/lib/leads";
 import { createEmailProvider, sendWithRetry, type LeadEmailPayload } from "@/lib/email";
 import { ConfigError, getIpHashSalt, getRateLimits, requireD1 } from "@/lib/config-validate";
 import { siteConfig } from "@config/site";
@@ -12,6 +12,7 @@ import { siteConfig } from "@config/site";
 export const prerender = false;
 
 const MIN_HUMAN_SUBMIT_MS = 2500;
+let degradedSubmissions: number[] = [];
 
 function json(body: unknown, status: number): Response {
   return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
@@ -65,12 +66,36 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   let formData: Record<string, string>;
   try {
+    const contentType = request.headers.get("content-type") ?? "";
+    if (!noJs && !contentType.includes("application/json")) return fail(415, "bad_content_type", "Please submit using the enquiry form.");
+    // Count the actual stream; Content-Length is optional and cannot be trusted.
+    const reader = request.body?.getReader();
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    if (reader) for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_ENQUIRY_PAYLOAD_BYTES) {
+        await reader.cancel();
+        return fail(413, "payload_too_large", "That submission was too large.");
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    const boundedRequest = new Request(request.url, { method: "POST", headers: request.headers, body: bytes });
     if (noJs) {
-      const fd = await request.formData();
+      const fd = await boundedRequest.formData();
       formData = Object.fromEntries([...fd.entries()].map(([k, v]) => [k, String(v)]));
     } else {
-      formData = await request.json();
+      formData = await boundedRequest.json();
     }
+    if (!formData || typeof formData !== "object" || Array.isArray(formData)) return fail(400, "bad_body", "Please check your submission.");
+    // eslint-disable-next-line no-control-regex
+    for (const [key, value] of Object.entries(formData)) if (typeof value === "string") formData[key] = value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
+    formData.turnstileToken ||= formData["cf-turnstile-response"] ?? "";
   } catch {
     return fail(400, "bad_body", "We couldn't read that submission.");
   }
@@ -91,17 +116,20 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const ip = getClientIp(request);
   const ipHash = await hashIp(ip, ipHashSalt);
   const limits = getRateLimits(runtimeEnv);
+  const recordSpam = (reason: string) => logSpam(db, reason, ipHash, String(formData.pageSource ?? "").slice(0, 200)).catch(() => {
+    console.warn(JSON.stringify({ requestId, code: "spam_log_unavailable" }));
+  });
 
   // 3. Honeypot.
   if (formData.honeypot && formData.honeypot.length > 0) {
-    await logSpam(db, "honeypot", ipHash, formData.pageSource ?? "");
-    return noJs ? redirect("/enquiry-received", 303) : json({ ok: true, leadId: null }, 200); // generic success to the bot
+    await recordSpam("honeypot");
+    return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
   }
 
   // 4. Submit-timing check.
   const renderedAt = Number(formData.formRenderedAt ?? "0");
   if (renderedAt > 0 && Date.now() - renderedAt < MIN_HUMAN_SUBMIT_MS) {
-    await logSpam(db, "too_fast", ipHash, formData.pageSource ?? "");
+    await recordSpam("too_fast");
     return fail(400, "too_fast", "Please try submitting again.");
   }
 
@@ -109,7 +137,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const turnstile = await verifyTurnstile(formData.turnstileToken, runtimeEnv.TURNSTILE_SECRET_KEY, ip);
   const turnstileDegraded = turnstile.outcome === "failed" || turnstile.outcome === "skipped";
   if (turnstile.outcome === "unverified") {
-    await logSpam(db, "turnstile_failed", ipHash, formData.pageSource ?? "");
+    await recordSpam("turnstile_failed");
     return fail(400, "verification_failed", "We couldn't verify you're human. Please try again or message us on WhatsApp.");
   }
 
@@ -118,7 +146,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   if (!parsed.success) {
     const firstIssue = parsed.error.issues[0];
     if (firstIssue?.message === "spam") {
-      await logSpam(db, "phrase_filter", ipHash, formData.pageSource ?? "");
+      await recordSpam("phrase_filter");
       return fail(400, "invalid", "Please check your submission and try again.");
     }
     return fail(400, "invalid", firstIssue?.message ?? "Please check your submission and try again.");
@@ -127,6 +155,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
   // 7. Rate limiting (stricter effective limits when Turnstile is degraded).
   const degradeFactor = turnstileDegraded ? 0.4 : 1;
+  try {
   const [ipLimit, phoneLimit, globalLimit] = await Promise.all([
     checkIpRateLimit(db, ipHash, Math.max(1, Math.floor(limits.perIpPerHour * degradeFactor))),
     checkPhoneRateLimit(db, input.phone, Math.max(1, Math.floor(limits.perPhonePerDay * degradeFactor))),
@@ -134,6 +163,28 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   ]);
   if (!ipLimit.allowed || !phoneLimit.allowed || !globalLimit.allowed) {
     return fail(429, "rate_limited", "You've submitted a few times already — please wait a bit, or message us directly on WhatsApp.");
+  }
+  } catch {
+    // D1 quota exhaustion affects counters as well as lead storage. Continue
+    // to the documented email fallback instead of throwing an uncaught 500.
+    console.warn(JSON.stringify({ requestId, code: "rate_limit_store_unavailable" }));
+    const now = Date.now();
+    degradedSubmissions = degradedSubmissions.filter((t) => now - t < 60000);
+    if (degradedSubmissions.length >= 10) {
+      return fail(429, "rate_limited", "High traffic detected. Please wait a bit or message us directly on WhatsApp.");
+    }
+    degradedSubmissions.push(now);
+  }
+
+  // 7b. Deduplication check: if a lead from the same phone in the same category was submitted within 15 min, succeed idempotently.
+  try {
+    const existing = await findRecentDuplicateLead(db, input.phone, input.category, 15);
+    if (existing) {
+      console.log(JSON.stringify({ requestId, code: "duplicate_submission_idempotent", leadId: existing.id }));
+      return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
+    }
+  } catch {
+    // Non-blocking if D1 lookup fails
   }
 
   // 8. Persist FIRST.
@@ -170,13 +221,22 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   };
 
   let emailOk = false;
+  let quotaAvailable = true;
+  if (persisted) {
+    try { quotaAvailable = await reserveEmailQuota(db, dateUtc, limits.resendDailyCap); }
+    catch { quotaAvailable = false; console.warn(JSON.stringify({ requestId, code: "quota_store_unavailable_queued" })); }
+  }
+  if (quotaWarning) console.warn(JSON.stringify({ requestId, code: "email_quota_warning" }));
   try {
+    if (!quotaAvailable) {
+      console.warn(JSON.stringify({ requestId, code: "email_quota_exhausted_queued" }));
+      return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
+    }
     const provider = createEmailProvider(runtimeEnv.EMAIL_PROVIDER ?? "resend", runtimeEnv.RESEND_API_KEY);
     const result = await sendWithRetry(provider, payload, siteConfig.leadNotificationEmail, `${siteConfig.businessName} <leads@${siteConfig.domain}>`);
     emailOk = result.ok;
     if (persisted) {
       await updateLeadEmailStatus(db, lead.id, result.ok ? "sent" : "failed", result.error);
-      if (result.ok) await incrementDailyEmailCount(db, dateUtc);
     }
   } catch (err) {
     console.error(JSON.stringify({ requestId, level: "error", message: "email_send_threw", error: String(err) }));
@@ -193,13 +253,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   }
 
   if (noJs) {
-    const url = new URL("/enquiry-received", request.url);
-    url.searchParams.set("name", input.name);
-    url.searchParams.set("category", input.category);
-    url.searchParams.set("phone", input.phone);
-    return redirect(url.toString(), 303);
+    return redirect("/enquiry-received", 303);
   }
-  return json({ ok: true, leadId: persisted ? lead.id : null }, 200);
+  return json({ ok: true }, 200);
 };
 
 export const GET: APIRoute = () => json({ ok: false, message: "Method not allowed" }, 405);

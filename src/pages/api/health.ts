@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { env as runtimeEnv } from "cloudflare:workers";
-import { getDailyEmailCount } from "@/lib/leads";
+import { getDailyEmailCount, getMonthlyEmailCount } from "@/lib/leads";
 import { getRateLimits } from "@/lib/config-validate";
 
 export const prerender = false;
@@ -14,8 +14,8 @@ export const GET: APIRoute = async () => {
     try {
       await runtimeEnv.DB.prepare("SELECT 1").first();
       checks.d1 = { ok: true };
-    } catch (err) {
-      checks.d1 = { ok: false, detail: err instanceof Error ? err.message : "unknown_error" };
+    } catch {
+      checks.d1 = { ok: false, detail: "d1_unreachable" };
     }
   } else {
     checks.d1 = { ok: false, detail: "no_binding" };
@@ -25,14 +25,19 @@ export const GET: APIRoute = async () => {
   const limits = getRateLimits(runtimeEnv);
   if (runtimeEnv.DB && checks.d1.ok) {
     try {
-      const dateUtc = new Date().toISOString().slice(0, 10);
-      const sentToday = await getDailyEmailCount(runtimeEnv.DB, dateUtc);
+      const now = new Date();
+      const dateUtc = now.toISOString().slice(0, 10);
+      const monthUtc = now.toISOString().slice(0, 7);
+      const [sentToday, sentMonth] = await Promise.all([
+        getDailyEmailCount(runtimeEnv.DB, dateUtc),
+        getMonthlyEmailCount(runtimeEnv.DB, monthUtc),
+      ]);
       checks.email_quota = {
-        ok: sentToday < limits.resendDailyCap,
-        detail: `${sentToday}/${limits.resendDailyCap} sent today (UTC)`,
+        ok: sentToday < limits.resendDailyCap && sentMonth < limits.resendMonthlyCap,
+        detail: `${sentToday}/${limits.resendDailyCap} today, ${sentMonth}/${limits.resendMonthlyCap} this month (UTC)`,
       };
-    } catch (err) {
-      checks.email_quota = { ok: false, detail: err instanceof Error ? err.message : "unknown_error" };
+    } catch {
+      checks.email_quota = { ok: false, detail: "quota_query_failed" };
     }
   }
 

@@ -16,7 +16,7 @@
  * Schedule: configured in wrangler.retry.jsonc (every 30 minutes).
  */
 import { createEmailProvider, sendWithRetry, type LeadEmailPayload } from "../src/lib/email";
-import { getDailyEmailCount, incrementDailyEmailCount } from "../src/lib/leads";
+import { claimLeadForEmail, cleanupOldRecords, getDailyEmailCount, reserveEmailQuota, updateLeadEmailStatus } from "../src/lib/leads";
 
 export interface Env {
   DB: D1Database;
@@ -61,7 +61,9 @@ export default {
       `SELECT id, created_at, name, phone_e164, email, business_name, category, needs, message,
               source_page, utm_source, utm_medium, utm_campaign, email_attempts
        FROM leads
-       WHERE email_status IN ('failed', 'pending') AND email_attempts < ?1
+       WHERE (email_status IN ('failed', 'pending') OR (email_status = 'processing' AND datetime(updated_at) < datetime('now', '-10 minutes')))
+         AND email_attempts < ?1
+         AND datetime(created_at) < datetime('now', '-5 minutes')
        ORDER BY created_at ASC
        LIMIT ?2`,
     )
@@ -73,6 +75,18 @@ export default {
     const provider = createEmailProvider(env.EMAIL_PROVIDER ?? "resend", env.RESEND_API_KEY);
 
     for (const row of results) {
+      // 1. Atomically claim row to prevent overlapping workers from double-sending
+      const claimed = await claimLeadForEmail(env.DB, row.id);
+      if (!claimed) continue;
+
+      // 2. Reserve quota
+      const quotaReserved = await reserveEmailQuota(env.DB, dateUtc, dailyCap);
+      if (!quotaReserved) {
+        // Revert to pending if quota exhausted
+        await updateLeadEmailStatus(env.DB, row.id, "pending", "quota_exhausted_during_sweep");
+        break;
+      }
+
       const payload: LeadEmailPayload = {
         leadId: row.id,
         name: row.name,
@@ -101,10 +115,26 @@ export default {
         .bind(row.id, nextStatus, result.error ?? null, nextAttempts, new Date().toISOString())
         .run();
 
-      if (result.ok) await incrementDailyEmailCount(env.DB, dateUtc);
       if (nextStatus === "abandoned") {
-        console.error(JSON.stringify({ level: "error", message: "lead_email_abandoned", leadId: row.id }));
+        console.error(JSON.stringify({
+          level: "fatal",
+          message: "lead_email_abandoned_requires_manual_attention",
+          leadId: row.id,
+          phoneE164: row.phone_e164,
+          attempts: nextAttempts,
+          lastError: result.error,
+        }));
       }
+    }
+
+    // Run DPDP retention cleanup once per sweep
+    try {
+      const cleaned = await cleanupOldRecords(env.DB);
+      if (cleaned.spamDeleted || cleaned.countersDeleted || cleaned.eventsDeleted) {
+        console.log(JSON.stringify({ level: "info", message: "retention_cleanup_completed", ...cleaned }));
+      }
+    } catch (cleanErr) {
+      console.warn(JSON.stringify({ level: "warn", message: "retention_cleanup_failed", error: String(cleanErr) }));
     }
   },
 };
