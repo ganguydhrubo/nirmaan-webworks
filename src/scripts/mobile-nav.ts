@@ -18,7 +18,7 @@ if (toggle && panel) {
     document.body.style.width = "100%";
 
     panel!.hidden = false;
-    scrim && (scrim.hidden = false);
+    if (scrim) scrim.hidden = false;
     toggle!.setAttribute("aria-expanded", "true");
     document.addEventListener("keydown", onKeydown);
     const first = focusables()[0];
@@ -27,7 +27,7 @@ if (toggle && panel) {
 
   function close() {
     panel!.hidden = true;
-    scrim && (scrim.hidden = true);
+    if (scrim) scrim.hidden = true;
     toggle!.setAttribute("aria-expanded", "false");
     document.removeEventListener("keydown", onKeydown);
 

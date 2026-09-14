@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "node scripts/validate-config.mjs && astro check && tsc -p tsconfig.client.json && astro build",
-    "preview": "wrangler dev ./dist",
+    "build": "node scripts/validate-release.mjs && astro check && tsc -p tsconfig.client.json && astro build",
+    "build:preview": "node scripts/validate-release.mjs --preview && astro check && tsc -p tsconfig.client.json && astro build",
+    "preview": "wrangler dev --config dist/server/wrangler.json",
     "astro": "astro",
     "check": "astro check && tsc -p tsconfig.client.json",
-    "lint": "eslint . --ext .ts,.astro",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
@@ -33,6 +34,7 @@
     "eslint": "^9.20.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0",
     "vitest": "^3.2.4",
     "wrangler": "^4.131.1"
   },
