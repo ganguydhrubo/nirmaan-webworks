@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://www.nirmaanwebworks.in",
+  site: "https://webjobs.site",
   output: "server",
   session: false,
   trailingSlash: "never",

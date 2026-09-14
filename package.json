@@ -1,5 +1,5 @@
 {
-  "name": "nirmaan-webworks",
+  "name": "webjobs-site",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -15,8 +15,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "db:migrate:local": "wrangler d1 migrations apply nirmaan_leads --local",
-    "db:migrate:remote": "wrangler d1 migrations apply nirmaan_leads --remote",
+    "db:migrate:local": "wrangler d1 migrations apply webjobs_site_leads --local",
+    "db:migrate:remote": "wrangler d1 migrations apply webjobs_site_leads --remote",
     "cf:typegen": "wrangler types"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 -- Migration 0001: initial schema for leads, spam log and email quota tracking.
 -- Idempotent: safe to re-run because every statement uses IF NOT EXISTS.
--- Apply with: wrangler d1 migrations apply nirmaan_leads --local|--remote
+-- Apply with: wrangler d1 migrations apply webjobs_site_leads --local|--remote
 
 CREATE TABLE IF NOT EXISTS leads (
   id TEXT PRIMARY KEY,                 -- crypto.randomUUID()

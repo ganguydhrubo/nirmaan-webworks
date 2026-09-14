@@ -1,14 +1,10 @@
 /**
  * config/site.ts — the ONLY place non-secret business facts live.
  *
- * PLACEHOLDER BRAND NOTICE (read this before deploying for real):
- * "Nirmaan Webworks" is a fictional placeholder identity invented for this
- * build because no real business name, phone number, WhatsApp number, email,
- * address or domain was supplied. Every value below is either clearly
- * fictional or derived from an environment variable. Before a real launch,
- * replace the values in this file (and the corresponding .env values) with
- * the real business's details — nothing else in the codebase should need to
- * change, because every component/page/email template imports from here.
+ * This is the real, live business identity for webjobs.site. Every
+ * component/page/email template imports from here — changing the business
+ * name, phone, WhatsApp number, email or address is a one-line edit in this
+ * file, not a find-and-replace across the codebase.
  *
  * Secrets (API keys, tokens) do NOT belong in this file — see .env.example.
  */
@@ -56,36 +52,36 @@ export interface DemoRegistryEntry {
   noindex: true;
 }
 
-const whatsappNumber = "919876543210";
+const whatsappNumber = "919330393298";
 
 export const siteConfig = {
-  businessName: "Nirmaan Webworks",
-  legalEntityName: "Nirmaan Webworks",
-  isPlaceholderIdentity: true,
+  businessName: "webjobs.site",
+  legalEntityName: "webjobs.site",
+  isPlaceholderIdentity: false,
   tagline: "Websites for Indian businesses that turn visitors into WhatsApp enquiries.",
   shortDescription:
     "We design and build fast, mobile-first websites for Indian shops, clinics, restaurants, jewellers, builders and studios, priced and explained in plain rupees.",
-  domain: "nirmaanwebworks.in",
-  siteUrl: "https://www.nirmaanwebworks.in",
+  domain: "webjobs.site",
+  siteUrl: "https://webjobs.site",
 
-  primaryEmail: "hello@nirmaanwebworks.in",
-  leadNotificationEmail: "leads@nirmaanwebworks.in",
-  supportEmail: "hello@nirmaanwebworks.in",
+  primaryEmail: "hhimanish@gmail.com",
+  leadNotificationEmail: "hhimanish@gmail.com",
+  supportEmail: "hhimanish@gmail.com",
 
   phoneDisplay: `+${whatsappNumber.slice(0,2)} ${whatsappNumber.slice(2,7)} ${whatsappNumber.slice(7)}`,
   phoneE164: `+${whatsappNumber}`,
   whatsappNumber,
 
   address: {
-    line1: "C-Scheme",
-    city: "Jaipur",
-    state: "Rajasthan",
-    pin: "302001",
+    line1: "Astra Towers, Newtown",
+    city: "Kolkata",
+    state: "West Bengal",
+    pin: "700161",
     country: "India",
     countryCode: "IN",
   },
 
-  serviceAreas: ["Jaipur", "Rajasthan", "Delhi NCR", "Pan-India (remote delivery)"],
+  serviceAreas: ["Kolkata", "Newtown", "West Bengal", "Pan-India (remote delivery)"],
 
   businessHours: {
     display: "Mon–Sat, 10:00 AM – 7:00 PM IST",
@@ -153,11 +149,11 @@ export const siteConfig = {
   maintenanceMonthlyInr: { min: 4000, max: 8000 },
 
   whatsappMessageTemplates: {
-    header: "Hi Nirmaan Webworks, I'd like to talk about a website for my business.",
+    header: "Hi, I'd like to talk about a website for my business.",
     heroSecondary: "Hi, I found your site and I'd like to know more about getting a website built.",
     mobileStickyBar: "Hi, I'm looking at your website on my phone and I'd like to ask about pricing.",
     enquiryForm: "Hi, I just filled your enquiry form and wanted to follow up directly.",
-    footer: "Hi Nirmaan Webworks, I have a question about your services.",
+    footer: "Hi, I have a question about your services.",
     demoGeneric: (demoName: string) =>
       `Hi, I looked at the ${demoName} demo on your site and I'd like something similar for my business.`,
     industryPage: (industryName: string) =>
@@ -185,7 +181,7 @@ export const siteConfig = {
       name: "Real Estate & Builders",
       shortName: "Real Estate",
       demoSlug: "shivalik-homes",
-      metaTitle: "Website Design for Real Estate & Builders in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Real Estate & Builders in India | webjobs.site",
       metaDescription:
         "Property listing websites with floor plans, EMI calculators and site-visit booking for Indian builders and real estate developers. See a live demo.",
       heroQuestion: "Are buyers finding your projects on Google, or only on property portals you don't control?",
@@ -195,7 +191,7 @@ export const siteConfig = {
       name: "Hotels, Resorts & Homestays",
       shortName: "Hotels & Resorts",
       demoSlug: "kayal-backwaters",
-      metaTitle: "Website Design for Hotels, Resorts & Homestays in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Hotels, Resorts & Homestays in India | webjobs.site",
       metaDescription:
         "Direct-booking websites for Indian hotels, resorts and homestays that reduce OTA commission and showcase rooms, experiences and packages properly.",
       heroQuestion: "How much of every booking are you giving away in OTA commission that a direct-booking website could keep?",
@@ -205,7 +201,7 @@ export const siteConfig = {
       name: "Healthcare Clinics",
       shortName: "Clinics",
       demoSlug: "sanjeevani-clinic",
-      metaTitle: "Website Design for Clinics & Multi-Specialty Hospitals in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Clinics & Multi-Specialty Hospitals in India | webjobs.site",
       metaDescription:
         "Appointment-ready clinic websites with doctor profiles, specialisations and mobile-first booking for Indian healthcare practices.",
       heroQuestion: "When someone searches for a doctor near them at 11pm, does your clinic show up — and can they book?",
@@ -215,7 +211,7 @@ export const siteConfig = {
       name: "Education & Coaching Institutes",
       shortName: "Coaching Institutes",
       demoSlug: "manthan-institute",
-      metaTitle: "Website Design for Coaching Institutes & Schools in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Coaching Institutes & Schools in India | webjobs.site",
       metaDescription:
         "Websites for Indian coaching institutes and schools with batch schedules, faculty profiles and admission enquiry forms parents actually trust.",
       heroQuestion: "Do parents comparing coaching institutes online find a real website, or just a Facebook page?",
@@ -225,7 +221,7 @@ export const siteConfig = {
       name: "Dental Clinics",
       shortName: "Dental Clinics",
       demoSlug: "ivory-smiles",
-      metaTitle: "Website Design for Dental Clinics in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Dental Clinics in India | webjobs.site",
       metaDescription:
         "Treatment-catalogue websites for Indian dental clinics with pricing clarity, appointment booking and a real clinic tour gallery.",
       heroQuestion: "Can a nervous new patient see your treatments, prices and dentist's qualifications before they even call?",
@@ -235,7 +231,7 @@ export const siteConfig = {
       name: "Restaurants & Cafés",
       shortName: "Restaurants",
       demoSlug: "anaar-awadhi-table",
-      metaTitle: "Website Design for Restaurants & Cafés in India | Nirmaan Webworks",
+      metaTitle: "Website Design for Restaurants & Cafés in India | webjobs.site",
       metaDescription:
         "Menu-first restaurant websites with reservations, location and gallery — built so hungry customers find you on Google, not just food apps.",
       heroQuestion: "If someone Googles your restaurant right now, do they land on your menu — or on someone else's aggregator listing?",

@@ -10,7 +10,7 @@ const categories = [...new Set(faqItems.map((f) => f.category))];
 const jsonLd = [faqJsonLd(faqItems.map((f) => ({ question: f.question, answer: f.answer })))];
 ---
 
-<BaseLayout title="Frequently asked questions" description="Straight answers on pricing, timelines, ownership, hosting and support for a Nirmaan Webworks website project." jsonLd={jsonLd}>
+<BaseLayout title="Frequently asked questions" description="Straight answers on pricing, timelines, ownership, hosting and support for a webjobs.site website project." jsonLd={jsonLd}>
   <section class="bg-cream py-14 sm:py-20">
     <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Frequently asked questions</h1>

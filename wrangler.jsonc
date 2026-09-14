@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "nirmaan-webworks",
+  "name": "webjobs-site",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
@@ -10,13 +10,13 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "nirmaan_leads",
+      "database_name": "webjobs_site_leads",
       "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID",
       "migrations_dir": "./migrations"
     }
   ],
   "vars": {
-    "PUBLIC_SITE_URL": "https://www.nirmaanwebworks.in",
+    "PUBLIC_SITE_URL": "https://webjobs.site",
     "EMAIL_PROVIDER": "resend",
     "AI_PROVIDER": "none",
     "ENQUIRY_RATE_LIMIT_PER_IP_PER_HOUR": "5",

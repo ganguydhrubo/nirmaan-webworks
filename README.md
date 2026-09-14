@@ -1,10 +1,10 @@
-# Nirmaan Webworks
+# webjobs.site
 
 **Websites engineered for Indian businesses.**
 
-Nirmaan Webworks is an engineering-first web design and development studio built specifically for Indian MSMEs, local service businesses, clinics, and hospitality providers.
+webjobs.site is an engineering-first web design and development studio built specifically for Indian MSMEs, local service businesses, clinics, and hospitality providers.
 
-Rather than selling vague agency promises or generic templates, Nirmaan demonstrates craft through six live, fully functioning websites across key Indian industries, transparent INR pricing, sub-second mobile performance, and a strict WhatsApp-first communication model.
+Rather than selling vague agency promises or generic templates, webjobs.site demonstrates craft through six live, fully functioning websites across key Indian industries, transparent INR pricing, sub-second mobile performance, and a strict WhatsApp-first communication model.
 
 ---
 
@@ -53,7 +53,7 @@ Rather than selling vague agency promises or generic templates, Nirmaan demonstr
 ## Project Structure
 
 ```text
-nirmaan-webworks/
+webjobs-site/
 ├── config/                  # Site configuration and industry/demo registry
 ├── migrations/              # Cloudflare D1 database migrations
 ├── public/                  # Static assets (fonts, icons, demo cards, OG images)
@@ -85,7 +85,7 @@ nirmaan-webworks/
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd nirmaan-webworks
+cd webjobs-site
 
 # Install dependencies
 npm install
@@ -116,6 +116,6 @@ Refer to [DEPLOYMENT.md](DEPLOYMENT.md) for full deployment instructions, includ
 
 ## License & Credits
 
-- All code is released under the proprietary license of Nirmaan Webworks.
+- All code is released under the proprietary license of webjobs.site.
 - Fonts (Fraunces, Manrope, Spectral, Cormorant, Outfit, Domine, Sora, Playfair Display) are licensed under SIL Open Font License 1.1.
 - Complete image and asset provenance is documented in [CREDITS.md](CREDITS.md).

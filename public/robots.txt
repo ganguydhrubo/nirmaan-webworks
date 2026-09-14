@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://www.nirmaanwebworks.in/sitemap-index.xml
+Sitemap: https://webjobs.site/sitemap-index.xml

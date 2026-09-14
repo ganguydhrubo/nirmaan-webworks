@@ -1,4 +1,5 @@
 import type { LeadEmailPayload } from "./types";
+import { siteConfig } from "@config/site";
 
 const BUYER_INTENT_LABEL: Record<string, string> = {
   "new-website": "New website",
@@ -14,7 +15,7 @@ function toIst(iso: string): string {
 
 function waLink(phoneE164: string, name: string, category: string): string {
   const number = phoneE164.replace(/^\+/, "");
-  const text = encodeURIComponent(`Hi ${name}, thanks for your enquiry about a ${category} website — this is Nirmaan Webworks.`);
+  const text = encodeURIComponent(`Hi ${name}, thanks for your enquiry about a ${category} website — this is ${siteConfig.businessName}.`);
   return `https://wa.me/${number}?text=${text}`;
 }
 

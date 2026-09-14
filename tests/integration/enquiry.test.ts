@@ -11,7 +11,7 @@ vi.mock('@/lib/email', () => ({ createEmailProvider: mocks.provider, sendWithRet
 import { GET, POST } from '@/pages/api/enquiry';
 const valid = { name: 'Test Person', phone: '9876543210', email: 'test@example.com', category: 'Clinics', needs: 'new-website', consent: true, formRenderedAt: Date.now() - 10000 };
 async function submit(body: unknown = valid, headers: Record<string,string> = {}) {
-  const request = new Request('https://www.nirmaanwebworks.in/api/enquiry', { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://www.nirmaanwebworks.in', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
+  const request = new Request('https://webjobs.site/api/enquiry', { method: 'POST', headers: { 'content-type': 'application/json', origin: 'https://webjobs.site', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
   return await POST({ request, redirect: (url: string, status = 302) => new Response(null, { status, headers: { location: url } }) } as never) as Response;
 }
 beforeEach(() => {

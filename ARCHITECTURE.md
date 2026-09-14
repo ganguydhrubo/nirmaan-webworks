@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — Nirmaan Webworks
+# ARCHITECTURE.md — webjobs.site
 
 Decisions made during this build, the alternatives considered, and why. Cross-reference INFRASTRUCTURE.md for the underlying free-tier evidence.
 

@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "nirmaan-webworks-retry",
+  "name": "webjobs-site-retry",
   "main": "workers/retry-worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -14,14 +14,14 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "nirmaan_leads",
+      "database_name": "webjobs_site_leads",
       "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID"
     }
   ],
   "vars": {
     "EMAIL_PROVIDER": "resend",
     "RESEND_DAILY_CAP": "100",
-    "LEAD_NOTIFICATION_EMAIL": "leads@nirmaanwebworks.in",
-    "FROM_EMAIL": "Nirmaan Webworks <leads@nirmaanwebworks.in>"
+    "LEAD_NOTIFICATION_EMAIL": "leads@webjobs.site",
+    "FROM_EMAIL": "webjobs.site <leads@webjobs.site>"
   }
 }
