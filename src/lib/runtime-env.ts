@@ -21,6 +21,16 @@ export interface RuntimeEnv {
   DB?: D1Database;
   ASSETS?: unknown;
   RESEND_API_KEY?: string;
+  /**
+   * Override the lead notification "to"/"from" addresses used by
+   * api/enquiry.ts. Only set these while the real sending domain
+   * (siteConfig.domain) is unverified in Resend — see DEPLOYMENT.md
+   * "Resend sandbox mode" for why the real addresses 403 until then.
+   * Unset (or delete) both once the domain is verified so the app falls
+   * back to the real siteConfig.leadNotificationEmail / leads@domain.
+   */
+  LEAD_NOTIFICATION_EMAIL?: string;
+  FROM_EMAIL?: string;
   TURNSTILE_SECRET_KEY?: string;
   PUBLIC_TURNSTILE_SITE_KEY?: string;
   IP_HASH_SALT?: string;

@@ -30,18 +30,18 @@ const currentPath = Astro.url.pathname;
     against the viewport instead.
   -->
   <div class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/95 backdrop-blur">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8 xl:gap-4">
     <Logo />
 
     <nav aria-label="Primary" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
+      <ul class="flex items-center gap-0.5 xl:gap-1">
         {navItems.map((item) => (
           <li>
             <a
               href={item.href}
               aria-current={currentPath === item.href || currentPath.startsWith(item.href + "/") ? "page" : undefined}
               class:list={[
-                "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-ink-100 hover:text-brand-600",
+                "whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium transition-colors hover:bg-ink-100 hover:text-brand-600 xl:px-3",
                 (currentPath === item.href || currentPath.startsWith(item.href + "/")) && "text-brand-600",
               ]}
             >
@@ -52,14 +52,14 @@ const currentPath = Astro.url.pathname;
       </ul>
     </nav>
 
-    <div class="hidden items-center gap-3 lg:flex">
-      <a href={telLink()} class="flex items-center gap-1.5 text-sm font-medium text-ink-700 hover:text-brand-600" data-analytics-event="call_click">
+    <div class="hidden items-center gap-2 lg:flex xl:gap-3">
+      <a href={telLink()} class="hidden items-center gap-1.5 whitespace-nowrap text-sm font-medium text-ink-700 hover:text-brand-600 xl:flex" data-analytics-event="call_click">
         <Icon name="phone" class="h-4 w-4" />
         {siteConfig.phoneDisplay}
       </a>
       <a
         href="/contact"
-        class="rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-cream shadow-sm transition hover:bg-brand-700"
+        class="whitespace-nowrap rounded-md bg-brand-600 px-3 py-2.5 text-sm font-semibold text-cream shadow-sm transition hover:bg-brand-700 xl:px-4"
         data-analytics-event="cta_click"
       >
         Get a free quote

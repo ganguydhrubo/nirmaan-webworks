@@ -253,7 +253,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       return noJs ? redirect("/enquiry-received", 303) : json({ ok: true }, 200);
     }
     const provider = createEmailProvider(runtimeEnv.EMAIL_PROVIDER ?? "resend", runtimeEnv.RESEND_API_KEY);
-    const result = await sendWithRetry(provider, payload, siteConfig.leadNotificationEmail, `${siteConfig.businessName} <leads@${siteConfig.domain}>`);
+    const notifyTo = runtimeEnv.LEAD_NOTIFICATION_EMAIL || siteConfig.leadNotificationEmail;
+    const fromAddress = runtimeEnv.FROM_EMAIL || `${siteConfig.businessName} <leads@${siteConfig.domain}>`;
+    const result = await sendWithRetry(provider, payload, notifyTo, fromAddress);
     emailOk = result.ok;
     if (persisted && db) {
       await updateLeadEmailStatus(db, lead.id, result.ok ? "sent" : "failed", result.error);

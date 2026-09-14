@@ -1,0 +1,67 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<section class="bg-ink-950 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal grid items-center gap-10 rounded-3xl border border-ink-800 bg-ink-900 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr] lg:p-16">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-brand-700/60 bg-brand-900/30 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-300">
+          <Icon name="sparkle" class="h-3.5 w-3.5" />
+          Free AI tool &middot; No sign-up
+        </div>
+        <h2 class="font-display mt-4 text-3xl font-semibold text-cream sm:text-4xl">
+          Before you hire anyone — see what your own website is actually doing wrong.
+        </h2>
+        <p class="mt-4 text-lg text-ink-300">
+          Paste your website's URL and our AI engine scores it out of 100 across five pillars — clarity, trust, mobile friction, local relevance and conversion paths — the same lens we use on every project we build.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm text-ink-300">
+          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Takes under 30 seconds, no account needed</li>
+          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Works on your current site, a competitor's, or one of our demos</li>
+          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Get specific rewrites, not just a score</li>
+        </ul>
+        <div class="mt-8">
+          <a
+            href="/tools/website-evaluator"
+            class="inline-flex items-center gap-2 rounded-md bg-brand-600 px-6 py-3 text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700"
+            data-analytics-event="cta_click"
+          >
+            Audit my website free
+            <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal rounded-2xl border border-ink-800 bg-ink-950 p-6">
+        <div class="flex items-center justify-between text-xs font-medium text-ink-400">
+          <span>Sample audit result</span>
+          <span class="rounded-full bg-brand-900/40 px-2 py-0.5 text-brand-300">Live scoring</span>
+        </div>
+        <div class="mt-4 flex items-end gap-3">
+          <span class="font-display text-5xl font-bold text-cream">68</span>
+          <span class="mb-1.5 text-sm text-ink-400">/ 100</span>
+        </div>
+        <div class="mt-4 space-y-3">
+          {[
+            { label: "3-second clarity", score: 82 },
+            { label: "Local trust anchors", score: 40 },
+            { label: "Mobile & WhatsApp friction", score: 58 },
+            { label: "Pricing transparency", score: 35 },
+            { label: "Conversion paths", score: 76 },
+          ].map((row) => (
+            <div>
+              <div class="flex items-center justify-between text-xs text-ink-400">
+                <span>{row.label}</span>
+                <span>{row.score}</span>
+              </div>
+              <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink-800">
+                <div class="h-full rounded-full bg-brand-500" style={`width:${row.score}%`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
