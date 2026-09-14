@@ -78,6 +78,72 @@
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 450ms;
+
+  /*
+   * Demo-site palettes — defined centrally here (not per-demo) so the six
+   * demo builds never need to touch shared theme files. Each is a distinct,
+   * industry-appropriate identity, deliberately unlike the main brand and
+   * unlike each other. Use as ordinary Tailwind classes, e.g. bg-shivalik-600.
+   */
+
+  /* Shivalik Homes — real estate, Dehradun: stone + brass, structural */
+  --color-shivalik-50: #f6f4f1;
+  --color-shivalik-100: #eae4dc;
+  --color-shivalik-300: #c7b8a3;
+  --color-shivalik-500: #7c6a52;
+  --color-shivalik-600: #63533f;
+  --color-shivalik-700: #4d4130;
+  --color-shivalik-900: #2c2519;
+  --color-shivalik-brass: #a9812f;
+
+  /* Kayal Backwaters — hotel/resort, Kerala: lagoon teal + sand */
+  --color-kayal-50: #f3f7f5;
+  --color-kayal-100: #dcece6;
+  --color-kayal-300: #94c2b3;
+  --color-kayal-500: #2f7d68;
+  --color-kayal-600: #256554;
+  --color-kayal-700: #1c4d40;
+  --color-kayal-900: #0f2b23;
+  --color-kayal-sand: #e4c896;
+
+  /* Sanjeevani Clinic — healthcare, Nagpur: clinical blue-teal, trustworthy */
+  --color-sanjeevani-50: #f1f7f8;
+  --color-sanjeevani-100: #dcebee;
+  --color-sanjeevani-300: #93c1cb;
+  --color-sanjeevani-500: #2a7f93;
+  --color-sanjeevani-600: #22677a;
+  --color-sanjeevani-700: #1b5160;
+  --color-sanjeevani-900: #102e37;
+
+  /* Manthan Institute — coaching, Kota: academic navy + gold */
+  --color-manthan-50: #f2f3f7;
+  --color-manthan-100: #dfe1ec;
+  --color-manthan-300: #9aa2c4;
+  --color-manthan-500: #2c3564;
+  --color-manthan-600: #232a51;
+  --color-manthan-700: #1a2039;
+  --color-manthan-900: #0e1120;
+  --color-manthan-gold: #c9a13b;
+
+  /* Ivory Smiles — dental, Indore: bright mint + coral, friendly clinical */
+  --color-ivory-50: #f2fbf9;
+  --color-ivory-100: #ddf4ee;
+  --color-ivory-300: #92d9c5;
+  --color-ivory-500: #199b7a;
+  --color-ivory-600: #147d63;
+  --color-ivory-700: #10614d;
+  --color-ivory-coral: #ef7e60;
+  --color-ivory-ink: #1f2a28;
+
+  /* Anaar — The Awadhi Table — restaurant, Lucknow: pomegranate wine + gold, fine-dining dark */
+  --color-anaar-50: #faf3f1;
+  --color-anaar-300: #d79c8f;
+  --color-anaar-500: #8a2c2e;
+  --color-anaar-600: #6f2224;
+  --color-anaar-700: #551a1c;
+  --color-anaar-900: #2c0e10;
+  --color-anaar-gold: #c79a4b;
+  --color-anaar-cream: #f6ecd9;
 }
 
 @layer base {

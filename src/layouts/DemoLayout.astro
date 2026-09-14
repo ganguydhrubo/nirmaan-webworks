@@ -1,0 +1,74 @@
+---
+/**
+ * Minimal wrapper for the six demo sites. Deliberately thin — each demo
+ * builds its own header/nav/footer/visual identity beneath this; the only
+ * things every demo shares are: noindex (see SEO.md), the fonts.css this
+ * demo asked for, and the honest "demo site" disclosure banner (Section 7 /
+ * Section 11 — no demo may pretend to be a real, currently-operating
+ * business without disclosure).
+ */
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+interface Props {
+  demoSlug: string;
+  title: string;
+  description: string;
+  fontsHref: string;
+  themeColor: string;
+}
+
+const { demoSlug, title, description, fontsHref, themeColor } = Astro.props;
+
+const demo = siteConfig.demoRegistry.find((d) => d.slug === demoSlug);
+if (!demo) {
+  throw new Error(`Unknown demo slug "${demoSlug}" — add it to config/site.ts demoRegistry`);
+}
+const industry = siteConfig.industryRegistry.find((i) => i.slug === demo.industrySlug);
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={themeColor} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="stylesheet" href={fontsHref} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div data-demo-banner class="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-ink-950 px-4 py-2 text-center text-xs font-medium text-cream sm:text-sm">
+      <span>Demo site — built by {siteConfig.businessName}.</span>
+      <a
+        href={`/contact?category=${encodeURIComponent(industry?.shortName ?? "")}&demo=${demo.slug}`}
+        class="underline decoration-brand-400 decoration-2 underline-offset-2 hover:text-brand-300"
+        data-analytics-event="cta_click"
+        data-demo-slug={demo.slug}
+      >
+        Want one for your business?
+      </a>
+      <a
+        href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric(demo.businessName))}
+        target="_blank"
+        rel="noopener"
+        aria-label="Ask about this demo on WhatsApp (opens WhatsApp)"
+        class="underline decoration-brand-400 decoration-2 underline-offset-2 hover:text-brand-300"
+        data-analytics-event="whatsapp_click"
+        data-demo-slug={demo.slug}
+      >
+        Ask on WhatsApp
+      </a>
+    </div>
+
+    <slot />
+
+    <script src="../scripts/analytics-client.ts"></script>
+    <script src="../scripts/reveal.ts"></script>
+  </body>
+</html>
