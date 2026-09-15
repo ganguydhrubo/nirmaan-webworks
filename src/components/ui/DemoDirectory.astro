@@ -1,0 +1,31 @@
+---
+import { siteConfig } from "@config/site";
+---
+<details class="demo-directory">
+  <summary>Explore all {siteConfig.demoRegistry.length} demo websites <span aria-hidden="true">+</span></summary>
+  <div class="demo-directory-list">
+    {siteConfig.demoRegistry.map(demo => {
+      const industry = siteConfig.industryRegistry.find(item => item.slug === demo.industrySlug)!;
+      return <a href={`/demos/${demo.slug}`}>
+        <span>{industry.shortName}</span>
+        <h3>{demo.businessName}</h3>
+        <p>{demo.tagline} — {demo.city}</p>
+        <span class="demo-directory-link">Open live demo ↗</span>
+      </a>;
+    })}
+  </div>
+</details>
+<style>
+  .demo-directory { border-block:1px solid var(--color-ink-200); }
+  summary { cursor:pointer; padding:1.25rem 0; font-size:.9rem; font-weight:600; }
+  summary > span { float:right; font-size:1.2rem; }
+  .demo-directory[open] summary > span { transform:rotate(45deg); }
+  .demo-directory-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 2rem; padding-bottom:1.5rem; }
+  a { display:block; padding:1.25rem 0; border-top:1px solid var(--color-ink-200); }
+  a > span:first-child { color:var(--color-brand-600); font-size:.65rem; text-transform:uppercase; letter-spacing:.08em; }
+  h3 { margin-top:.4rem; font-size:1.15rem; }
+  p { margin-top:.4rem; font-size:.8rem; color:var(--color-ink-600); }
+  .demo-directory-link { display:block; margin-top:.8rem; font-size:.75rem; color:var(--color-brand-600); }
+  @media(max-width:767px) { .demo-directory-list { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(max-width:479px) { .demo-directory-list { grid-template-columns:minmax(0,1fr); } }
+</style>

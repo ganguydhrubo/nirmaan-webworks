@@ -2,67 +2,45 @@
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
 import Icon from "@/components/ui/Icon.astro";
+import DemoShowcase from "@/components/ui/DemoShowcase.astro";
 ---
-
-<section class="relative overflow-hidden border-b border-ink-200 bg-cream">
-  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:gap-12 md:py-24 lg:px-8">
-    <div class="reveal min-w-0">
-      <p class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3.5 py-1.5 text-sm font-medium text-brand-700">
-        <Icon name="map-pin" class="h-4 w-4" /> Built in {siteConfig.address.city}, working across India
+<section class="hero-cinematic border-b border-ink-200 bg-cream">
+  <div class="hero-composition mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="hero-copy min-w-0">
+      <p class="hero-eyebrow inline-flex items-center gap-2 rounded-full bg-brand-50 px-3.5 py-1.5 text-sm font-medium text-brand-700">
+        <Icon name="map-pin" class="h-4 w-4 shrink-0" /> Built in {siteConfig.address.city}, working across India
       </p>
-      <h1 class="font-display text-4xl font-semibold leading-[1.08] text-ink-950 sm:text-5xl">
-        A website that gets your business found — and turns visitors into WhatsApp enquiries.
-      </h1>
-      <p class="mt-5 max-w-xl text-lg text-ink-700">
-        We build fast, mobile-first websites for Indian shops, clinics, restaurants, jewellers and builders — priced in plain rupees, with no login systems or paid plugins you don't need.
-      </p>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-        <a
-          href="/contact"
-          class="inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700"
-          data-analytics-event="cta_click"
-        >
-          Get a free quote <Icon name="chevron-right" class="h-4 w-4" />
-        </a>
-        <a
-          href={waLink(siteConfig.whatsappMessageTemplates.heroSecondary)}
-          target="_blank"
-          rel="noopener"
-          aria-label="Chat on WhatsApp (opens WhatsApp)"
-          class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-6 py-3.5 text-base font-semibold text-ink-800 transition hover:border-teal-500 hover:text-teal-700"
-          data-analytics-event="whatsapp_click"
-        >
-          <Icon name="whatsapp" class="h-5 w-5 text-[#25D366]" /> Chat on WhatsApp
-        </a>
+      <h1 class="font-display font-semibold text-ink-950">A website that gets your business found — and turns visitors into WhatsApp enquiries.</h1>
+      <p class="hero-description text-ink-700">We build fast, mobile-first websites for Indian shops, clinics, restaurants, jewellers and builders — priced in plain rupees, with no login systems or paid plugins you don't need.</p>
+      <div class="hero-actions">
+        <a href="/contact" class="inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-3.5 font-semibold text-cream shadow-sm transition hover:bg-brand-700" data-analytics-event="cta_click">Get a free quote <Icon name="chevron-right" class="h-4 w-4" /></a>
+        <a href={waLink(siteConfig.whatsappMessageTemplates.heroSecondary)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp (opens WhatsApp)" class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-4 py-3.5 font-semibold text-ink-800 transition hover:border-teal-500 hover:text-teal-700" data-analytics-event="whatsapp_click"><Icon name="whatsapp" class="h-5 w-5 text-[#25D366]" /> Chat on WhatsApp</a>
       </div>
-      <p class="mt-5 text-sm text-ink-500">{siteConfig.responseCommitment} No sales call required to get a price.</p>
+      <p class="hero-response text-ink-500">{siteConfig.responseCommitment} No sales call required to get a price.</p>
+      <a class="hero-proof-link" href="/demos">{siteConfig.demoRegistry.length} industries. {siteConfig.demoRegistry.length} working websites. <span aria-hidden="true">↗</span></a>
     </div>
-
-    <div class="reveal relative min-w-0">
-      <div class="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-xl">
-        <div class="flex items-center gap-1.5 border-b border-ink-100 bg-ink-50 px-4 py-3">
-          <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
-          <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
-          <span class="ml-3 min-w-0 truncate text-xs text-ink-500">kayalbackwaters.example — Kayal Backwaters Resort (demo)</span>
-        </div>
-        <img
-          src="/images/demos/kayal-backwaters/hero-preview.jpg"
-          alt="Preview of the Kayal Backwaters Resort demo homepage, showing a wooden houseboat on a Kerala backwater at sunset"
-          width="960"
-          height="640"
-          fetchpriority="high"
-          decoding="async"
-          class="aspect-[3/2] w-full object-cover"
-        />
-      </div>
-      <a
-        href="/demos/kayal-backwaters"
-        class="absolute -bottom-4 left-1/2 flex w-[92%] -translate-x-1/2 items-center justify-between gap-3 rounded-xl border border-ink-200 bg-white px-5 py-3.5 text-sm font-medium text-ink-800 shadow-lg transition hover:-translate-y-0.5 sm:w-[85%]"
-      >
-        See this demo, built for a resort
-        <Icon name="chevron-right" class="h-4 w-4 shrink-0 text-brand-600" />
-      </a>
-    </div>
+    <div class="hero-showcase min-w-0"><DemoShowcase id="home-showcase" compact eager /></div>
   </div>
 </section>
+<style>
+  .hero-composition { display:grid; gap:2rem; padding-block:3rem; align-items:center; }
+  h1 { margin-top:1.25rem; font-size:clamp(2rem,3.65vw,3.6rem); line-height:1.09; text-wrap:balance; }
+  .hero-description { margin-top:1.25rem; font-size:1rem; line-height:1.75; max-width:36rem; }
+  .hero-actions { display:flex; gap:.75rem; margin-top:1.75rem; font-size:.83rem; }
+  .hero-response { margin-top:1rem; font-size:.72rem; line-height:1.6; }
+  .hero-proof-link { display:inline-flex; align-items:center; gap:1rem; margin-top:2.5rem; border-bottom:1px solid var(--color-ink-300); padding-bottom:.75rem; font-size:.75rem; font-weight:600; }
+  @media(min-width:900px) { .hero-composition { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:3rem; padding-block:2.5rem; align-items:start; } .hero-copy { padding-top:3.5rem; } }
+  @media(min-width:1280px) { .hero-composition { gap:4rem; } }
+  @media(min-width:640px) and (max-width:899px) { .hero-copy { max-width:40rem; } .hero-showcase { max-width:38rem; width:100%; margin-inline:auto; } }
+  @media(max-width:639px) {
+    .hero-composition { padding-block:1.4rem 2rem; gap:1.75rem; }
+    .hero-eyebrow { font-size:.63rem; }
+    h1 { margin-top:1rem; font-size:clamp(1.8rem,7.4vw,2.25rem); line-height:1.1; }
+    .hero-description { margin-top:.85rem; font-size:.82rem; line-height:1.6; }
+    .hero-actions { margin-top:1rem; gap:.5rem; font-size:.67rem; }
+    .hero-actions a { flex:1; padding-inline:.5rem; white-space:nowrap; }
+    .hero-actions svg { width:14px; }
+    .hero-response { margin-top:.7rem; font-size:.65rem; }
+    .hero-proof-link { display:none; }
+  }
+</style>

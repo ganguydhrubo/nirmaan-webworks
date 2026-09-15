@@ -1,0 +1,68 @@
+---
+import { siteConfig } from "@config/site";
+import "@/styles/showcase.css";
+
+interface Props { id: string; compact?: boolean; eager?: boolean }
+const { id, compact = false, eager = false } = Astro.props;
+const demos = siteConfig.demoRegistry.map(demo => ({
+  ...demo,
+  category: siteConfig.industryRegistry.find(industry => industry.slug === demo.industrySlug)!.shortName,
+}));
+---
+
+<section id={id} class:list={["showcase", compact && "showcase--compact"]} data-showcase aria-label="Live website showcase" aria-roledescription="carousel">
+  <div class="showcase-topline">
+    <span><span class="showcase-live-dot" aria-hidden="true"></span> Real websites. Ready to explore.</span>
+    <span class="showcase-edition">ATITTLE / SELECTED WORK</span>
+  </div>
+  <div class="showcase-stage" data-stage>
+    {demos.map((demo, index) => (
+      <article class:list={["showcase-scene", index === 0 && "is-active"]} data-scene data-index={index} data-name={demo.businessName} data-category={demo.category} aria-roledescription="slide" aria-label={`${index + 1} of ${demos.length}: ${demo.businessName}`} aria-hidden={index !== 0 ? "true" : undefined} inert={index !== 0}>
+        <div class="showcase-visual">
+          <div class="showcase-window">
+            <div class="showcase-chrome" aria-hidden="true">
+              <span class="showcase-window-dots"><i></i><i></i><i></i></span>
+              <span>{demo.slug}.example</span>
+              <span class="showcase-window-label">DEMO</span>
+            </div>
+            <picture>
+              <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp`} width="585" height="780" />
+              <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" />
+            </picture>
+          </div>
+        </div>
+        <div class="showcase-copy">
+          <p class="showcase-category">{demo.category}</p>
+          <h2>{demo.businessName}</h2>
+          <p class="showcase-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{demo.city}</p>
+          <p class="showcase-description">{demo.tagline}</p>
+          <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>Open live demo <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="showcase-navigation" data-controls inert>
+    <div class="showcase-stack" aria-label="Upcoming demo">
+      <div class="showcase-stack-card showcase-stack-card--third" aria-hidden="true"></div>
+      <div class="showcase-stack-card showcase-stack-card--second" aria-hidden="true"><span data-after-next>{demos[2]?.category}</span></div>
+      <button type="button" class="showcase-stack-card showcase-stack-card--next" data-next-card aria-label={`Next demo: ${demos[1]?.businessName}`}>
+        <span class="showcase-stack-number" aria-hidden="true">UP<br/>NEXT</span>
+        <span class="showcase-stack-text"><span data-next-category>{demos[1]?.category}</span><strong data-next-name>{demos[1]?.businessName}</strong></span>
+        <span class="showcase-stack-arrow" aria-hidden="true">↗</span>
+      </button>
+    </div>
+    <div class="showcase-toolbar">
+      <span class="showcase-counter"><strong data-position>01</strong><span aria-hidden="true"> / </span><span class="sr-only">of </span>{String(demos.length).padStart(2, "0")}</span>
+      <div class="showcase-buttons">
+        <button type="button" data-prev aria-label="Previous demo">←</button>
+        <button type="button" data-play aria-label="Pause automatic demos"><span data-play-icon aria-hidden="true">Ⅱ</span></button>
+        <button type="button" data-next aria-label="Next demo">→</button>
+      </div>
+      <label class="showcase-picker"><span aria-hidden="true">Browse all {demos.length}</span><select data-picker aria-label="Choose a demo">{demos.map((demo, index) => <option value={index}>{String(index + 1).padStart(2, "0")} · {demo.category}</option>)}</select><span aria-hidden="true">⌄</span></label>
+    </div>
+    <div class="showcase-progress" aria-hidden="true"><span data-progress></span></div>
+  </div>
+  <p class="sr-only" data-announcement aria-live="polite" aria-atomic="true"></p>
+</section>
+
+<script src="../../scripts/showcase.ts"></script>
