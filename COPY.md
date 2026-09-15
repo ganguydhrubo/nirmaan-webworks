@@ -88,3 +88,7 @@ A celebration moodboard makes atmosphere tangible while licensed-image captions 
 
 ## Demo expansion — Sunday Objects
 Small catalogue, complete details. Prices, dimensions and materials are labelled samples, not claims about stock-photo products for sale. Product context follows the website enquiry.
+
+
+## Demo expansion — Torque District
+A sample vehicle brief and inspection checklist stand in for real listings. Prices, condition notes and service estimates are explicitly illustrative — no inventory, dealership network or manufacturer affiliation is implied.

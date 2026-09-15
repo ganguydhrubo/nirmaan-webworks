@@ -35,10 +35,14 @@ test.describe('atittle.com Smoke Tests', () => {
       { path: '/demos/manthan-institute', name: 'Manthan Institute' },
       { path: '/demos/sanjeevani-clinic', name: 'Sanjeevani Clinic' },
       { path: '/demos/shivalik-homes', name: 'Shivalik Homes' },
+      { path: '/demos/sunehri-atelier', name: 'Sunehri Atelier' },
+      { path: '/demos/aangan-form', name: 'Aangan / Form' },
+      { path: '/demos/mogra-house', name: 'Mogra House' },
       { path: '/demos/sunday-objects', name: 'Sunday Objects' },
       { path: '/demos/saanjh-stories', name: 'Saanjh Stories' },
       { path: '/demos/repwork-studio', name: 'Repwork Studio' },
       { path: '/demos/meridian-advisory', name: 'Meridian Advisory' },
+      { path: '/demos/torque-district', name: 'Torque District' },
     ];
 
     for (const demo of demos) {

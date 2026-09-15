@@ -84,3 +84,8 @@ Original typographic art direction. Reuses the existing locally hosted OFL Instr
 | `src/assets/demos/expansion/ceramics-01.jpg` | Kaboompics (Karola G) | https://www.pexels.com/photo/green-plant-in-beige-ceramic-vase-7185748/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
 | `src/assets/demos/expansion/ceramics-02.jpg` | Kaboompics (Karola G) | https://www.pexels.com/photo/beige-still-life-with-dry-plants-in-shell-shape-vase-6958755/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
 | `src/assets/demos/expansion/ceramics-03.jpg` | Marina M | https://www.pexels.com/photo/a-tree-branch-near-the-ceramic-vase-8356250/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+
+
+### Demo expansion — Torque District — 2026-09-15
+
+| `src/assets/demos/expansion/car-hero.jpg` | Michael King | https://www.pexels.com/photo/black-sports-car-18320398/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no dealership inventory, brand affiliation or endorsement claim |

@@ -36,3 +36,12 @@ Research date: 15 September 2026. This extends RESEARCH.md Part 3; original scor
 **Design brief.** Citron, olive-black and orange bring a playful shop identity to tactile ceramics. A split full-height hero sets oversized type against a sculptural product photograph; a rotated circular label and product hover invite a closer look. Signature: category filtering and an accessible native-dialog quick view that preserves the catalogue position, with native details as the no-JS equivalent. The story follows noticing, understanding and enquiring through advancing chapter rules. No cart, false stock scarcity or simulated checkout.
 
 **Build.** `/demos/sunday-objects`, Zod products, both registries, industry content, preview and smoke. Locally optimized photographs and existing OFL DM Sans; zero animation dependencies.
+
+
+## 14. Automotive — Torque District, Pune (97/190)
+
+**Research.** [Big Boy Toyz](https://www.bigboytoyz.com/) and [Porsche International](https://www.porsche.com/international/) both lead with model-led, spec-forward presentation over a hard sell; BBT in particular filters used-luxury inventory by price, fuel, year and kilometres run, and leans on condition/history detail as the trust anchor for a high-consideration purchase. Local inference: an independent showroom or workshop's real differentiator is a legible, honest inspection story, not inventory volume.
+
+**Design brief.** Black, precise orange accent and IBM Plex Mono spec labels give a confident, mechanical identity. A cropped black sports-car photograph leads into a clearly fictional vehicle brief. Signature: native radio inputs select body/mechanical/cabin inspection checkpoints via CSS `:has()`, with numbered hotspot markers highlighting the selected region on the photograph; a `@supports selector(:has(*))` fallback shows all three checkpoint panels at once when `:has()` isn't supported, so nothing is ever hidden without a way to reach it. A service brief builder totals sample workshop pricing with optional JS. Three chapters cover the buying process from record to agreement.
+
+**Build.** `/demos/torque-district`, Zod inspection checkpoints and services, both registries, industry content, credits, preview and smoke. Locally optimized photograph and existing OFL fonts; zero animation dependencies.
