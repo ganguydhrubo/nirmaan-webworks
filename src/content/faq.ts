@@ -1,21 +1,31 @@
+import { siteConfig } from "@config/site";
+
 export interface FaqItem {
   category: string;
   question: string;
   answer: string;
 }
 
+function formatInr(n: number): string {
+  return `₹${n.toLocaleString("en-IN")}`;
+}
+
+const starter = siteConfig.priceRanges.find((p) => p.id === "starter")!;
+const business = siteConfig.priceRanges.find((p) => p.id === "business")!;
+const custom = siteConfig.priceRanges.find((p) => p.id === "custom")!;
+
 export const faqItems: FaqItem[] = [
   {
     category: "Cost",
     question: "How much does a website actually cost?",
     answer:
-      "Our starting bands are ₹25,000–₹45,000 for a brochure site, ₹45,000–₹90,000 for a business site with booking/enquiry flows, and ₹90,000–₹2,00,000 for a custom or e-commerce build. Your exact price depends on pages and features and is confirmed in writing before work starts. GST is charged extra, shown separately on every quote.",
+      `Our starting bands are ${formatInr(starter.priceMinInr)}–${formatInr(starter.priceMaxInr)} for a brochure site, ${formatInr(business.priceMinInr)}–${formatInr(business.priceMaxInr)} for a business site with booking/enquiry flows, and ${formatInr(custom.priceMinInr)}–${formatInr(custom.priceMaxInr)} for a custom or e-commerce build. Your exact price depends on pages and features and is confirmed in writing before work starts. GST is charged extra, shown separately on every quote.`,
   },
   {
     category: "Cost",
     question: "Are there any hidden costs after launch?",
     answer:
-      "No. The only ongoing cost is your domain renewal (paid to the registrar, typically ₹500–₹1,500/year) and hosting if you choose a paid tier — most small sites we build run on a free hosting tier. Our optional maintenance plan (₹4,000–₹8,000/month) is exactly that — optional, not required to keep the site live.",
+      `No. The only ongoing cost is your domain renewal (paid to the registrar, typically ₹500–₹1,500/year) and hosting if you choose a paid tier — most small sites we build run on a free hosting tier. Our optional maintenance plan (${formatInr(siteConfig.maintenanceMonthlyInr.min)}–${formatInr(siteConfig.maintenanceMonthlyInr.max)}/month) is exactly that — optional, not required to keep the site live.`,
   },
   {
     category: "Timeline",

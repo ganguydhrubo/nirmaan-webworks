@@ -99,8 +99,8 @@ export const siteConfig = {
     {
       id: "starter",
       name: "Starter Brochure Site",
-      priceMinInr: 25000,
-      priceMaxInr: 45000,
+      priceMinInr: 18000,
+      priceMaxInr: 32000,
       bestFor: "A single business that needs one clean, mobile-first site with clear contact and WhatsApp",
       includes: [
         "Up to 5 pages (home, about, services, gallery, contact)",
@@ -115,8 +115,8 @@ export const siteConfig = {
     {
       id: "business",
       name: "Business Website",
-      priceMinInr: 45000,
-      priceMaxInr: 90000,
+      priceMinInr: 35000,
+      priceMaxInr: 70000,
       bestFor: "A growing business that needs a catalogue, booking or enquiry flow, and stronger SEO",
       includes: [
         "Up to 12 pages, including category/service pages",
@@ -131,8 +131,8 @@ export const siteConfig = {
     {
       id: "custom",
       name: "Custom / E-commerce Build",
-      priceMinInr: 90000,
-      priceMaxInr: 200000,
+      priceMinInr: 70000,
+      priceMaxInr: 150000,
       bestFor: "A business that needs online ordering, a large catalogue, or custom functionality",
       includes: [
         "Page count agreed in the written scope",
