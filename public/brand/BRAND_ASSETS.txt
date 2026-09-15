@@ -1,0 +1,20 @@
+ATITTLE BRAND ASSET PACK
+========================
+Primary colors
+- Midnight: #070C1A
+- White: #FFFFFF
+- Gold: #D4AF37
+- Tagline/slate: #94A3B8
+
+Files
+- atittle-icon.svg / .png / .jpg
+- atittle-wordmark.svg / .png / .jpg
+- atittle-stacked-lockup.svg / .png / .jpg
+- atittle-stacked-lockup-transparent.png
+
+Usage
+- SVG: preferred for website UI, header, footer, favicon source, and responsive scaling.
+- PNG: preferred when transparency is required.
+- JPG: only for fixed dark-background placements where transparency is unnecessary.
+- Do not stretch, skew, recolor, rotate, add shadows, or recreate the logo with CSS/text.
+- Keep clear space around the mark and preserve aspect ratio.

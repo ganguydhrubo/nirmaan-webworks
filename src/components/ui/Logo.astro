@@ -5,24 +5,37 @@ interface Props {
   variant?: "default" | "light";
 }
 const { class: className = "", variant = "default" } = Astro.props;
-const textColor = variant === "light" ? "text-cream" : "text-ink-950";
-// Geometric "A" apex mark: two strokes meeting at a peak plus a crossbar,
-// abstracted rather than drawn as a literal letterform so it reads as a
-// mark in its own right next to the ATITTLE wordmark. Single ink via
-// currentColor (like Icon.astro) so it can sit on either a light page
-// (brand-500) or Footer's dark ink-950 (brand-300, lighter so it still
-// reads against a dark ground).
-const markColor = variant === "light" ? "text-brand-300" : "text-brand-500";
+// Official ATITTLE mark (public/brand/atittle-icon.svg) + wordmark
+// (public/brand/atittle-wordmark.svg), embedded verbatim — white/gold fill,
+// unmodified paths, per the brand asset pack. Both are white-on-transparent
+// (no background), so on this site's light surfaces (Header, mobile nav)
+// they sit on a tight ink-950 chip to stay visible; on an already-dark
+// surface (Footer: variant="light") they're placed directly, no chip needed.
+const isLight = variant === "light";
 ---
 
-<a href="/" class:list={["inline-flex items-center gap-2.5 group", className]} aria-label={`${siteConfig.businessName} — home`}>
-  <svg viewBox="0 0 100 100" class:list={["h-8 w-8 shrink-0 transition-transform duration-300 group-hover:scale-105", markColor]} aria-hidden="true">
-    <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M18 86 L50 14 L82 86"></path>
-      <path d="M29.6 60 L70.4 60"></path>
-    </g>
+<a
+  href="/"
+  class:list={[
+    "inline-flex items-center gap-2.5 group",
+    !isLight && "rounded-lg bg-ink-950 px-2.5 py-1.5",
+    className,
+  ]}
+  aria-label={`${siteConfig.businessName} — home`}
+>
+  <svg viewBox="0 0 105 119" class="h-8 w-auto shrink-0 transition-transform duration-300 group-hover:scale-105" aria-hidden="true">
+    <rect x="0" y="0" width="63" height="31" rx="1.5" fill="#FFFFFF"></rect>
+    <rect x="0" y="30" width="35" height="89" rx="1.5" fill="#FFFFFF"></rect>
+    <rect x="70" y="49" width="35" height="70" rx="1.5" fill="#FFFFFF"></rect>
+    <circle cx="88" cy="16" r="15.5" fill="#D4AF37"></circle>
   </svg>
-  <span class:list={["font-display text-lg font-bold uppercase leading-none tracking-wide", textColor]}>
-    ATITTLE
-  </span>
+  <svg viewBox="0 0 306.72 69.12" class="h-5 w-auto shrink-0" aria-hidden="true">
+    <path d="M9 0H341L449 325H1006L1110 0H1451L928 1490H532ZM532 571 583 725C631 877 677 1029 731 1214C784 1029 830 877 876 725L926 571Z" transform="translate(0.000,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M45 1226H497V0H805V1226H1256V1490H45Z" transform="translate(53.656,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M419 1490H111V0H419Z" transform="translate(102.312,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M45 1226H497V0H805V1226H1256V1490H45Z" transform="translate(126.875,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M45 1226H497V0H805V1226H1256V1490H45Z" transform="translate(175.531,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M111 0H1096V264H419V1490H111Z" transform="translate(224.188,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+    <path d="M111 0H1180V264H419V624H1123V881H419V1226H1180V1490H111Z" transform="translate(267.812,64) scale(0.031250,-0.031250)" fill="#FFFFFF"></path>
+  </svg>
 </a>
