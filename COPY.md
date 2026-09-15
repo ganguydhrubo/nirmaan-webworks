@@ -76,3 +76,7 @@ Voice rules actually followed: plain, specific, Indian-English, ₹ with Indian 
 
 ## Demo expansion — Meridian Advisory
 A founder-question brief builder replaces generic consulting promises. Scope and method supply credibility; no fabricated clients, accreditations or testimonials. See RESEARCH-DEMO-EXPANSION.md for references and rationale.
+
+
+## Demo expansion — Repwork Studio
+Schedule, class format and first-visit clarity replace transformation promises. All memberships and sessions are explicitly illustrative; no booking or payment is taken.

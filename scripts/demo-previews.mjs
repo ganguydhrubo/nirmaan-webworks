@@ -6,7 +6,7 @@ const page=await browser.newPage({viewport:{width:1280,height:900},reducedMotion
 const only=process.argv.find(a=>a.startsWith('--only='))?.slice(7).split(',');
 // Keep in sync with config/site.ts's demoRegistry — every demo needs a card.jpg
 // or /demos and the homepage IndustryShowcase render a broken <img>.
-for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory"]){
+for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory","repwork-studio"]){
  if(only && !only.includes(slug))continue;
  await page.goto(`http://127.0.0.1:4321/demos/${slug}`,{waitUntil:'networkidle'});
  await page.addStyleTag({content:'astro-dev-toolbar{display:none!important}'});

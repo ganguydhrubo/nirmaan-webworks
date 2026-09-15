@@ -35,6 +35,7 @@ test.describe('atittle.com Smoke Tests', () => {
       { path: '/demos/manthan-institute', name: 'Manthan Institute' },
       { path: '/demos/sanjeevani-clinic', name: 'Sanjeevani Clinic' },
       { path: '/demos/shivalik-homes', name: 'Shivalik Homes' },
+      { path: '/demos/repwork-studio', name: 'Repwork Studio' },
       { path: '/demos/meridian-advisory', name: 'Meridian Advisory' },
     ];
 

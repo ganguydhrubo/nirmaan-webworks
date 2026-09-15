@@ -65,3 +65,8 @@ Their self-hosted fonts were fetched using the existing `scripts/fetch-google-fo
 
 ## Demo expansion — Meridian Advisory (2026-09-15)
 Original typographic art direction. Reuses the existing locally hosted OFL Instrument Serif italic assets. No photography or third-party marks.
+
+
+### Demo expansion — Repwork Studio — 2026-09-15
+
+| `src/assets/demos/expansion/gym-hero.jpg` | Николай Векшарев | https://www.pexels.com/photo/man-exercising-with-a-barbell-in-a-dark-gym-19722863/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
