@@ -84,3 +84,7 @@ Schedule, class format and first-visit clarity replace transformation promises. 
 
 ## Demo expansion — Saanjh Stories
 A celebration moodboard makes atmosphere tangible while licensed-image captions prevent it being mistaken for real client work. Coverage is illustrative and does not accept bookings.
+
+
+## Demo expansion — Sunday Objects
+Small catalogue, complete details. Prices, dimensions and materials are labelled samples, not claims about stock-photo products for sale. Product context follows the website enquiry.

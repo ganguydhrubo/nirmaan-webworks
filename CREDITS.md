@@ -77,3 +77,10 @@ Original typographic art direction. Reuses the existing locally hosted OFL Instr
 | `src/assets/demos/expansion/wedding-hero.jpg` | Keyur Mali | https://www.pexels.com/photo/bride-and-groom-during-a-traditional-indian-wedding-18867033/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
 | `src/assets/demos/expansion/wedding-couple.jpg` | Krishna Videotech | https://www.pexels.com/photo/cheerful-indian-couple-smiling-during-wedding-celebration-4121033/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
 | `src/assets/demos/expansion/wedding-detail.jpg` | Faheem Ahamad | https://www.pexels.com/photo/a-bride-and-groom-are-holding-hands-with-henna-16814609/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+
+
+### Demo expansion — Sunday Objects — 2026-09-15
+
+| `src/assets/demos/expansion/ceramics-01.jpg` | Kaboompics (Karola G) | https://www.pexels.com/photo/green-plant-in-beige-ceramic-vase-7185748/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+| `src/assets/demos/expansion/ceramics-02.jpg` | Kaboompics (Karola G) | https://www.pexels.com/photo/beige-still-life-with-dry-plants-in-shell-shape-vase-6958755/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+| `src/assets/demos/expansion/ceramics-03.jpg` | Marina M | https://www.pexels.com/photo/a-tree-branch-near-the-ceramic-vase-8356250/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |

@@ -27,3 +27,12 @@ Research date: 15 September 2026. This extends RESEARCH.md Part 3; original scor
 **Design brief.** Tobacco-black, warm paper and fine Instrument Serif type frame a full-bleed haldi photograph. Three editorial chapters change image scale, orientation and reading direction as the visitor scrolls. Signature: a full-screen native-dialog gallery with previous/next, arrow keys, Escape and focus restoration; links open the original image without JS. A quieter three-stage coverage story and expandable scope details answer the practical questions. Licensed images are visibly described as a moodboard, not portfolio work.
 
 **Build.** `/demos/saanjh-stories`, Zod editorial stories, registries, industry page, preview and smoke entry. Locally optimized photographs and existing OFL Instrument Serif. No autoplay media or animation library.
+
+
+## 13. Retail — Sunday Objects, Kochi (103/190)
+
+**Research.** [Nicobar](https://www.nicobar.com/) pairs India-rooted lifestyle merchandising with gifting, stores and personal WhatsApp assistance. [Heath Ceramics](https://www.heathceramics.com/) organises by product type, material and collections, and offers a dinnerware set-building flow. Local inference: an owner can start with browse-and-enquire before adding payments.
+
+**Design brief.** Citron, olive-black and orange bring a playful shop identity to tactile ceramics. A split full-height hero sets oversized type against a sculptural product photograph; a rotated circular label and product hover invite a closer look. Signature: category filtering and an accessible native-dialog quick view that preserves the catalogue position, with native details as the no-JS equivalent. The story follows noticing, understanding and enquiring through advancing chapter rules. No cart, false stock scarcity or simulated checkout.
+
+**Build.** `/demos/sunday-objects`, Zod products, both registries, industry content, preview and smoke. Locally optimized photographs and existing OFL DM Sans; zero animation dependencies.

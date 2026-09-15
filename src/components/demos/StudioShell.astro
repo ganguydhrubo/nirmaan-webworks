@@ -2,8 +2,8 @@
 import DemoLayout from '@/layouts/DemoLayout.astro';
 import { siteConfig } from '@config/site';
 import '@/styles/demos/studio-foundation.css';
-interface Props { slug: string; title: string; description: string; theme: string; fonts: string; links: { href: string; label: string }[]; }
-const { slug, title, description, theme, fonts, links } = Astro.props;
+interface Props { slug: string; title: string; description: string; theme: string; fonts: string; links: { href: string; label: string }[]; ctaHref?: string; }
+const { slug, title, description, theme, fonts, links, ctaHref = '#visit' } = Astro.props;
 const demo = siteConfig.demoRegistry.find(d => d.slug === slug)!;
 const industry = siteConfig.industryRegistry.find(i => i.slug === demo.industrySlug)!;
 const enquiry = `/contact?category=${encodeURIComponent(industry.shortName)}&demo=${slug}`;
@@ -13,7 +13,7 @@ const enquiry = `/contact?category=${encodeURIComponent(industry.shortName)}&dem
     <header class="sd-header sd-wrap">
       <a class="sd-wordmark" href={`/demos/${slug}`} aria-label={`${demo.businessName} home`}><slot name="wordmark" /></a>
       <nav aria-label={`${demo.businessName} navigation`}>{links.map(link => <a href={link.href}>{link.label}</a>)}</nav>
-      <a class="sd-header-cta" href="#visit"><slot name="nav-cta">Start a conversation <span aria-hidden="true">↗</span></slot></a>
+      <a class="sd-header-cta" href={ctaHref}><slot name="nav-cta">Start a conversation <span aria-hidden="true">↗</span></slot></a>
     </header>
     <main><slot /></main>
     <footer class="sd-footer sd-wrap" id="visit">

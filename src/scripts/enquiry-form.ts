@@ -43,8 +43,11 @@ function initEnquiryForm(wrapper: HTMLElement) {
   }
   const scoreFromUrl = params.get("score");
   const packageFromUrl = params.get("package");
+  const messageFromUrl = params.get("message");
   const messageInput = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
-  if (scoreFromUrl && messageInput && !messageInput.value) {
+  if (messageFromUrl && messageInput && !messageInput.value) {
+    messageInput.value = messageFromUrl;
+  } else if (scoreFromUrl && messageInput && !messageInput.value) {
     messageInput.value = `I ran the AI Website Evaluator${businessFromUrl ? ` for ${businessFromUrl}` : ""} and scored ${scoreFromUrl}/100 — I'd like to talk about a redesign.`;
   } else if (packageFromUrl && messageInput && !messageInput.value) {
     messageInput.value = `I'm interested in the "${packageFromUrl}" package — please send me a quote.`;
