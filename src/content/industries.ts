@@ -149,6 +149,7 @@ const raw: IndustryContent[] = [
     ],
     localSeoBlurb: "We build around the services and neighbourhoods your real salon serves, backed by accurate opening hours, pricing and contact details supplied by you.",
   },
+  {"slug":"professional-services","intro":"Clear scopes and a thoughtful first conversation help owner-led businesses choose an adviser with confidence.","painPoints":["Expertise is buried in generic service lists","Prospects cannot understand the engagement process","Enquiries arrive without context"],"features":[{"title":"Interactive brief builder","body":"Help visitors identify the question they want to explore."},{"title":"Clear practice areas","body":"Explain scope, deliverables and boundaries."},{"title":"Editorial identity","body":"Make expertise visible with confident typography and useful content."}],"localSeoBlurb":"We structure real professional services websites around relevant service, product and locality searches, using accurate information supplied by the business. Fictional demos remain noindex."},
 ];
 
 export const industryContent: Record<string, IndustryContent> = Object.fromEntries(

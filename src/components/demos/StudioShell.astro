@@ -1,0 +1,25 @@
+---
+import DemoLayout from '@/layouts/DemoLayout.astro';
+import { siteConfig } from '@config/site';
+import '@/styles/demos/studio-foundation.css';
+interface Props { slug: string; title: string; description: string; theme: string; fonts: string; links: { href: string; label: string }[]; }
+const { slug, title, description, theme, fonts, links } = Astro.props;
+const demo = siteConfig.demoRegistry.find(d => d.slug === slug)!;
+const industry = siteConfig.industryRegistry.find(i => i.slug === demo.industrySlug)!;
+const enquiry = `/contact?category=${encodeURIComponent(industry.shortName)}&demo=${slug}`;
+---
+<DemoLayout demoSlug={slug} title={title} description={description} fontsHref={fonts} themeColor={theme}>
+  <div class:list={['studio-demo', slug]}>
+    <header class="sd-header sd-wrap">
+      <a class="sd-wordmark" href={`/demos/${slug}`} aria-label={`${demo.businessName} home`}><slot name="wordmark" /></a>
+      <nav aria-label={`${demo.businessName} navigation`}>{links.map(link => <a href={link.href}>{link.label}</a>)}</nav>
+      <a class="sd-header-cta" href="#visit"><slot name="nav-cta">Start a conversation <span aria-hidden="true">↗</span></slot></a>
+    </header>
+    <main><slot /></main>
+    <footer class="sd-footer sd-wrap" id="visit">
+      <div><p class="sd-eyebrow">{demo.city} · A fictional business</p><h2><slot name="closing">Make your next move.</slot></h2></div>
+      <div><p>This is an ATITTLE website concept. Explore the experience, then talk to us about a website for your own business.</p><a class="sd-button" href={enquiry}>Enquire about this website <span aria-hidden="true">↗</span></a></div>
+      <div class="sd-footer-bottom"><span>{demo.businessName} / Demonstration only</span><a href="/demos">Explore all {siteConfig.demoRegistry.length} demos ↗</a><a href="#demo-content">Back to top ↑</a></div>
+    </footer>
+  </div>
+</DemoLayout>

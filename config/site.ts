@@ -263,6 +263,7 @@ export const siteConfig = {
       metaDescription: "Expressive salon and spa websites with service menus, rupee pricing, appointment planners and clear enquiry handoffs. Explore a fictional beauty house in Pune.",
       heroQuestion: "Can a new guest find the right service, understand the price and plan their visit without a long message exchange?",
     },
+    {"slug":"professional-services","name":"Professional Services & Consulting","shortName":"Professional Services","demoSlug":"meridian-advisory","metaTitle":"Website Design for Professional Services in India | ATITTLE","metaDescription":"Explore a working professional services website demo with clear content, useful interactions and mobile-first design for Indian businesses.","heroQuestion":"Can a prospective client understand your expertise and scope before the first conversation?"},
   ] satisfies IndustryRegistryEntry[],
 
   demoRegistry: [
@@ -275,6 +276,7 @@ export const siteConfig = {
     { slug: "sunehri-atelier", businessName: "Sunehri Atelier", industrySlug: "jewellery", tagline: "Objects of tomorrow’s memories.", city: "Jaipur, Rajasthan", noindex: true },
     { slug: "aangan-form", businessName: "Aangan / Form", industrySlug: "interior-design", tagline: "Space to live, room to become.", city: "Ahmedabad, Gujarat", noindex: true },
     { slug: "mogra-house", businessName: "Mogra House", industrySlug: "salon-spa", tagline: "A little time, entirely yours.", city: "Pune, Maharashtra", noindex: true },
+    {"slug":"meridian-advisory","businessName":"Meridian Advisory","industrySlug":"professional-services","tagline":"A clearer way forward.","city":"Ahmedabad, Gujarat","noindex":true},
   ] satisfies DemoRegistryEntry[],
 } as const;
 

@@ -1,0 +1,7 @@
+import { z } from 'zod';
+const practiceSchema = z.object({ id:z.string(), number:z.string(), title:z.string(), question:z.string(), description:z.string(), deliverables:z.array(z.string()).min(3), duration:z.string() });
+export const practices = z.array(practiceSchema).parse([
+  {id:'direction',number:'01',title:'Business direction',question:'What should we focus on next?',description:'For owner-led businesses with too many opportunities and too little time. Put the choices, constraints and next steps on one page.',deliverables:['A structured founder conversation','A map of opportunities and constraints','A focused 90-day action plan'],duration:'Illustrative scope · 2–3 weeks'},
+  {id:'operations',number:'02',title:'Operating rhythm',question:'Why does everything still need me?',description:'Make the everyday work easier to hand over. Clarify ownership, document recurring decisions and build a weekly review that people actually use.',deliverables:['A workflow and handover review','A simple responsibility map','A weekly operating scorecard'],duration:'Illustrative scope · 4–6 weeks'},
+  {id:'readiness',number:'03',title:'Growth readiness',question:'Are we ready for our next chapter?',description:'Before a new location, a bigger team or a new partner, understand what the business needs to support the change.',deliverables:['A capability and capacity review','A prioritised readiness checklist','A decision memo with next steps'],duration:'Illustrative scope · 3–4 weeks'},
+]);

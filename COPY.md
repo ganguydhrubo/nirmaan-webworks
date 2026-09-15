@@ -72,3 +72,7 @@ Voice rules actually followed: plain, specific, Indian-English, ₹ with Indian 
 
 ## Footer
 - **Purpose:** NAP consistency (name/address/phone) for local SEO credibility, plus every policy link the DPDP/consumer-facing obligations in RESEARCH.md require, plus the placeholder-identity disclosure (see README.md) so nobody mistakes the fictional demo brand for a real, currently-operating company.
+
+
+## Demo expansion — Meridian Advisory
+A founder-question brief builder replaces generic consulting promises. Scope and method supply credibility; no fabricated clients, accreditations or testimonials. See RESEARCH-DEMO-EXPANSION.md for references and rationale.

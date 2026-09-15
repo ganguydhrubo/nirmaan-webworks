@@ -27,7 +27,7 @@ test.describe('atittle.com Smoke Tests', () => {
     await expect(footer).toBeAttached();
   });
 
-  test('all six industry demo entry points load successfully', async ({ page }) => {
+  test('all registered industry demo entry points load successfully', async ({ page }) => {
     const demos = [
       { path: '/demos/anaar-awadhi-table', name: 'Anaar' },
       { path: '/demos/ivory-smiles', name: 'Ivory Smiles' },
@@ -35,6 +35,7 @@ test.describe('atittle.com Smoke Tests', () => {
       { path: '/demos/manthan-institute', name: 'Manthan Institute' },
       { path: '/demos/sanjeevani-clinic', name: 'Sanjeevani Clinic' },
       { path: '/demos/shivalik-homes', name: 'Shivalik Homes' },
+      { path: '/demos/meridian-advisory', name: 'Meridian Advisory' },
     ];
 
     for (const demo of demos) {

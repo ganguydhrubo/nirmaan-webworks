@@ -61,3 +61,7 @@ Their self-hosted fonts were fetched using the existing `scripts/fetch-google-fo
 | DM Sans | 400, 500, 600 normal | Aangan / Form display and body; Mogra House body | https://fonts.google.com/specimen/DM+Sans | SIL Open Font License 1.1 | 2026-09-14 |
 | IBM Plex Mono | 400, 500 normal | Aangan / Form labels | https://fonts.google.com/specimen/IBM+Plex+Mono | SIL Open Font License 1.1 | 2026-09-14 |
 | Instrument Serif | 400 normal and italic | Mogra House display | https://fonts.google.com/specimen/Instrument+Serif | SIL Open Font License 1.1 | 2026-09-14 |
+
+
+## Demo expansion — Meridian Advisory (2026-09-15)
+Original typographic art direction. Reuses the existing locally hosted OFL Instrument Serif italic assets. No photography or third-party marks.

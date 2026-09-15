@@ -3,16 +3,20 @@ import sharp from 'sharp';
 import fs from 'node:fs/promises';
 const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 const page=await browser.newPage({viewport:{width:1280,height:900},reducedMotion:'reduce'});
+const only=process.argv.find(a=>a.startsWith('--only='))?.slice(7).split(',');
 // Keep in sync with config/site.ts's demoRegistry — every demo needs a card.jpg
 // or /demos and the homepage IndustryShowcase render a broken <img>.
-for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house']){
+for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory"]){
+ if(only && !only.includes(slug))continue;
  await page.goto(`http://127.0.0.1:4321/demos/${slug}`,{waitUntil:'networkidle'});
+ await page.addStyleTag({content:'astro-dev-toolbar{display:none!important}'});
  const shot=await page.screenshot(); const dir=`public/images/demos/${slug}`; await fs.mkdir(dir,{recursive:true});
  await sharp(shot).resize(640,480,{fit:'cover',position:'top'}).jpeg({quality:80}).toFile(`${dir}/card.jpg`);
  if(slug==='kayal-backwaters')await sharp(shot).resize(960,640,{fit:'cover',position:'top'}).jpeg({quality:78}).toFile(`${dir}/hero-preview.jpg`);
  console.log(slug);
 }
 await browser.close();
+if(process.argv.includes('--skip-og'))process.exit(0);
 await sharp('public/favicon.svg').resize(180).png().toFile('public/apple-touch-icon.png');
 // Mark: geometric "A" apex (see Logo.astro / favicon.svg) — single ink,
 // drawn straight on the dark ink-950 ground at OG-card scale.
