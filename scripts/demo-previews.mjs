@@ -14,13 +14,13 @@ for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','mant
 }
 await browser.close();
 await sharp('public/favicon.svg').resize(180).png().toFile('public/apple-touch-icon.png');
-// Mark: two interlocked rings (see the "LINK" logo concept) — no letterform,
-// single ink, drawn straight on the dark ink-950 ground at OG-card scale.
+// Mark: geometric "A" apex (see Logo.astro / favicon.svg) — single ink,
+// drawn straight on the dark ink-950 ground at OG-card scale.
 const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
 <rect width="1200" height="630" fill="#16110d"/>
-<g transform="translate(80,90) scale(1.9)" fill="none" stroke="#eb9d76" stroke-width="10">
-  <rect x="-23" y="-12" width="46" height="24" rx="12" transform="translate(35,50) rotate(-18)"/>
-  <rect x="-23" y="-12" width="46" height="24" rx="12" transform="translate(66,49) rotate(-18)"/>
+<g transform="translate(80,90) scale(1.9)" fill="none" stroke="#eb9d76" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 86 L50 14 L82 86"/>
+  <path d="M29.6 60 L70.4 60"/>
 </g>
 <text x="320" y="200" font-family="Arial" font-weight="bold" font-size="80" letter-spacing="4" fill="#fbf6ee">ATITTLE</text>
 <text x="70" y="360" font-family="Georgia" font-size="46" fill="#fbf6ee">Websites that <tspan fill="#eb9d76">move your world</tspan>.</text>
