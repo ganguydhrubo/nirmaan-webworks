@@ -86,6 +86,9 @@ export const siteConfig = {
   businessHours: {
     display: "Mon–Sat, 10:00 AM – 7:00 PM IST",
     timezone: "Asia/Kolkata",
+    // schema.org LocalBusiness.openingHours format (day-range + 24h time).
+    // Kept next to `display` so both are edited together — see src/lib/seo.ts.
+    schemaOrg: "Mo-Sa 10:00-19:00",
   },
 
   responseCommitment: "We reply to every enquiry within one business day.",

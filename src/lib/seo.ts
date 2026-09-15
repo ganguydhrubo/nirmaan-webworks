@@ -33,7 +33,7 @@ export function localBusinessJsonLd() {
       addressCountry: siteConfig.address.countryCode,
     },
     areaServed: siteConfig.serviceAreas,
-    openingHours: "Mo-Sa 10:00-19:00",
+    openingHours: siteConfig.businessHours.schemaOrg,
     url: siteConfig.siteUrl,
   };
 }

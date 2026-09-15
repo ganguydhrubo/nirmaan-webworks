@@ -5,6 +5,11 @@ import { siteConfig } from "@config/site";
 import { telLink, waLink } from "@/lib/contact-links";
 
 export const prerender = false;
+// Unlike the static 404.astro (whose adapter special-cases the file and sets
+// 404 automatically), an on-demand page must set its own status — otherwise
+// this renders as an HTTP 200 "soft 500", which is invisible to monitoring
+// and can get indexed as if it were valid content.
+Astro.response.status = 500;
 ---
 
 <BaseLayout title="Something went wrong" description="An unexpected error occurred." noindex>
