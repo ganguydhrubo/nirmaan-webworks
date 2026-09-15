@@ -9,7 +9,29 @@ const only=process.argv.find(a=>a.startsWith('--only='))?.slice(7).split(',');
 for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory","repwork-studio","saanjh-stories","sunday-objects","torque-district","clearline-labs"]){
  if(only && !only.includes(slug))continue;
  await page.goto(`http://127.0.0.1:4321/demos/${slug}`,{waitUntil:'networkidle'});
- await page.addStyleTag({content:'astro-dev-toolbar{display:none!important}'});
+ // Hide the demo-disclosure banner for the card crop: it's the same generic
+ // "Demo site / Want one for your business?" chrome on all 15 pages, and
+ // burning it into the top of every thumbnail ate the exact space a visitor
+ // scanning /demos needs to place the business in under 2 seconds. The full
+ // banner still renders for anyone who actually opens the demo.
+ await page.addStyleTag({content:'astro-dev-toolbar{display:none!important}[data-demo-banner]{display:none!important}'});
+ // Let the (now-reflowed) hero photo actually finish loading/decoding before
+ // capturing — a couple of these were shipping with a blank hero on capture.
+ // Scoped to images actually visible in the viewport right now (excludes
+ // e.g. a closed native <dialog>'s gallery images, whose decode() can hang)
+ // and hard-capped so one stuck image can never stall the whole batch.
+ await Promise.race([
+   page.evaluate(async () => {
+     const vh = window.innerHeight;
+     const imgs = [...document.querySelectorAll('img')].filter(img => {
+       const r = img.getBoundingClientRect();
+       return r.top < vh && r.bottom > 0 && img.offsetParent !== null;
+     });
+     await Promise.all(imgs.map(img => img.decode ? img.decode().catch(() => {}) : Promise.resolve()));
+   }),
+   new Promise(resolve => setTimeout(resolve, 2000)),
+ ]);
+ await page.waitForTimeout(250);
  const shot=await page.screenshot(); const dir=`public/images/demos/${slug}`; await fs.mkdir(dir,{recursive:true});
  await sharp(shot).resize(640,480,{fit:'cover',position:'top'}).jpeg({quality:80}).toFile(`${dir}/card.jpg`);
  if(slug==='kayal-backwaters')await sharp(shot).resize(960,640,{fit:'cover',position:'top'}).jpeg({quality:78}).toFile(`${dir}/hero-preview.jpg`);
