@@ -89,3 +89,8 @@ Original typographic art direction. Reuses the existing locally hosted OFL Instr
 ### Demo expansion — Torque District — 2026-09-15
 
 | `src/assets/demos/expansion/car-hero.jpg` | Michael King | https://www.pexels.com/photo/black-sports-car-18320398/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no dealership inventory, brand affiliation or endorsement claim |
+
+
+### Demo expansion — Clearline Diagnostics — 2026-09-15
+
+| `src/assets/demos/expansion/lab-hero.jpg` | Edward Jenner | https://www.pexels.com/photo/a-man-using-a-microscope-in-a-laboratory-4033019/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; not actual lab staff, no accreditation or real-lab claim |

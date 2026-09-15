@@ -1,0 +1,137 @@
+[
+  {
+    "slug": "shivalik-homes",
+    "performance": 97,
+    "accessibility": 98,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2439,
+    "cls": 0.012114819307311427
+  },
+  {
+    "slug": "kayal-backwaters",
+    "performance": 95,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2472,
+    "cls": 0.009478776864857532
+  },
+  {
+    "slug": "sanjeevani-clinic",
+    "performance": 91,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 1859,
+    "cls": 0.1733287513244305
+  },
+  {
+    "slug": "manthan-institute",
+    "performance": 97,
+    "accessibility": 96,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2106,
+    "cls": 0.05035101370192142
+  },
+  {
+    "slug": "ivory-smiles",
+    "performance": 95,
+    "accessibility": 98,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2402,
+    "cls": 0.0006124614619887509
+  },
+  {
+    "slug": "anaar-awadhi-table",
+    "performance": 93,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2620,
+    "cls": 0.000183501661175915
+  },
+  {
+    "slug": "sunehri-atelier",
+    "performance": 98,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 66,
+    "lcpMs": 1871,
+    "cls": 0.00003446486625858077
+  },
+  {
+    "slug": "aangan-form",
+    "performance": 98,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 66,
+    "lcpMs": 1870,
+    "cls": 0.00007409692043577739
+  },
+  {
+    "slug": "mogra-house",
+    "performance": 97,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 66,
+    "lcpMs": 2050,
+    "cls": 0.00001637195370215392
+  },
+  {
+    "slug": "meridian-advisory",
+    "performance": 99,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 66,
+    "lcpMs": 1739,
+    "cls": 0.0006400291668214127
+  },
+  {
+    "slug": "repwork-studio",
+    "performance": 98,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2060,
+    "cls": 0.004439323668115452
+  },
+  {
+    "slug": "saanjh-stories",
+    "performance": 93,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2734,
+    "cls": 0
+  },
+  {
+    "slug": "sunday-objects",
+    "performance": 98,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2074,
+    "cls": 0.00041702848759003937
+  },
+  {
+    "slug": "torque-district",
+    "performance": 96,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 2324,
+    "cls": 0.001808057479993482
+  },
+  {
+    "slug": "clearline-labs",
+    "performance": 99,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 69,
+    "lcpMs": 1714,
+    "cls": 0.002820027143453984
+  }
+]

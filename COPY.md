@@ -92,3 +92,7 @@ Small catalogue, complete details. Prices, dimensions and materials are labelled
 
 ## Demo expansion — Torque District
 A sample vehicle brief and inspection checklist stand in for real listings. Prices, condition notes and service estimates are explicitly illustrative — no inventory, dealership network or manufacturer affiliation is implied.
+
+
+## Demo expansion — Clearline Diagnostics
+Preparation instructions and turnaround times reflect general, publicly known medical practice (fasting for lipid/glucose panels, no fasting for CBC/HbA1c/thyroid), captioned as illustrative and not a substitute for provider instructions. The report walkthrough explains report structure only — every sample value is explicitly labelled as non-diagnostic, and no accreditation or real-lab status is claimed.

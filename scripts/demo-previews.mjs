@@ -6,7 +6,7 @@ const page=await browser.newPage({viewport:{width:1280,height:900},reducedMotion
 const only=process.argv.find(a=>a.startsWith('--only='))?.slice(7).split(',');
 // Keep in sync with config/site.ts's demoRegistry — every demo needs a card.jpg
 // or /demos and the homepage IndustryShowcase render a broken <img>.
-for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory","repwork-studio","saanjh-stories","sunday-objects","torque-district"]){
+for(const slug of ['shivalik-homes','kayal-backwaters','sanjeevani-clinic','manthan-institute','ivory-smiles','anaar-awadhi-table','sunehri-atelier','aangan-form','mogra-house',"meridian-advisory","repwork-studio","saanjh-stories","sunday-objects","torque-district","clearline-labs"]){
  if(only && !only.includes(slug))continue;
  await page.goto(`http://127.0.0.1:4321/demos/${slug}`,{waitUntil:'networkidle'});
  await page.addStyleTag({content:'astro-dev-toolbar{display:none!important}'});
@@ -30,6 +30,6 @@ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
 <text x="70" y="360" font-family="Georgia" font-size="46" fill="#fbf6ee">Websites that <tspan fill="#eb9d76">move your world</tspan>.</text>
 <text x="70" y="420" font-family="Arial" font-size="28" fill="#cdbba7">Fast, mobile-first websites for Indian businesses — priced in plain rupees.</text>
 <path d="M70 470H1130" stroke="#3a2e24"/>
-<text x="70" y="530" font-family="Arial" font-size="26" fill="#cdbba7">Nine industries. Nine working demos. Explore the work.</text>
+<text x="70" y="530" font-family="Arial" font-size="26" fill="#cdbba7">Fifteen industries. Fifteen working demos. Explore the work.</text>
 </svg>`;
 await sharp(Buffer.from(svg)).jpeg({quality:88}).toFile('public/images/og-default.jpg');

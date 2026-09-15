@@ -1,0 +1,99 @@
+---
+import StudioShell from '@/components/demos/StudioShell.astro';
+import {Image} from 'astro:assets';
+import lab from '@/assets/demos/expansion/lab-hero.jpg';
+import {tests,reportFields,journey} from '@/content/demos/clearline-labs/tests';
+import './theme.css';
+export const prerender=true;
+const categories=['All',...new Set(tests.map(t=>t.category))];
+---
+<StudioShell slug="clearline-labs" title="Clearline Diagnostics — Clarity, at every step" description="A Chandigarh diagnostics lab concept with a searchable test directory, plain-language report walkthrough and a clear collection-to-report journey." theme="#0f2942" fonts="/fonts/demos/aangan-form/fonts.css" links={[{href:'#directory',label:'Test directory'},{href:'#report',label:'Read a report'},{href:'#journey',label:'How it works'}]} ctaHref="#directory">
+<span slot="wordmark">CLEARLINE<span class="cl-wordmark-sub">DIAGNOSTICS</span></span><span slot="nav-cta">Find a test ↗</span>
+<section class="cl-hero"><div class="cl-hero-copy sd-wrap"><p class="sd-eyebrow">Chandigarh · Fictional diagnostics lab</p><h1><span class="sd-hero-line">CLARITY,</span><span class="sd-hero-line">AT EVERY <em>STEP.</em></span></h1><p>Know what a test involves, what it costs and how to read the result — before you ever need to ask.</p><a class="sd-button" href="#directory">Browse the test directory <span aria-hidden="true">↗</span></a></div><div class="cl-hero-image"><Image src={lab} alt="Scientist reviewing a sample under a microscope in a laboratory; illustrative photograph, not actual staff" widths={[480,800,1280,1600]} sizes="100vw" width={1600} height={1067} loading="eager" fetchpriority="high" class="sd-hero-photo"/></div></section>
+
+<section id="directory" class="sd-wrap sd-section" data-test-directory>
+  <div class="sd-section-head"><div><p class="sd-eyebrow">01 / The test directory</p><h2>KNOW BEFORE<br/><span>YOU BOOK.</span></h2></div><p>Sample preparation, specimen and turnaround for a few commonly ordered tests. Always confirm exact instructions with your provider before a real test.</p></div>
+  <div class="cl-controls" hidden data-test-controls>
+    <input type="search" data-test-search placeholder="Search tests, e.g. thyroid" aria-label="Search tests"/>
+    <div class="sd-filters" aria-label="Filter by category">{categories.map((c,i)=><button type="button" data-test-filter={c} aria-pressed={i===0?'true':'false'}>{c}</button>)}</div>
+  </div>
+  <p class="sd-status" data-test-count aria-live="polite">{tests.length} sample tests</p>
+  <div class="cl-tests">{tests.map(t=>(
+    <article data-test-row data-category={t.category} data-name={t.name.toLowerCase()}>
+      <div class="cl-test-head"><h3>{t.name}</h3><p class="cl-test-price">₹{t.price.toLocaleString('en-IN')}</p></div>
+      <p class="cl-test-tag sd-eyebrow">{t.category}</p>
+      <dl class="cl-test-facts">
+        <div><dt>Specimen</dt><dd>{t.specimen}</dd></div>
+        <div><dt>Preparation</dt><dd>{t.preparation}</dd></div>
+        <div><dt>Turnaround</dt><dd>{t.turnaround}</dd></div>
+      </dl>
+      <details class="sd-detail"><summary>About this test</summary><div><p>{t.description}</p><p class="sd-note">Sample price and turnaround for this fictional lab — illustrative only.</p><a class="sd-button sd-outline" href={`/contact?category=Diagnostics%20Labs&demo=clearline-labs&message=${encodeURIComponent('I would like a diagnostics lab website with a test directory like the '+t.name+' entry.')}`}>Ask about a directory like this ↗</a></div></details>
+    </article>
+  ))}</div>
+  <p data-test-empty hidden>No tests match. Try another search or reset the filters.</p>
+</section>
+
+<section id="report" class="cl-report sd-wrap sd-section">
+  <div class="sd-section-head"><div><p class="sd-eyebrow">02 / Read a report with confidence</p><h2>YOUR FIRST REPORT,<br/><span>EXPLAINED.</span></h2></div><p>A sample report layout, walked through part by part. This is not a real result — select a highlighted row to see what it means.</p></div>
+  <div class="cl-report-grid">
+    <div class="cl-report-sheet" role="list" aria-label="Sample report, illustrative only">
+      <p class="cl-report-note">SAMPLE REPORT — WALKTHROUGH ONLY, NOT A REAL RESULT</p>
+      {reportFields.map(f=>(
+        <a href={`#field-${f.id}`} class="cl-report-row" role="listitem" data-report-row={f.id}><span class="cl-report-label">{f.label}</span><span class="cl-report-value">{f.sample}</span></a>
+      ))}
+    </div>
+    <div class="cl-report-explain">{reportFields.map(f=>(
+      <details class="sd-detail" id={`field-${f.id}`} data-report-panel={f.id}><summary>{f.label}</summary><p>{f.explain}</p></details>
+    ))}</div>
+  </div>
+</section>
+
+<section id="journey" class="cl-journey sd-wrap sd-section">
+  <div class="cl-journey-heading"><p class="sd-eyebrow">03 / From sample to report</p><h2>WHAT HAPPENS<br/><span>AFTER YOU BOOK.</span></h2></div>
+  <div class="cl-journey-steps">{journey.map(s=>(
+    <article class="sd-story-step"><span class="cl-journey-number">{s.n}</span><h3>{s.title}</h3><p>{s.body}</p></article>
+  ))}</div>
+</section>
+
+<span slot="closing">CLARITY,<br/><span>AT EVERY STEP.</span></span>
+</StudioShell>
+<script>
+const directory=document.querySelector('[data-test-directory]') as HTMLElement | null;
+if(directory){
+  const search=directory.querySelector('[data-test-search]') as HTMLInputElement;
+  const filters=[...directory.querySelectorAll('[data-test-filter]')] as HTMLButtonElement[];
+  const rows=[...directory.querySelectorAll('[data-test-row]')] as HTMLElement[];
+  let activeCategory='All';
+  const update=()=>{
+    const q=search.value.trim().toLowerCase();
+    let count=0;
+    for(const row of rows){
+      const matchesCategory=activeCategory==='All'||row.dataset.category===activeCategory;
+      const matchesSearch=!q||row.dataset.name!.includes(q);
+      const show=matchesCategory&&matchesSearch;
+      row.hidden=!show;
+      if(show)count++;
+    }
+    (directory.querySelector('[data-test-count]') as HTMLElement).textContent=`${count} sample test${count===1?'':'s'}`;
+    (directory.querySelector('[data-test-empty]') as HTMLElement).hidden=count>0;
+  };
+  search.addEventListener('input',update);
+  filters.forEach(btn=>btn.addEventListener('click',()=>{
+    activeCategory=btn.dataset.testFilter!;
+    filters.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+    update();
+  }));
+  (directory.querySelector('[data-test-controls]') as HTMLElement).hidden=false;
+}
+
+const reportRows=[...document.querySelectorAll('[data-report-row]')] as HTMLAnchorElement[];
+reportRows.forEach(row=>row.addEventListener('click',e=>{
+  e.preventDefault();
+  const id=row.dataset.reportRow;
+  const panel=document.querySelector(`[data-report-panel="${id}"]`) as HTMLDetailsElement|null;
+  if(!panel)return;
+  panel.open=true;
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+  reportRows.forEach(r=>r.classList.toggle('is-active',r===row));
+}));
+</script>

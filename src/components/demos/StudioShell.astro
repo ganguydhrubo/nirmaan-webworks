@@ -11,7 +11,7 @@ const enquiry = `/contact?category=${encodeURIComponent(industry.shortName)}&dem
 <DemoLayout demoSlug={slug} title={title} description={description} fontsHref={fonts} themeColor={theme}>
   <div class:list={['studio-demo', slug]}>
     <header class="sd-header sd-wrap">
-      <a class="sd-wordmark" href={`/demos/${slug}`} aria-label={`${demo.businessName} home`}><slot name="wordmark" /></a>
+      <a class="sd-wordmark" href={`/demos/${slug}`}><slot name="wordmark" /><span class="sd-vh"> — home</span></a>
       <nav aria-label={`${demo.businessName} navigation`}>{links.map(link => <a href={link.href}>{link.label}</a>)}</nav>
       <a class="sd-header-cta" href={ctaHref}><slot name="nav-cta">Start a conversation <span aria-hidden="true">↗</span></slot></a>
     </header>

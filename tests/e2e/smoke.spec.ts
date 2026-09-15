@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('atittle.com Smoke Tests', () => {
   test('homepage loads and renders critical sections', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/atittle.com/i);
+    await expect(page).toHaveTitle(/ATITTLE/i);
 
     // Skip to main content link
     const skipLink = page.locator('a[href="#main-content"]');
@@ -43,6 +43,7 @@ test.describe('atittle.com Smoke Tests', () => {
       { path: '/demos/repwork-studio', name: 'Repwork Studio' },
       { path: '/demos/meridian-advisory', name: 'Meridian Advisory' },
       { path: '/demos/torque-district', name: 'Torque District' },
+      { path: '/demos/clearline-labs', name: 'Clearline Diagnostics' },
     ];
 
     for (const demo of demos) {
@@ -53,7 +54,7 @@ test.describe('atittle.com Smoke Tests', () => {
   });
 
   test('Ivory Smiles treatment filter works', async ({ page }) => {
-    await page.goto('/demos/ivory-smiles/treatments/');
+    await page.goto('/demos/ivory-smiles/treatments');
     await expect(page.locator('h1')).toBeVisible();
 
     const allBtn = page.locator('button[data-filter="All"]');
@@ -90,6 +91,26 @@ test.describe('atittle.com Smoke Tests', () => {
     const emiResult = page.locator('[data-emi-result]');
     await expect(emiResult).toBeVisible();
     await expect(emiResult).not.toHaveText('—');
+  });
+
+  test('Clearline Diagnostics test directory search filters results', async ({ page }) => {
+    await page.goto('/demos/clearline-labs');
+    const search = page.locator('[data-test-search]');
+    await expect(search).toBeVisible();
+
+    await search.fill('thyroid');
+    await expect(page.locator('[data-test-row]:not([hidden])')).toHaveCount(1);
+    await expect(page.locator('[data-test-count]')).toHaveText('1 sample test');
+  });
+
+  test('Clearline Diagnostics report walkthrough opens the matching explanation', async ({ page }) => {
+    await page.goto('/demos/clearline-labs');
+    const row = page.locator('[data-report-row="flag"]');
+    await expect(row).toBeVisible();
+    await row.click();
+
+    const panel = page.locator('[data-report-panel="flag"]');
+    await expect(panel).toHaveJSProperty('open', true);
   });
 
   test('Contact form validation works on invalid submission', async ({ page }) => {
