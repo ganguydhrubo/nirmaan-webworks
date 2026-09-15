@@ -70,3 +70,10 @@ Original typographic art direction. Reuses the existing locally hosted OFL Instr
 ### Demo expansion — Repwork Studio — 2026-09-15
 
 | `src/assets/demos/expansion/gym-hero.jpg` | Николай Векшарев | https://www.pexels.com/photo/man-exercising-with-a-barbell-in-a-dark-gym-19722863/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+
+
+### Demo expansion — Saanjh Stories — 2026-09-15
+
+| `src/assets/demos/expansion/wedding-hero.jpg` | Keyur Mali | https://www.pexels.com/photo/bride-and-groom-during-a-traditional-indian-wedding-18867033/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+| `src/assets/demos/expansion/wedding-couple.jpg` | Krishna Videotech | https://www.pexels.com/photo/cheerful-indian-couple-smiling-during-wedding-celebration-4121033/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |
+| `src/assets/demos/expansion/wedding-detail.jpg` | Faheem Ahamad | https://www.pexels.com/photo/a-bride-and-groom-are-holding-hands-with-henna-16814609/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; no client, inventory or endorsement claim |

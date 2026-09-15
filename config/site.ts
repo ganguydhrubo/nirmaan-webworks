@@ -267,6 +267,7 @@ export const siteConfig = {
     },
     {"slug":"professional-services","name":"Professional Services & Consulting","shortName":"Professional Services","demoSlug":"meridian-advisory","metaTitle":"Website Design for Professional Services in India | ATITTLE","metaDescription":"Explore a working professional services website demo with clear content, useful interactions and mobile-first design for Indian businesses.","heroQuestion":"Can a prospective client understand your expertise and scope before the first conversation?"},
     {"slug":"fitness-studios","name":"Fitness Studios & Gyms","shortName":"Fitness Studios","demoSlug":"repwork-studio","metaTitle":"Website Design for Fitness Studios in India | ATITTLE","metaDescription":"Explore a working fitness studios website demo with clear content, useful interactions and mobile-first design for Indian businesses.","heroQuestion":"Can someone find a class that fits their day and understand the first visit before joining?"},
+    {"slug":"events-photography","name":"Event Planners & Photographers","shortName":"Events & Photography","demoSlug":"saanjh-stories","metaTitle":"Website Design for Events & Photography in India | ATITTLE","metaDescription":"Explore a working events & photography website demo with clear content, useful interactions and mobile-first design for Indian businesses.","heroQuestion":"Does your gallery tell a complete story and give couples a clear way to discuss their celebration?"},
   ] satisfies IndustryRegistryEntry[],
 
   demoRegistry: [
@@ -281,6 +282,7 @@ export const siteConfig = {
     { slug: "mogra-house", businessName: "Mogra House", industrySlug: "salon-spa", tagline: "A little time, entirely yours.", city: "Pune, Maharashtra", noindex: true },
     {"slug":"meridian-advisory","businessName":"Meridian Advisory","industrySlug":"professional-services","tagline":"A clearer way forward.","city":"Ahmedabad, Gujarat","noindex":true},
     {"slug":"repwork-studio","businessName":"Repwork Studio","industrySlug":"fitness-studios","tagline":"Show up. Find your strong.","city":"Bengaluru, Karnataka","noindex":true},
+    {"slug":"saanjh-stories","businessName":"Saanjh Stories","industrySlug":"events-photography","tagline":"Some days stay with you.","city":"Jaipur, Rajasthan","noindex":true},
   ] satisfies DemoRegistryEntry[],
 } as const;
 

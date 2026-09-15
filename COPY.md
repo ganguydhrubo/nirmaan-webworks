@@ -80,3 +80,7 @@ A founder-question brief builder replaces generic consulting promises. Scope and
 
 ## Demo expansion — Repwork Studio
 Schedule, class format and first-visit clarity replace transformation promises. All memberships and sessions are explicitly illustrative; no booking or payment is taken.
+
+
+## Demo expansion — Saanjh Stories
+A celebration moodboard makes atmosphere tangible while licensed-image captions prevent it being mistaken for real client work. Coverage is illustrative and does not accept bookings.

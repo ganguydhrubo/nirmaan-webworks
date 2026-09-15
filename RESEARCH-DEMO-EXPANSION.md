@@ -18,3 +18,12 @@ Research date: 15 September 2026. This extends RESEARCH.md Part 3; original scor
 **Design brief.** Carbon-black, electric lime, enormous compressed-feeling DM Sans headlines and a full-bleed barbell portrait. The signature class finder filters an eight-session week by day and format, including empty and reset states. A three-stage first-visit story advances through ruled markers alongside a sticky headline; no fictional body transformations. Native session details remain usable with JS off. cult.fit informs the timetable and onboarding; 1Rebel informs format naming and energy.
 
 **Build.** `/demos/repwork-studio`, Zod schedule, both registries, industry content, preview and smoke entry. CSS motion only, reduced-motion overrides; filters appear only once listeners exist. Reuses existing locally hosted OFL DM Sans.
+
+
+## 12. Events and photography — Saanjh Stories, Jaipur (107/190)
+
+**Research.** [Twogether Studios](https://twogetherstudios.in/) presents Indian wedding stories, documentary photography, films and event-specific coverage. [Jose Villa](https://www.josevilla.com/) leads with large images and minimal supporting interface. Indian implication: a multi-event celebration needs scope and travel clarity as well as mood. Neither reference implies the fictional studio has photographed actual clients.
+
+**Design brief.** Tobacco-black, warm paper and fine Instrument Serif type frame a full-bleed haldi photograph. Three editorial chapters change image scale, orientation and reading direction as the visitor scrolls. Signature: a full-screen native-dialog gallery with previous/next, arrow keys, Escape and focus restoration; links open the original image without JS. A quieter three-stage coverage story and expandable scope details answer the practical questions. Licensed images are visibly described as a moodboard, not portfolio work.
+
+**Build.** `/demos/saanjh-stories`, Zod editorial stories, registries, industry page, preview and smoke entry. Locally optimized photographs and existing OFL Instrument Serif. No autoplay media or animation library.
