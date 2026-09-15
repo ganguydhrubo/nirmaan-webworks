@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
 
 const meta = {
-  title: "AI Website Brand Alignment Evaluator | atittle.com",
+  title: "AI Website Evaluator | atittle.com",
   description:
     "Evaluate whether your website reflects your genuine trade craft or looks like generic corporate slop. 100-point AI audit with visual score gauges and copy rewrites.",
 };
@@ -27,7 +28,7 @@ const industries = [
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
       <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700">
         <span class="inline-block h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span>
-        AI Engine &middot; Conversion CRO Auditor
+        AI Engine &middot; Free Website Evaluator
       </div>
 
       <h1 class="font-serif mt-4 text-3xl font-semibold tracking-tight text-ink-950 sm:text-5xl lg:text-6xl">
@@ -35,7 +36,7 @@ const industries = [
       </h1>
 
       <p class="mx-auto mt-4 max-w-2xl text-base text-ink-700 sm:text-lg">
-        Most Indian business websites look like copy-pasted corporate templates that repel real buyers. Run our 100-point AI audit to test 3-second clarity, local trust anchors, WhatsApp friction, and pricing transparency.
+        Most Indian business websites look like copy-pasted corporate templates that repel real buyers. Run our 100-point AI audit to test 3-second clarity, whether it actually sounds like your trade, trust anchors, WhatsApp friction, and pricing transparency.
       </p>
 
       <!-- Quick sample presets -->
@@ -156,7 +157,7 @@ const industries = [
         <!-- Submit Button -->
         <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p class="text-xs text-ink-500">
-            AI-powered &middot; Instant 5-pillar CRO scoring
+            AI-powered &middot; Instant 5-part scoring
           </p>
 
           <button
@@ -238,11 +239,11 @@ const industries = [
           <div class="lg:col-span-7">
             <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-700">
               <Icon name="sparkle" class="h-3.5 w-3.5" />
-              Executive CRO Diagnosis
+              Your Website Diagnosis
             </div>
-            
+
             <h2 id="result-business-name" class="font-serif mt-1 text-2xl font-semibold text-ink-950 sm:text-3xl">
-              Brand Alignment Report
+              Website Evaluation Report
             </h2>
             
             <p id="result-summary" class="mt-3 text-sm sm:text-base leading-relaxed text-ink-700">
@@ -271,8 +272,8 @@ const industries = [
 
       <!-- 5 Pillar Breakdown (Graphics Meters) -->
       <div class="mt-10">
-        <h3 class="font-serif text-xl font-semibold text-ink-950">5-Pillar Conversion Breakdown</h3>
-        <p class="mt-1 text-xs text-ink-600">Each pillar is scored out of 20 points based on our MSME CRO evaluation framework.</p>
+        <h3 class="font-serif text-xl font-semibold text-ink-950">5-Part Score Breakdown</h3>
+        <p class="mt-1 text-xs text-ink-600">Each part is scored out of 20 points, based on what actually gets Indian small-business websites picked over the competition.</p>
 
         <div id="pillars-container" class="mt-6 grid gap-4 sm:grid-cols-1">
           <!-- Dynamically populated via JS -->
@@ -322,8 +323,8 @@ const industries = [
       <div class="mt-10 rounded-3xl border border-ink-200 bg-cream p-6 sm:p-8 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-ink-200 pb-4">
           <div>
-            <h3 class="font-serif text-xl font-semibold text-ink-950">Ultra-Detailed Copy Rewrites</h3>
-            <p class="text-xs text-ink-600">AI-engineered copy alternatives designed for immediate conversion uplift.</p>
+            <h3 class="font-serif text-xl font-semibold text-ink-950">Detailed Copy Rewrites</h3>
+            <p class="text-xs text-ink-600">Real before-and-after rewrites you can use, not just a score.</p>
           </div>
           <span class="inline-flex items-center rounded-full bg-brand-50 border border-brand-200 px-3 py-1 text-xs font-semibold text-brand-700">
             Before vs After
@@ -439,7 +440,8 @@ const industries = [
 
             <a
               id="whatsapp-audit-cta"
-              href={waLink("Hi atittle.com team, I ran the Website Brand Alignment Evaluator and want to discuss redesigning our website.")}
+              href={waLink("Hi atittle.com team, I ran the AI Website Evaluator and want to discuss redesigning our website.")}
+              data-wa-number={siteConfig.whatsappNumber}
               target="_blank"
               rel="noopener"
               class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-cream/30 bg-cream/10 px-5 py-3 text-sm font-semibold text-cream hover:bg-cream/20 transition"
@@ -631,7 +633,7 @@ Direct Developer Desk on WhatsApp: Immediate PDF floorplan & physical private vi
     };
 
     submitBtn.disabled = true;
-    btnText.textContent = "Analyzing with AI CRO Engine...";
+    btnText.textContent = "Analyzing with our AI Engine...";
 
     try {
       const response = await fetch("/api/evaluate", {
@@ -680,10 +682,10 @@ Direct Developer Desk on WhatsApp: Immediate PDF floorplan & physical private vi
       engineBadge.textContent =
         res.evaluatedVia === "groq-gpt-oss-120b"
           ? "Evaluated via AI Engine"
-          : "Evaluated via Heuristic CRO Engine";
+          : "Evaluated via our scoring engine";
 
       // Business & summary
-      resultBusinessName.textContent = `${res.businessName} &middot; Brand Alignment Score`;
+      resultBusinessName.textContent = `${res.businessName} &middot; Website Score`;
       resultSummary.textContent = res.summary;
 
       flagsCount.textContent = (res.redFlags?.length || 0).toString();
@@ -765,9 +767,10 @@ Direct Developer Desk on WhatsApp: Immediate PDF floorplan & physical private vi
       bookQuoteCta.href = quoteUrl.toString();
 
       const waMsg = encodeURIComponent(
-        `Hi atittle.com team, I ran the Website Brand Alignment Evaluator for "${res.businessName}" in "${res.city || 'India'}". Our score was ${res.totalScore}/100 (${res.tier}). We want to talk about redesigning our site.`
+        `Hi atittle.com team, I ran the AI Website Evaluator for "${res.businessName}" in "${res.city || 'India'}". Our score was ${res.totalScore}/100 (${res.tier}). We want to talk about redesigning our site.`
       );
-      whatsappAuditCta.href = `https://wa.me/919830000000?text=${waMsg}`;
+      const waNumber = whatsappAuditCta.dataset.waNumber;
+      whatsappAuditCta.href = `https://wa.me/${waNumber}?text=${waMsg}`;
 
     } catch (err: any) {
       formError.textContent = err.message || "An unexpected error occurred.";

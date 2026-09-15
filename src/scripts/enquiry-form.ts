@@ -33,6 +33,23 @@ function initEnquiryForm(wrapper: HTMLElement) {
     if (match) categorySelect.value = match.value;
   }
 
+  // Pre-fill business name + a context note from the AI evaluator's
+  // "Request Custom Build Quote" link (?business=&score=), so a visitor who
+  // just typed this in doesn't have to retype it here.
+  const businessFromUrl = params.get("business");
+  const businessInput = form.querySelector<HTMLInputElement>('input[name="businessName"]');
+  if (businessFromUrl && businessInput && !businessInput.value) {
+    businessInput.value = businessFromUrl;
+  }
+  const scoreFromUrl = params.get("score");
+  const packageFromUrl = params.get("package");
+  const messageInput = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
+  if (scoreFromUrl && messageInput && !messageInput.value) {
+    messageInput.value = `I ran the AI Website Evaluator${businessFromUrl ? ` for ${businessFromUrl}` : ""} and scored ${scoreFromUrl}/100 — I'd like to talk about a redesign.`;
+  } else if (packageFromUrl && messageInput && !messageInput.value) {
+    messageInput.value = `I'm interested in the "${packageFromUrl}" package — please send me a quote.`;
+  }
+
   // Turnstile: load only if a widget placeholder exists on this form.
   const turnstileEl = form.querySelector<HTMLElement>(".cf-turnstile");
   if (turnstileEl && !document.querySelector('script[data-turnstile]')) {
