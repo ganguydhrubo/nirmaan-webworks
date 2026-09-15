@@ -64,9 +64,9 @@ export const siteConfig = {
   domain: "atittle.com",
   siteUrl: "https://atittle.com",
 
-  primaryEmail: "hhimanish@gmail.com",
-  leadNotificationEmail: "hhimanish@gmail.com",
-  supportEmail: "hhimanish@gmail.com",
+  primaryEmail: "hello@atittle.com",
+  leadNotificationEmail: "hello@atittle.com",
+  supportEmail: "hello@atittle.com",
 
   phoneDisplay: `+${whatsappNumber.slice(0,2)} ${whatsappNumber.slice(2,7)} ${whatsappNumber.slice(7)}`,
   phoneE164: `+${whatsappNumber}`,
