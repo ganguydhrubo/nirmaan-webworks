@@ -6,19 +6,20 @@ interface Props {
 }
 const { class: className = "", variant = "default" } = Astro.props;
 const textColor = variant === "light" ? "text-cream" : "text-ink-950";
-// Two interlocked rings, no letterform: the mark is the studio's actual
-// promise (a connected, working site), not a monogram — see the "LINK"
-// concept in the logo review. Single ink via currentColor (like Icon.astro)
-// so it can sit on either a light page (brand-500) or Footer's dark
-// ink-950 (brand-300, lighter so it still reads against a dark ground).
+// Geometric "A" apex mark: two strokes meeting at a peak plus a crossbar,
+// abstracted rather than drawn as a literal letterform so it reads as a
+// mark in its own right next to the ATITTLE wordmark. Single ink via
+// currentColor (like Icon.astro) so it can sit on either a light page
+// (brand-500) or Footer's dark ink-950 (brand-300, lighter so it still
+// reads against a dark ground).
 const markColor = variant === "light" ? "text-brand-300" : "text-brand-500";
 ---
 
 <a href="/" class:list={["inline-flex items-center gap-2.5 group", className]} aria-label={`${siteConfig.businessName} — home`}>
   <svg viewBox="0 0 100 100" class:list={["h-8 w-8 shrink-0 transition-transform duration-300 group-hover:scale-105", markColor]} aria-hidden="true">
-    <g fill="none" stroke="currentColor" stroke-width="9">
-      <rect x="-23" y="-12" width="46" height="24" rx="12" transform="translate(35,50) rotate(-18)"></rect>
-      <rect x="-23" y="-12" width="46" height="24" rx="12" transform="translate(66,49) rotate(-18)"></rect>
+    <g fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 86 L50 14 L82 86"></path>
+      <path d="M29.6 60 L70.4 60"></path>
     </g>
   </svg>
   <span class:list={["font-display text-lg font-bold uppercase leading-none tracking-wide", textColor]}>
