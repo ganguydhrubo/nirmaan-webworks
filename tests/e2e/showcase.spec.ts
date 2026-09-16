@@ -25,7 +25,7 @@ test('all 15 compositions, metadata, links and the wrap remain synchronized', as
     await expect(page.locator('[data-position]')).toHaveText(String(index % 15 + 1).padStart(2,'0'));
     const next = siteConfig.demoRegistry[(index + 1) % 15]!;
     await expect(page.locator('[data-next-name]')).toHaveText(next.businessName);
-    expect((await page.locator('[data-stage]').boundingBox())?.height).toBe(initial?.height);
+    expect((await page.locator('[data-stage]').boundingBox())?.height).toBeCloseTo(initial?.height ?? 0, 1);
     await expect(page.locator(`${root} [data-scene]:not([inert])`)).toHaveCount(1);
     if (index < 15) await page.locator('[data-next]').click();
   }

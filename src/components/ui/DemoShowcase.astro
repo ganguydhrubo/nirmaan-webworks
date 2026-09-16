@@ -57,6 +57,7 @@ const demos = siteConfig.demoRegistry.map(demo => ({
         <button type="button" data-prev aria-label="Previous demo">←</button>
         <button type="button" data-play aria-label="Pause automatic demos"><span data-play-icon aria-hidden="true">Ⅱ</span></button>
         <button type="button" data-next aria-label="Next demo">→</button>
+        <button type="button" data-sound class="showcase-sound-btn" aria-label="Enable transition sound effects" title="Toggle transition sound"><span data-sound-icon aria-hidden="true">🔊</span></button>
       </div>
       <label class="showcase-picker"><span aria-hidden="true">Browse all {demos.length}</span><select data-picker aria-label="Choose a demo">{demos.map((demo, index) => <option value={index}>{String(index + 1).padStart(2, "0")} · {demo.category}</option>)}</select><span aria-hidden="true">⌄</span></label>
     </div>

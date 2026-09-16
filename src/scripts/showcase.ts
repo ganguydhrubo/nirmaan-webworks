@@ -1,6 +1,154 @@
 /** One controller per stage. A decoded incoming scene replaces the whole composition. */
-const DWELL = 4350;
-const TRANSITION = 650;
+const DWELL = 2600;
+const TRANSITION = 240;
+
+let audioCtx: AudioContext | null = null;
+let audioUnlocked = false;
+
+function getAudioContext(): AudioContext | null {
+  if (typeof window === 'undefined') return null;
+  const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  if (!AudioCtx) return null;
+  if (!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+
+async function unlockAudio(): Promise<boolean> {
+  const ctx = getAudioContext();
+  if (!ctx) return false;
+  if (ctx.state === 'suspended') {
+    try {
+      await ctx.resume();
+    } catch {}
+  }
+  if (ctx.state === 'running') {
+    audioUnlocked = true;
+    return true;
+  }
+  return false;
+}
+
+// Global user gesture unlocker: unlocks audio on first click, touch, or key anywhere on the page
+if (typeof window !== 'undefined') {
+  const unlock = () => {
+    void unlockAudio();
+    if (audioUnlocked) {
+      window.removeEventListener('pointerdown', unlock, true);
+      window.removeEventListener('click', unlock, true);
+      window.removeEventListener('keydown', unlock, true);
+      window.removeEventListener('touchstart', unlock, true);
+    }
+  };
+  window.addEventListener('pointerdown', unlock, { capture: true, passive: true });
+  window.addEventListener('click', unlock, { capture: true, passive: true });
+  window.addEventListener('keydown', unlock, { capture: true, passive: true });
+  window.addEventListener('touchstart', unlock, { capture: true, passive: true });
+}
+
+function playWhoosh(force = false, soundEnabled = false, visible = false) {
+  if ((!soundEnabled && !force) || document.hidden || (!visible && !force)) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (ctx.state === 'suspended') {
+      void ctx.resume();
+    }
+    const now = ctx.currentTime;
+    const duration = 0.28;
+
+    // Master gain: soothing, gentle, and relaxing
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.32, now);
+    master.connect(ctx.destination);
+
+    // Layer 1: Silky pink-noise air (soft page-flip sweep, no harsh hiss)
+    const bufferSize = Math.floor(ctx.sampleRate * duration);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99765 * b0 + white * 0.0555179;
+      b1 = 0.96300 * b1 + white * 0.0750759;
+      b2 = 0.57000 * b2 + white * 0.1538520;
+      data[i] = (b0 + b1 + b2 + white * 0.05) * 0.35 * Math.exp(-i / (bufferSize * 0.45));
+    }
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.Q.value = 1.2;
+    filter.frequency.setValueAtTime(260, now);
+    filter.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+    filter.frequency.exponentialRampToValueAtTime(220, now + duration);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.0001, now);
+    noiseGain.gain.linearRampToValueAtTime(0.20, now + 0.06);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(master);
+
+    // Layer 2: Warm ambient chime (soothing glass / harp harmony)
+    const osc1 = ctx.createOscillator();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(440, now);
+    osc1.frequency.exponentialRampToValueAtTime(554.37, now + 0.06);
+    osc1.frequency.exponentialRampToValueAtTime(440, now + duration);
+
+    const osc1Gain = ctx.createGain();
+    osc1Gain.gain.setValueAtTime(0.0001, now);
+    osc1Gain.gain.linearRampToValueAtTime(0.16, now + 0.04);
+    osc1Gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    osc1.connect(osc1Gain);
+    osc1Gain.connect(master);
+
+    const osc2 = ctx.createOscillator();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(659.25, now);
+    osc2.frequency.exponentialRampToValueAtTime(659.25, now + duration);
+
+    const osc2Gain = ctx.createGain();
+    osc2Gain.gain.setValueAtTime(0.0001, now);
+    osc2Gain.gain.linearRampToValueAtTime(0.09, now + 0.05);
+    osc2Gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    osc2.connect(osc2Gain);
+    osc2Gain.connect(master);
+
+    // Layer 3: Pillowed felt landing cushion
+    const landing = ctx.createOscillator();
+    landing.type = 'sine';
+    const landStart = now + 0.12;
+    landing.frequency.setValueAtTime(140, landStart);
+    landing.frequency.exponentialRampToValueAtTime(65, landStart + 0.1);
+
+    const landGain = ctx.createGain();
+    landGain.gain.setValueAtTime(0.0001, now);
+    landGain.gain.setValueAtTime(0.0001, landStart);
+    landGain.gain.linearRampToValueAtTime(0.10, landStart + 0.02);
+    landGain.gain.exponentialRampToValueAtTime(0.0001, landStart + 0.1);
+
+    landing.connect(landGain);
+    landGain.connect(master);
+
+    // Play all layers
+    noise.start(now);
+    osc1.start(now);
+    osc2.start(now);
+    landing.start(landStart);
+
+    noise.stop(now + duration + 0.05);
+    osc1.stop(now + duration + 0.05);
+    osc2.stop(now + duration + 0.05);
+    landing.stop(landStart + 0.12);
+  } catch {}
+}
 
 function mountShowcase(root: HTMLElement): () => void {
   const scenes = [...root.querySelectorAll<HTMLElement>('[data-scene]')];
@@ -43,6 +191,37 @@ function mountShowcase(root: HTMLElement): () => void {
   const wrap = (index: number) => (index + scenes.length) % scenes.length;
   const canRun = () => !disposed && !busy && visible && !document.hidden && !userPaused && !keyboardPaused && !focused && !hovering && !touching;
 
+  const soundBtn = root.querySelector<HTMLButtonElement>('[data-sound]');
+  let soundEnabled = (() => {
+    try {
+      const s = localStorage.getItem('atittle_showcase_sound');
+      return s !== 'false';
+    } catch { return true; }
+  })();
+
+  function updateSound() {
+    if (!soundBtn) return;
+    soundBtn.setAttribute('aria-label', soundEnabled ? 'Mute transition sound effects' : 'Enable transition sound effects');
+    soundBtn.setAttribute('title', soundEnabled ? 'Sound ON — click to mute' : 'Sound OFF — click to enable');
+    const icon = soundBtn.querySelector<HTMLElement>('[data-sound-icon]');
+    if (icon) icon.textContent = soundEnabled ? '🔊' : '🔇';
+    root.dataset.soundActive = String(soundEnabled);
+  }
+  updateSound();
+
+  if (soundBtn) {
+    soundBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await unlockAudio();
+      soundEnabled = !soundEnabled;
+      try { localStorage.setItem('atittle_showcase_sound', String(soundEnabled)); } catch {}
+      updateSound();
+      if (soundEnabled) {
+        playWhoosh(true, true, true);
+      }
+    }, { signal });
+  }
+
   function stopTimer() {
     clearTimeout(autoplay);
     autoplay = undefined;
@@ -60,7 +239,7 @@ function mountShowcase(root: HTMLElement): () => void {
     if (canRun()) {
       root.dataset.running = 'true';
       if (!media.matches) progressAnimation = progress.animate([{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:DWELL,easing:'linear',fill:'both'});
-      autoplay = setTimeout(() => { void show(active + 1, false); }, DWELL);
+      autoplay = setTimeout(() => { void show(active + 1, false, 'next'); }, DWELL);
     }
   }
 
@@ -93,7 +272,7 @@ function mountShowcase(root: HTMLElement): () => void {
     if (manual) announcement.textContent = `${active + 1} of ${scenes.length}: ${scenes[active]!.dataset.name}`;
   }
 
-  async function show(index: number, manual: boolean) {
+  async function show(index: number, manual: boolean, dir?: 'next' | 'prev') {
     const target = wrap(index);
     if (busy) { if (manual) pending = target; return; }
     if (target === active || disposed) return;
@@ -112,6 +291,8 @@ function mountShowcase(root: HTMLElement): () => void {
       if (queued !== undefined) void show(queued, true);
       return;
     }
+    const forward = dir === 'next' || (dir === undefined && (target > active || (active === scenes.length - 1 && target === 0)));
+    root.dataset.direction = forward ? 'next' : 'prev';
     const outgoing = scenes[active]!;
     const incoming = scenes[target]!;
     if (outgoing.contains(document.activeElement)) root.querySelector<HTMLButtonElement>('[data-next]')!.focus({ preventScroll: true });
@@ -131,6 +312,9 @@ function mountShowcase(root: HTMLElement): () => void {
     root.dataset.state = 'transitioning';
     updateNavigation(manual);
     stack.classList.add('is-advancing');
+    if (!media.matches) {
+      playWhoosh(false, soundEnabled, visible);
+    }
     transitionTimer = setTimeout(() => {
       outgoing.classList.remove('is-outgoing');
       stack.classList.remove('is-advancing');
@@ -143,12 +327,20 @@ function mountShowcase(root: HTMLElement): () => void {
     }, media.matches ? 0 : TRANSITION);
   }
 
-  const advance = (delta: number) => void show((pending ?? active) + delta, true);
+  const advance = (delta: number) => {
+    void unlockAudio();
+    void show((pending ?? active) + delta, true, delta > 0 ? 'next' : 'prev');
+  };
   root.querySelector('[data-prev]')!.addEventListener('click', () => advance(-1), { signal });
   root.querySelector('[data-next]')!.addEventListener('click', () => advance(1), { signal });
   root.querySelector('[data-next-card]')!.addEventListener('click', () => advance(1), { signal });
-  picker.addEventListener('change', () => void show(Number(picker.value), true), { signal });
+  picker.addEventListener('change', () => {
+    void unlockAudio();
+    const val = Number(picker.value);
+    void show(val, true, val >= active ? 'next' : 'prev');
+  }, { signal });
   play.addEventListener('click', () => {
+    void unlockAudio();
     const resuming = userPaused || keyboardPaused;
     userPaused = !resuming;
     keyboardPaused = false;
@@ -246,6 +438,8 @@ function mountShowcase(root: HTMLElement): () => void {
       else scene.setAttribute('aria-hidden', 'true');
     });
     stack.classList.remove('is-advancing');
+    root.removeAttribute('data-direction');
+    root.removeAttribute('data-sound-active');
   };
 }
 
