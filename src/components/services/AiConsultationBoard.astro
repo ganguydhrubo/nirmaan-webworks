@@ -8,36 +8,46 @@ interface Props {
 
 const { id = "ai-consultation-board", class: className = "" } = Astro.props;
 
-// Pre-packaged high-intent Indian business prompts
+// Pre-packaged high-intent Indian business prompts spanning small retailers to high-end clients
 const quickScenarios = [
   {
+    id: "retailer",
+    label: "🛍️ Surat Retailer (₹499)",
+    query: "I run a clothing & saree shop in Surat. Can I start with a ₹499 digital catalog and WhatsApp order link for my customers?",
+  },
+  {
+    id: "cafe",
+    label: "☕ Local Cafe (₹799)",
+    query: "We run a bakery cafe in Lucknow. How do I fix my Google Maps menu and take direct orders without 26% Zomato cut?",
+  },
+  {
+    id: "rescue-micro",
+    label: "🛠️ Single Bug Fix (₹499)",
+    query: "Our website contact form is broken and throwing a PHP error. Can you fix just this single issue for our clinic?",
+  },
+  {
     id: "jewellery",
-    label: "💎 Jaipur Jewellery",
+    label: "💎 Jaipur Jewellery (Growth)",
     query: "I run a silver and gemstone jewellery store in Jaipur. How do we get high-intent orders outside our city?",
   },
   {
     id: "resort",
-    label: "🏨 30-Room Resort",
+    label: "🏨 30-Room Resort (Scale)",
     query: "We run a heritage boutique resort in Rajasthan. OTA commissions (18-22%) are eating our margins. What's the fix?",
   },
   {
     id: "clinic",
-    label: "🏥 Multi-Doctor Clinic",
+    label: "🏥 Dental Clinic (AI Agent)",
     query: "I run a dental clinic in Pune. Patients call at 10 PM and we lose appointments. Can an AI agent book them?",
   },
   {
     id: "factory",
-    label: "🏭 CNC Manufacturing",
+    label: "🏭 CNC Manufacturing (IoT)",
     query: "We operate 8 manufacturing machines in Gujarat. Can IoT sensors alert our phones before a breakdown happens?",
   },
   {
-    id: "rescue",
-    label: "🛠️ Abandoned Code",
-    query: "Our previous agency disappeared and left a slow, broken Laravel portal with database timeouts. Can you fix it?",
-  },
-  {
     id: "saas",
-    label: "📦 B2B Subscription",
+    label: "📦 B2B Subscription (SaaS)",
     query: "We want to turn our internal client billing checklist into a paid subscription SaaS for other CA firms. What's required?",
   }
 ];
@@ -54,9 +64,9 @@ const quickScenarios = [
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <!-- Top Terminal Bar Header -->
     <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-300 backdrop-blur">
+      <div class="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold-300 backdrop-blur">
         <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
-        Interactive AI Consultation Board &middot; Instant 0ms Simulation
+        From ₹499 Micro Solutions to Scale Enterprise &middot; Instant 0ms Simulation
       </div>
 
       <h2 class="font-display mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold text-cream leading-tight">
@@ -65,7 +75,7 @@ const quickScenarios = [
       </h2>
 
       <p class="mt-4 text-sm sm:text-base text-ink-300 leading-relaxed max-w-2xl mx-auto">
-        Tap a real-world SMB scenario below or type your exact business dilemma. Our digital architect will map the required engineering practice, realistic rupee investment, and expected timeline in real time.
+        Whether you are a local corner retailer testing digital with a ₹499 starter fix or a high-end enterprise scaling custom SaaS, our digital architect maps the right scope, tiered budget, and delivery roadmap in real time.
       </p>
     </div>
 
@@ -74,7 +84,7 @@ const quickScenarios = [
       <!-- Quick Scenario Chips -->
       <div class="mb-6">
         <div class="flex items-center justify-between text-xs font-medium text-ink-400 mb-2.5">
-          <span>Popular Indian Business Scenarios:</span>
+          <span>Choose an Indian Business Scenario:</span>
           <span class="text-emerald-400">1-Tap to Test</span>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -124,7 +134,7 @@ const quickScenarios = [
             Select a prompt above or ask a custom question.
           </p>
           <p class="text-xs text-ink-500 mt-1">
-            Get an instant plain-English breakdown with transparent rupee pricing and delivery roadmap.
+            Get an instant plain-English breakdown with 3 tiered investment options (from ₹499) and delivery roadmap.
           </p>
         </div>
 
@@ -143,9 +153,9 @@ const quickScenarios = [
                 </div>
               </div>
             </div>
-            <div class="flex items-center gap-3 text-xs font-mono">
-              <span class="rounded bg-brand-950/80 border border-brand-500/40 px-2.5 py-1 text-brand-300" id="ai-result-budget">
-                <!-- Injected via JS -->
+            <div class="flex items-center gap-2 text-xs font-mono">
+              <span class="rounded bg-emerald-950 border border-emerald-500/40 px-2.5 py-1 text-emerald-300" id="ai-result-starting">
+                Starts at ₹499
               </span>
               <span class="rounded bg-ink-800 px-2.5 py-1 text-ink-300" id="ai-result-timeline">
                 <!-- Injected via JS -->
@@ -172,6 +182,58 @@ const quickScenarios = [
             <ul id="ai-result-steps" class="space-y-2 text-xs sm:text-sm text-ink-300">
               <!-- Injected via JS -->
             </ul>
+          </div>
+
+          <!-- Comprehensive 3-Tier Investment Spectrum (₹499 to High-End) -->
+          <div class="rounded-xl border border-ink-800 bg-ink-900/90 p-4 sm:p-5">
+            <div class="text-xs font-bold uppercase tracking-wider text-gold-300 mb-3 flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <span class="h-2 w-2 rounded-full bg-gold-400"></span>
+                Flexible Investment Options (Small Retailer to High-End):
+              </span>
+              <span class="text-[11px] font-mono text-emerald-400">Options for Every Stage</span>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-3 text-xs">
+              <!-- Tier 1: Micro Starter -->
+              <div class="tier-card rounded-lg border border-emerald-500/30 bg-emerald-950/30 p-3.5 flex flex-col justify-between" id="tier-micro-card">
+                <div>
+                  <div class="flex items-center justify-between text-[10px] font-mono text-emerald-400 uppercase font-bold">
+                    <span>Micro Starter</span>
+                    <span class="rounded bg-emerald-900/60 px-1.5 py-0.5 text-emerald-300" id="tier-micro-price">₹499 – ₹1,999</span>
+                  </div>
+                  <div class="font-bold text-cream mt-2 text-xs" id="tier-micro-title">Single Setup / Audit</div>
+                  <p class="text-[11px] text-ink-300 mt-1 leading-snug" id="tier-micro-desc">Ideal for small shops and local retailers testing digital.</p>
+                </div>
+                <div class="text-[10px] font-mono text-emerald-400 mt-2.5 pt-2 border-t border-emerald-900/50" id="tier-micro-time">24 to 48 Hours</div>
+              </div>
+
+              <!-- Tier 2: Growth SMB -->
+              <div class="tier-card rounded-lg border border-brand-500/40 bg-brand-950/30 p-3.5 flex flex-col justify-between ring-1 ring-brand-500/30" id="tier-growth-card">
+                <div>
+                  <div class="flex items-center justify-between text-[10px] font-mono text-brand-300 uppercase font-bold">
+                    <span>Growth SMB</span>
+                    <span class="rounded bg-brand-900/60 px-1.5 py-0.5 text-brand-300" id="tier-growth-price">₹7,500 – ₹24,000</span>
+                  </div>
+                  <div class="font-bold text-cream mt-2 text-xs" id="tier-growth-title">Full Workflow Deployment</div>
+                  <p class="text-[11px] text-ink-300 mt-1 leading-snug" id="tier-growth-desc">Complete multi-step automation or targeted growth campaigns.</p>
+                </div>
+                <div class="text-[10px] font-mono text-brand-300 mt-2.5 pt-2 border-t border-brand-900/50" id="tier-growth-time">7 to 14 Days</div>
+              </div>
+
+              <!-- Tier 3: Scale / Enterprise -->
+              <div class="tier-card rounded-lg border border-purple-500/30 bg-purple-950/30 p-3.5 flex flex-col justify-between" id="tier-scale-card">
+                <div>
+                  <div class="flex items-center justify-between text-[10px] font-mono text-purple-300 uppercase font-bold">
+                    <span>Scale / Custom</span>
+                    <span class="rounded bg-purple-900/60 px-1.5 py-0.5 text-purple-300" id="tier-scale-price">₹45,000 – ₹1.5L+</span>
+                  </div>
+                  <div class="font-bold text-cream mt-2 text-xs" id="tier-scale-title">High-End Architecture</div>
+                  <p class="text-[11px] text-ink-300 mt-1 leading-snug" id="tier-scale-desc">Multi-tenant SaaS, IoT telemetry, or autonomous AI teams.</p>
+                </div>
+                <div class="text-[10px] font-mono text-purple-300 mt-2.5 pt-2 border-t border-purple-900/50" id="tier-scale-time">3 to 6 Weeks</div>
+              </div>
+            </div>
           </div>
 
           <!-- 1-Tap Handoff CTAs -->
@@ -203,115 +265,281 @@ const quickScenarios = [
 </section>
 
 <script>
-  // High-performance client-side simulation engine
+  // High-performance tiered simulation engine
+  interface TierInfo {
+    price: string;
+    title: string;
+    desc: string;
+    time: string;
+  }
+
   interface KnowledgeEntry {
     keywords: string[];
     practice: string;
     practiceId: string;
-    budget: string;
+    startingPrice: string;
     timeline: string;
     diagnosis: string;
     steps: string[];
+    microTier: TierInfo;
+    growthTier: TierInfo;
+    scaleTier: TierInfo;
   }
 
   const knowledgeBase: KnowledgeEntry[] = [
     {
-      keywords: ["jewel", "gemstone", "jaipur", "diamond", "silver", "gold", "ornament", "saree", "fashion", "apparel", "retail"],
+      keywords: ["retail", "saree", "surat", "clothing", "apparel", "kirana", "shop", "store", "corner", "small"],
+      practice: "Practice 01: Retail Lead Funnel + Practice 06: WhatsApp Catalog",
+      practiceId: "meta-google-ads",
+      startingPrice: "Starts at ₹499",
+      timeline: "24h to 7 Days",
+      diagnosis: "Small retailers & local shop owners don't need a ₹50,000 corporate portal to start selling online. You only need an instant digital catalog link on WhatsApp so nearby customers can view items, check stock, and place orders directly.",
+      steps: [
+        "Create a clean mobile-friendly WhatsApp product catalog link & QR standee for your billing counter.",
+        "Set up instant auto-reply with payment UPI QR and delivery pin code confirmation.",
+        "Run hyper-local Instagram/Facebook micro-ads in your 5km radius starting from ₹200/day."
+      ],
+      microTier: {
+        price: "₹499 – ₹1,499",
+        title: "Micro Catalog & QR Setup",
+        desc: "Instant WhatsApp product link, QR standee for shop counter, and Google Maps listing update.",
+        time: "Within 24 Hours"
+      },
+      growthTier: {
+        price: "₹4,999 – ₹12,500",
+        title: "Local Storefront & Ads",
+        desc: "Mobile-first ordering landing page with automated WhatsApp cart checkout and 5km radius ad launch.",
+        time: "3 to 5 Days"
+      },
+      scaleTier: {
+        price: "₹28,000 – ₹65,000",
+        title: "Pan-India D2C Platform",
+        desc: "Automated inventory sync with Tally/billing machine, multi-courier tracking, and national scaling.",
+        time: "2 to 3 Weeks"
+      }
+    },
+    {
+      keywords: ["cafe", "bakery", "restaurant", "food", "lucknow", "menu", "zomato", "swiggy", "order"],
+      practice: "Practice 02: Local Maps & Menu + Practice 03: Direct Food Ordering",
+      practiceId: "seo-aeo",
+      startingPrice: "Starts at ₹799",
+      timeline: "24h to 10 Days",
+      diagnosis: "Food aggregators pocket 22% to 28% of every order. Regular dine-in and takeaway customers who already love your food will happily order direct if you provide a 30-second mobile menu link with UPI payment.",
+      steps: [
+        "Claim, optimize, and verify your Google Maps profile with high-res photos and readable mobile menu.",
+        "Deploy a zero-commission digital menu link with 1-tap WhatsApp/UPI ordering.",
+        "Place table QR standees offering a ₹50 discount on their next direct order to convert aggregator buyers."
+      ],
+      microTier: {
+        price: "₹799 – ₹1,999",
+        title: "Google Maps & Digital Menu",
+        desc: "Clean mobile menu setup, Google Maps verification, and table QR standee design.",
+        time: "Within 24 Hours"
+      },
+      growthTier: {
+        price: "₹6,500 – ₹16,000",
+        title: "Direct Ordering Web Engine",
+        desc: "Zero-commission direct ordering web app with table booking, kitchen WhatsApp alerts, and UPI payments.",
+        time: "5 to 7 Days"
+      },
+      scaleTier: {
+        price: "₹35,000 – ₹75,000",
+        title: "Multi-Outlet Cloud Kitchen SaaS",
+        desc: "Centralized kitchen display system (KDS), multi-branch inventory, and automated delivery dispatch.",
+        time: "2 to 4 Weeks"
+      }
+    },
+    {
+      keywords: ["bug", "single fix", "broken form", "ssl", "499", "error", "patch", "glitch", "speed", "contact form"],
+      practice: "Practice 04: Fixing Broken Systems & Single Bug Rescue",
+      practiceId: "fixing-broken-systems",
+      startingPrice: "Starts at ₹499",
+      timeline: "Same Day to 5 Days",
+      diagnosis: "You shouldn't have to pay for a complete website rebuild just because an email form stopped working or an SSL security certificate expired. We offer micro-fixes for single issues without bloated retainers.",
+      steps: [
+        "Audit the specific error logs and fix the root cause (SMTP delivery, broken script, or plugin clash).",
+        "Test across desktop and mobile browsers to confirm resolution.",
+        "Provide a backup of the working file so the issue never recurs."
+      ],
+      microTier: {
+        price: "₹499 – ₹1,499",
+        title: "Single Bug / Form Fix",
+        desc: "Fix one specific broken element: contact form, SSL certificate, mobile alignment, or broken link.",
+        time: "2 to 6 Hours"
+      },
+      growthTier: {
+        price: "₹4,500 – ₹14,000",
+        title: "Full Performance & Speed Rescue",
+        desc: "Deep speed optimization, database query cleanup, malware removal, and Cloudflare CDN caching.",
+        time: "2 to 4 Days"
+      },
+      scaleTier: {
+        price: "₹28,000 – ₹65,000",
+        title: "Complete Framework Rebuild",
+        desc: "Migrate legacy fragile code to ultra-fast modern Astro/React architecture with zero downtime.",
+        time: "2 to 3 Weeks"
+      }
+    },
+    {
+      keywords: ["jewel", "gemstone", "jaipur", "diamond", "silver", "gold", "ornament", "fashion"],
       practice: "Practice 01: Meta & Google Ads + High-Converting Landing Flow",
       practiceId: "meta-google-ads",
-      budget: "₹18,000 – ₹35,000 Setup + Ad Spend",
-      timeline: "7 to 10 Days to First Live Lead",
+      startingPrice: "Starts at ₹499",
+      timeline: "24h to 10 Days",
       diagnosis: "Retail luxury & jewellery outside your home city requires high-trust visual proof: verified reviews, video walkthroughs, and direct WhatsApp concierge rather than generic cart checkouts.",
       steps: [
         "Deploy a hyper-targeted Instagram Video Ad campaign aimed at Tier 1 & Tier 2 bridal/festive shoppers.",
         "Route clicks directly to a high-speed WhatsApp catalog landing page loaded with hallmark certifications and customer video unboxings.",
         "Configure automated WhatsApp greeting with ring size & budget filters to qualify buyers before founder handover."
-      ]
+      ],
+      microTier: {
+        price: "₹499 – ₹1,999",
+        title: "Ad Creative & Pixel Setup",
+        desc: "Meta Pixel tracking audit, 1 high-converting video ad script, and target audience blueprint.",
+        time: "24 Hours"
+      },
+      growthTier: {
+        price: "₹9,999 – ₹22,000",
+        title: "Managed Ad Campaign + Funnel",
+        desc: "Complete ad setup, A/B audience testing, WhatsApp landing page, and weekly ROAS tracking.",
+        time: "7 to 10 Days"
+      },
+      scaleTier: {
+        price: "₹35,000 – ₹85,000",
+        title: "Omnichannel National Scaling",
+        desc: "Multi-city Google Search + Meta campaigns, automated CRM qualification, and video retargeting.",
+        time: "3 to 4 Weeks"
+      }
     },
     {
       keywords: ["hotel", "resort", "heritage", "stay", "villa", "ota", "makemytrip", "goibibo", "booking", "room"],
       practice: "Practice 03: Direct Booking SaaS Engine + Practice 02: Google & AEO",
       practiceId: "saas",
-      budget: "₹35,000 – ₹60,000 One-time",
-      timeline: "2 to 3 Weeks Live",
-      diagnosis: "OTAs take 18% to 22% of every room night. Guests already look up your resort by name after finding it on MakeMyTrip — you only need a seamless direct engine with a ₹500 direct-booking incentive.",
+      startingPrice: "Starts at ₹1,499",
+      timeline: "48h to 3 Weeks",
+      diagnosis: "OTAs take 18% to 22% of every room night. Guests already look up your resort by name after finding it on MakeMyTrip — you only need a seamless direct engine with a direct-booking perk to capture them.",
       steps: [
         "Deploy a dedicated direct-booking engine with real-time room availability, calendar picker, and instant UPI/card payment.",
         "Implement hotel-specific Schema.org markup so Google Hotels and ChatGPT recognize your official direct rate as lower than OTAs.",
         "Set up instant automated WhatsApp booking vouchers and check-in direction pings."
-      ]
+      ],
+      microTier: {
+        price: "₹1,499 – ₹3,499",
+        title: "Google Hotels & Rate Audit",
+        desc: "Google Hotel Center listing optimization, official site badge, and direct rate schema markup.",
+        time: "48 Hours"
+      },
+      growthTier: {
+        price: "₹18,000 – ₹38,000",
+        title: "Direct Booking Engine",
+        desc: "Full booking engine with room calendar, seasonal rate cards, instant UPI deposits, and WhatsApp vouchers.",
+        time: "10 to 14 Days"
+      },
+      scaleTier: {
+        price: "₹55,000 – ₹1,20,000",
+        title: "Multi-Property Resort SaaS",
+        desc: "Central reservation system (CRS), dynamic pricing algorithm, OTA channel manager sync, and loyalty portal.",
+        time: "4 to 6 Weeks"
+      }
     },
     {
       keywords: ["clinic", "doctor", "dental", "hospital", "patient", "appointment", "night", "practo"],
       practice: "Practice 07: Autonomous AI Agent + Practice 02: Local SEO/AEO",
       practiceId: "ai-agents",
-      budget: "₹25,000 – ₹45,000 Setup",
-      timeline: "10 to 14 Days",
+      startingPrice: "Starts at ₹999",
+      timeline: "24h to 14 Days",
       diagnosis: "Over 40% of healthcare and dental enquiries arrive between 8 PM and 7 AM when clinic staff is off-duty. Abandoned patient inquiries switch to competing clinics within 15 minutes.",
       steps: [
         "Install an intelligent 24/7 WhatsApp AI Agent trained on your clinic's treatments, consultation hours, and pricing ranges.",
         "Automate calendar slot reservation that verifies doctor availability and sends Google Calendar invites to both doctor and patient.",
         "Send automatic appointment reminders 3 hours prior to slash clinic no-shows by up to 60%."
-      ]
+      ],
+      microTier: {
+        price: "₹999 – ₹2,499",
+        title: "Clinic WhatsApp Auto-Reply",
+        desc: "Automated after-hours WhatsApp responder with clinic timings, doctor specializations, and instant call-back queue.",
+        time: "24 Hours"
+      },
+      growthTier: {
+        price: "₹12,500 – ₹26,000",
+        title: "24/7 AI Booking Assistant",
+        desc: "Intelligent booking agent that checks doctor schedules in real time and sends automated reminder pings.",
+        time: "7 to 10 Days"
+      },
+      scaleTier: {
+        price: "₹45,000 – ₹95,000",
+        title: "Hospital Chain Patient Portal",
+        desc: "Multi-branch digital reception, electronic medical records (EMR) lookup, and automated post-care follow-ups.",
+        time: "3 to 4 Weeks"
+      }
     },
     {
-      keywords: ["iot", "machine", "cnc", "sensor", "hardware", "factory", "manufacturing", "breakdown", "telemetry", "meter", "tank"],
+      keywords: ["iot", "machine", "cnc", "sensor", "hardware", "factory", "manufacturing", "breakdown", "telemetry"],
       practice: "Practice 05: End-to-End IoT (Hardware to Cloud Dashboard)",
       practiceId: "iot",
-      budget: "₹45,000 – ₹85,000 Pilot",
-      timeline: "3 to 4 Weeks",
+      startingPrice: "Starts at ₹1,499",
+      timeline: "48h to 4 Weeks",
       diagnosis: "Unplanned manufacturing downtime costs far more than preventive monitoring. Off-the-shelf industrial SCADA systems cost lakhs; custom micro-controllers connected to lightweight dashboards deliver 90% of the value at a fraction of the cost.",
       steps: [
         "Connect industrial vibration/temperature or flow sensors to ESP32/cellular telemetry nodes.",
         "Stream real-time sensor packets over secure MQTT into a custom lightweight web & mobile dashboard.",
         "Trigger instant SMS/WhatsApp emergency alerts to floor managers whenever machine thresholds breach safe operating parameters."
-      ]
-    },
-    {
-      keywords: ["rescue", "broken", "laravel", "wordpress", "php", "developer left", "slow", "error", "504", "crash", "bug", "clean", "fix"],
-      practice: "Practice 04: Fixing Broken Systems & Code Rescue",
-      practiceId: "fixing-broken-systems",
-      budget: "₹15,000 – ₹35,000 Audit & Fix",
-      timeline: "3 to 7 Days for Recovery",
-      diagnosis: "Most inherited codebases suffer from unindexed database queries, bloated unmaintained plugins, or missing environment configurations — not fundamental architecture flaws.",
-      steps: [
-        "Conduct a zero-judgment 48-hour diagnostic audit of server logs, database bottlenecks, and security vulnerabilities.",
-        "Clean up memory leaks, migrate slow queries, and configure modern Cloudflare/edge caching.",
-        "Provide a clean Git repository, automated off-site backups, and fully documented administrative credentials."
-      ]
+      ],
+      microTier: {
+        price: "₹1,499 – ₹3,999",
+        title: "Hardware Feasibility Spec",
+        desc: "Sensor selection matrix, microcontroller architecture diagram, and cellular data cost breakdown.",
+        time: "48 Hours"
+      },
+      growthTier: {
+        price: "₹18,000 – ₹42,000",
+        title: "Single-Machine Live Telemetry",
+        desc: "1 hardware node configured with sensor, secure cloud broker, and real-time mobile monitoring dashboard.",
+        time: "2 to 3 Weeks"
+      },
+      scaleTier: {
+        price: "₹55,000 – ₹1,40,000",
+        title: "Factory-Wide Industrial IoT",
+        desc: "Multi-machine telemetry mesh, offline buffer memory, predictive maintenance alerts, and PLC integration.",
+        time: "4 to 6 Weeks"
+      }
     },
     {
       keywords: ["saas", "subscription", "software", "mrr", "portal", "ca", "billing", "tool", "b2b"],
       practice: "Practice 03: End-to-End SaaS (Software as a Service)",
       practiceId: "saas",
-      budget: "₹65,000 – ₹1,40,000 Full MVP",
-      timeline: "4 to 6 Weeks to First Subscriber",
+      startingPrice: "Starts at ₹2,499",
+      timeline: "48h to 6 Weeks",
       diagnosis: "Internal spreadsheets and checklists that your team uses every day are prime candidates for B2B SaaS because other business owners in your industry experience the exact same operational pain.",
       steps: [
         "Architect a multi-tenant web application with secure role-based access control (Admin, Staff, Client).",
         "Integrate automated recurring Indian subscriptions via Razorpay Subscriptions (e-mandate & recurring UPI).",
         "Build clean self-serve onboarding so new paying clients can configure their account in under 3 minutes without manual assistance."
-      ]
-    },
-    {
-      keywords: ["ai", "automation", "automate", "tally", "invoice", "excel", "repetitive", "pdf", "transcription", "manual"],
-      practice: "Practice 06: AI Transformation & Workflow Automation",
-      practiceId: "ai-transformation",
-      budget: "₹20,000 – ₹40,000 per Pipeline",
-      timeline: "7 to 14 Days",
-      diagnosis: "Paying salaried employees to copy-paste data between WhatsApp messages, Excel spreadsheets, and invoicing software wastes hours every day and creates avoidable human transcription errors.",
-      steps: [
-        "Deploy an autonomous AI workflow that parses incoming client requests (including handwritten slips or voice notes).",
-        "Cross-reference inventory availability and calculate GST line items automatically.",
-        "Generate a branded GST invoice and deliver it back to the customer's WhatsApp within 90 seconds."
-      ]
+      ],
+      microTier: {
+        price: "₹2,499 – ₹5,000",
+        title: "SaaS Architecture Blueprint",
+        desc: "Complete database schema, technical stack recommendation, UI wireframes, and developer handoff spec.",
+        time: "48 to 72 Hours"
+      },
+      growthTier: {
+        price: "₹28,000 – ₹65,000",
+        title: "Core Working MVP",
+        desc: "Multi-tenant authentication, user dashboard, core workflow tool, and Razorpay subscription billing.",
+        time: "3 to 4 Weeks"
+      },
+      scaleTier: {
+        price: "₹75,000 – ₹1,80,000",
+        title: "Enterprise B2B SaaS",
+        desc: "Role-based permissions, automated team invites, analytics telemetry, customer portal, and API webhooks.",
+        time: "5 to 8 Weeks"
+      }
     }
   ];
 
   function matchQuery(rawText: string): KnowledgeEntry {
     const text = rawText.toLowerCase();
     
-    // Check keyword score
     let bestMatch: KnowledgeEntry = knowledgeBase[0]!;
     let maxScore = -1;
 
@@ -326,20 +554,37 @@ const quickScenarios = [
       }
     }
 
-    // If no specific match was found, synthesize a contextual advisory
     if (maxScore <= 0) {
       return {
         keywords: [],
-        practice: "Practice 06: Practical AI Transformation + Web Engine",
+        practice: "Practice 06: Practical Digital Transformation",
         practiceId: "ai-transformation",
-        budget: "₹25,000 – ₹50,000 Tailored Scope",
-        timeline: "14 to 21 Working Days",
-        diagnosis: `For your specific inquiry ("${rawText.slice(0, 45)}..."), the highest-ROI approach is combining a dedicated high-converting customer touchpoint with smart automated follow-up systems.`,
+        startingPrice: "Starts at ₹499",
+        timeline: "24h to 2 Weeks",
+        diagnosis: `For your specific business requirement ("${rawText.slice(0, 40)}..."), we offer tailored options ranging from a quick ₹499 starter fix to full custom deployment.`,
         steps: [
-          "Engineer a fast, frictionless digital portal tailored to your exact customer journey.",
-          "Automate repetitive operational steps (enquiry qualification, quote calculation, and notification delivery).",
-          "Deliver direct founder analytics so every rupee invested shows measurable returns."
-        ]
+          "Deploy a high-speed customer touchpoint optimized for mobile visitors and WhatsApp.",
+          "Automate repetitive operational tasks (enquiry qualification and billing alerts).",
+          "Track direct ROI so every rupee invested produces measurable growth."
+        ],
+        microTier: {
+          price: "₹499 – ₹1,999",
+          title: "Micro Quick Starter",
+          desc: "Audit, single bug fix, or essential WhatsApp customer link.",
+          time: "24 to 48 Hours"
+        },
+        growthTier: {
+          price: "₹7,500 – ₹22,000",
+          title: "Growth Implementation",
+          desc: "Complete workflow deployment, customer funnel, or system overhaul.",
+          time: "7 to 10 Days"
+        },
+        scaleTier: {
+          price: "₹35,000 – ₹90,000",
+          title: "Custom Enterprise Solution",
+          desc: "Full custom software architecture with dedicated support.",
+          time: "3 to 5 Weeks"
+        }
       };
     }
 
@@ -353,12 +598,28 @@ const quickScenarios = [
     const idleState = document.querySelector<HTMLElement>('#ai-idle-state');
     const resultCard = document.querySelector<HTMLElement>('#ai-result-card');
     const practiceEl = document.querySelector<HTMLElement>('#ai-result-practice');
-    const budgetEl = document.querySelector<HTMLElement>('#ai-result-budget');
+    const startingEl = document.querySelector<HTMLElement>('#ai-result-starting');
     const timelineEl = document.querySelector<HTMLElement>('#ai-result-timeline');
     const diagnosisEl = document.querySelector<HTMLElement>('#ai-result-diagnosis');
     const stepsEl = document.querySelector<HTMLElement>('#ai-result-steps');
     const applyBtn = document.querySelector<HTMLButtonElement>('#ai-apply-btn');
     const whatsappBtn = document.querySelector<HTMLAnchorElement>('#ai-whatsapp-btn');
+
+    // Tier Elements
+    const microPriceEl = document.querySelector<HTMLElement>('#tier-micro-price');
+    const microTitleEl = document.querySelector<HTMLElement>('#tier-micro-title');
+    const microDescEl = document.querySelector<HTMLElement>('#tier-micro-desc');
+    const microTimeEl = document.querySelector<HTMLElement>('#tier-micro-time');
+
+    const growthPriceEl = document.querySelector<HTMLElement>('#tier-growth-price');
+    const growthTitleEl = document.querySelector<HTMLElement>('#tier-growth-title');
+    const growthDescEl = document.querySelector<HTMLElement>('#tier-growth-desc');
+    const growthTimeEl = document.querySelector<HTMLElement>('#tier-growth-time');
+
+    const scalePriceEl = document.querySelector<HTMLElement>('#tier-scale-price');
+    const scaleTitleEl = document.querySelector<HTMLElement>('#tier-scale-title');
+    const scaleDescEl = document.querySelector<HTMLElement>('#tier-scale-desc');
+    const scaleTimeEl = document.querySelector<HTMLElement>('#tier-scale-time');
 
     function renderResult(query: string) {
       if (!query.trim()) return;
@@ -371,7 +632,7 @@ const quickScenarios = [
       }
 
       if (practiceEl) practiceEl.textContent = match.practice;
-      if (budgetEl) budgetEl.textContent = match.budget;
+      if (startingEl) startingEl.textContent = match.startingPrice;
       if (timelineEl) timelineEl.textContent = match.timeline;
       if (diagnosisEl) diagnosisEl.textContent = match.diagnosis;
 
@@ -385,9 +646,25 @@ const quickScenarios = [
         });
       }
 
+      // Update 3-Tier details
+      if (microPriceEl) microPriceEl.textContent = match.microTier.price;
+      if (microTitleEl) microTitleEl.textContent = match.microTier.title;
+      if (microDescEl) microDescEl.textContent = match.microTier.desc;
+      if (microTimeEl) microTimeEl.textContent = match.microTier.time;
+
+      if (growthPriceEl) growthPriceEl.textContent = match.growthTier.price;
+      if (growthTitleEl) growthTitleEl.textContent = match.growthTier.title;
+      if (growthDescEl) growthDescEl.textContent = match.growthTier.desc;
+      if (growthTimeEl) growthTimeEl.textContent = match.growthTier.time;
+
+      if (scalePriceEl) scalePriceEl.textContent = match.scaleTier.price;
+      if (scaleTitleEl) scaleTitleEl.textContent = match.scaleTier.title;
+      if (scaleDescEl) scaleDescEl.textContent = match.scaleTier.desc;
+      if (scaleTimeEl) scaleTimeEl.textContent = match.scaleTier.time;
+
       // WhatsApp link setup
       if (whatsappBtn) {
-        const waMsg = `Hi ATITTLE, I ran my business scenario through your AI Consultation Board: "${query}". You recommended ${match.practice} (${match.budget}). I'd like to discuss bringing this to life.`;
+        const waMsg = `Hi ATITTLE, I ran my business scenario through your AI Consultation Board: "${query}". You recommended ${match.practice} (${match.startingPrice} onwards). I'd like to discuss bringing this to life.`;
         whatsappBtn.href = `https://wa.me/919330393298?text=${encodeURIComponent(waMsg)}`;
       }
 
@@ -402,7 +679,7 @@ const quickScenarios = [
 
           if (needsSelect) needsSelect.value = 'not-sure';
           if (msgArea) {
-            msgArea.value = `[AI Consultation Blueprint]\nBusiness Case: ${query}\nRecommended: ${match.practice}\nTarget Budget: ${match.budget}\nTimeline: ${match.timeline}\n\nPlease get in touch to formalize this scope.`;
+            msgArea.value = `[AI Consultation Blueprint]\nBusiness Case: ${query}\nRecommended: ${match.practice}\nBudget Tiers: Micro (${match.microTier.price}) | Growth (${match.growthTier.price}) | Scale (${match.scaleTier.price})\nEstimated Timeline: ${match.timeline}\n\nPlease get in touch to formalize this scope.`;
           }
 
           targetForm.scrollIntoView({ behavior: 'smooth', block: 'center' });

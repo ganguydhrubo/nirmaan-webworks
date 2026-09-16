@@ -14,6 +14,16 @@ const meta = {
 };
 
 const services = siteConfig.otherServices;
+
+const startingPills = [
+  "Starts from ₹499 (Ad Test) · Scale to ₹35,000+",
+  "Starts from ₹799 (Schema Fix) · Scale to ₹35,000+",
+  "Starts from ₹2,499 (MVP Spec) · Scale to ₹85,000+",
+  "Starts from ₹499 (Single Bug Patch) · Scale to ₹30,000+",
+  "Starts from ₹1,499 (Sensor Spec) · Scale to ₹65,000+",
+  "Starts from ₹999 (Invoice Automation) · Scale to ₹40,000+",
+  "Starts from ₹1,499 (WhatsApp Bot) · Scale to ₹50,000+",
+];
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
@@ -29,9 +39,9 @@ const services = siteConfig.otherServices;
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto">
         <!-- Live Discovery Badge -->
-        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-300 mb-6 backdrop-blur">
+        <div class="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold-300 mb-6 backdrop-blur">
           <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
-          Beyond Websites &middot; 7 Specialized Practices
+          From ₹499 Micro Solutions to Scale Enterprise &middot; 7 Practices
         </div>
 
         <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-cream text-balance leading-[1.12]">
@@ -115,9 +125,14 @@ const services = siteConfig.otherServices;
               </div>
             </div>
 
-            <span class="text-xs font-mono text-ink-400">
-              Practice 0{idx + 1} / 07
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-1 text-[11px] font-mono text-emerald-400 font-medium">
+                {startingPills[idx]}
+              </span>
+              <span class="text-xs font-mono text-ink-400 hidden sm:inline">
+                Practice 0{idx + 1} / 07
+              </span>
+            </div>
           </div>
 
           <!-- Two-Column Cinematic Layout: Narrative (Left) + Interactive Visual 3D Stage (Right) -->
