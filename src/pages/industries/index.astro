@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { siteConfig } from "@config/site";
+import { industryContent } from "@/content/industries";
 import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const prerender = true;
@@ -12,33 +13,1041 @@ const jsonLd = [
     { name: "Industries", url: `${siteConfig.siteUrl}/industries` },
   ]),
 ];
+
+// Rich industry metadata tailored for Indian business owners
+const industryCards = [
+  {
+    slug: "real-estate",
+    category: "spaces",
+    startingPrice: "₹24,000",
+    turnaround: "12–14 days",
+    bleedSource: "MagicBricks & 99acres (₹15,000–₹35,000/mo listing fees)",
+    keyCapabilities: ["Project & unit listings with filterable floor plans", "Working EMI payment calculator for serious buyers", "RERA & builder credential verification badges"],
+    highlightBadge: "Property Developers",
+  },
+  {
+    slug: "hotels-resorts",
+    category: "hospitality",
+    startingPrice: "₹22,000",
+    turnaround: "10–12 days",
+    bleedSource: "MakeMyTrip, Agoda & OTAs (18%–22% commission per room)",
+    keyCapabilities: ["Direct booking engine with 0% commission bleed", "Room galleries, seasonal offers & house rules", "Location guide for rail, flight & road arrivals"],
+    highlightBadge: "Stays & Homestays",
+  },
+  {
+    slug: "healthcare-clinics",
+    category: "healthcare",
+    startingPrice: "₹18,000",
+    turnaround: "10–12 days",
+    bleedSource: "Practo & Justdial (₹250–₹500 per lead + paid rankings)",
+    keyCapabilities: ["Doctor OPD rosters with degrees & consulting hours", "One-tap thumb-friendly WhatsApp booking CTA", "Condition-specific pages for local Google searches"],
+    highlightBadge: "Multispecialty Clinics",
+  },
+  {
+    slug: "education-coaching",
+    category: "services",
+    startingPrice: "₹16,000",
+    turnaround: "8–10 days",
+    bleedSource: "Generic directory listings with low-intent spam enquiries",
+    keyCapabilities: ["Batch schedules, syllabus & timing breakdown", "Real faculty profiles & proven credentials", "Course-specific admission enquiry & trial class form"],
+    highlightBadge: "Coaching & Schools",
+  },
+  {
+    slug: "dental-clinics",
+    category: "healthcare",
+    startingPrice: "₹18,000",
+    turnaround: "10–12 days",
+    bleedSource: "Patient pricing anxiety & hidden charges leading to lost calls",
+    keyCapabilities: ["Transparent treatment catalogue with rupee ranges", "Named dentist credentials & anxiety-reducing clinic tour", "Integrated appointment booking & financing guidance"],
+    highlightBadge: "Dental Practices",
+  },
+  {
+    slug: "restaurants-cafes",
+    category: "hospitality",
+    startingPrice: "₹12,000",
+    turnaround: "7–10 days",
+    bleedSource: "Zomato & Swiggy (25%–32% order commission + ad fees)",
+    keyCapabilities: ["Full categorised rupee menu — never a blurry PDF", "Direct table reservation form straight to WhatsApp", "Google Maps dining schema & high-res food visualizer"],
+    highlightBadge: "Dining & Cafés",
+  },
+  {
+    slug: "jewellery",
+    category: "retail",
+    startingPrice: "₹24,000",
+    turnaround: "12–14 days",
+    bleedSource: "Lost Instagram DM conversations & zero catalog structure",
+    keyCapabilities: ["Collection filters by category, budget & carat", "Detailed product pages with weight, purity & care notes", "Personal WhatsApp enquiry handoff for showroom visits"],
+    highlightBadge: "Luxury Retail",
+  },
+  {
+    slug: "interior-design",
+    category: "spaces",
+    startingPrice: "₹18,000",
+    turnaround: "10–12 days",
+    bleedSource: "Unqualified bargain enquiries with no scope or floor area",
+    keyCapabilities: ["Deep project case studies with brief, plan & execution", "Residential vs commercial project categorization", "Upfront budget planner with explicit scope boundaries"],
+    highlightBadge: "Architecture & Studios",
+  },
+  {
+    slug: "salon-spa",
+    category: "lifestyle",
+    startingPrice: "₹12,000",
+    turnaround: "7–10 days",
+    bleedSource: "Urban Company aggregator cuts & endless DM scheduling back-and-forth",
+    keyCapabilities: ["Complete service menu with clear duration & rupee pricing", "Interactive visit planner combining hair, skin & rituals", "One-tap appointment slot booking to WhatsApp"],
+    highlightBadge: "Beauty & Wellness",
+  },
+  {
+    slug: "professional-services",
+    category: "services",
+    startingPrice: "₹18,000",
+    turnaround: "10–12 days",
+    bleedSource: "Commoditization on freelance platforms & generic agency templates",
+    keyCapabilities: ["Interactive client brief builder for qualified inbound", "Clear practice area scope with deliverable boundaries", "Editorial thought leadership & case study architecture"],
+    highlightBadge: "Consulting & Legal",
+  },
+  {
+    slug: "fitness-studios",
+    category: "lifestyle",
+    startingPrice: "₹12,000",
+    turnaround: "7–10 days",
+    bleedSource: "Aggregator fitness passes taking 30%+ cut on walk-in members",
+    keyCapabilities: ["Interactive weekly class timetable with format filters", "First-visit walkthrough: equipment, arrival & coaching notes", "Transparent rupee membership plans with zero hidden fees"],
+    highlightBadge: "Gyms & Studios",
+  },
+  {
+    slug: "events-photography",
+    category: "lifestyle",
+    startingPrice: "₹16,000",
+    turnaround: "8–10 days",
+    bleedSource: "WedMeGood directory listing fees & endless compression in social feeds",
+    keyCapabilities: ["Cinematic full-screen wedding & event story galleries", "Transparent event packages, hours & deliverable checklists", "Date availability calendar & bespoke wedding enquiry flow"],
+    highlightBadge: "Photography & Weddings",
+  },
+  {
+    slug: "retail-d2c",
+    category: "retail",
+    startingPrice: "₹4,999",
+    turnaround: "48 hours",
+    bleedSource: "Shopify recurring rent (₹29,880/yr) + marketplace cuts (15%–28%)",
+    keyCapabilities: ["Lightweight browsable product catalogue (zero JS needed)", "Quick-view modals with dimensions, materials & price", "Direct WhatsApp 1-tap ordering with zero monthly rent"],
+    highlightBadge: "Local Boutiques & D2C",
+  },
+  {
+    slug: "automotive",
+    category: "lifestyle",
+    startingPrice: "₹22,000",
+    turnaround: "10–12 days",
+    bleedSource: "CarDekho / OLX listing subscription costs & buyer distrust",
+    keyCapabilities: ["Interactive 120-point vehicle inspection explorer", "Transparent asking price specs with exact inclusions", "Workshop service brief builder with upfront estimates"],
+    highlightBadge: "Workshops & Dealers",
+  },
+  {
+    slug: "diagnostics-labs",
+    category: "healthcare",
+    startingPrice: "₹20,000",
+    turnaround: "10–12 days",
+    bleedSource: "Aggregator middlemen taking cuts & lost report queries",
+    keyCapabilities: ["Searchable 100+ diagnostic test directory with preparation", "Plain-language patient report explainer & normal ranges", "Sample collection journey & home-visit booking handoff"],
+    highlightBadge: "Diagnostic Centers",
+  },
+];
+
+// Merge with siteConfig.industryRegistry and siteConfig.demoRegistry
+const fullIndustries = siteConfig.industryRegistry.map((ind) => {
+  const meta = industryCards.find((c) => c.slug === ind.slug) || {
+    slug: ind.slug,
+    category: "services",
+    startingPrice: "₹16,000",
+    turnaround: "10 days",
+    bleedSource: "Third-party platform dependency",
+    keyCapabilities: ["Bespoke design", "Fast performance", "Direct enquiry"],
+    highlightBadge: ind.shortName,
+  };
+  const demo = siteConfig.demoRegistry.find((d) => d.industrySlug === ind.slug)!;
+  const content = industryContent[ind.slug];
+
+  return {
+    ...ind,
+    ...meta,
+    demo,
+    content,
+  };
+});
+
+// Spotlight items for the interactive top stage
+const spotlightDemos = [
+  {
+    id: "kayal-backwaters",
+    title: "Kayal Backwaters Resort",
+    industry: "Hotels, Resorts & Homestays",
+    city: "Alleppey, Kerala",
+    heroText: "Direct guest booking engine saving 18%–22% OTA commissions on every single night.",
+    videoSrc: "/videos/demos/kayal-backwaters.webm",
+    posterSrc: "/images/demos/kayal-backwaters/thumb.webp",
+    demoUrl: "/demos/kayal-backwaters",
+    blueprintUrl: "/industries/hotels-resorts",
+    statLabel: "Saved on 40 direct bookings",
+    statValue: "₹1,42,000+",
+    keyFeature: "Direct WhatsApp & Instant Booking Flow",
+  },
+  {
+    id: "sanjeevani-clinic",
+    title: "Sanjeevani Multispecialty Clinic",
+    industry: "Healthcare Clinics",
+    city: "Nagpur, Maharashtra",
+    heroText: "Doctor OPD rosters and night-time appointment requests that land straight in the clinic diary.",
+    videoSrc: "/videos/demos/sanjeevani-clinic.webm",
+    posterSrc: "/images/demos/sanjeevani-clinic/thumb.webp",
+    demoUrl: "/demos/sanjeevani-clinic",
+    blueprintUrl: "/industries/healthcare-clinics",
+    statLabel: "Booked outside clinic hours",
+    statValue: "64% Enquiries",
+    keyFeature: "Specialist Roster & Instant WhatsApp OPD",
+  },
+  {
+    id: "anaar-awadhi-table",
+    title: "Anaar — The Awadhi Table",
+    industry: "Restaurants & Dining",
+    city: "Lucknow, Uttar Pradesh",
+    heroText: "A rich digital menu and direct table reservation engine with zero 30% aggregator food app cut.",
+    videoSrc: "/videos/demos/anaar-awadhi-table.webm",
+    posterSrc: "/images/demos/anaar-awadhi-table/thumb.webp",
+    demoUrl: "/demos/anaar-awadhi-table",
+    blueprintUrl: "/industries/restaurants-cafes",
+    statLabel: "Aggregator commission cut saved",
+    statValue: "Zero %",
+    keyFeature: "Categorised Rupee Menu & Table Booking",
+  },
+  {
+    id: "sunday-objects",
+    title: "Sunday Objects",
+    industry: "Retail & Boutiques",
+    city: "Kochi, Kerala",
+    heroText: "A lightning-fast WhatsApp catalog store launched in 48 hours with zero monthly Shopify rent.",
+    videoSrc: "/videos/demos/sunday-objects.webm",
+    posterSrc: "/images/demos/sunday-objects/thumb.webp",
+    demoUrl: "/demos/sunday-objects",
+    blueprintUrl: "/industries/retail-d2c",
+    statLabel: "Annual platform rent saved",
+    statValue: "₹29,880/yr",
+    keyFeature: "₹4,999 One-Time Launch · 48h Turnaround",
+  },
+];
+
+const defaultSpotlight = spotlightDemos[0]!;
+const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] || title;
 ---
 
 <BaseLayout
-  title="Industries we build websites for"
-  description="Website design for Indian real estate, hotels, clinics, coaching institutes, dental clinics, restaurants, jewellers, interior designers and salons — see live demos for each."
+  title="Industries We Build For | Cinematic Working Demos | ATITTLE"
+  description="Explore 15 working website demos tailored for Indian clinics, hotels, retailers, coaching institutes, and restaurants. Watch live motion reels, see real pricing from ₹4,999, and stop bleeding margins to aggregators."
   jsonLd={jsonLd}
 >
-  <section class="bg-cream py-14 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Industries we build for</h1>
-      <p class="mt-4 text-lg text-ink-700">{siteConfig.industryRegistry.length} businesses, {siteConfig.industryRegistry.length} buying patterns — see what a properly built site looks like for each.</p>
+  <!-- Hero Section with Brand Cream Theme -->
+  <section class="relative overflow-hidden bg-cream pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-ink-200">
+    <!-- Ambient Warm Texture Glow -->
+    <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-96 w-full max-w-7xl bg-gradient-to-b from-brand-100/40 via-amber-100/20 to-transparent blur-3xl" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Live Status Pill -->
+      <div class="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-brand-50/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-700 shadow-sm backdrop-blur-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
+        </span>
+        15 Working Demos · Real Indian Business Architecture
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="mt-6 font-display text-3xl font-bold tracking-tight text-ink-950 sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight sm:leading-tight">
+        15 Indian Industries.<br class="hidden sm:inline" />
+        Zero Flat Mockups.<br class="hidden sm:inline" />
+        <span class="text-brand-600">Every Single Demo Actually Works.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-ink-700 leading-relaxed">
+        Most agencies hand you photoshopped Figma screenshots. We engineer full, working websites with live room booking, doctor OPD rosters, floor plan calculators, Awadhi restaurant menus, and ₹4,999 WhatsApp storefronts.
+      </p>
+
+      <!-- Quick Proof Value Counters -->
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 max-w-3xl mx-auto text-left">
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">15 / 15</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Live working demos</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-brand-600">0% Cut</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Aggregator bleed stopped</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">₹4,999+</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Transparent rupee tiers</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">48h – 14d</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Guaranteed launch turn</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="bg-white py-16 sm:py-20">
+  <!-- Interactive Cinematic Spotlight Stage (Flagship Motion Reels) -->
+  <section class="bg-white py-14 sm:py-20 border-b border-ink-200">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {siteConfig.industryRegistry.map((industry) => (
-          <a href={`/industries/${industry.slug}`} class="group min-w-0 rounded-xl border border-ink-200 bg-cream p-6 transition hover:border-brand-500">
-            <p class="text-xs font-semibold uppercase tracking-wide text-brand-600">{industry.shortName}</p>
-            <h2 class="mt-2 font-display text-lg font-semibold text-ink-950">{industry.heroQuestion}</h2>
-            <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 group-hover:text-brand-600">
-              See details <Icon name="chevron-right" class="h-4 w-4" />
-            </span>
-          </a>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Interactive Dolly Reel</span>
+          <h2 class="mt-1 font-display text-2xl font-bold text-ink-950 sm:text-3xl">Flagship Demos In Motion</h2>
+          <p class="mt-2 text-sm text-ink-600 max-w-xl">
+            Click a sector to switch the live interactive viewport. Every screen is recorded directly from the production build.
+          </p>
+        </div>
+        <!-- Spotlight Selector Tabs -->
+        <div class="flex flex-wrap gap-2" id="spotlight-selector" role="tablist">
+          {spotlightDemos.map((item, idx) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={idx === 0 ? "true" : "false"}
+              class={`spotlight-tab-btn rounded-lg px-3.5 py-2 text-xs font-semibold transition border ${
+                idx === 0
+                  ? "bg-brand-600 text-white border-brand-600 shadow-sm"
+                  : "bg-cream text-ink-700 border-ink-200 hover:border-brand-400 hover:text-ink-950"
+              }`}
+              data-spotlight-id={item.id}
+            >
+              {getShortTitle(item.title)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Spotlight Showcase Box -->
+      <div class="mt-8 rounded-2xl border border-ink-200 bg-cream p-4 sm:p-8 shadow-sm">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <!-- Device Viewport Frame -->
+          <div class="lg:col-span-7">
+            <div class="device-frame overflow-hidden rounded-xl border border-ink-300 bg-ink-950 shadow-2xl">
+              <!-- Window Chrome -->
+              <div class="flex items-center justify-between border-b border-white/10 bg-ink-900/90 px-4 py-2.5 backdrop-blur-sm">
+                <div class="flex items-center gap-1.5">
+                  <span class="h-3 w-3 rounded-full bg-[#ff5f56]/90 inline-block"></span>
+                  <span class="h-3 w-3 rounded-full bg-[#ffbd2e]/90 inline-block"></span>
+                  <span class="h-3 w-3 rounded-full bg-[#27c93f]/90 inline-block"></span>
+                </div>
+                <div class="flex items-center gap-2 rounded-md bg-white/5 px-3 py-1 text-[11px] text-ink-300 font-mono tracking-tight">
+                  <span class="text-emerald-400">https://</span><span id="spotlight-chrome-url">atittle.com/demos/kayal-backwaters</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
+                  <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>60 FPS</span>
+                </div>
+              </div>
+
+              <!-- Cinematic Video Container -->
+              <div class="relative aspect-[16/10] w-full bg-ink-950 overflow-hidden group">
+                <img
+                  id="spotlight-poster"
+                  src={defaultSpotlight.posterSrc}
+                  alt={defaultSpotlight.title}
+                  class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+                  loading="eager"
+                  width="720"
+                  height="450"
+                />
+                <video
+                  id="spotlight-video"
+                  src={defaultSpotlight.videoSrc}
+                  muted
+                  loop
+                  playsinline
+                  autoplay
+                  class="absolute inset-0 h-full w-full object-cover"
+                ></video>
+
+                <!-- Glossy Sheen Sweep -->
+                <div class="spotlight-sheen pointer-events-none" aria-hidden="true"></div>
+
+                <!-- Floating Feature Callout Overlay -->
+                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-lg bg-ink-950/85 px-3 py-2 text-xs text-white backdrop-blur-md border border-white/10">
+                  <div class="flex items-center gap-2 truncate">
+                    <span class="h-2 w-2 rounded-full bg-brand-400"></span>
+                    <span id="spotlight-key-feature" class="font-medium truncate">{defaultSpotlight.keyFeature}</span>
+                  </div>
+                  <a
+                    id="spotlight-open-link"
+                    href={defaultSpotlight.demoUrl}
+                    class="ml-2 inline-flex items-center gap-1 shrink-0 rounded bg-brand-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-brand-500 transition"
+                  >
+                    Open Live Demo ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spotlight Details & Impact Copy -->
+          <div class="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="spotlight-city" class="rounded-full bg-ink-200/80 px-2.5 py-1 text-xs font-medium text-ink-800">
+                  {defaultSpotlight.city}
+                </span>
+                <span id="spotlight-industry" class="rounded-full bg-brand-100 text-brand-800 px-2.5 py-1 text-xs font-semibold">
+                  {defaultSpotlight.industry}
+                </span>
+              </div>
+
+              <h3 id="spotlight-title" class="mt-4 font-display text-2xl font-bold text-ink-950 leading-tight">
+                {defaultSpotlight.title}
+              </h3>
+
+              <p id="spotlight-hero-text" class="mt-3 text-sm sm:text-base text-ink-700 leading-relaxed">
+                {defaultSpotlight.heroText}
+              </p>
+
+              <!-- Tangible Metric Badge -->
+              <div class="mt-6 rounded-xl border border-brand-200 bg-white p-4 shadow-sm">
+                <p id="spotlight-stat-label" class="text-xs font-semibold uppercase tracking-wider text-brand-600">
+                  {defaultSpotlight.statLabel}
+                </p>
+                <div id="spotlight-stat-value" class="mt-1 font-display text-3xl font-bold text-ink-950">
+                  {defaultSpotlight.statValue}
+                </div>
+                <p class="mt-1 text-xs text-ink-500">Calculated on realistic average order/booking volume</p>
+              </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3">
+              <a
+                id="spotlight-primary-cta"
+                href={defaultSpotlight.demoUrl}
+                class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition"
+              >
+                Test Full Working Demo <Icon name="external" class="h-4 w-4" />
+              </a>
+              <a
+                id="spotlight-blueprint-cta"
+                href={defaultSpotlight.blueprintUrl}
+                class="inline-flex items-center justify-center gap-2 rounded-lg border border-ink-300 bg-white px-5 py-3 text-sm font-semibold text-ink-800 hover:border-brand-500 transition"
+              >
+                View Architecture Blueprint <Icon name="chevron-right" class="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Complete 15 Industry Grid with Interactive Filtering -->
+  <section class="bg-cream py-16 sm:py-24" id="all-industries">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-widest text-brand-600">Complete Industry Directory</span>
+        <h2 class="mt-2 font-display text-3xl font-bold text-ink-950 sm:text-4xl">
+          15 Tailored Business Categories
+        </h2>
+        <p class="mt-3 text-base text-ink-700">
+          Filter by sector to see exact pricing, aggregator replacement models, and live motion reels.
+        </p>
+      </div>
+
+      <!-- Filter Tabs Bar -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-2" id="industry-filter-bar">
+        <button
+          type="button"
+          class="filter-btn active rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-brand-600 bg-brand-600 text-white shadow-sm"
+          data-filter="all"
+        >
+          All Industries (15)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="healthcare"
+        >
+          Healthcare & Clinics (3)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="hospitality"
+        >
+          Stays & Dining (2)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="retail"
+        >
+          Retail & Boutiques (2)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="spaces"
+        >
+          Real Estate & Spaces (2)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="services"
+        >
+          Coaching & Services (2)
+        </button>
+        <button
+          type="button"
+          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+          data-filter="lifestyle"
+        >
+          Lifestyle & Automotive (4)
+        </button>
+      </div>
+
+      <!-- 15-Card Responsive Grid -->
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="industry-grid">
+        {fullIndustries.map((ind) => (
+          <div
+            class="industry-card group flex flex-col rounded-2xl border border-ink-200 bg-white overflow-hidden shadow-sm transition duration-300 hover:border-brand-500 hover:shadow-xl transform hover:-translate-y-1"
+            data-category={ind.category}
+          >
+            <!-- Cinematic Media Stage -->
+            <div class="relative aspect-[16/10] w-full bg-ink-950 overflow-hidden">
+              <!-- Window Chrome Header -->
+              <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between bg-ink-950/75 px-3 py-1.5 backdrop-blur-sm border-b border-white/10">
+                <div class="flex items-center gap-1">
+                  <span class="h-2 w-2 rounded-full bg-red-400/80 inline-block"></span>
+                  <span class="h-2 w-2 rounded-full bg-amber-400/80 inline-block"></span>
+                  <span class="h-2 w-2 rounded-full bg-emerald-400/80 inline-block"></span>
+                </div>
+                <span class="text-[10px] font-mono text-ink-300 tracking-tight">
+                  /demos/{ind.demo.slug}
+                </span>
+                <span class="text-[9px] font-semibold text-emerald-400 uppercase tracking-wider">
+                  Live
+                </span>
+              </div>
+
+              <!-- Poster Image Fallback -->
+              <img
+                src={`/images/demos/${ind.demo.slug}/thumb.webp`}
+                alt={`Preview of ${ind.demo.businessName}`}
+                width="540"
+                height="340"
+                loading="lazy"
+                decoding="async"
+                class="card-thumb absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+
+              <!-- Cinematic Looping Video Reel (Autoplays on scroll/hover) -->
+              <video
+                src={`/videos/demos/${ind.demo.slug}.webm`}
+                muted
+                loop
+                playsinline
+                preload="none"
+                class="card-video absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                data-demo-video
+              ></video>
+
+              <!-- Sheen Sweep -->
+              <div class="card-sheen pointer-events-none" aria-hidden="true"></div>
+
+              <!-- Badges: Category & Live Dot -->
+              <div class="absolute bottom-2.5 left-2.5 right-2.5 z-10 flex items-center justify-between pointer-events-none">
+                <span class="rounded-full bg-ink-950/80 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-md border border-white/15 shadow-sm">
+                  {ind.shortName}
+                </span>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/85 px-2.5 py-1 text-[11px] font-medium text-emerald-300 backdrop-blur-md border border-emerald-500/30 shadow-sm">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Working Demo
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Content Body -->
+            <div class="p-5 sm:p-6 flex flex-col flex-grow">
+              <!-- City & Demo Name -->
+              <div class="flex items-center justify-between text-xs text-ink-500">
+                <span>{ind.demo.city}</span>
+                <span class="font-semibold text-brand-600">{ind.turnaround}</span>
+              </div>
+
+              <h3 class="mt-2 font-display text-lg sm:text-xl font-bold text-ink-950 group-hover:text-brand-700 transition">
+                {ind.demo.businessName}
+              </h3>
+
+              <!-- The Business Question -->
+              <p class="mt-2 text-xs sm:text-sm text-ink-700 italic border-l-2 border-brand-300 pl-2.5 py-0.5 leading-snug">
+                "{ind.heroQuestion}"
+              </p>
+
+              <!-- Aggregator Bleed Pill -->
+              <div class="mt-4 rounded-lg bg-red-50/80 border border-red-200/80 p-2.5 text-xs text-red-900">
+                <span class="font-bold text-red-700 block mb-0.5">Bleed Stopped:</span>
+                {ind.bleedSource}
+              </div>
+
+              <!-- Top Capabilities -->
+              <div class="mt-4 space-y-1.5 text-xs text-ink-700">
+                {ind.keyCapabilities.map((cap) => (
+                  <div class="flex items-start gap-1.5">
+                    <span class="text-brand-600 mt-0.5">✓</span>
+                    <span>{cap}</span>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Pricing Anchor & CTAs -->
+              <div class="mt-auto pt-5">
+                <div class="flex items-center justify-between pb-4 border-b border-ink-100 text-xs">
+                  <span class="text-ink-600 font-medium">Investment Anchor:</span>
+                  <span class="font-display font-bold text-ink-950 text-sm">Starts {ind.startingPrice}</span>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                  <a
+                    href={`/demos/${ind.demo.slug}`}
+                    class="inline-flex items-center justify-center gap-1 rounded-lg bg-brand-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-brand-700 transition"
+                  >
+                    Live Demo ↗
+                  </a>
+                  <a
+                    href={`/industries/${ind.slug}`}
+                    class="inline-flex items-center justify-center gap-1 rounded-lg border border-ink-300 bg-white px-3 py-2 text-xs font-semibold text-ink-800 hover:border-brand-500 hover:text-brand-700 transition"
+                  >
+                    Blueprint →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
   </section>
+
+  <!-- Aggregator Bleed vs Owned Website Comparison Matrix -->
+  <section class="bg-white py-16 sm:py-20 border-t border-ink-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">The Financial Reality</span>
+        <h2 class="mt-2 font-display text-2xl sm:text-3xl font-bold text-ink-950">
+          Why Indian Businesses Are Ditching Aggregator Middlemen
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-700">
+          Every rupee given to an OTA, food delivery app, or marketplace platform is money that should stay in your business bank account.
+        </p>
+      </div>
+
+      <!-- Bleed Table -->
+      <div class="mt-10 overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-sm">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[620px]">
+          <thead>
+            <tr class="border-b border-ink-200 bg-cream text-ink-900 font-semibold">
+              <th class="py-3.5 px-4">Industry Sector</th>
+              <th class="py-3.5 px-4">Aggregator Monopoly</th>
+              <th class="py-3.5 px-4 text-red-600">Bleed Cost Per Transaction</th>
+              <th class="py-3.5 px-4 text-brand-700">ATITTLE Owned Website</th>
+              <th class="py-3.5 px-4 text-emerald-700 font-bold">Annual Savings</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-ink-100 text-ink-700">
+            <tr class="hover:bg-cream/40 transition">
+              <td class="py-3 px-4 font-semibold text-ink-950">Hotels & Resorts</td>
+              <td class="py-3 px-4">MakeMyTrip, Agoda, Booking.com</td>
+              <td class="py-3 px-4 text-red-700 font-medium">18% – 22% per room night</td>
+              <td class="py-3 px-4 text-brand-700 font-medium">Direct WhatsApp booking engine</td>
+              <td class="py-3 px-4 font-bold text-emerald-700">₹1,40,000 – ₹4,20,000+</td>
+            </tr>
+            <tr class="hover:bg-cream/40 transition">
+              <td class="py-3 px-4 font-semibold text-ink-950">Restaurants & Cafes</td>
+              <td class="py-3 px-4">Zomato, Swiggy</td>
+              <td class="py-3 px-4 text-red-700 font-medium">25% – 32% per order + ad bids</td>
+              <td class="py-3 px-4 text-brand-700 font-medium">Direct menu & table reservation</td>
+              <td class="py-3 px-4 font-bold text-emerald-700">₹1,20,000 – ₹3,50,000+</td>
+            </tr>
+            <tr class="hover:bg-cream/40 transition">
+              <td class="py-3 px-4 font-semibold text-ink-950">Healthcare & Dental</td>
+              <td class="py-3 px-4">Practo, Justdial</td>
+              <td class="py-3 px-4 text-red-700 font-medium">₹250 – ₹500 per lead (shared)</td>
+              <td class="py-3 px-4 text-brand-700 font-medium">Exclusive doctor OPD calendar</td>
+              <td class="py-3 px-4 font-bold text-emerald-700">₹60,000 – ₹1,80,000+</td>
+            </tr>
+            <tr class="hover:bg-cream/40 transition">
+              <td class="py-3 px-4 font-semibold text-ink-950">Retail & Local Shops</td>
+              <td class="py-3 px-4">Shopify + Marketplace cuts</td>
+              <td class="py-3 px-4 text-red-700 font-medium">₹29,880/yr rent + 15%–28% cuts</td>
+              <td class="py-3 px-4 text-brand-700 font-medium">₹4,999 one-time WhatsApp store</td>
+              <td class="py-3 px-4 font-bold text-emerald-700">₹29,880+ saved annually</td>
+            </tr>
+            <tr class="hover:bg-cream/40 transition">
+              <td class="py-3 px-4 font-semibold text-ink-950">Real Estate & Builders</td>
+              <td class="py-3 px-4">MagicBricks, 99acres</td>
+              <td class="py-3 px-4 text-red-700 font-medium">₹15,000 – ₹35,000/month listing fees</td>
+              <td class="py-3 px-4 text-brand-700 font-medium">RERA-verified floor plans portal</td>
+              <td class="py-3 px-4 font-bold text-emerald-700">100% exclusive buyer leads</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Calculators Cross-Link Bar -->
+  <section class="bg-cream py-14 sm:py-18 border-t border-ink-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- ROI Bleed Calculator Teaser -->
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-600">
+              <span>📊 Interactive Calculator</span>
+            </div>
+            <h3 class="mt-2 font-display text-xl sm:text-2xl font-bold text-ink-950">
+              Calculate Your Exact Aggregator Bleed
+            </h3>
+            <p class="mt-2 text-sm text-ink-700">
+              Plug in your monthly orders or room bookings. See in real rupee numbers how quickly an owned website pays for itself.
+            </p>
+          </div>
+          <a
+            href="/tools/roi-calculator"
+            class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700"
+          >
+            Launch Rupee ROI Calculator <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        </div>
+
+        <!-- 45-Second Scope Matcher Teaser -->
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-600">
+              <span>⚡ 45-Second Quiz</span>
+            </div>
+            <h3 class="mt-2 font-display text-xl sm:text-2xl font-bold text-ink-950">
+              Find Your Industry Package Match
+            </h3>
+            <p class="mt-2 text-sm text-ink-700">
+              Answer 4 rapid questions about your business to get an exact scope recommendation (from ₹4,999 starter to custom scale).
+            </p>
+          </div>
+          <a
+            href="/tools/package-quiz"
+            class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700"
+          >
+            Take 45-Second Scope Quiz <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA: Custom Industry Architecture -->
+  <section class="bg-ink-950 py-16 sm:py-24 text-white">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-xs font-semibold uppercase tracking-widest text-brand-400">Custom Engineering</span>
+      <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl text-cream">
+        Don't see your exact business category?
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-base text-ink-300">
+        We engineer bespoke digital systems for manufacturing units, boutique export houses, specialized clinics, and unique Indian enterprises. Tell us what you build.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="https://wa.me/919999999999?text=Hi%20ATITTLE,%20I'm%20exploring%20a%20website%20for%20my%20business%20category.%20Can%20we%20discuss%20architecture%20and%20pricing?"
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-brand-500 transition"
+        >
+          <Icon name="whatsapp" class="h-5 w-5" /> Chat On WhatsApp
+        </a>
+        <a
+          href="/pricing"
+          class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-cream hover:bg-white/10 transition"
+        >
+          Explore All 4 Pricing Tiers <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* Spotlight Video Sheen Animation */
+  .spotlight-sheen {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
+    transform: skewX(-25deg);
+    animation: spotlight-sweep 6s infinite ease-in-out;
+  }
+
+  @keyframes spotlight-sweep {
+    0%, 70% {
+      left: -100%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+
+  /* Card Sheen on Hover */
+  .card-sheen {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transform: skewX(-25deg);
+    transition: none;
+  }
+
+  .industry-card:hover .card-sheen {
+    animation: card-sweep 0.75s ease-out forwards;
+  }
+
+  @keyframes card-sweep {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+
+  /* Smooth card filter transition */
+  .industry-card {
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  }
+
+  .industry-card.is-hidden {
+    display: none !important;
+  }
+
+  /* Reduced Motion Compliance */
+  @media (prefers-reduced-motion: reduce) {
+    .spotlight-sheen,
+    .card-sheen,
+    .industry-card {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Data for the interactive spotlight stage
+  const spotlightData = [
+    {
+      id: "kayal-backwaters",
+      title: "Kayal Backwaters Resort",
+      industry: "Hotels, Resorts & Homestays",
+      city: "Alleppey, Kerala",
+      heroText: "Direct guest booking engine saving 18%–22% OTA commissions on every single night.",
+      videoSrc: "/videos/demos/kayal-backwaters.webm",
+      posterSrc: "/images/demos/kayal-backwaters/thumb.webp",
+      demoUrl: "/demos/kayal-backwaters",
+      blueprintUrl: "/industries/hotels-resorts",
+      statLabel: "Saved on 40 direct bookings",
+      statValue: "₹1,42,000+",
+      keyFeature: "Direct WhatsApp & Instant Booking Flow",
+      chromeUrl: "atittle.com/demos/kayal-backwaters",
+    },
+    {
+      id: "sanjeevani-clinic",
+      title: "Sanjeevani Multispecialty Clinic",
+      industry: "Healthcare Clinics",
+      city: "Nagpur, Maharashtra",
+      heroText: "Doctor OPD rosters and night-time appointment requests that land straight in the clinic diary.",
+      videoSrc: "/videos/demos/sanjeevani-clinic.webm",
+      posterSrc: "/images/demos/sanjeevani-clinic/thumb.webp",
+      demoUrl: "/demos/sanjeevani-clinic",
+      blueprintUrl: "/industries/healthcare-clinics",
+      statLabel: "Booked outside clinic hours",
+      statValue: "64% Enquiries",
+      keyFeature: "Specialist Roster & Instant WhatsApp OPD",
+      chromeUrl: "atittle.com/demos/sanjeevani-clinic",
+    },
+    {
+      id: "anaar-awadhi-table",
+      title: "Anaar — The Awadhi Table",
+      industry: "Restaurants & Dining",
+      city: "Lucknow, Uttar Pradesh",
+      heroText: "A rich digital menu and direct table reservation engine with zero 30% aggregator food app cut.",
+      videoSrc: "/videos/demos/anaar-awadhi-table.webm",
+      posterSrc: "/images/demos/anaar-awadhi-table/thumb.webp",
+      demoUrl: "/demos/anaar-awadhi-table",
+      blueprintUrl: "/industries/restaurants-cafes",
+      statLabel: "Aggregator commission cut saved",
+      statValue: "Zero %",
+      keyFeature: "Categorised Rupee Menu & Table Booking",
+      chromeUrl: "atittle.com/demos/anaar-awadhi-table",
+    },
+    {
+      id: "sunday-objects",
+      title: "Sunday Objects",
+      industry: "Retail & Boutiques",
+      city: "Kochi, Kerala",
+      heroText: "A lightning-fast WhatsApp catalog store launched in 48 hours with zero monthly Shopify rent.",
+      videoSrc: "/videos/demos/sunday-objects.webm",
+      posterSrc: "/images/demos/sunday-objects/thumb.webp",
+      demoUrl: "/demos/sunday-objects",
+      blueprintUrl: "/industries/retail-d2c",
+      statLabel: "Annual platform rent saved",
+      statValue: "₹29,880/yr",
+      keyFeature: "₹4,999 One-Time Launch · 48h Turnaround",
+      chromeUrl: "atittle.com/demos/sunday-objects",
+    },
+  ];
+
+  function initIndustriesPage() {
+    // 1. Spotlight interactive switcher
+    const spotlightButtons = document.querySelectorAll<HTMLButtonElement>(".spotlight-tab-btn");
+    const spotlightVideo = document.getElementById("spotlight-video") as HTMLVideoElement | null;
+    const spotlightPoster = document.getElementById("spotlight-poster") as HTMLImageElement | null;
+    const spotlightTitle = document.getElementById("spotlight-title");
+    const spotlightCity = document.getElementById("spotlight-city");
+    const spotlightIndustry = document.getElementById("spotlight-industry");
+    const spotlightHeroText = document.getElementById("spotlight-hero-text");
+    const spotlightStatLabel = document.getElementById("spotlight-stat-label");
+    const spotlightStatValue = document.getElementById("spotlight-stat-value");
+    const spotlightKeyFeature = document.getElementById("spotlight-key-feature");
+    const spotlightChromeUrl = document.getElementById("spotlight-chrome-url");
+    const spotlightOpenLink = document.getElementById("spotlight-open-link") as HTMLAnchorElement | null;
+    const spotlightPrimaryCta = document.getElementById("spotlight-primary-cta") as HTMLAnchorElement | null;
+    const spotlightBlueprintCta = document.getElementById("spotlight-blueprint-cta") as HTMLAnchorElement | null;
+
+    spotlightButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-spotlight-id");
+        const data = spotlightData.find((d) => d.id === id);
+        if (!data) return;
+
+        // Update active tab styles
+        spotlightButtons.forEach((b) => {
+          b.setAttribute("aria-selected", "false");
+          b.className = "spotlight-tab-btn rounded-lg px-3.5 py-2 text-xs font-semibold transition border bg-cream text-ink-700 border-ink-200 hover:border-brand-400 hover:text-ink-950";
+        });
+        btn.setAttribute("aria-selected", "true");
+        btn.className = "spotlight-tab-btn rounded-lg px-3.5 py-2 text-xs font-semibold transition border bg-brand-600 text-white border-brand-600 shadow-sm";
+
+        // Update Spotlight DOM
+        if (spotlightPoster) spotlightPoster.src = data.posterSrc;
+        if (spotlightVideo) {
+          spotlightVideo.src = data.videoSrc;
+          spotlightVideo.play().catch(() => {});
+        }
+        if (spotlightTitle) spotlightTitle.textContent = data.title;
+        if (spotlightCity) spotlightCity.textContent = data.city;
+        if (spotlightIndustry) spotlightIndustry.textContent = data.industry;
+        if (spotlightHeroText) spotlightHeroText.textContent = data.heroText;
+        if (spotlightStatLabel) spotlightStatLabel.textContent = data.statLabel;
+        if (spotlightStatValue) spotlightStatValue.textContent = data.statValue;
+        if (spotlightKeyFeature) spotlightKeyFeature.textContent = data.keyFeature;
+        if (spotlightChromeUrl) spotlightChromeUrl.textContent = data.chromeUrl;
+        if (spotlightOpenLink) spotlightOpenLink.href = data.demoUrl;
+        if (spotlightPrimaryCta) spotlightPrimaryCta.href = data.demoUrl;
+        if (spotlightBlueprintCta) spotlightBlueprintCta.href = data.blueprintUrl;
+      });
+    });
+
+    // 2. Category Filter Tabs
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const cards = document.querySelectorAll<HTMLElement>(".industry-card");
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const filter = btn.getAttribute("data-filter") || "all";
+
+        // Update button active state
+        filterButtons.forEach((b) => {
+          b.classList.remove("active", "bg-brand-600", "text-white", "border-brand-600");
+          b.classList.add("bg-white", "text-ink-700", "border-ink-300");
+        });
+        btn.classList.add("active", "bg-brand-600", "text-white", "border-brand-600");
+        btn.classList.remove("bg-white", "text-ink-700", "border-ink-300");
+
+        // Filter cards
+        cards.forEach((card) => {
+          const category = card.getAttribute("data-category");
+          if (filter === "all" || category === filter) {
+            card.classList.remove("is-hidden");
+          } else {
+            card.classList.add("is-hidden");
+          }
+        });
+      });
+    });
+
+    // 3. Looping Motion Reels for Grid Cards
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!prefersReducedMotion) {
+      cards.forEach((card) => {
+        const video = card.querySelector<HTMLVideoElement>("[data-demo-video]");
+        if (!video) return;
+
+        const playVideo = () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        };
+
+        const pauseVideo = () => {
+          video.pause();
+          video.currentTime = 0;
+        };
+
+        if (isTouch) {
+          // On mobile, autoplay when card scrolls into center view
+          video.preload = "metadata";
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  video.style.opacity = "1";
+                  playVideo();
+                } else {
+                  video.style.opacity = "0";
+                  pauseVideo();
+                }
+              });
+            },
+            { threshold: 0.55 }
+          );
+          observer.observe(card);
+        } else {
+          // Desktop: hover activate
+          card.addEventListener("mouseenter", playVideo);
+          card.addEventListener("mouseleave", pauseVideo);
+        }
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initIndustriesPage);
+  } else {
+    initIndustriesPage();
+  }
+  document.addEventListener("astro:page-load", initIndustriesPage);
+</script>
