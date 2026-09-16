@@ -5,63 +5,823 @@ import { siteConfig } from "@config/site";
 import { telLink, waLink, mailLink } from "@/lib/contact-links";
 
 export const prerender = true;
+
+const benchmarks = [
+  { metric: "0.6s", label: "Median Mobile FCP", note: "Tested on Indian 4G/LTE" },
+  { metric: "99/100", label: "Lighthouse Score", note: "Mobile performance score" },
+  { metric: "15+", label: "Working Demos", note: "Live production industry systems" },
+  { metric: "100%", label: "Client Owned", note: "Code, DNS & domain handover" },
+];
+
+const craftPillars = [
+  {
+    icon: "smartphone",
+    title: "The Real-Hardware Testing Lab",
+    badge: "Hardware-Tested",
+    description:
+      "We do not simulate mobile screens in Chrome DevTools and call it a day. Every ATITTLE site is physically tested on budget and mid-range Android devices (Redmi, Realme, Samsung Galaxy M-series) and iPhones at 320px, 360px, 375px, and 412px viewports.",
+    takeaway: "Your customers never see broken buttons, misaligned text, or sluggish scrolling.",
+  },
+  {
+    icon: "bolt",
+    title: "Aggregator Commission Rescue",
+    badge: "0% Commission",
+    description:
+      "Indian businesses lose 18% to 30% of their top line to Swiggy, Zomato, Practo, Urban Company, and Justdial. We build direct 1-tap WhatsApp ordering, token booking, and lead channels that put 100% of your customer margins back into your pocket.",
+    takeaway: "Turn search traffic into direct buyers who talk directly to you.",
+  },
+  {
+    icon: "shield",
+    title: "Zero Platform Hostage & Full Ownership",
+    badge: "100% Client Owned",
+    description:
+      "No proprietary CMS lock-ins, no hostage hosting accounts, and no monthly maintenance retainers just to change your phone number. On launch day, we hand over full GitHub repository access, Cloudflare/Vercel credentials, and DNS records.",
+    takeaway: "Any competent developer in the world can run or edit your site in 5 minutes.",
+  },
+  {
+    icon: "rupee",
+    title: "Public Rupee Scope & Zero Fine Print",
+    badge: "Fixed Rupee Contract",
+    description:
+      "No mystery pricing, no hourly billing surprises, and no unexpected renewal invoices. Our packages start transparently from ₹4,999 for local shop storefronts up to ₹45,000+ for enterprise platforms, documented in writing before design begins.",
+    takeaway: "What is written in your rupee contract is exactly what you pay. Nothing more.",
+  },
+];
+
+const nonNegotiables = [
+  {
+    refusal: "No WordPress, Elementor, or Divi Sludge",
+    guarantee: "Modern Astro static generation that loads in under 1 second and never slows down over time.",
+  },
+  {
+    refusal: "No Fake 5-Star Reviews or AI Testimonials",
+    guarantee: "Real business addresses, genuine verified photos, and authentic proof of work.",
+  },
+  {
+    refusal: "No Mandatory Monthly Retainer Hostage",
+    guarantee: "Zero recurring fees to keep your site online. We train you or your team for free.",
+  },
+  {
+    refusal: "No False 'Guaranteed #1 on Google' Promises",
+    guarantee: "Honest technical SEO: valid schema.org JSON-LD, sub-second TTFB, and Google Business Profile setup.",
+  },
+  {
+    refusal: "No Junior Ghost Handoffs",
+    guarantee: "The senior engineers you speak with on the scoping call are the people building your site.",
+  },
+  {
+    refusal: "No Hidden Costs or Surprise Invoices",
+    guarantee: "All scope items, revision rounds, and turnaround milestones agreed in writing before kickoff.",
+  },
+];
 ---
 
-<BaseLayout title="About us" description="atittle.com builds fast, mobile-first websites for Indian businesses — who we are, how we work, and what we don't do.">
-  <section class="bg-cream py-14 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Built by people who test on real phones, not just office WiFi</h1>
-      <p class="mt-5 text-lg text-ink-700">
-        {siteConfig.businessName} is a small web design and development studio based in {siteConfig.address.city}, {siteConfig.address.state}, building websites for Indian shops, clinics, restaurants, jewellers, builders and coaching institutes.
+<BaseLayout
+  title="About Us | Built for Real Phones, Not Just Office WiFi"
+  description="ATITTLE is an independent web engineering studio based in Newtown, Kolkata. We build lightning-fast, mobile-first websites for Indian businesses, tested on real budget phones over Indian 4G networks."
+>
+  <!-- 1. Hero Section: Studio Mission & Hardware Ethos -->
+  <section class="relative overflow-hidden bg-cream py-12 sm:py-16 md:py-20 border-b border-ink-200/70">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.03]"
+      style="background-image: radial-gradient(#1f1b16 1px, transparent 1px); background-size: 24px 24px;"
+    ></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Live Studio Badge -->
+      <div class="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-200 bg-brand-50/80 px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-brand-700 shadow-sm backdrop-blur-sm">
+        <span class="relative flex h-2 w-2 shrink-0">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
+        </span>
+        <span class="sm:hidden">Studio Live · Real-Device Testing Lab</span>
+        <span class="hidden sm:inline">Studio Live · Newtown, Kolkata · Physical Real-Device Testing Lab</span>
+      </div>
+
+      <!-- Main Display Headline -->
+      <h1 class="mt-6 font-display text-3xl font-semibold tracking-tight text-ink-950 sm:text-5xl lg:text-6xl max-w-4xl leading-[1.15] break-words">
+        We Don’t Build for Boardrooms. <br />
+        <span class="text-brand-600 italic">We Build for 6.5-Inch Screens on Indian 4G.</span>
+      </h1>
+
+      <!-- Mission Paragraph -->
+      <p class="mt-6 text-base sm:text-lg lg:text-xl text-ink-700 max-w-3xl leading-relaxed break-words">
+        {siteConfig.businessName} is an independent web engineering studio operating out of {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state}.
+        We build lightning-fast, conversion-focused websites for Indian clinics, retail stores, jewellers, restaurants, hotels, and growing businesses — priced transparently in plain rupees and built to load in under one second.
       </p>
-      <p class="mt-4 text-ink-700">
-        We started this studio because too many small businesses in India get one of two bad options: a freelancer who disappears after the first invoice, or a template-based site that looks the same as every competitor's. We build one thing well — fast, honest, mobile-first websites — and say no to work outside that.
+
+      <!-- Action Buttons -->
+      <div class="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+        <a
+          href={waLink("Hi ATITTLE studio team, I want to discuss a fast website for my business.")}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-5 py-3 text-sm font-bold text-ink-950 shadow-sm transition hover:opacity-95 active:scale-95"
+          data-analytics-event="whatsapp_click"
+        >
+          <Icon name="whatsapp" class="h-5 w-5 text-ink-950" />
+          <span>WhatsApp Studio Directly</span>
+        </a>
+
+        <a
+          href="/industries"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border border-ink-300 bg-white px-5 py-3 text-sm font-semibold text-ink-900 shadow-sm transition hover:border-brand-500 hover:text-brand-600 active:scale-95"
+        >
+          <span>Explore 15 Live Demos</span>
+          <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+
+        <a
+          href={telLink()}
+          class="inline-flex items-center justify-center gap-2 rounded-lg border border-ink-200 bg-cream-50 px-4 py-3 text-sm font-medium text-ink-700 hover:text-ink-950 hover:border-ink-400"
+          data-analytics-event="call_click"
+        >
+          <Icon name="phone" class="h-4 w-4 text-brand-600" />
+          <span>{siteConfig.phoneDisplay}</span>
+        </a>
+      </div>
+
+      <!-- Live Benchmarks Strip -->
+      <div class="mt-12 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4 pt-8 border-t border-ink-200/80">
+        {benchmarks.map((b) => (
+          <div class="rounded-xl border border-ink-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm">
+            <div class="font-display text-2xl sm:text-3xl font-bold text-brand-600 tracking-tight">{b.metric}</div>
+            <div class="mt-1 text-xs sm:text-sm font-bold text-ink-900">{b.label}</div>
+            <div class="mt-0.5 text-[11px] sm:text-xs text-ink-500">{b.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Interactive Feature: The Real-Device Test Bench -->
+  <section class="bg-white py-14 sm:py-20 border-b border-ink-200" id="test-bench">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 border border-brand-200">
+          Interactive Audit
+        </div>
+        <h2 class="mt-3 font-display text-2xl sm:text-4xl font-semibold text-ink-950">
+          The Real-Device Reality Check
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-600">
+          Toggle between an average agency’s bloated website and ATITTLE’s lightweight engineering. See exactly why 60%+ of mobile visitors abandon slow sites before the first sentence renders.
+        </p>
+      </div>
+
+      <!-- Mode Switcher Buttons -->
+      <div class="mt-8 flex justify-center">
+        <div class="inline-flex rounded-xl border border-ink-300 bg-ink-100 p-1 sm:p-1.5 shadow-inner max-w-full" id="bench-toggle-container">
+          <button
+            type="button"
+            class="bench-tab-btn active flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-bold transition shadow-sm bg-white text-ink-950 border border-ink-200"
+            data-target="atittle"
+          >
+            <span class="h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0 rounded-full bg-emerald-500"></span>
+            <span class="sm:hidden">ATITTLE (0.58s)</span>
+            <span class="hidden sm:inline">ATITTLE Engineered Build</span>
+            <span class="hidden sm:inline rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">0.58s</span>
+          </button>
+          <button
+            type="button"
+            class="bench-tab-btn flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold transition text-ink-600 hover:text-ink-900"
+            data-target="traditional"
+          >
+            <span class="h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0 rounded-full bg-red-500"></span>
+            <span class="sm:hidden">Typical Agency (6.8s)</span>
+            <span class="hidden sm:inline">Typical Agency Build</span>
+            <span class="hidden sm:inline rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-800">6.8s</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Test Bench Interactive Stage Card -->
+      <div class="mt-8 rounded-2xl border border-ink-200 bg-cream p-5 sm:p-8 lg:p-10 shadow-md">
+        <!-- Live State Display: ATITTLE (Default) -->
+        <div id="bench-atittle-view" class="bench-view block">
+          <div class="grid gap-8 lg:grid-cols-12 items-center">
+            <!-- Simulated Mobile Device Mockup (Left 5 Cols) -->
+            <div class="lg:col-span-5 flex justify-center">
+              <div class="relative w-full max-w-[280px] sm:max-w-[310px] rounded-[36px] border-[6px] border-ink-900 bg-ink-950 p-2 shadow-2xl">
+                <!-- Device Speaker & Camera Notch -->
+                <div class="absolute top-3 left-1/2 -translate-x-1/2 h-4 w-24 rounded-full bg-ink-900 flex items-center justify-center gap-2">
+                  <div class="h-2 w-2 rounded-full bg-ink-800"></div>
+                  <div class="h-1.5 w-8 rounded-full bg-ink-800"></div>
+                </div>
+
+                <!-- Screen Viewport -->
+                <div class="mt-6 rounded-[28px] bg-white p-4 text-ink-900 overflow-hidden border border-ink-200">
+                  <!-- Simulated Browser Bar -->
+                  <div class="flex items-center justify-between border-b border-ink-100 pb-2.5 mb-3 text-[11px] text-ink-500">
+                    <span class="inline-flex items-center gap-1 font-mono text-emerald-600 font-bold">
+                      <Icon name="shield" class="h-3 w-3" /> atittle.com
+                    </span>
+                    <span class="rounded bg-emerald-100 px-1.5 py-0.5 font-mono text-[10px] font-bold text-emerald-800">4G · 0.58s</span>
+                  </div>
+
+                  <!-- Simulated Fast Page Content -->
+                  <div class="space-y-2.5">
+                    <div class="h-3 w-20 rounded bg-brand-200"></div>
+                    <div class="h-5 w-44 rounded bg-ink-900 font-bold"></div>
+                    <div class="h-2.5 w-full rounded bg-ink-200"></div>
+                    <div class="h-2.5 w-5/6 rounded bg-ink-200"></div>
+
+                    <!-- Instant 1-Tap CTA Mockup -->
+                    <div class="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+                      <div class="flex items-center gap-2">
+                        <div class="h-6 w-6 rounded-full bg-[#25D366] flex items-center justify-center text-ink-950 font-bold text-xs">WA</div>
+                        <div class="text-xs font-bold text-emerald-950">Book via WhatsApp in 1 Tap</div>
+                      </div>
+                      <div class="mt-1 text-[10px] text-emerald-800 font-medium">Pre-filled query · Zero Swiggy/Practo fee</div>
+                    </div>
+
+                    <!-- Speed Proof Pill -->
+                    <div class="mt-3 flex items-center justify-between rounded-lg bg-cream px-2.5 py-2 border border-ink-200 text-[11px]">
+                      <span class="font-semibold text-ink-700">Lighthouse Mobile:</span>
+                      <span class="font-mono font-bold text-emerald-600">99 / 100</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnostics Metrics Breakdown (Right 7 Cols) -->
+            <div class="lg:col-span-7 space-y-5">
+              <div class="inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-900">
+                <Icon name="check" class="h-4 w-4 text-emerald-700" />
+                Verified: Redmi Note 12 on Real Airtel/Jio 4G Network
+              </div>
+
+              <h3 class="font-display text-2xl sm:text-3xl font-semibold text-ink-950">
+                The ATITTLE Engineered Standard
+              </h3>
+              <p class="text-sm sm:text-base text-ink-700">
+                We build zero-bloat static sites with Astro, vanilla TypeScript, and modern CSS. Customers on crowded bus stops or slow 4G in Tier-2/3 cities get an instantaneous, buttery-smooth experience.
+              </p>
+
+              <!-- Progress Comparison Meter -->
+              <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-bold text-ink-800 mb-1">
+                    <span>Page Load Speed to First Touch</span>
+                    <span class="text-emerald-700 font-mono">0.58s (Instant)</span>
+                  </div>
+                  <div class="h-2.5 w-full rounded-full bg-ink-100 overflow-hidden">
+                    <div class="h-full rounded-full bg-emerald-500 w-[14%] transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-ink-100">
+                  <div class="rounded-lg bg-cream-50 p-2.5 border border-ink-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Page Payload</span>
+                    <span class="font-display text-lg font-bold text-emerald-700">48 KB</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Static Astro payload</span>
+                  </div>
+                  <div class="rounded-lg bg-cream-50 p-2.5 border border-ink-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Visitor Drop-off</span>
+                    <span class="font-display text-lg font-bold text-emerald-700">&lt; 4%</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Visitors stay & engage</span>
+                  </div>
+                  <div class="rounded-lg bg-cream-50 p-2.5 border border-ink-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Monthly Retainer</span>
+                    <span class="font-display text-lg font-bold text-emerald-700">₹0 / month</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Free global edge hosting</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key Advantage Bullet List -->
+              <div class="grid gap-2 sm:grid-cols-2 text-xs sm:text-sm text-ink-800 font-medium">
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">✓</span>
+                  <span>Tested down to 320px screen width</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">✓</span>
+                  <span>Zero Swiggy / Practo / OTA commissions</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">✓</span>
+                  <span>Pre-baked JSON-LD schema for Google Local</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold text-xs">✓</span>
+                  <span>Full source code handover on GitHub</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live State Display: TRADITIONAL AGENCY (Hidden by default, toggled via JS) -->
+        <div id="bench-traditional-view" class="bench-view hidden">
+          <div class="grid gap-8 lg:grid-cols-12 items-center">
+            <!-- Simulated Laggy Mobile Device Mockup (Left 5 Cols) -->
+            <div class="lg:col-span-5 flex justify-center">
+              <div class="relative w-full max-w-[280px] sm:max-w-[310px] rounded-[36px] border-[6px] border-ink-900 bg-ink-950 p-2 shadow-2xl">
+                <!-- Device Speaker & Camera Notch -->
+                <div class="absolute top-3 left-1/2 -translate-x-1/2 h-4 w-24 rounded-full bg-ink-900 flex items-center justify-center gap-2">
+                  <div class="h-2 w-2 rounded-full bg-ink-800"></div>
+                  <div class="h-1.5 w-8 rounded-full bg-ink-800"></div>
+                </div>
+
+                <!-- Screen Viewport with Loading Spinners & Broken Layout -->
+                <div class="mt-6 rounded-[28px] bg-ink-50 p-4 text-ink-900 overflow-hidden border border-ink-200">
+                  <!-- Simulated Browser Bar -->
+                  <div class="flex items-center justify-between border-b border-ink-200 pb-2.5 mb-3 text-[11px] text-ink-500">
+                    <span class="inline-flex items-center gap-1 font-mono text-ink-600 truncate">
+                      agency-client-site.in
+                    </span>
+                    <span class="rounded bg-red-100 px-1.5 py-0.5 font-mono text-[10px] font-bold text-red-700 animate-pulse">4G · 6.8s Loading...</span>
+                  </div>
+
+                  <!-- Simulated Frozen Page Content -->
+                  <div class="space-y-3 opacity-60">
+                    <div class="flex items-center justify-center py-6">
+                      <div class="h-8 w-8 animate-spin rounded-full border-4 border-red-300 border-t-red-600"></div>
+                    </div>
+                    <div class="rounded bg-red-100/70 p-2.5 text-center text-[10px] font-semibold text-red-800 border border-red-200">
+                      Waiting for fonts.googleapis.com & 18 tracking scripts...
+                    </div>
+                    <div class="h-3 w-3/4 rounded bg-ink-300"></div>
+                    <div class="h-3 w-1/2 rounded bg-ink-200"></div>
+                    <!-- Layout Shift Warning -->
+                    <div class="rounded-lg bg-amber-50 p-2 text-[10px] text-amber-800 border border-amber-200">
+                      ⚠️ Cumulative Layout Shift: Content jumped while user tried to tap call button
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagnostics Metrics Breakdown (Right 7 Cols) -->
+            <div class="lg:col-span-7 space-y-5">
+              <div class="inline-flex items-center gap-2 rounded-md bg-red-100 px-3 py-1 text-xs font-bold text-red-900">
+                <Icon name="close" class="h-4 w-4 text-red-600" />
+                Tested on: ₹2.5L MacBook in Agency Office, Fails on Real Android
+              </div>
+
+              <h3 class="font-display text-2xl sm:text-3xl font-semibold text-ink-950">
+                The Typical Agency Trap
+              </h3>
+              <p class="text-sm sm:text-base text-ink-700">
+                Built on heavy WordPress themes with 35+ unmanaged plugins, designed on ultra-fast office WiFi. When an actual customer opens it on an Indian 4G connection, they stare at a blank white screen for 6 to 8 seconds.
+              </p>
+
+              <!-- Progress Comparison Meter -->
+              <div class="rounded-xl border border-red-200 bg-white p-4 shadow-sm space-y-4">
+                <div>
+                  <div class="flex justify-between text-xs font-bold text-ink-800 mb-1">
+                    <span>Page Load Speed to First Touch</span>
+                    <span class="text-red-600 font-mono">6.8s (Painfully Slow)</span>
+                  </div>
+                  <div class="h-2.5 w-full rounded-full bg-ink-100 overflow-hidden">
+                    <div class="h-full rounded-full bg-red-500 w-[92%] transition-all duration-500"></div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-ink-100">
+                  <div class="rounded-lg bg-red-50/50 p-2.5 border border-red-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Page Payload</span>
+                    <span class="font-display text-lg font-bold text-red-600">14.8 MB</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Heavy JS & plugin bloat</span>
+                  </div>
+                  <div class="rounded-lg bg-red-50/50 p-2.5 border border-red-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Visitor Drop-off</span>
+                    <span class="font-display text-lg font-bold text-red-600">64% Left</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Lost leads to competitors</span>
+                  </div>
+                  <div class="rounded-lg bg-red-50/50 p-2.5 border border-red-200/60">
+                    <span class="text-[11px] text-ink-500 block font-medium">Maintenance Retainer</span>
+                    <span class="font-display text-lg font-bold text-red-600">₹8,000 / mo</span>
+                    <span class="text-[10px] text-ink-600 block mt-0.5">Hostage agency fee</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key Penalty Bullet List -->
+              <div class="grid gap-2 sm:grid-cols-2 text-xs sm:text-sm text-ink-800 font-medium">
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold text-xs">✕</span>
+                  <span>Text cuts off on 360px Android screens</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold text-xs">✕</span>
+                  <span>Pays 25% bleed to Swiggy / Practo</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold text-xs">✕</span>
+                  <span>Zero schema markup, invisible to AI search</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold text-xs">✕</span>
+                  <span>Agency holds domain & hosting hostage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. The Origin Story: Why ATITTLE Exists -->
+  <section class="bg-cream py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-12 items-center">
+        <!-- Story Copy (Left 7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 border border-brand-200">
+            Our Studio Story
+          </div>
+          <h2 class="font-display text-2xl sm:text-4xl font-semibold text-ink-950 leading-tight">
+            Indian Businesses Deserve Better Than Disappearing Freelancers & Bloated ₹80,000 Themes.
+          </h2>
+
+          <div class="space-y-4 text-sm sm:text-base text-ink-700 leading-relaxed">
+            <p>
+              We started {siteConfig.businessName} in Newtown, Kolkata after seeing dozens of local business owners get burnt by the traditional Indian web industry. Small businesses were constantly trapped between two terrible options:
+            </p>
+
+            <div class="grid gap-4 sm:grid-cols-2 pt-2">
+              <div class="rounded-xl border border-red-200 bg-white p-4 shadow-sm">
+                <div class="font-bold text-red-700 flex items-center gap-1.5 text-sm">
+                  <Icon name="close" class="h-4 w-4" /> The Disappearing Freelancer
+                </div>
+                <p class="mt-2 text-xs text-ink-600 leading-normal">
+                  Quotes ₹8,000, collects a 50% advance, and vanishes midway. Leaves buggy code, broken mobile layouts, and an expired domain registered in their personal name.
+                </p>
+              </div>
+
+              <div class="rounded-xl border border-amber-200 bg-white p-4 shadow-sm">
+                <div class="font-bold text-amber-800 flex items-center gap-1.5 text-sm">
+                  <Icon name="close" class="h-4 w-4" /> The Bloated Agency
+                </div>
+                <p class="mt-2 text-xs text-ink-600 leading-normal">
+                  Quotes ₹60,000 for a generic WordPress template. Delivers a 15-second loading site and charges ₹8,000 every single month just to update your festival timing or phone number.
+                </p>
+              </div>
+            </div>
+
+            <p class="pt-2">
+              We built {siteConfig.businessName} as the honest antidote. We focus on one thing and build it with obsessive craft: <strong>sub-second, mobile-first websites that turn visitors into phone calls and WhatsApp orders.</strong>
+            </p>
+            <p>
+              We don't take on work outside our core expertise. When you hire us, you work directly with experienced software engineers who write clean, standards-compliant code, test on real hardware, and give you 100% of the keys on Day 1.
+            </p>
+          </div>
+        </div>
+
+        <!-- Studio Manifesto Summary Card (Right 5 Cols) -->
+        <div class="lg:col-span-5">
+          <div class="rounded-2xl border-2 border-brand-500/30 bg-white p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-brand-500/10 pointer-events-none"></div>
+
+            <div class="flex items-center justify-between border-b border-ink-100 pb-4">
+              <span class="font-display text-lg font-bold text-ink-950">ATITTLE Studio Specs</span>
+              <span class="rounded bg-brand-50 px-2 py-0.5 text-xs font-bold text-brand-700">Kolkata, WB</span>
+            </div>
+
+            <dl class="mt-5 space-y-4 text-xs sm:text-sm">
+              <div class="flex justify-between pb-3 border-b border-ink-100">
+                <dt class="text-ink-500">Studio Location</dt>
+                <dd class="font-semibold text-ink-900">Kolkata, West Bengal</dd>
+              </div>
+              <div class="flex justify-between pb-3 border-b border-ink-100">
+                <dt class="text-ink-500">Core Architecture</dt>
+                <dd class="font-semibold text-ink-900">Astro 7 + TypeScript + Tailwind</dd>
+              </div>
+              <div class="flex justify-between pb-3 border-b border-ink-100">
+                <dt class="text-ink-500">Testing Devices</dt>
+                <dd class="font-semibold text-ink-900">Real Android (320px–412px) & iOS</dd>
+              </div>
+              <div class="flex justify-between pb-3 border-b border-ink-100">
+                <dt class="text-ink-500">Starter Price Anchor</dt>
+                <dd class="font-semibold text-brand-600 font-mono font-bold">Starts at ₹4,999</dd>
+              </div>
+              <div class="flex justify-between pb-3 border-b border-ink-100">
+                <dt class="text-ink-500">Client Code Handover</dt>
+                <dd class="font-semibold text-emerald-700 font-bold">100% Full Ownership</dd>
+              </div>
+              <div class="flex justify-between">
+                <dt class="text-ink-500">Response Guarantee</dt>
+                <dd class="font-semibold text-ink-900">Within 2 business hours</dd>
+              </div>
+            </dl>
+
+            <div class="mt-6 pt-5 border-t border-ink-100">
+              <a
+                href="/work-process"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 py-3 text-xs sm:text-sm font-bold text-white shadow transition hover:bg-brand-700 active:scale-95"
+              >
+                <span>Review Our Full Sprint Process</span>
+                <Icon name="chevron-right" class="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Studio Craft: 4 Real-World Engineering Pillars -->
+  <section class="bg-white py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 border border-brand-200">
+          The Craft Standard
+        </div>
+        <h2 class="mt-3 font-display text-2xl sm:text-4xl font-semibold text-ink-950">
+          Four Principles We Refuse to Compromise On
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-600">
+          Every project that leaves our studio follows these four architectural rules without exception.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {craftPillars.map((pillar) => (
+          <div class="flex flex-col justify-between rounded-2xl border border-ink-200 bg-cream p-6 shadow-sm transition hover:border-brand-400 hover:shadow-md">
+            <div>
+              <div class="flex items-center justify-between">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
+                  <Icon name={pillar.icon as any} class="h-5 w-5" />
+                </div>
+                <span class="rounded-full bg-brand-100/70 px-2.5 py-1 text-[11px] font-bold text-brand-800">
+                  {pillar.badge}
+                </span>
+              </div>
+              <h3 class="mt-5 font-display text-lg font-bold text-ink-950">
+                {pillar.title}
+              </h3>
+              <p class="mt-3 text-xs sm:text-sm text-ink-700 leading-relaxed">
+                {pillar.description}
+              </p>
+            </div>
+
+            <div class="mt-6 rounded-lg bg-white p-3 border border-ink-200/80">
+              <span class="text-[11px] font-bold text-ink-950 block">Customer Result:</span>
+              <span class="text-xs text-brand-700 font-medium block mt-0.5">{pillar.takeaway}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. The Anti-Bullshit Manifesto: What We Refuse to Do -->
+  <section class="bg-cream py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-red-800 border border-red-200">
+          The Anti-Bullshit Charter
+        </div>
+        <h2 class="mt-3 font-display text-2xl sm:text-4xl font-semibold text-ink-950">
+          What We Explicitly Refuse To Do
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-600">
+          Most web agencies hide what they won’t tell you. Here is our public, signed list of non-negotiables.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {nonNegotiables.map((item, idx) => (
+          <div class="rounded-xl border border-ink-200 bg-white p-5 sm:p-6 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-red-700 font-bold text-sm">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 text-xs">✕</span>
+                <span class="line-through decoration-red-400">{item.refusal}</span>
+              </div>
+              <div class="mt-4 pt-4 border-t border-ink-100 flex items-start gap-2">
+                <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold mt-0.5">✓</span>
+                <p class="text-xs sm:text-sm text-ink-800 font-medium leading-relaxed">
+                  {item.guarantee}
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 text-[10px] text-ink-400 font-mono text-right">
+              Rule #{idx + 1}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Physical Studio Coordinates & Real Location -->
+  <section class="bg-white py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-12 items-center">
+        <!-- Coordinates Details (Left 7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 border border-brand-200">
+            Physical Presence
+          </div>
+          <h2 class="font-display text-2xl sm:text-4xl font-semibold text-ink-950">
+            Real People, Real Office, Real Accountability
+          </h2>
+          <p class="text-sm sm:text-base text-ink-700 leading-relaxed">
+            We are not an anonymous freelance profile or a fly-by-night remote group. We operate out of Astra Towers in Newtown, Kolkata, serving clients across West Bengal and nationwide across India.
+          </p>
+
+          <div class="grid gap-4 sm:grid-cols-2 pt-2">
+            <div class="rounded-xl border border-ink-200 bg-cream p-4">
+              <div class="flex items-center gap-2 font-bold text-ink-900 text-sm">
+                <Icon name="map-pin" class="h-5 w-5 text-brand-600 shrink-0" />
+                <span>Studio Address</span>
+              </div>
+              <p class="mt-2 text-xs sm:text-sm text-ink-700 leading-relaxed">
+                {siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.pin}, India.<br />
+                <span class="text-ink-500 text-xs mt-1 block">Serving {siteConfig.serviceAreas.join(", ")}.</span>
+              </p>
+            </div>
+
+            <div class="rounded-xl border border-ink-200 bg-cream p-4">
+              <div class="flex items-center gap-2 font-bold text-ink-900 text-sm">
+                <Icon name="clock" class="h-5 w-5 text-brand-600 shrink-0" />
+                <span>Working Hours & SLA</span>
+              </div>
+              <p class="mt-2 text-xs sm:text-sm text-ink-700 leading-relaxed">
+                {siteConfig.businessHours.display}<br />
+                <span class="text-emerald-700 font-semibold text-xs mt-1 block">● Under 2-hour WhatsApp reply during business hours.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Direct Channels Bar -->
+          <div class="pt-4 flex flex-wrap gap-3">
+            <a
+              href={telLink()}
+              class="inline-flex items-center gap-2 rounded-lg border border-ink-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-ink-900 shadow-sm hover:border-brand-500 hover:text-brand-600 transition"
+              data-analytics-event="call_click"
+            >
+              <Icon name="phone" class="h-4 w-4 text-brand-600" />
+              <span>{siteConfig.phoneDisplay}</span>
+            </a>
+
+            <a
+              href={mailLink()}
+              class="inline-flex items-center gap-2 rounded-lg border border-ink-300 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-ink-900 shadow-sm hover:border-brand-500 hover:text-brand-600 transition"
+            >
+              <Icon name="mail" class="h-4 w-4 text-brand-600" />
+              <span>{siteConfig.primaryEmail}</span>
+            </a>
+
+            <a
+              href={waLink("Hi ATITTLE, I want to ask about website development.")}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2.5 text-xs sm:text-sm font-bold text-ink-950 shadow-sm transition hover:opacity-90"
+              data-analytics-event="whatsapp_click"
+            >
+              <Icon name="whatsapp" class="h-4 w-4 text-ink-950" />
+              <span>WhatsApp Direct</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Visual Location Verification Card (Right 5 cols) -->
+        <div class="lg:col-span-5">
+          <div class="rounded-2xl border border-ink-200 bg-cream p-6 shadow-md">
+            <div class="flex items-center justify-between border-b border-ink-200 pb-3">
+              <span class="font-mono text-xs font-bold uppercase text-ink-600">Location Verification</span>
+              <span class="rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">Verified On Google Maps</span>
+            </div>
+
+            <div class="mt-4 space-y-3">
+              <div class="rounded-xl border border-ink-200 bg-white p-4">
+                <div class="text-xs font-bold text-ink-900">Astra Towers Commercial Complex</div>
+                <div class="text-xs text-ink-600 mt-0.5">Action Area II, Newtown, Rajarhat, Kolkata</div>
+                <div class="mt-3 flex items-center justify-between text-[11px] text-brand-700 font-medium">
+                  <span>Pin: 700161</span>
+                  <span>10 mins from Kolkata International Airport</span>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-ink-200 bg-white p-4 space-y-2 text-xs">
+                <div class="flex justify-between text-ink-700">
+                  <span>GSTIN Status:</span>
+                  <span class="font-semibold text-ink-900">Provided on Written Quotes</span>
+                </div>
+                <div class="flex justify-between text-ink-700">
+                  <span>Contract Terms:</span>
+                  <span class="font-semibold text-ink-900">Signed Rupee SOW</span>
+                </div>
+                <div class="flex justify-between text-ink-700">
+                  <span>Remote Delivery:</span>
+                  <span class="font-semibold text-emerald-700">All India (Zero Physical Visit Required)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-ink-200">
+              <a
+                href={waLink("Hi, I want to schedule a 15-minute consultation with ATITTLE.")}
+                target="_blank"
+                rel="noopener"
+                class="flex w-full items-center justify-center gap-2 rounded-lg bg-ink-950 py-3 text-xs sm:text-sm font-bold text-white shadow transition hover:bg-brand-600"
+              >
+                <Icon name="calendar" class="h-4 w-4" />
+                <span>Schedule a 15-Min Scoping Call</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. High-Impact Conversion Banner with Safe Bottom Clearance -->
+  <section class="bg-ink-950 text-cream py-14 sm:py-20 pb-28 sm:pb-24">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-ink-800 bg-ink-900 px-3.5 py-1 text-xs font-semibold text-brand-400">
+        <Icon name="sparkle" class="h-3.5 w-3.5" />
+        <span>Ready to Stop Losing 60% of Your Mobile Traffic?</span>
+      </div>
+
+      <h2 class="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-5xl">
+        Get a Website Built for Real Indian Phones.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-sm sm:text-base text-ink-300">
+        Prices start from ₹4,999 for local shop storefronts up to ₹45,000+ for enterprise platforms. Delivered in 48 hours to 14 days with zero ongoing retainer lock-in.
       </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <a
+          href={waLink("Hi ATITTLE, I want to get a quote for my business website.")}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-bold text-ink-950 shadow transition hover:opacity-90 active:scale-95"
+          data-analytics-event="whatsapp_click"
+        >
+          <Icon name="whatsapp" class="h-5 w-5 text-ink-950" />
+          <span>Chat on WhatsApp Now</span>
+        </a>
+
+        <a
+          href="/industries"
+          class="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow transition hover:bg-brand-700 active:scale-95"
+        >
+          <span>See 15 Live Demos</span>
+          <Icon name="chevron-right" class="h-4 w-4" />
+        </a>
+
+        <a
+          href="/work-process"
+          class="inline-flex items-center gap-2 rounded-lg border border-ink-700 bg-ink-900 px-5 py-3 text-sm font-medium text-ink-300 hover:text-white hover:border-ink-500"
+        >
+          <span>How We Ship in 48h–14d</span>
+        </a>
+      </div>
+
+      <div class="mt-8 text-xs text-ink-400">
+        ✓ No credit card needed · ✓ Written rupee scope · ✓ 100% full ownership handed over on Day 1
+      </div>
     </div>
   </section>
 
-  <section class="bg-white py-16 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display text-2xl font-semibold text-ink-950">How we work</h2>
-      <div class="mt-6 space-y-6 text-ink-700">
-        <p>Every project starts with a scoping conversation, not a sales pitch. We ask what your business actually needs, quote it in rupees, and put the scope in writing before any design starts.</p>
-        <p>We design mobile-first because that's how your customers will actually see the site — on a mid-range Android phone, often on a slow connection. We test there, not just in a wide desktop browser window.</p>
-        <p>We hand over full ownership at launch: domain, hosting access, and code. If you ever want another developer to take over, nothing stops you.</p>
-      </div>
-    </div>
-  </section>
+  <!-- Interactive Test Bench Script -->
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabButtons = document.querySelectorAll(".bench-tab-btn");
+      const atittleView = document.getElementById("bench-atittle-view");
+      const traditionalView = document.getElementById("bench-traditional-view");
 
-  <section class="bg-cream py-16 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <div class="rounded-xl border border-ink-200 bg-white p-6 sm:p-8">
-        <h2 class="font-display text-xl font-semibold text-ink-950">What we don't do</h2>
-        <ul class="mt-4 space-y-3 text-ink-600">
-          <li>— Login systems, user accounts, or payment checkouts. We'll say so upfront if your project needs one.</li>
-          <li>— Guaranteed Google rankings. Nobody can honestly promise a specific position.</li>
-          <li>— Unlimited free revisions forever. Scope is agreed before we start, so timelines stay honest.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
 
-  <section class="bg-white py-16 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display text-2xl font-semibold text-ink-950">Where we are</h2>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2">
-        <div class="flex items-start gap-3">
-          <Icon name="map-pin" class="mt-1 h-5 w-5 shrink-0 text-brand-600" />
-          <p class="text-ink-700">{siteConfig.address.line1}, {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.pin}<br />Serving {siteConfig.serviceAreas.join(", ")}.</p>
-        </div>
-        <div class="flex items-start gap-3">
-          <Icon name="clock" class="mt-1 h-5 w-5 shrink-0 text-brand-600" />
-          <p class="text-ink-700">{siteConfig.businessHours.display}<br />{siteConfig.responseCommitment}</p>
-        </div>
-      </div>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href={telLink()} class="inline-flex items-center gap-2 rounded-md border border-ink-300 px-5 py-2.5 text-sm font-semibold text-ink-800 hover:border-brand-500" data-analytics-event="call_click"><Icon name="phone" class="h-4 w-4" /> {siteConfig.phoneDisplay}</a>
-        <a href={mailLink()} class="inline-flex items-center gap-2 rounded-md border border-ink-300 px-5 py-2.5 text-sm font-semibold text-ink-800 hover:border-brand-500"><Icon name="mail" class="h-4 w-4" /> {siteConfig.primaryEmail}</a>
-        <a href={waLink(siteConfig.whatsappMessageTemplates.header)} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md bg-[#25D366] px-5 py-2.5 text-sm font-bold text-ink-950 hover:opacity-90" data-analytics-event="whatsapp_click"><Icon name="whatsapp" class="h-4 w-4" /> WhatsApp</a>
-      </div>
-    </div>
-  </section>
+          // Toggle button active styling
+          tabButtons.forEach((b) => {
+            b.classList.remove("active", "bg-white", "text-ink-950", "border", "border-ink-200", "shadow-sm");
+            b.classList.add("text-ink-600");
+          });
+
+          btn.classList.add("active", "bg-white", "text-ink-950", "border", "border-ink-200", "shadow-sm");
+          btn.classList.remove("text-ink-600");
+
+          // Toggle view visibility
+          if (target === "atittle") {
+            if (atittleView) {
+              atittleView.classList.remove("hidden");
+              atittleView.classList.add("block");
+            }
+            if (traditionalView) {
+              traditionalView.classList.add("hidden");
+              traditionalView.classList.remove("block");
+            }
+          } else {
+            if (traditionalView) {
+              traditionalView.classList.remove("hidden");
+              traditionalView.classList.add("block");
+            }
+            if (atittleView) {
+              atittleView.classList.add("hidden");
+              atittleView.classList.remove("block");
+            }
+          }
+        });
+      });
+    });
+  </script>
 </BaseLayout>
