@@ -70,17 +70,16 @@ import HeroSpeedChip from "@/components/sections/home/HeroSpeedChip.astro";
       </div>
 
       <!-- Proof & AI Evaluator Links -->
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-3">
+      <div class="hero-links-strip flex flex-wrap items-center gap-2.5 sm:gap-3 mt-3">
         <a class="hero-proof-link" href="/demos">
           {siteConfig.demoRegistry.length} industries. {siteConfig.demoRegistry.length} working websites. <span aria-hidden="true">&nearr;</span>
         </a>
-        <span class="text-ink-400 hidden sm:inline" aria-hidden="true">&middot;</span>
         <a
           href="#evaluator"
-          class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:text-brand-800 transition"
+          class="inline-flex items-center gap-1.5 rounded-full border border-amber-300/90 bg-amber-50/90 px-3 py-1 text-xs font-semibold text-amber-900 shadow-2xs hover:bg-amber-100 hover:border-amber-400 transition"
         >
           <Icon name="sparkle" class="h-3.5 w-3.5 text-amber-500" />
-          <span>Test your site score (AI Evaluator) &darr;</span>
+          <span>AI Website Evaluator &darr;</span>
         </a>
       </div>
     </div>
@@ -185,22 +184,27 @@ import HeroSpeedChip from "@/components/sections/home/HeroSpeedChip.astro";
       line-height: 1.58;
     }
     .hero-actions {
-      margin-top: 1.15rem;
-      gap: 0.6rem;
-      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 1.2rem;
+      gap: 0.65rem;
     }
     .hero-actions a {
-      flex: 1;
-      padding-inline: 0.65rem;
+      width: 100%;
+      padding-inline: 1rem;
       padding-block: 0.85rem;
+      font-size: 0.9rem;
+      justify-content: center;
       white-space: nowrap;
     }
     .hero-actions svg {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
     }
     .hero-response {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
     }
     .hero-proof-link {
       font-size: 0.78rem;

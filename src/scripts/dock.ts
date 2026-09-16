@@ -275,15 +275,45 @@ function initDock(): void {
 
   rawSections.forEach((s) => themeObserver.observe(s));
 
-  // Active home dot check on scroll
+  // Active home dot check & scroll auto-hide behavior
+  let lastScrollY = window.scrollY;
+  let scrollDelta = 0;
+  const SCROLL_THRESHOLD = 10;
+
   const onScroll = () => {
-    if (window.scrollY < 250) {
+    const currentScrollY = window.scrollY;
+    const diff = currentScrollY - lastScrollY;
+
+    if (currentScrollY < 250) {
       homeBtn?.classList.add("is-active");
       sectionsBtn?.classList.remove("is-active");
     } else {
       homeBtn?.classList.remove("is-active");
       sectionsBtn?.classList.add("is-active");
     }
+
+    // Dock auto-hide on scroll down / show on scroll up
+    const isSheetOpen = sheet && !sheet.hidden;
+    if (isSheetOpen || currentScrollY < 100) {
+      dock.classList.remove("is-hidden");
+      scrollDelta = 0;
+    } else {
+      if ((diff > 0 && scrollDelta < 0) || (diff < 0 && scrollDelta > 0)) {
+        scrollDelta = 0;
+      }
+      scrollDelta += diff;
+
+      // Scrolling down -> hide dock to give unobstructed view of content
+      if (scrollDelta > SCROLL_THRESHOLD && currentScrollY > 150) {
+        dock.classList.add("is-hidden");
+      }
+      // Scrolling up -> reveal dock smoothly for quick navigation
+      else if (scrollDelta < -SCROLL_THRESHOLD) {
+        dock.classList.remove("is-hidden");
+      }
+    }
+
+    lastScrollY = currentScrollY;
   };
 
   window.addEventListener("scroll", onScroll, { passive: true });

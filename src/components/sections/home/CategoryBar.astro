@@ -2,17 +2,45 @@
 import { siteConfig } from "@config/site";
 ---
 
-<section class="border-b border-ink-200 bg-white py-6">
+<section class="category-strip border-b border-ink-200/80 bg-cream/40 py-4 sm:py-6">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <p class="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-ink-500">Websites built for</p>
-    <ul class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-      {siteConfig.industryRegistry.map((industry) => (
-        <li>
-          <a href={`/industries/${industry.slug}`} class="text-sm font-medium text-ink-600 transition-colors hover:text-brand-600">
-            {industry.shortName}
-          </a>
-        </li>
-      ))}
-    </ul>
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2.5">
+      <p class="text-xs font-semibold uppercase tracking-wider text-ink-500 flex items-center gap-1.5">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+        Websites built for 15 Indian industries
+      </p>
+      <span class="text-[11px] text-ink-400 hidden sm:inline">Tap any industry to view live demo</span>
+    </div>
+
+    <!-- Scrollable category chips on mobile, wrapping on desktop -->
+    <div class="category-track-wrapper relative">
+      <ul class="category-track flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth sm:flex-wrap sm:gap-2">
+        {siteConfig.industryRegistry.map((industry) => (
+          <li class="shrink-0">
+            <a
+              href={`/industries/${industry.slug}`}
+              class="category-chip inline-flex items-center rounded-full border border-ink-200 bg-white/95 px-3 py-1.5 text-xs font-medium text-ink-700 shadow-2xs transition hover:border-brand-500 hover:text-brand-700 hover:shadow-xs active:scale-95"
+            >
+              <span>{industry.shortName}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <!-- Subtle edge fade on mobile to indicate scrollability -->
+      <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-cream/90 to-transparent sm:hidden" aria-hidden="true"></div>
+    </div>
   </div>
 </section>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .category-chip {
+    touch-action: pan-x;
+  }
+</style>
