@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:responsive": "playwright test tests/e2e/responsive.spec.ts tests/e2e/dock.spec.ts",
     "e2e": "playwright test",
     "db:migrate:local": "wrangler d1 migrations apply atittle_leads --local",
     "db:migrate:remote": "wrangler d1 migrations apply atittle_leads --remote",
