@@ -305,9 +305,44 @@
     transform: none;
   }
 
-  /* ==========================================================================
-     Mobile First-View 2-Second Hook Choreography & Touch Mechanics
-     ========================================================================== */
+  /* Hero Headline Entrance & Kinetic Typography */
+  html.hook h1 {
+    animation: hero-headline-entrance 750ms var(--spring) 120ms backwards;
+    will-change: transform;
+  }
+  @keyframes hero-headline-entrance {
+    from {
+      transform: translateY(24px) scale(0.98);
+      filter: blur(4px);
+    }
+    to {
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .hero-highlight {
+    display: inline;
+    color: inherit;
+    transition: color 300ms ease;
+  }
+  html.hook .hero-highlight {
+    animation: hero-highlight-glow 1400ms ease-out 600ms forwards;
+  }
+  @keyframes hero-highlight-glow {
+    0% {
+      color: inherit;
+    }
+    40% {
+      color: #25D366;
+      text-shadow: 0 0 16px rgba(37, 211, 102, 0.45);
+    }
+    100% {
+      color: #075E54;
+      text-shadow: none;
+    }
+  }
+
   /* Eyebrow Pin Drop & Ring */
   html.hook .hero-eyebrow-pin {
     animation: pin-drop 400ms var(--spring) 120ms backwards, pin-ring 400ms ease-out 520ms;
@@ -435,6 +470,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    html.hook h1,
+    html.hook .hero-highlight,
     html.hook .hero-eyebrow-pin,
     html.hook #floating-dock,
     html.hook .dock-live-beacon,
