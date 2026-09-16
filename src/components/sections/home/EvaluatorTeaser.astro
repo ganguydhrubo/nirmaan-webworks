@@ -1,67 +1,199 @@
 ---
 import Icon from "@/components/ui/Icon.astro";
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id = "evaluator", class: className = "" } = Astro.props;
 ---
 
-<section class="bg-ink-950 py-16 sm:py-24">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="reveal grid items-center gap-10 rounded-3xl border border-ink-800 bg-ink-900 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr] lg:p-16">
-      <div>
-        <div class="inline-flex items-center gap-2 rounded-full border border-brand-700/60 bg-brand-900/30 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-300">
-          <Icon name="sparkle" class="h-3.5 w-3.5" />
-          Free AI tool &middot; No sign-up
+<section
+  id={id}
+  data-theme="dark"
+  data-dock-title="AI Evaluator"
+  data-dock-desc="Free 30-second website diagnostic"
+  class:list={["relative bg-ink-950 py-16 sm:py-24 overflow-hidden border-y border-ink-800", className]}
+>
+  <!-- Slow Ambient Glow Aura (Breathing highlight) -->
+  <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[420px] w-full max-w-5xl rounded-full bg-gradient-to-r from-brand-600/20 via-amber-500/15 to-brand-600/20 blur-3xl opacity-60 slow-ambient-aura" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal relative grid items-center gap-10 rounded-3xl border border-brand-500/30 bg-gradient-to-br from-ink-900 via-ink-900 to-ink-950 p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 shadow-2xl shadow-brand-950/60 min-w-0">
+      
+      <!-- Left Column: Clear Value Proposition -->
+      <div class="min-w-0">
+        <div class="inline-flex items-center gap-2 rounded-full border border-brand-400/40 bg-brand-950/80 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-300 shadow-sm backdrop-blur-sm max-w-full">
+          <span class="relative flex h-2 w-2 shrink-0">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-500"></span>
+          </span>
+          <span class="truncate">⚡ Free AI Diagnostic · 100-Point Audit</span>
         </div>
-        <h2 class="font-display mt-4 text-3xl font-semibold text-cream sm:text-4xl">
-          Before you hire anyone — see what your own website is actually doing wrong.
+
+        <h2 class="font-display mt-4 text-2xl sm:text-4xl lg:text-5xl font-semibold text-cream leading-tight break-words">
+          Does your website reflect your <span class="text-brand-400 italic">actual craft</span> — or look like template slop?
         </h2>
-        <p class="mt-4 text-lg text-ink-300">
-          Paste your homepage headline and copy, and our AI engine scores it out of 100 across five parts — value proposition, industry authenticity, trust signals, pricing transparency and mobile readiness — the same lens we use on every project we build.
+
+        <p class="mt-4 text-sm sm:text-base text-ink-300 leading-relaxed break-words">
+          Most Indian business websites lose customers because they sound like generic corporate templates. Run our free 100-point AI audit to test 3-second clarity, trade authenticity, WhatsApp friction, and mobile readiness before spending a single rupee on redesign.
         </p>
-        <ul class="mt-6 space-y-2.5 text-sm text-ink-300">
-          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Takes under 30 seconds, no account needed</li>
-          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Works on your current site, a competitor's, or one of our demos</li>
-          <li class="flex items-start gap-2"><Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-brand-400" /> Get specific rewrites, not just a score</li>
+
+        <ul class="mt-6 space-y-2.5 text-xs sm:text-sm text-ink-300">
+          <li class="flex items-start gap-2.5">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>Takes under 30 seconds</strong> — zero sign-up, phone number, or sales call required</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>5 Critical trade checks</strong> — value clarity, trade authenticity, trust anchors, pricing, and 4G speed</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>Specific copy rewrites</strong> — gives you exact words to replace weak generic text today</span>
+          </li>
         </ul>
-        <div class="mt-8">
+
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
           <a
             href="/tools/website-evaluator"
-            class="inline-flex items-center gap-2 rounded-md bg-brand-600 px-6 py-3 text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700"
+            class="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm sm:text-base font-semibold text-cream shadow-lg shadow-brand-900/50 transition hover:bg-brand-500 active:scale-98"
             data-analytics-event="cta_click"
           >
-            Audit my website free
-            <Icon name="chevron-right" class="h-4 w-4" />
+            <span>Run Free Website Audit</span>
+            <Icon name="chevron-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
+          <span class="text-xs text-ink-400">Takes 30 seconds · Instant browser score</span>
         </div>
       </div>
 
-      <div class="reveal rounded-2xl border border-ink-800 bg-ink-950 p-6">
-        <div class="flex items-center justify-between text-xs font-medium text-ink-400">
-          <span>Sample audit result</span>
-          <span class="rounded-full bg-brand-900/40 px-2 py-0.5 text-brand-300">Live scoring</span>
+      <!-- Right Column: Simulated Live AI Diagnostic Card -->
+      <div class="reveal relative rounded-2xl border border-ink-700/80 bg-ink-950/90 p-5 sm:p-7 shadow-xl overflow-hidden min-w-0">
+        <!-- Slow Scanning Light Sweep -->
+        <div class="evaluator-scan-line pointer-events-none" aria-hidden="true"></div>
+
+        <!-- Card Top Bar -->
+        <div class="flex items-center justify-between border-b border-ink-800 pb-3 mb-4 text-xs">
+          <div class="flex items-center gap-2">
+            <Icon name="sparkle" class="h-4 w-4 text-amber-400" />
+            <span class="font-semibold text-cream">AI Diagnostic Matrix</span>
+          </div>
+          <span class="flex items-center gap-1.5 rounded-full bg-emerald-950/70 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Engine Active
+          </span>
         </div>
-        <div class="mt-4 flex items-end gap-3">
-          <span class="font-display text-5xl font-bold text-cream">68</span>
-          <span class="mb-1.5 text-sm text-ink-400">/ 100</span>
+
+        <!-- Overall Score Header -->
+        <div class="flex items-center justify-between rounded-xl bg-ink-900/90 border border-ink-800 p-3.5 mb-4">
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-ink-400 font-medium">Diagnostic Health Score</div>
+            <div class="flex items-baseline gap-2 mt-0.5">
+              <span class="font-display text-4xl sm:text-5xl font-bold text-cream">68</span>
+              <span class="text-xs text-ink-400 font-mono">/ 100</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="inline-block rounded-lg bg-amber-950/80 border border-amber-500/40 px-2.5 py-1 text-xs font-bold text-amber-300">
+              Grade C · Leak Detected
+            </span>
+            <div class="text-[10px] text-ink-400 mt-1">~42% bounce before enquiry</div>
+          </div>
         </div>
-        <div class="mt-4 space-y-3">
+
+        <!-- 5 Category Metrics -->
+        <div class="space-y-3 text-xs">
           {[
-            { label: "Value proposition & clarity", score: 82 },
-            { label: "Industry fit & authenticity", score: 40 },
-            { label: "Trust signals & contact friction", score: 58 },
-            { label: "Pricing transparency", score: 35 },
-            { label: "Mobile readiness", score: 76 },
+            { label: "Value Proposition & 3s Clarity", score: 82, color: "bg-emerald-400", status: "Clear" },
+            { label: "Trade Authenticity (Not Slop)", score: 40, color: "bg-amber-400", status: "Too generic" },
+            { label: "WhatsApp & Inbound Friction", score: 58, color: "bg-amber-400", status: "Missing 1-tap" },
+            { label: "Rupee Pricing Transparency", score: 35, color: "bg-rose-400", status: "Hidden rates" },
+            { label: "Android 4G Speed & Tap Targets", score: 76, color: "bg-emerald-400", status: "Fast" },
           ].map((row) => (
             <div>
-              <div class="flex items-center justify-between text-xs text-ink-400">
-                <span>{row.label}</span>
-                <span>{row.score}</span>
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="text-ink-300 font-medium truncate">{row.label}</span>
+                <span class="font-mono text-ink-400 shrink-0 ml-2">{row.score}% · <span class="text-cream">{row.status}</span></span>
               </div>
-              <div class="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-ink-800">
-                <div class="h-full rounded-full bg-brand-500" style={`width:${row.score}%`}></div>
+              <div class="h-1.5 w-full overflow-hidden rounded-full bg-ink-800">
+                <div class:list={["h-full rounded-full transition-all duration-700", row.color]} style={`width: ${row.score}%`}></div>
               </div>
             </div>
           ))}
         </div>
+
+        <!-- Actionable Specific Rewrite Callout -->
+        <div class="mt-4 rounded-xl border border-brand-500/20 bg-brand-950/30 p-3 text-xs">
+          <div class="flex items-center gap-1.5 text-brand-300 font-semibold text-[11px] mb-1">
+            <span>💡 Sample AI Prescription:</span>
+          </div>
+          <p class="text-ink-300 italic text-[11px] leading-relaxed">
+            "Replace 'Delivering Global Excellence' with 'Sector 18 Noida Clinic: Fixed rupee root canals with zero advance.' Expected enquiry lift: +35%."
+          </p>
+        </div>
+
+        <!-- Direct Test Jump CTA -->
+        <a
+          href="/tools/website-evaluator"
+          class="mt-4 flex items-center justify-between rounded-xl border border-ink-800 bg-ink-900/80 px-3.5 py-2.5 text-xs text-ink-300 hover:border-brand-500/50 hover:text-cream transition group"
+        >
+          <span class="font-medium">Test your own homepage text or URL</span>
+          <span class="text-brand-400 font-semibold group-hover:translate-x-0.5 transition">Start Diagnostic →</span>
+        </a>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Slow ambient aura highlight */
+  .slow-ambient-aura {
+    animation: slow-ambient 8s infinite ease-in-out;
+  }
+
+  @keyframes slow-ambient {
+    0%, 100% {
+      opacity: 0.45;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.75;
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+  }
+
+  /* Slow scan line highlight */
+  .evaluator-scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(238, 198, 114, 0.8), rgba(221, 117, 72, 0.8), transparent);
+    animation: slow-scan 6s infinite ease-in-out;
+  }
+
+  @keyframes slow-scan {
+    0% {
+      top: 0%;
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.9;
+    }
+    85% {
+      opacity: 0.9;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slow-ambient-aura,
+    .evaluator-scan-line {
+      animation: none !important;
+    }
+  }
+</style>

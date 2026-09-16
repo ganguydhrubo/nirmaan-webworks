@@ -17,7 +17,14 @@ import DemoShowcase from "@/components/ui/DemoShowcase.astro";
         <a href={waLink(siteConfig.whatsappMessageTemplates.heroSecondary)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp (opens WhatsApp)" class="inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-4 py-3.5 font-semibold text-ink-800 transition hover:border-teal-500 hover:text-teal-700" data-analytics-event="whatsapp_click"><Icon name="whatsapp" class="h-5 w-5 text-[#25D366]" /> Chat on WhatsApp</a>
       </div>
       <p class="hero-response text-ink-500">{siteConfig.responseCommitment} No sales call required to get a price.</p>
-      <a class="hero-proof-link" href="/demos">{siteConfig.demoRegistry.length} industries. {siteConfig.demoRegistry.length} working websites. <span aria-hidden="true">↗</span></a>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a class="hero-proof-link" href="/demos">{siteConfig.demoRegistry.length} industries. {siteConfig.demoRegistry.length} working websites. <span aria-hidden="true">↗</span></a>
+        <span class="text-ink-400 hidden sm:inline" aria-hidden="true">&middot;</span>
+        <a href="#evaluator" class="inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:text-brand-800 transition">
+          <Icon name="sparkle" class="h-3.5 w-3.5 text-amber-500" />
+          <span>Test your site score (AI Evaluator) &darr;</span>
+        </a>
+      </div>
     </div>
     <div class="hero-showcase min-w-0"><DemoShowcase id="home-showcase" compact eager /></div>
   </div>
