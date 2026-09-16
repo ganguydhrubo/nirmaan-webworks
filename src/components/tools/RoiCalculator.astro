@@ -1,0 +1,349 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id = "roi-calculator", class: className = "" } = Astro.props;
+---
+
+<section id={id} class:list={["roi-calculator-section relative overflow-hidden py-14 sm:py-20 bg-cream border-y border-ink-200", className]}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+      <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 border border-emerald-300 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 mb-3 tracking-wide uppercase">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
+        Aggregator Bleed Calculator
+      </div>
+      <h2 class="font-display text-2xl sm:text-4xl font-semibold tracking-tight text-ink-950">
+        How much are you losing to aggregator commissions?
+      </h2>
+      <p class="mt-3 text-sm sm:text-base text-ink-700 leading-relaxed max-w-2xl mx-auto">
+        MakeMyTrip, Zomato, Swiggy, and Practo take 18% to 28% of every rupee you earn. Calculate how quickly an ATITTLE direct-booking site pays for itself.
+      </p>
+    </div>
+
+    <!-- Interactive Card -->
+    <div class="mx-auto max-w-4xl rounded-2xl border border-ink-300 bg-white p-5 sm:p-8 shadow-lg" data-roi-root>
+      <!-- Industry Model Switcher Tabs -->
+      <div class="flex flex-wrap gap-2 border-b border-ink-200 pb-5 mb-6 justify-center sm:justify-start">
+        <button
+          type="button"
+          class="roi-tab-btn active px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-brand-500 bg-brand-50 text-brand-700"
+          data-tab="hotel"
+        >
+          🏨 Hotels & Resorts
+        </button>
+        <button
+          type="button"
+          class="roi-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100"
+          data-tab="restaurant"
+        >
+          🍽️ Restaurants & Cafés
+        </button>
+        <button
+          type="button"
+          class="roi-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100"
+          data-tab="clinic"
+        >
+          🏥 Clinics & Studios
+        </button>
+      </div>
+
+      <!-- Two-Column Interactive Layout -->
+      <div class="grid gap-8 lg:grid-cols-12 items-start">
+        <!-- Sliders Column -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <!-- Input 1: Monthly Revenue / Orders -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="roi-input-rev" class="text-xs sm:text-sm font-semibold text-ink-900" data-label-rev>
+                Monthly Room Bookings (₹)
+              </label>
+              <span class="font-mono text-sm sm:text-base font-bold text-brand-600" data-val-rev>
+                ₹3,00,000
+              </span>
+            </div>
+            <input
+              id="roi-input-rev"
+              type="range"
+              min="50000"
+              max="1500000"
+              step="25000"
+              value="300000"
+              class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-brand-600"
+            />
+            <div class="flex justify-between text-[11px] text-ink-400 mt-1">
+              <span>₹50,000</span>
+              <span>₹7.5 Lakhs</span>
+              <span>₹15 Lakhs</span>
+            </div>
+          </div>
+
+          <!-- Input 2: Commission Rate % -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="roi-input-comm" class="text-xs sm:text-sm font-semibold text-ink-900" data-label-comm>
+                MakeMyTrip / OTA Commission
+              </label>
+              <span class="font-mono text-sm sm:text-base font-bold text-brand-600" data-val-comm>
+                18%
+              </span>
+            </div>
+            <input
+              id="roi-input-comm"
+              type="range"
+              min="10"
+              max="35"
+              step="1"
+              value="18"
+              class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-brand-600"
+            />
+            <div class="flex justify-between text-[11px] text-ink-400 mt-1">
+              <span>10%</span>
+              <span>20%</span>
+              <span>35%</span>
+            </div>
+          </div>
+
+          <!-- Input 3: Direct Shift Potential -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="roi-input-shift" class="text-xs sm:text-sm font-semibold text-ink-900">
+                Bookings Shifted to Direct Website
+              </label>
+              <span class="font-mono text-sm sm:text-base font-bold text-emerald-700" data-val-shift>
+                25%
+              </span>
+            </div>
+            <input
+              id="roi-input-shift"
+              type="range"
+              min="10"
+              max="60"
+              step="5"
+              value="25"
+              class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-emerald-600"
+            />
+            <div class="flex justify-between text-[11px] text-ink-400 mt-1">
+              <span>10% (Conservative)</span>
+              <span>35%</span>
+              <span>60% (High Retention)</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-ink-500 italic">
+            * Estimates based on real Indian industry averages: OTA (18–22%), Food Aggregators (24–28%), Clinic no-shows.
+          </p>
+        </div>
+
+        <!-- Real-Time Results Summary Column -->
+        <div class="lg:col-span-5 rounded-xl border border-ink-200 bg-ink-50 p-5 sm:p-6 flex flex-col justify-between gap-5">
+          <div>
+            <span class="text-xs uppercase tracking-wider font-bold text-ink-500">Your Monthly Bleed</span>
+            <div class="mt-1 text-2xl sm:text-3xl font-bold font-mono text-error" data-result-loss>
+              ₹54,000 / mo
+            </div>
+            <p class="text-xs text-ink-600 mt-1">
+              Paid to third-party portals every single month.
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-ink-200">
+            <span class="text-xs uppercase tracking-wider font-bold text-emerald-800">Annual Profit Recovered</span>
+            <div class="mt-1 text-2xl sm:text-3xl font-bold font-mono text-emerald-700" data-result-savings>
+              ₹1,62,000 / yr
+            </div>
+            <p class="text-xs text-ink-600 mt-1">
+              Retained in your bank account with a direct-booking website.
+            </p>
+          </div>
+
+          <div class="pt-4 border-t border-ink-200 rounded-lg bg-white p-3.5 border border-brand-200">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-ink-700">ATITTLE Website Cost</span>
+              <span class="text-xs font-bold text-ink-900">₹35,000 one-time</span>
+            </div>
+            <div class="mt-2 text-sm font-bold text-brand-700 flex items-center justify-between">
+              <span>Payback Timeline:</span>
+              <span class="font-mono text-base text-brand-600 font-extrabold" data-result-payback>
+                2.6 Months
+              </span>
+            </div>
+            <p class="text-[11px] text-ink-500 mt-1 leading-snug">
+              After payback, all direct booking savings are 100% pure ongoing profit.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="w-full inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition"
+            data-roi-cta
+          >
+            Claim Your Direct-Booking System →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initRoiCalculator() {
+    const root = document.querySelector<HTMLElement>('[data-roi-root]');
+    if (!root) return;
+
+    const tabs = root.querySelectorAll<HTMLButtonElement>('.roi-tab-btn');
+    const inputRev = root.querySelector<HTMLInputElement>('#roi-input-rev');
+    const inputComm = root.querySelector<HTMLInputElement>('#roi-input-comm');
+    const inputShift = root.querySelector<HTMLInputElement>('#roi-input-shift');
+
+    const labelRev = root.querySelector<HTMLElement>('[data-label-rev]');
+    const labelComm = root.querySelector<HTMLElement>('[data-label-comm]');
+
+    const valRev = root.querySelector<HTMLElement>('[data-val-rev]');
+    const valComm = root.querySelector<HTMLElement>('[data-val-comm]');
+    const valShift = root.querySelector<HTMLElement>('[data-val-shift]');
+
+    const resultLoss = root.querySelector<HTMLElement>('[data-result-loss]');
+    const resultSavings = root.querySelector<HTMLElement>('[data-result-savings]');
+    const resultPayback = root.querySelector<HTMLElement>('[data-result-payback]');
+    const ctaBtn = root.querySelector<HTMLButtonElement>('[data-roi-cta]');
+
+    let currentModel = 'hotel';
+
+    const models: Record<string, { labelRev: string; defaultRev: number; labelComm: string; defaultComm: number; websiteCost: number }> = {
+      hotel: {
+        labelRev: 'Monthly Room Bookings (₹)',
+        defaultRev: 300000,
+        labelComm: 'MakeMyTrip / OTA Commission',
+        defaultComm: 18,
+        websiteCost: 35000,
+      },
+      restaurant: {
+        labelRev: 'Monthly Food Delivery Orders (₹)',
+        defaultRev: 220000,
+        labelComm: 'Zomato & Swiggy Commission',
+        defaultComm: 26,
+        websiteCost: 35000,
+      },
+      clinic: {
+        labelRev: 'Monthly Consultation & Treatment Volume (₹)',
+        defaultRev: 180000,
+        labelComm: 'Practo / Aggregator / Lost Lead Rate',
+        defaultComm: 15,
+        websiteCost: 28000,
+      }
+    };
+
+    function formatInr(num: number): string {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(num);
+    }
+
+    function calculate() {
+      if (!inputRev || !inputComm || !inputShift) return;
+
+      const rev = Number(inputRev.value);
+      const commRate = Number(inputComm.value) / 100;
+      const shiftRate = Number(inputShift.value) / 100;
+      const websiteCost = models[currentModel]?.websiteCost ?? 35000;
+
+      // Monthly bleed = revenue * commission rate
+      const monthlyLoss = rev * commRate;
+      // Monthly savings = revenue * shiftRate * commRate
+      const monthlySaved = rev * shiftRate * commRate;
+      const annualSaved = monthlySaved * 12;
+
+      // Payback in months
+      const paybackMonths = monthlySaved > 0 ? (websiteCost / monthlySaved) : 0;
+
+      if (valRev) valRev.textContent = formatInr(rev);
+      if (valComm) valComm.textContent = `${inputComm.value}%`;
+      if (valShift) valShift.textContent = `${inputShift.value}%`;
+
+      if (resultLoss) resultLoss.textContent = `${formatInr(monthlyLoss)} / mo`;
+      if (resultSavings) resultSavings.textContent = `${formatInr(annualSaved)} / yr`;
+
+      if (resultPayback) {
+        if (paybackMonths <= 1) {
+          resultPayback.textContent = `${Math.max(12, Math.round(paybackMonths * 30))} Days!`;
+        } else {
+          resultPayback.textContent = `${paybackMonths.toFixed(1)} Months`;
+        }
+      }
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.classList.remove('border-brand-500', 'bg-brand-50', 'text-brand-700');
+          t.classList.add('border-ink-200', 'bg-ink-50', 'text-ink-700');
+        });
+        tab.classList.add('border-brand-500', 'bg-brand-50', 'text-brand-700');
+        tab.classList.remove('border-ink-200', 'bg-ink-50', 'text-ink-700');
+
+        currentModel = tab.dataset.tab || 'hotel';
+        const cfg = models[currentModel]!;
+        if (labelRev) labelRev.textContent = cfg.labelRev;
+        if (labelComm) labelComm.textContent = cfg.labelComm;
+        if (inputRev) inputRev.value = String(cfg.defaultRev);
+        if (inputComm) inputComm.value = String(cfg.defaultComm);
+        calculate();
+      });
+    });
+
+    inputRev?.addEventListener('input', calculate);
+    inputComm?.addEventListener('input', calculate);
+    inputShift?.addEventListener('input', calculate);
+
+    calculate();
+
+    // CTA Click: Scroll to enquiry form and auto-populate
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', () => {
+        const form = document.querySelector<HTMLFormElement>('#enquiry-form');
+        if (!form) {
+          window.location.href = '/contact';
+          return;
+        }
+
+        const categorySelect = form.elements.namedItem('category') as HTMLSelectElement | null;
+        const needsSelect = form.elements.namedItem('needs') as HTMLSelectElement | null;
+        const messageArea = (form.elements.namedItem('message') || form.elements.namedItem('notes')) as HTMLTextAreaElement | null;
+
+        const categoryMap: Record<string, string> = {
+          hotel: 'Hotels & Resorts',
+          restaurant: 'Restaurants',
+          clinic: 'Clinics'
+        };
+
+        const targetCategory = categoryMap[currentModel];
+        if (categorySelect && targetCategory) {
+          categorySelect.value = targetCategory;
+        }
+        if (needsSelect) {
+          needsSelect.value = 'new-website';
+        }
+        if (messageArea && resultSavings && resultLoss) {
+          messageArea.value = `[ROI Calculator Inquiry] Estimated monthly bleed to aggregators: ${resultLoss.textContent}. Interested in setting up a direct booking website to recover ~${resultSavings.textContent}.`;
+        }
+
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        form.classList.add('ring-2', 'ring-brand-500', 'ring-offset-4');
+        setTimeout(() => {
+          form.classList.remove('ring-2', 'ring-brand-500', 'ring-offset-4');
+        }, 2500);
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRoiCalculator);
+  } else {
+    initRoiCalculator();
+  }
+</script>

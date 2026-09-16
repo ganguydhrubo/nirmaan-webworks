@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import RoiCalculator from "@/components/tools/RoiCalculator.astro";
+import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+
+export const prerender = true;
+
+const meta = {
+  title: "Industry OTA & Aggregator Commission Calculator | ATITTLE",
+  description: "Calculate how much revenue you are losing to MakeMyTrip, Zomato, Swiggy, and Practo commissions, and see how fast an ATITTLE direct-booking site pays for itself in rupees.",
+};
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="bg-cream pt-10 pb-6 border-b border-ink-200">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-2">Interactive Financial Tool</p>
+      <h1 class="font-display text-3xl sm:text-5xl font-semibold text-ink-950">Stop paying 18% to 28% commissions</h1>
+      <p class="mt-4 text-base text-ink-700 max-w-2xl mx-auto">
+        Third-party aggregators eat your profits every single month. Calculate your numbers below and claim back your direct bookings.
+      </p>
+    </div>
+  </div>
+
+  <RoiCalculator />
+
+  <!-- Native On-Site Enquiry Form -->
+  <section class="py-16 bg-white border-t border-ink-200">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="font-display text-2xl sm:text-3xl font-semibold text-ink-950">Get your direct-booking website built</h2>
+        <p class="mt-2 text-sm text-ink-600">Fixed rupee pricing. Fast 3-week delivery. No technical headaches.</p>
+      </div>
+      <div class="rounded-2xl border border-ink-300 bg-cream p-6 sm:p-8 shadow-sm">
+        <EnquiryForm id="enquiry-form" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

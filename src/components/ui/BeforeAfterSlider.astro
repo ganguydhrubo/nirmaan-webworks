@@ -1,0 +1,280 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id = "before-after-slider", class: className = "" } = Astro.props;
+---
+
+<section id={id} class:list={["before-after-section relative overflow-hidden py-14 sm:py-20 bg-ink-950 text-cream", className]}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+      <div class="inline-flex items-center gap-2 rounded-full bg-brand-900/60 border border-brand-500/40 px-3.5 py-1.5 text-xs font-semibold text-brand-300 mb-4 tracking-wide uppercase">
+        <span class="inline-block w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+        The 2-Second Difference
+      </div>
+      <h2 class="font-display text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-cream">
+        Slide to see what your visitors see.
+      </h2>
+      <p class="mt-3 sm:mt-4 text-sm sm:text-base text-ink-300 leading-relaxed max-w-2xl mx-auto">
+        Most Indian business websites are slow WordPress templates with broken mobile layouts. Drag the handle to compare a standard ₹15k freelancer site vs an ATITTLE production build.
+      </p>
+    </div>
+
+    <!-- Interactive Comparison Container -->
+    <div class="comparison-wrapper relative mx-auto max-w-5xl rounded-2xl border border-ink-800 bg-ink-900/90 shadow-2xl p-2 sm:p-4">
+      <!-- Top Meta Badges -->
+      <div class="flex items-center justify-between px-2 sm:px-4 py-2 border-b border-ink-800 text-xs sm:text-sm font-medium mb-3">
+        <div class="flex items-center gap-1.5 text-error">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-error"></span>
+          <span class="font-semibold">Standard Freelancer Template</span>
+          <span class="hidden sm:inline text-ink-500">• 4.8s Slow Load</span>
+        </div>
+        <div class="text-xs text-ink-400 font-mono hidden md:block">
+          ◀ Drag handle to inspect ▶
+        </div>
+        <div class="flex items-center gap-1.5 text-emerald-400">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-semibold">ATITTLE Mobile-First Build</span>
+          <span class="hidden sm:inline text-ink-500">• 0.38s Instant</span>
+        </div>
+      </div>
+
+      <!-- The Split Screen Visual Stage -->
+      <div 
+        class="comparison-stage relative w-full select-none overflow-hidden rounded-xl border border-ink-800 aspect-[4/5] sm:aspect-[16/10] max-h-[560px] cursor-ew-resize"
+        data-slider-stage
+        tabindex="0"
+        role="slider"
+        aria-label="Drag to compare standard website versus ATITTLE website"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="50"
+      >
+        <!-- RIGHT SIDE: AFTER (ATITTLE Build) — Underneath layer -->
+        <div class="absolute inset-0 w-full h-full bg-[#fbf6ee] text-ink-900 flex flex-col justify-between p-4 sm:p-8 overflow-hidden pointer-events-none">
+          <!-- Live Demo Browser Chrome -->
+          <div class="flex items-center justify-between border-b border-ink-200 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span class="font-display font-bold text-ink-950 text-sm sm:text-base tracking-tight">Royal Haveli Sweets & Banquet</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="hidden sm:inline-flex items-center gap-1 rounded bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">
+                ⚡ 0.38s Core Web Vitals Pass
+              </span>
+              <span class="text-xs font-medium text-ink-500">Jaipur, RJ</span>
+            </div>
+          </div>
+
+          <!-- Hero Content (ATITTLE) -->
+          <div class="my-auto max-w-lg py-2">
+            <div class="inline-flex items-center gap-1.5 rounded-full bg-brand-50 border border-brand-200 px-2.5 py-1 text-xs font-semibold text-brand-700 mb-2 sm:mb-3">
+              ★ 4.9 (1,240+ Google Reviews) • Pure Desi Ghee
+            </div>
+            <h3 class="font-display text-xl sm:text-3xl lg:text-4xl font-semibold text-ink-950 leading-tight">
+              Authentic Rajasthani Mithai & Destination Catering.
+            </h3>
+            <p class="mt-2 text-xs sm:text-sm text-ink-700 leading-relaxed">
+              Serving Jaipur since 1984. Order curated mithai boxes online or book private banquet halls with instant confirmation.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2 sm:gap-3">
+              <span class="inline-flex items-center gap-1.5 rounded-md bg-brand-600 px-3 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm">
+                Book Banquet Hall →
+              </span>
+              <span class="inline-flex items-center gap-1.5 rounded-md border border-ink-300 bg-white px-3 py-2 text-xs sm:text-sm font-semibold text-ink-800">
+                View Rupee Menu (₹)
+              </span>
+            </div>
+          </div>
+
+          <!-- Bottom Floating Bar (ATITTLE) -->
+          <div class="rounded-lg bg-white border border-ink-200 p-2.5 sm:p-3 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2 text-xs font-medium text-ink-600">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Open Now • Closes 10:30 PM
+            </div>
+            <div class="flex items-center gap-3 text-xs font-semibold text-brand-600">
+              <span>Delivery across India</span>
+              <span class="text-ink-300">•</span>
+              <span class="text-emerald-700">Direct WhatsApp Order</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEFT SIDE: BEFORE (Standard Clunky Freelancer Site) — Clipped overlay -->
+        <div 
+          class="comparison-overlay absolute inset-0 w-full h-full bg-[#f1f3f5] text-[#333] flex flex-col justify-between p-4 sm:p-8 overflow-hidden pointer-events-none border-r border-ink-600 shadow-2xl"
+          data-slider-clip
+          style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);"
+        >
+          <!-- Old Browser Chrome -->
+          <div class="flex items-center justify-between border-b border-gray-300 pb-3 bg-gray-200 -m-4 sm:-m-8 p-3 mb-2">
+            <div class="text-xs font-sans text-gray-500 flex items-center gap-2">
+              <span class="text-error font-bold">⚠ Not Secure</span>
+              <span>royal-sweets-jaipur.blogspot.in</span>
+            </div>
+            <span class="rounded bg-red-100 text-red-700 text-xs px-2 py-0.5 font-bold">
+              4.8s Load • 38 Plugins
+            </span>
+          </div>
+
+          <!-- Old Cluttered Hero (Freelancer Site) -->
+          <div class="my-auto max-w-lg py-2 opacity-85">
+            <div class="bg-yellow-100 border border-yellow-300 p-1.5 text-[10px] text-yellow-800 font-bold mb-2">
+              WELCOME TO BEST SWEET SHOP IN JAIPUR NO 1 QUALITY BEST RATE
+            </div>
+            <h3 class="text-lg sm:text-2xl font-bold font-sans text-blue-900 leading-snug">
+              Welcome To Royal Haveli Sweets & Catering Services
+            </h3>
+            <p class="mt-1 text-[11px] sm:text-xs text-gray-600 font-sans leading-tight">
+              We provide all types of sweets, namkeen, fast food, bakery items, marriage hall booking. Please call on mobile numbers for rate list and enquiry.
+            </p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="bg-blue-600 text-white text-[11px] px-2 py-1 font-bold">
+                CLICK HERE FOR INQUIRY
+              </span>
+              <span class="bg-gray-300 text-gray-700 text-[11px] px-2 py-1">
+                Download PDF Menu (45MB)
+              </span>
+            </div>
+          </div>
+
+          <!-- Old Broken Bottom -->
+          <div class="bg-gray-100 border border-gray-300 p-2 text-[10px] text-gray-500 flex justify-between items-center">
+            <span>Visitor Counter: 004128</span>
+            <span class="text-red-600 font-bold">Best viewed on desktop 1024x768</span>
+          </div>
+        </div>
+
+        <!-- Draggable Divider Line & Handle -->
+        <div 
+          class="comparison-handle absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-20"
+          data-slider-handle
+          style="left: 50%;"
+        >
+          <div class="handle-button absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-brand-500 text-white border-2 border-white shadow-xl flex items-center justify-center font-bold text-xs sm:text-sm select-none hover:scale-105 active:scale-95 transition-transform">
+            <span class="sr-only">Slide</span>
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3m8-6l4 3-4 3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Comparison Badges -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mt-4 pt-3 border-t border-ink-800 text-xs">
+        <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
+          <div class="text-ink-400 font-medium">Page Load Time</div>
+          <div class="mt-1 font-semibold text-cream flex items-center justify-between">
+            <span class="text-error line-through text-[11px]">4.8s</span>
+            <span class="text-emerald-400 font-bold">0.38s</span>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
+          <div class="text-ink-400 font-medium">Mobile Experience</div>
+          <div class="mt-1 font-semibold text-cream flex items-center justify-between">
+            <span class="text-error line-through text-[11px]">Broken Zoom</span>
+            <span class="text-emerald-400 font-bold">60fps Native</span>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
+          <div class="text-ink-400 font-medium">Customer Action</div>
+          <div class="mt-1 font-semibold text-cream flex items-center justify-between">
+            <span class="text-error line-through text-[11px]">Lost Visitor</span>
+            <span class="text-emerald-400 font-bold">1-Tap Direct Call</span>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
+          <div class="text-ink-400 font-medium">Pricing Clarity</div>
+          <div class="mt-1 font-semibold text-cream flex items-center justify-between">
+            <span class="text-error line-through text-[11px]">"Call for rate"</span>
+            <span class="text-emerald-400 font-bold">Transparent ₹</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initBeforeAfterSlider() {
+    const stage = document.querySelector<HTMLElement>('[data-slider-stage]');
+    const clip = document.querySelector<HTMLElement>('[data-slider-clip]');
+    const handle = document.querySelector<HTMLElement>('[data-slider-handle]');
+    if (!stage || !clip || !handle) return;
+
+    const s = stage;
+    const c = clip;
+    const h = handle;
+
+    let isDragging = false;
+    let currentPct = 50;
+
+    function setPosition(percentage: number) {
+      const clamped = Math.max(0, Math.min(100, percentage));
+      currentPct = clamped;
+      c.style.clipPath = `polygon(0 0, ${clamped}% 0, ${clamped}% 100%, 0 100%)`;
+      h.style.left = `${clamped}%`;
+      s.setAttribute('aria-valuenow', String(Math.round(clamped)));
+    }
+
+    function handlePointer(clientX: number) {
+      const rect = s.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const pct = (x / rect.width) * 100;
+      setPosition(pct);
+    }
+
+    const onPointerDown = (e: PointerEvent) => {
+      isDragging = true;
+      stage.setPointerCapture(e.pointerId);
+      handlePointer(e.clientX);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDragging) return;
+      handlePointer(e.clientX);
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (isDragging) {
+        isDragging = false;
+        try { stage.releasePointerCapture(e.pointerId); } catch {}
+      }
+    };
+
+    stage.addEventListener('pointerdown', onPointerDown);
+    stage.addEventListener('pointermove', onPointerMove);
+    stage.addEventListener('pointerup', onPointerUp);
+    stage.addEventListener('pointercancel', onPointerUp);
+
+    // Keyboard support (ArrowLeft / ArrowRight)
+    stage.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setPosition(currentPct - 5);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setPosition(currentPct + 5);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBeforeAfterSlider);
+  } else {
+    initBeforeAfterSlider();
+  }
+</script>
+
+<style>
+  .comparison-stage:focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+  }
+  .handle-button {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  }
+</style>

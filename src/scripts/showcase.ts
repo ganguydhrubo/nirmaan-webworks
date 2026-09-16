@@ -5,6 +5,13 @@ const TRANSITION = 240;
 let audioCtx: AudioContext | null = null;
 let audioUnlocked = false;
 
+function prefersSavingData(): boolean {
+  const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
+  const conn = nav.connection;
+  if (!conn) return false;
+  return !!conn.saveData || conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g';
+}
+
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
   const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -326,7 +333,7 @@ function mountShowcase(root: HTMLElement): () => void {
       pending = undefined;
       updatePlayback();
       if (queued !== undefined && queued !== active) void show(queued, true);
-      else if (visible && !document.hidden) void prepare(active + 1);
+      else if (visible && !document.hidden) { void prepare(active + 1); void prepare(active - 1); }
     }, media.matches ? 0 : TRANSITION);
   }
 
@@ -406,9 +413,36 @@ function mountShowcase(root: HTMLElement): () => void {
   const observer = new IntersectionObserver(entries => {
     visible = entries.some(entry => entry.isIntersecting);
     updatePlayback();
-    if (visible && !document.hidden) void prepare(active + 1);
+    if (visible && !document.hidden) {
+      void prepare(active + 1);
+      void prepare(active - 1);
+      idlePreloadRest();
+    }
   }, { threshold: 0.15 });
   observer.observe(stage);
+
+  // Beyond the immediate neighbours, trickle-preload the rest during idle time so jumping
+  // to any demo (via the picker, or navigating backward) doesn't stall on a fresh network
+  // fetch — skipped entirely on Data Saver / 2G, where an unrequested fetch would be unwelcome.
+  let idleScheduled = false;
+  function idlePreloadRest() {
+    if (idleScheduled || prefersSavingData()) return;
+    idleScheduled = true;
+    let i = 0;
+    const ric: (cb: () => void) => void =
+      (window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback
+        ?.bind(window)
+        ? cb => (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback(cb, { timeout: 2000 })
+        : cb => setTimeout(cb, 300);
+    const step = () => {
+      if (disposed) return;
+      if (i >= scenes.length) return;
+      void prepare(i);
+      i++;
+      ric(step);
+    };
+    ric(step);
+  }
   controls.inert = false;
   root.dataset.active = String(active);
   root.dataset.enhanced = 'true';

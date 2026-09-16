@@ -414,7 +414,9 @@ const { open = false } = Astro.props;
     .demo-sheen {
       display: none !important;
     }
-  /* Touch Devices: Smooth Native Mobile Scrolling Without Hover Overhead */
+  }
+
+  /* Touch devices: no hover, so the reel is triggered by scroll-into-view (see script below) instead */
   @media (hover: none) {
     .demo-card:hover {
       transform: none !important;
@@ -430,17 +432,21 @@ const { open = false } = Astro.props;
     .demo-sheen {
       display: none !important;
     }
-    .demo-video {
-      display: none !important;
-    }
   }
 </style>
 
 <script>
   function initDemoCards() {
-    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) return;
-    const cards = document.querySelectorAll<HTMLElement>('[data-demo-card]');
+    if (typeof window === 'undefined') return;
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
+    const savesData = !!nav.connection?.saveData || nav.connection?.effectiveType === '2g' || nav.connection?.effectiveType === 'slow-2g';
+    if (mediaQuery.matches) return;
+    // On mobile data, skip the always-on scroll autoplay entirely rather than burn data silently.
+    if (isTouch && savesData) return;
+
+    const cards = document.querySelectorAll<HTMLElement>('[data-demo-card]');
 
     cards.forEach(card => {
       const video = card.querySelector<HTMLVideoElement>('[data-demo-video]');
@@ -449,7 +455,6 @@ const { open = false } = Astro.props;
       let playPromise: Promise<void> | null = null;
 
       const handleEnter = () => {
-        if (mediaQuery.matches) return;
         card.classList.add('is-playing');
         try {
           video.currentTime = 0;
@@ -477,10 +482,19 @@ const { open = false } = Astro.props;
         }
       };
 
-      card.addEventListener('mouseenter', handleEnter);
-      card.addEventListener('mouseleave', handleLeave);
-      card.addEventListener('focusin', handleEnter);
-      card.addEventListener('focusout', handleLeave);
+      if (isTouch) {
+        // No hover on touch — fetch just enough to start fast, then play once the card is mostly on screen.
+        video.preload = 'metadata';
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => (entry.isIntersecting ? handleEnter() : handleLeave()));
+        }, { threshold: 0.6 });
+        observer.observe(card);
+      } else {
+        card.addEventListener('mouseenter', handleEnter);
+        card.addEventListener('mouseleave', handleLeave);
+        card.addEventListener('focusin', handleEnter);
+        card.addEventListener('focusout', handleLeave);
+      }
     });
   }
 

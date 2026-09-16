@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PackageQuiz from "@/components/tools/PackageQuiz.astro";
+import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+
+export const prerender = true;
+
+const meta = {
+  title: "Website Package Scope & Price Quiz | ATITTLE",
+  description: "Find your exact website scope, recommended package, and transparent rupee quote in 45 seconds. No sales calls needed.",
+};
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <div class="bg-cream pt-10 pb-6 border-b border-ink-200">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-2">45-Second Interactive Tool</p>
+      <h1 class="font-display text-3xl sm:text-5xl font-semibold text-ink-950">Find your exact website scope</h1>
+      <p class="mt-4 text-base text-ink-700 max-w-2xl mx-auto">
+        Match your business with the right package, get an instant itemized breakdown, and see the exact price in plain rupees.
+      </p>
+    </div>
+  </div>
+
+  <PackageQuiz />
+
+  <!-- Native On-Site Enquiry Form -->
+  <section class="py-16 bg-white border-t border-ink-200">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="font-display text-2xl sm:text-3xl font-semibold text-ink-950">Ready to lock in your project?</h2>
+        <p class="mt-2 text-sm text-ink-600">Your quiz results will automatically appear in the form below.</p>
+      </div>
+      <div class="rounded-2xl border border-ink-300 bg-cream p-6 sm:p-8 shadow-sm">
+        <EnquiryForm id="enquiry-form" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
