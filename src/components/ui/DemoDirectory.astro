@@ -1,18 +1,31 @@
 ---
 import { siteConfig } from "@config/site";
+
 interface Props {
-  open?: boolean;
+  id?: string;
+  title?: string;
+  subtitle?: string;
 }
-const { open = false } = Astro.props;
+
+const {
+  id = "all-demos",
+  title = `All ${siteConfig.demoRegistry.length} Live Demo Websites`,
+  subtitle = "1 full working demo per industry · Tap any card to explore",
+} = Astro.props;
 ---
-<details class="demo-directory" open={open || undefined}>
-  <summary class="demo-directory-summary">
+
+<div class="demo-directory" id={id}>
+  <div class="demo-directory-header">
     <div class="flex items-center gap-3">
-      <span class="demo-badge-dot"></span>
-      <span class="text-base sm:text-lg font-display font-semibold text-ink-950">Explore all {siteConfig.demoRegistry.length} live demo websites</span>
+      <span class="demo-badge-dot" aria-hidden="true"></span>
+      <h2 class="text-xl sm:text-2xl font-display font-semibold text-ink-950">
+        {title}
+      </h2>
     </div>
-    <span class="demo-toggle-icon" aria-hidden="true">+</span>
-  </summary>
+    <span class="text-xs sm:text-sm font-medium text-ink-600">
+      {subtitle}
+    </span>
+  </div>
   
   <div class="demo-directory-grid">
     {siteConfig.demoRegistry.map(demo => {
@@ -76,26 +89,22 @@ const { open = false } = Astro.props;
       );
     })}
   </div>
-</details>
+</div>
 
 <style>
   .demo-directory {
-    border-block: 1px solid var(--color-ink-200);
-    margin-top: 1.5rem;
+    border-top: 1px solid var(--color-ink-200);
+    margin-top: 2rem;
+    padding-top: 2rem;
   }
   
-  .demo-directory-summary {
-    cursor: pointer;
-    padding: 1.25rem 0;
-    list-style: none;
+  .demo-directory-header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    user-select: none;
-  }
-
-  .demo-directory-summary::-webkit-details-marker {
-    display: none;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
   }
 
   .demo-badge-dot {
@@ -106,17 +115,6 @@ const { open = false } = Astro.props;
     background-color: #10b981;
     box-shadow: 0 0 8px #10b981;
     animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .demo-toggle-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--color-ink-600);
-    transition: transform 0.25s ease;
-  }
-
-  .demo-directory[open] .demo-toggle-icon {
-    transform: rotate(45deg);
   }
 
   /* 3-Column Responsive Grid */
