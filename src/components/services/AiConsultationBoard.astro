@@ -1,0 +1,440 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id = "ai-consultation-board", class: className = "" } = Astro.props;
+
+// Pre-packaged high-intent Indian business prompts
+const quickScenarios = [
+  {
+    id: "jewellery",
+    label: "💎 Jaipur Jewellery",
+    query: "I run a silver and gemstone jewellery store in Jaipur. How do we get high-intent orders outside our city?",
+  },
+  {
+    id: "resort",
+    label: "🏨 30-Room Resort",
+    query: "We run a heritage boutique resort in Rajasthan. OTA commissions (18-22%) are eating our margins. What's the fix?",
+  },
+  {
+    id: "clinic",
+    label: "🏥 Multi-Doctor Clinic",
+    query: "I run a dental clinic in Pune. Patients call at 10 PM and we lose appointments. Can an AI agent book them?",
+  },
+  {
+    id: "factory",
+    label: "🏭 CNC Manufacturing",
+    query: "We operate 8 manufacturing machines in Gujarat. Can IoT sensors alert our phones before a breakdown happens?",
+  },
+  {
+    id: "rescue",
+    label: "🛠️ Abandoned Code",
+    query: "Our previous agency disappeared and left a slow, broken Laravel portal with database timeouts. Can you fix it?",
+  },
+  {
+    id: "saas",
+    label: "📦 B2B Subscription",
+    query: "We want to turn our internal client billing checklist into a paid subscription SaaS for other CA firms. What's required?",
+  }
+];
+---
+
+<section id={id} class:list={["relative overflow-hidden bg-ink-950 py-16 sm:py-24 text-cream border-y border-ink-800", className]} data-ai-consultation>
+  <!-- Ambient Luxury Glow Background -->
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-brand-500/10 blur-3xl"></div>
+    <div class="absolute -bottom-40 right-1/4 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#261d16_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
+  </div>
+
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <!-- Top Terminal Bar Header -->
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-300 backdrop-blur">
+        <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
+        Interactive AI Consultation Board &middot; Instant 0ms Simulation
+      </div>
+
+      <h2 class="font-display mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold text-cream leading-tight">
+        Not sure which service fits? <br />
+        <span class="text-brand-400 italic">Test your business use-case live.</span>
+      </h2>
+
+      <p class="mt-4 text-sm sm:text-base text-ink-300 leading-relaxed max-w-2xl mx-auto">
+        Tap a real-world SMB scenario below or type your exact business dilemma. Our digital architect will map the required engineering practice, realistic rupee investment, and expected timeline in real time.
+      </p>
+    </div>
+
+    <!-- The Consultation Console -->
+    <div class="rounded-3xl border border-ink-800 bg-ink-900/90 p-5 sm:p-8 shadow-2xl backdrop-blur-md">
+      <!-- Quick Scenario Chips -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between text-xs font-medium text-ink-400 mb-2.5">
+          <span>Popular Indian Business Scenarios:</span>
+          <span class="text-emerald-400">1-Tap to Test</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {quickScenarios.map(scenario => (
+            <button
+              type="button"
+              class="ai-chip inline-flex items-center rounded-full border border-ink-700 bg-ink-800/80 px-3.5 py-1.5 text-xs font-medium text-ink-200 transition hover:border-brand-500 hover:bg-ink-700 hover:text-white active:scale-95 cursor-pointer"
+              data-query={scenario.query}
+              data-id={scenario.id}
+            >
+              {scenario.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Custom Input Form -->
+      <form id="ai-consultation-form" class="relative mb-6">
+        <div class="relative flex flex-col sm:flex-row items-stretch gap-3">
+          <div class="relative flex-1">
+            <input
+              type="text"
+              id="ai-user-query"
+              placeholder="Or type your business: 'I own a bakery in Lucknow, can AI automate pre-orders?'"
+              class="w-full rounded-xl border border-ink-700 bg-ink-950 px-4 py-3.5 text-sm sm:text-base text-cream placeholder-ink-500 shadow-inner focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 transition"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm sm:text-base font-semibold text-cream shadow-md transition hover:bg-brand-500 active:scale-98 shrink-0 cursor-pointer"
+          >
+            <span>Analyze & Architect</span>
+            <span aria-hidden="true">⚡</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Live Blueprint Output Board -->
+      <div id="ai-output-container" class="rounded-2xl border border-ink-800 bg-ink-950/80 p-5 sm:p-7 transition-all duration-300">
+        <!-- Default Idle Placeholder -->
+        <div id="ai-idle-state" class="flex flex-col items-center justify-center py-8 text-center text-ink-400">
+          <div class="h-12 w-12 rounded-full border border-ink-800 bg-ink-900 flex items-center justify-center text-xl mb-3 text-brand-400">
+            ✦
+          </div>
+          <p class="text-sm sm:text-base font-medium text-ink-300">
+            Select a prompt above or ask a custom question.
+          </p>
+          <p class="text-xs text-ink-500 mt-1">
+            Get an instant plain-English breakdown with transparent rupee pricing and delivery roadmap.
+          </p>
+        </div>
+
+        <!-- Result Card (Populated dynamically) -->
+        <div id="ai-result-card" class="hidden space-y-5">
+          <!-- Top Classification Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-ink-800 pb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-950 border border-emerald-500/40 text-xs font-mono text-emerald-400">
+                ✓
+              </span>
+              <div>
+                <span class="text-[11px] font-mono uppercase tracking-wider text-ink-400">Recommended Practice:</span>
+                <div id="ai-result-practice" class="font-display text-base sm:text-lg font-bold text-cream">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 text-xs font-mono">
+              <span class="rounded bg-brand-950/80 border border-brand-500/40 px-2.5 py-1 text-brand-300" id="ai-result-budget">
+                <!-- Injected via JS -->
+              </span>
+              <span class="rounded bg-ink-800 px-2.5 py-1 text-ink-300" id="ai-result-timeline">
+                <!-- Injected via JS -->
+              </span>
+            </div>
+          </div>
+
+          <!-- Problem Breakdown -->
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-brand-400 mb-1">
+              Core Bottleneck & Insight:
+            </div>
+            <p id="ai-result-diagnosis" class="text-sm sm:text-base text-ink-200 leading-relaxed">
+              <!-- Injected via JS -->
+            </p>
+          </div>
+
+          <!-- Actionable Blueprint -->
+          <div class="rounded-xl border border-ink-800 bg-ink-900 p-4 sm:p-5">
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-1.5">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+              Recommended ATITTLE Implementation Blueprint:
+            </div>
+            <ul id="ai-result-steps" class="space-y-2 text-xs sm:text-sm text-ink-300">
+              <!-- Injected via JS -->
+            </ul>
+          </div>
+
+          <!-- 1-Tap Handoff CTAs -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-ink-800">
+            <button
+              type="button"
+              id="ai-apply-btn"
+              class="inline-flex items-center gap-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-cream px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition active:scale-98 cursor-pointer"
+            >
+              <span>Apply Blueprint to Enquiry Form &darr;</span>
+            </button>
+
+            <a
+              id="ai-whatsapp-btn"
+              href="#"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition active:scale-98"
+              data-analytics-event="whatsapp_click"
+            >
+              <Icon name="whatsapp" class="h-4 w-4" />
+              <span>Discuss on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // High-performance client-side simulation engine
+  interface KnowledgeEntry {
+    keywords: string[];
+    practice: string;
+    practiceId: string;
+    budget: string;
+    timeline: string;
+    diagnosis: string;
+    steps: string[];
+  }
+
+  const knowledgeBase: KnowledgeEntry[] = [
+    {
+      keywords: ["jewel", "gemstone", "jaipur", "diamond", "silver", "gold", "ornament", "saree", "fashion", "apparel", "retail"],
+      practice: "Practice 01: Meta & Google Ads + High-Converting Landing Flow",
+      practiceId: "meta-google-ads",
+      budget: "₹18,000 – ₹35,000 Setup + Ad Spend",
+      timeline: "7 to 10 Days to First Live Lead",
+      diagnosis: "Retail luxury & jewellery outside your home city requires high-trust visual proof: verified reviews, video walkthroughs, and direct WhatsApp concierge rather than generic cart checkouts.",
+      steps: [
+        "Deploy a hyper-targeted Instagram Video Ad campaign aimed at Tier 1 & Tier 2 bridal/festive shoppers.",
+        "Route clicks directly to a high-speed WhatsApp catalog landing page loaded with hallmark certifications and customer video unboxings.",
+        "Configure automated WhatsApp greeting with ring size & budget filters to qualify buyers before founder handover."
+      ]
+    },
+    {
+      keywords: ["hotel", "resort", "heritage", "stay", "villa", "ota", "makemytrip", "goibibo", "booking", "room"],
+      practice: "Practice 03: Direct Booking SaaS Engine + Practice 02: Google & AEO",
+      practiceId: "saas",
+      budget: "₹35,000 – ₹60,000 One-time",
+      timeline: "2 to 3 Weeks Live",
+      diagnosis: "OTAs take 18% to 22% of every room night. Guests already look up your resort by name after finding it on MakeMyTrip — you only need a seamless direct engine with a ₹500 direct-booking incentive.",
+      steps: [
+        "Deploy a dedicated direct-booking engine with real-time room availability, calendar picker, and instant UPI/card payment.",
+        "Implement hotel-specific Schema.org markup so Google Hotels and ChatGPT recognize your official direct rate as lower than OTAs.",
+        "Set up instant automated WhatsApp booking vouchers and check-in direction pings."
+      ]
+    },
+    {
+      keywords: ["clinic", "doctor", "dental", "hospital", "patient", "appointment", "night", "practo"],
+      practice: "Practice 07: Autonomous AI Agent + Practice 02: Local SEO/AEO",
+      practiceId: "ai-agents",
+      budget: "₹25,000 – ₹45,000 Setup",
+      timeline: "10 to 14 Days",
+      diagnosis: "Over 40% of healthcare and dental enquiries arrive between 8 PM and 7 AM when clinic staff is off-duty. Abandoned patient inquiries switch to competing clinics within 15 minutes.",
+      steps: [
+        "Install an intelligent 24/7 WhatsApp AI Agent trained on your clinic's treatments, consultation hours, and pricing ranges.",
+        "Automate calendar slot reservation that verifies doctor availability and sends Google Calendar invites to both doctor and patient.",
+        "Send automatic appointment reminders 3 hours prior to slash clinic no-shows by up to 60%."
+      ]
+    },
+    {
+      keywords: ["iot", "machine", "cnc", "sensor", "hardware", "factory", "manufacturing", "breakdown", "telemetry", "meter", "tank"],
+      practice: "Practice 05: End-to-End IoT (Hardware to Cloud Dashboard)",
+      practiceId: "iot",
+      budget: "₹45,000 – ₹85,000 Pilot",
+      timeline: "3 to 4 Weeks",
+      diagnosis: "Unplanned manufacturing downtime costs far more than preventive monitoring. Off-the-shelf industrial SCADA systems cost lakhs; custom micro-controllers connected to lightweight dashboards deliver 90% of the value at a fraction of the cost.",
+      steps: [
+        "Connect industrial vibration/temperature or flow sensors to ESP32/cellular telemetry nodes.",
+        "Stream real-time sensor packets over secure MQTT into a custom lightweight web & mobile dashboard.",
+        "Trigger instant SMS/WhatsApp emergency alerts to floor managers whenever machine thresholds breach safe operating parameters."
+      ]
+    },
+    {
+      keywords: ["rescue", "broken", "laravel", "wordpress", "php", "developer left", "slow", "error", "504", "crash", "bug", "clean", "fix"],
+      practice: "Practice 04: Fixing Broken Systems & Code Rescue",
+      practiceId: "fixing-broken-systems",
+      budget: "₹15,000 – ₹35,000 Audit & Fix",
+      timeline: "3 to 7 Days for Recovery",
+      diagnosis: "Most inherited codebases suffer from unindexed database queries, bloated unmaintained plugins, or missing environment configurations — not fundamental architecture flaws.",
+      steps: [
+        "Conduct a zero-judgment 48-hour diagnostic audit of server logs, database bottlenecks, and security vulnerabilities.",
+        "Clean up memory leaks, migrate slow queries, and configure modern Cloudflare/edge caching.",
+        "Provide a clean Git repository, automated off-site backups, and fully documented administrative credentials."
+      ]
+    },
+    {
+      keywords: ["saas", "subscription", "software", "mrr", "portal", "ca", "billing", "tool", "b2b"],
+      practice: "Practice 03: End-to-End SaaS (Software as a Service)",
+      practiceId: "saas",
+      budget: "₹65,000 – ₹1,40,000 Full MVP",
+      timeline: "4 to 6 Weeks to First Subscriber",
+      diagnosis: "Internal spreadsheets and checklists that your team uses every day are prime candidates for B2B SaaS because other business owners in your industry experience the exact same operational pain.",
+      steps: [
+        "Architect a multi-tenant web application with secure role-based access control (Admin, Staff, Client).",
+        "Integrate automated recurring Indian subscriptions via Razorpay Subscriptions (e-mandate & recurring UPI).",
+        "Build clean self-serve onboarding so new paying clients can configure their account in under 3 minutes without manual assistance."
+      ]
+    },
+    {
+      keywords: ["ai", "automation", "automate", "tally", "invoice", "excel", "repetitive", "pdf", "transcription", "manual"],
+      practice: "Practice 06: AI Transformation & Workflow Automation",
+      practiceId: "ai-transformation",
+      budget: "₹20,000 – ₹40,000 per Pipeline",
+      timeline: "7 to 14 Days",
+      diagnosis: "Paying salaried employees to copy-paste data between WhatsApp messages, Excel spreadsheets, and invoicing software wastes hours every day and creates avoidable human transcription errors.",
+      steps: [
+        "Deploy an autonomous AI workflow that parses incoming client requests (including handwritten slips or voice notes).",
+        "Cross-reference inventory availability and calculate GST line items automatically.",
+        "Generate a branded GST invoice and deliver it back to the customer's WhatsApp within 90 seconds."
+      ]
+    }
+  ];
+
+  function matchQuery(rawText: string): KnowledgeEntry {
+    const text = rawText.toLowerCase();
+    
+    // Check keyword score
+    let bestMatch: KnowledgeEntry = knowledgeBase[0]!;
+    let maxScore = -1;
+
+    for (const item of knowledgeBase) {
+      let score = 0;
+      for (const kw of item.keywords) {
+        if (text.includes(kw)) score += 1;
+      }
+      if (score > maxScore) {
+        maxScore = score;
+        bestMatch = item;
+      }
+    }
+
+    // If no specific match was found, synthesize a contextual advisory
+    if (maxScore <= 0) {
+      return {
+        keywords: [],
+        practice: "Practice 06: Practical AI Transformation + Web Engine",
+        practiceId: "ai-transformation",
+        budget: "₹25,000 – ₹50,000 Tailored Scope",
+        timeline: "14 to 21 Working Days",
+        diagnosis: `For your specific inquiry ("${rawText.slice(0, 45)}..."), the highest-ROI approach is combining a dedicated high-converting customer touchpoint with smart automated follow-up systems.`,
+        steps: [
+          "Engineer a fast, frictionless digital portal tailored to your exact customer journey.",
+          "Automate repetitive operational steps (enquiry qualification, quote calculation, and notification delivery).",
+          "Deliver direct founder analytics so every rupee invested shows measurable returns."
+        ]
+      };
+    }
+
+    return bestMatch;
+  }
+
+  function initConsultation() {
+    const form = document.querySelector<HTMLFormElement>('#ai-consultation-form');
+    const input = document.querySelector<HTMLInputElement>('#ai-user-query');
+    const chips = document.querySelectorAll<HTMLButtonElement>('.ai-chip');
+    const idleState = document.querySelector<HTMLElement>('#ai-idle-state');
+    const resultCard = document.querySelector<HTMLElement>('#ai-result-card');
+    const practiceEl = document.querySelector<HTMLElement>('#ai-result-practice');
+    const budgetEl = document.querySelector<HTMLElement>('#ai-result-budget');
+    const timelineEl = document.querySelector<HTMLElement>('#ai-result-timeline');
+    const diagnosisEl = document.querySelector<HTMLElement>('#ai-result-diagnosis');
+    const stepsEl = document.querySelector<HTMLElement>('#ai-result-steps');
+    const applyBtn = document.querySelector<HTMLButtonElement>('#ai-apply-btn');
+    const whatsappBtn = document.querySelector<HTMLAnchorElement>('#ai-whatsapp-btn');
+
+    function renderResult(query: string) {
+      if (!query.trim()) return;
+      const match = matchQuery(query);
+
+      if (idleState) idleState.classList.add('hidden');
+      if (resultCard) {
+        resultCard.classList.remove('hidden');
+        resultCard.classList.add('animate-in', 'fade-in', 'duration-300');
+      }
+
+      if (practiceEl) practiceEl.textContent = match.practice;
+      if (budgetEl) budgetEl.textContent = match.budget;
+      if (timelineEl) timelineEl.textContent = match.timeline;
+      if (diagnosisEl) diagnosisEl.textContent = match.diagnosis;
+
+      if (stepsEl) {
+        stepsEl.innerHTML = '';
+        match.steps.forEach(step => {
+          const li = document.createElement('li');
+          li.className = 'flex items-start gap-2';
+          li.innerHTML = `<span class="text-emerald-400 font-bold">›</span><span>${step}</span>`;
+          stepsEl.appendChild(li);
+        });
+      }
+
+      // WhatsApp link setup
+      if (whatsappBtn) {
+        const waMsg = `Hi ATITTLE, I ran my business scenario through your AI Consultation Board: "${query}". You recommended ${match.practice} (${match.budget}). I'd like to discuss bringing this to life.`;
+        whatsappBtn.href = `https://wa.me/919330393298?text=${encodeURIComponent(waMsg)}`;
+      }
+
+      // Apply to form handler
+      if (applyBtn) {
+        applyBtn.onclick = () => {
+          const targetForm = document.querySelector<HTMLFormElement>('#services-enquiry-form');
+          if (!targetForm) return;
+
+          const msgArea = (targetForm.elements.namedItem('message') || targetForm.elements.namedItem('notes')) as HTMLTextAreaElement | null;
+          const needsSelect = targetForm.elements.namedItem('needs') as HTMLSelectElement | null;
+
+          if (needsSelect) needsSelect.value = 'not-sure';
+          if (msgArea) {
+            msgArea.value = `[AI Consultation Blueprint]\nBusiness Case: ${query}\nRecommended: ${match.practice}\nTarget Budget: ${match.budget}\nTimeline: ${match.timeline}\n\nPlease get in touch to formalize this scope.`;
+          }
+
+          targetForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetForm.classList.add('ring-2', 'ring-brand-500', 'ring-offset-4');
+          setTimeout(() => targetForm.classList.remove('ring-2', 'ring-brand-500', 'ring-offset-4'), 2500);
+        };
+      }
+    }
+
+    // Form submit
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input && input.value) {
+        renderResult(input.value);
+      }
+    });
+
+    // Chip clicks
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const q = chip.dataset.query;
+        if (q) {
+          if (input) input.value = q;
+          renderResult(q);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConsultation);
+  } else {
+    initConsultation();
+  }
+</script>
