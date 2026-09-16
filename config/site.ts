@@ -114,6 +114,22 @@ export const siteConfig = {
 
   priceRanges: [
     {
+      id: "micro-starter",
+      name: "Starter Local Storefront",
+      priceMinInr: 4999,
+      priceMaxInr: 9999,
+      bestFor: "A local retail shop, kirana, boutique, or salon that needs a fast mobile storefront and WhatsApp ordering",
+      includes: [
+        "1-page high-converting mobile catalog & storefront",
+        "Direct WhatsApp cart & 1-tap call integration",
+        "Google Business Profile & Google Maps pin setup",
+        "Countertop UPI payment QR standee design",
+        "Rapid 48-hour delivery",
+      ],
+      excludes: ["Multi-page navigation", "Custom backend software"],
+      indicativeTimelineWeeks: [0.5, 1] as [number, number],
+    },
+    {
       id: "starter",
       name: "Starter Brochure Site",
       priceMinInr: 18000,

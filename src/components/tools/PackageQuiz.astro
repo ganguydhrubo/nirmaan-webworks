@@ -1,4 +1,6 @@
 ---
+import Icon from "@/components/ui/Icon.astro";
+
 interface Props {
   id?: string;
   class?: string;
@@ -11,20 +13,20 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8" data-quiz-root>
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-2 rounded-full bg-brand-100 border border-brand-300 px-3.5 py-1.5 text-xs font-semibold text-brand-800 mb-3 tracking-wide uppercase">
-        <span class="inline-block w-2 h-2 rounded-full bg-brand-600"></span>
-        45-Second Scope Matcher
+      <div class="inline-flex items-center gap-2 rounded-full bg-brand-100 border border-brand-300 px-3.5 py-1.5 text-xs font-semibold text-brand-800 mb-3 tracking-wide uppercase shadow-2xs">
+        <span class="inline-block w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+        45-Second Scope & Rupee Matcher
       </div>
       <h2 class="font-display text-2xl sm:text-4xl font-semibold tracking-tight text-ink-950">
         Which package fits your business?
       </h2>
       <p class="mt-3 text-sm sm:text-base text-ink-700 leading-relaxed max-w-xl mx-auto">
-        No sales calls or hidden surprises. Answer 4 quick questions to get an instant scope breakdown and transparent rupee estimate.
+        From a ₹4,999 WhatsApp storefront for local retailers to full custom enterprise systems. Answer 4 quick questions for an honest scope and exact rupee estimate.
       </p>
     </div>
 
     <!-- Quiz Card -->
-    <div class="rounded-2xl border border-ink-300 bg-white p-5 sm:p-8 shadow-lg">
+    <div class="rounded-3xl border border-ink-300 bg-white p-5 sm:p-8 shadow-xl">
       <!-- Progress Bar -->
       <div class="mb-6">
         <div class="flex items-center justify-between text-xs font-semibold text-ink-600 mb-2">
@@ -39,40 +41,52 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
       <!-- STEP 1: Industry -->
       <div class="quiz-step" data-step="1">
         <h3 class="text-base sm:text-lg font-semibold text-ink-950 mb-1">
-          1. What industry is your business in?
+          1. What type of business do you run?
         </h3>
-        <p class="text-xs sm:text-sm text-ink-500 mb-4">Select the option closest to what you do.</p>
+        <p class="text-xs sm:text-sm text-ink-500 mb-4">Select your category to load realistic industry benchmarks.</p>
         
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Hotels & Resorts" data-demo="kayal-backwaters">
-            <span class="text-lg">🏨</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Hotels & Resorts</span>
-            <span class="text-[11px] text-ink-500">Homestays, villas, boutique stays</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Retail Shops & Local Stores" data-demo="sunday-objects">
+            <span class="text-2xl">🛍️</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Retail & Local Shops</span>
+              <span class="text-[11px] text-ink-500">Clothing, kirana, jewellery, chemist</span>
+            </div>
           </button>
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Restaurants" data-demo="anaar-awadhi-table">
-            <span class="text-lg">🍽️</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Restaurants & Cafés</span>
-            <span class="text-[11px] text-ink-500">Fine dining, cloud kitchens, bakeries</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Restaurants & Cafés" data-demo="anaar-awadhi-table">
+            <span class="text-2xl">🍽️</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Restaurants & Cafés</span>
+              <span class="text-[11px] text-ink-500">Bakeries, cloud kitchens, fine dining</span>
+            </div>
           </button>
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Dental Clinics" data-demo="ivory-smiles">
-            <span class="text-lg">🏥</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Healthcare & Clinics</span>
-            <span class="text-[11px] text-ink-500">Dentists, doctors, diagnostic labs</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Healthcare & Clinics" data-demo="ivory-smiles">
+            <span class="text-2xl">🏥</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Healthcare & Clinics</span>
+              <span class="text-[11px] text-ink-500">Dentists, doctors, diagnostic labs</span>
+            </div>
           </button>
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Real Estate" data-demo="shivalik-homes">
-            <span class="text-lg">🏢</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Real Estate & Builders</span>
-            <span class="text-[11px] text-ink-500">Developers, residential projects</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Hotels & Homestays" data-demo="kayal-backwaters">
+            <span class="text-2xl">🏨</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Hotels & Homestays</span>
+              <span class="text-[11px] text-ink-500">Boutique stays, resorts, villas</span>
+            </div>
           </button>
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Jewellery" data-demo="sunehri-atelier">
-            <span class="text-lg">💎</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Jewellery & Boutiques</span>
-            <span class="text-[11px] text-ink-500">Retail showrooms, luxury craft</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Real Estate & Builders" data-demo="shivalik-homes">
+            <span class="text-2xl">🏢</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Real Estate & Builders</span>
+              <span class="text-[11px] text-ink-500">Developers, residential projects</span>
+            </div>
           </button>
-          <button type="button" class="quiz-option text-left p-3.5 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="industry" data-value="Professional Services" data-demo="meridian-advisory">
-            <span class="text-lg">💼</span>
-            <span class="text-xs sm:text-sm font-semibold text-ink-900">Professional Services</span>
-            <span class="text-[11px] text-ink-500">Consultants, law, architecture, coaching</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1.5 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="industry" data-value="Professional Services" data-demo="meridian-advisory">
+            <span class="text-2xl">💼</span>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold text-ink-900 block">Professional Services</span>
+              <span class="text-[11px] text-ink-500">Law, CA, architecture, consulting</span>
+            </div>
           </button>
         </div>
       </div>
@@ -80,37 +94,37 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
       <!-- STEP 2: Primary Goal -->
       <div class="quiz-step hidden" data-step="2">
         <h3 class="text-base sm:text-lg font-semibold text-ink-950 mb-1">
-          2. What is the #1 job your website must do?
+          2. What is the primary job the website must do?
         </h3>
-        <p class="text-xs sm:text-sm text-ink-500 mb-4">Choose the primary action you want visitors to take.</p>
+        <p class="text-xs sm:text-sm text-ink-500 mb-4">Choose the primary action you want your customers to take.</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500" data-field="goal" data-value="calls" data-weight="starter">
-            <span class="text-xl">📞</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="goal" data-value="whatsapp-retail" data-weight="micro">
+            <span class="text-2xl">🛍️</span>
             <div>
-              <div class="text-xs sm:text-sm font-semibold text-ink-900">Direct Phone & WhatsApp Enquiries</div>
-              <div class="text-xs text-ink-500 mt-0.5">Show contact details, location map, and direct 1-tap call/message.</div>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">WhatsApp Catalog & Orders (Starts ₹4,999)</div>
+              <div class="text-xs text-ink-500 mt-1">Display products on mobile, take direct WhatsApp orders & UPI QR payment. 0% commission.</div>
             </div>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500" data-field="goal" data-value="booking" data-weight="business">
-            <span class="text-xl">📅</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="goal" data-value="calls" data-weight="starter">
+            <span class="text-2xl">📞</span>
             <div>
-              <div class="text-xs sm:text-sm font-semibold text-ink-900">Direct Appointments & Booking Requests</div>
-              <div class="text-xs text-ink-500 mt-0.5">Calendar slots, room bookings, table reservations without OTA fees.</div>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Google Maps Ranking & Phone Calls (Starts ₹4,999)</div>
+              <div class="text-xs text-ink-500 mt-1">Show up when people search "near me" in your city. Direct 1-tap call and store directions.</div>
             </div>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500" data-field="goal" data-value="catalogue" data-weight="custom">
-            <span class="text-xl">🛍️</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="goal" data-value="booking" data-weight="business">
+            <span class="text-2xl">📅</span>
             <div>
-              <div class="text-xs sm:text-sm font-semibold text-ink-900">Product Catalogue / Direct Ordering</div>
-              <div class="text-xs text-ink-500 mt-0.5">Full product list, dynamic filters, rupee prices, and order checkout.</div>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Direct Appointments & Room/Table Booking</div>
+              <div class="text-xs text-ink-500 mt-1">Calendar slots, room bookings, table reservations without paying 18–28% aggregator fees.</div>
             </div>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500" data-field="goal" data-value="prestige" data-weight="business">
-            <span class="text-xl">🌟</span>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex items-start gap-3 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="goal" data-value="ecommerce" data-weight="custom">
+            <span class="text-2xl">💳</span>
             <div>
-              <div class="text-xs sm:text-sm font-semibold text-ink-900">High-Ticket Credibility & Google Ranking</div>
-              <div class="text-xs text-ink-500 mt-0.5">Rank on Google search for your city and prove authority to premium clients.</div>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Full E-commerce / Custom SaaS Platform</div>
+              <div class="text-xs text-ink-500 mt-1">Automated payment gateway, multi-city shipping, inventory sync, and client portal.</div>
             </div>
           </button>
         </div>
@@ -119,25 +133,61 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
       <!-- STEP 3: Scale & Pages -->
       <div class="quiz-step hidden" data-step="3">
         <h3 class="text-base sm:text-lg font-semibold text-ink-950 mb-1">
-          3. How large does the website need to be?
+          3. What scale and budget level do you have in mind?
         </h3>
-        <p class="text-xs sm:text-sm text-ink-500 mb-4">You can always expand later as your business grows.</p>
+        <p class="text-xs sm:text-sm text-ink-500 mb-4">Honest rupee tiers. You can always expand later without lock-in.</p>
         
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="scope" data-value="starter" data-weight="starter">
-            <span class="text-xs font-bold text-brand-600">UP TO 5 PAGES</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Starter Brochure</div>
-            <div class="text-xs text-ink-500 mt-1">Home, About, Services/Menu, Photo Gallery, Contact & Map.</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition flex flex-col justify-between focus:ring-2 focus:ring-emerald-500 cursor-pointer shadow-2xs" data-field="scope" data-value="micro" data-weight="micro">
+            <div>
+              <span class="inline-block rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold px-2 py-0.5 mb-1.5 uppercase">
+                ₹4,999 One-Time
+              </span>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Starter Local Storefront</div>
+              <div class="text-xs text-ink-500 mt-1 leading-relaxed">
+                1-Page fast mobile catalog, WhatsApp cart, Google Maps, UPI QR standee, 48h launch.
+              </div>
+            </div>
+            <span class="text-[11px] text-emerald-700 font-semibold mt-3">Best for Local Shops &rarr;</span>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="scope" data-value="business" data-weight="business">
-            <span class="text-xs font-bold text-brand-600">6 TO 12 PAGES</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Comprehensive Business</div>
-            <div class="text-xs text-ink-500 mt-1">Dedicated service subpages, SEO schema, client reviews, booking flows.</div>
+
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col justify-between focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="scope" data-value="starter" data-weight="starter">
+            <div>
+              <span class="inline-block rounded-md bg-brand-50 text-brand-700 text-[10px] font-mono font-bold px-2 py-0.5 mb-1.5 uppercase">
+                ₹18,000 – ₹32,000
+              </span>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Starter Brochure Site</div>
+              <div class="text-xs text-ink-500 mt-1 leading-relaxed">
+                Up to 5 custom pages (Home, About, Services, Gallery, Contact) + local SEO setup.
+              </div>
+            </div>
+            <span class="text-[11px] text-brand-600 font-semibold mt-3">Best for Single Business &rarr;</span>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="scope" data-value="custom" data-weight="custom">
-            <span class="text-xs font-bold text-brand-600">12+ PAGES / CUSTOM</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Custom System</div>
-            <div class="text-xs text-ink-500 mt-1">Extensive catalogue, custom pricing calculators, bespoke backend flows.</div>
+
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col justify-between focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="scope" data-value="business" data-weight="business">
+            <div>
+              <span class="inline-block rounded-md bg-brand-100 text-brand-800 text-[10px] font-mono font-bold px-2 py-0.5 mb-1.5 uppercase">
+                ₹35,000 – ₹70,000
+              </span>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Business Website</div>
+              <div class="text-xs text-ink-500 mt-1 leading-relaxed">
+                6 to 12 pages with booking engine, reviews, category filters, and Google schema.
+              </div>
+            </div>
+            <span class="text-[11px] text-brand-600 font-semibold mt-3">Most Chosen Tier &rarr;</span>
+          </button>
+
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-purple-500 hover:bg-purple-50/50 transition flex flex-col justify-between focus:ring-2 focus:ring-purple-500 cursor-pointer shadow-2xs" data-field="scope" data-value="custom" data-weight="custom">
+            <div>
+              <span class="inline-block rounded-md bg-purple-100 text-purple-800 text-[10px] font-mono font-bold px-2 py-0.5 mb-1.5 uppercase">
+                ₹70,000 – ₹1.5L+
+              </span>
+              <div class="text-xs sm:text-sm font-semibold text-ink-900">Custom System / Portal</div>
+              <div class="text-xs text-ink-500 mt-1 leading-relaxed">
+                Full online store, payment gateway, CRM, calculators, or custom SaaS architecture.
+              </div>
+            </div>
+            <span class="text-[11px] text-purple-700 font-semibold mt-3">Best for Scale &rarr;</span>
           </button>
         </div>
       </div>
@@ -145,82 +195,110 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
       <!-- STEP 4: Timeline -->
       <div class="quiz-step hidden" data-step="4">
         <h3 class="text-base sm:text-lg font-semibold text-ink-950 mb-1">
-          4. What is your expected launch timeline?
+          4. How quickly do you need this live?
         </h3>
-        <p class="text-xs sm:text-sm text-ink-500 mb-4">We deliver on fixed dates with no endless delays.</p>
+        <p class="text-xs sm:text-sm text-ink-500 mb-4">We deliver on fixed dates with founder guarantee.</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="timeline" data-value="2weeks">
-            <span class="text-lg">⚡</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Rapid (2 to 3 Weeks)</div>
-            <div class="text-xs text-ink-500">Need it live quickly for an upcoming launch or season.</div>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="timeline" data-value="48h">
+            <span class="text-2xl">⚡</span>
+            <div class="text-xs sm:text-sm font-semibold text-ink-900">Express 48 Hours (Retail Storefront)</div>
+            <div class="text-xs text-ink-500 mt-1">Need a live mobile catalog immediately to start taking WhatsApp orders this week.</div>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="timeline" data-value="4weeks">
-            <span class="text-lg">🎯</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Standard (3 to 5 Weeks)</div>
-            <div class="text-xs text-ink-500">Time for full custom design, content review, and SEO setup.</div>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="timeline" data-value="2weeks">
+            <span class="text-2xl">🎯</span>
+            <div class="text-xs sm:text-sm font-semibold text-ink-900">Standard (2 to 3 Weeks)</div>
+            <div class="text-xs text-ink-500 mt-1">Time for full custom design, copy review, booking flow, and Google SEO setup.</div>
           </button>
-          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500" data-field="timeline" data-value="flexible">
-            <span class="text-lg">🗓️</span>
-            <div class="text-xs sm:text-sm font-semibold text-ink-900">Planning Ahead (Next Month)</div>
-            <div class="text-xs text-ink-500">Gathering quotes and finalizing requirements first.</div>
+          <button type="button" class="quiz-option text-left p-4 rounded-xl border border-ink-200 hover:border-brand-500 hover:bg-brand-50/50 transition flex flex-col gap-1 focus:ring-2 focus:ring-brand-500 cursor-pointer shadow-2xs" data-field="timeline" data-value="custom">
+            <span class="text-2xl">🗓️</span>
+            <div class="text-xs sm:text-sm font-semibold text-ink-900">Custom Architecture (3 to 5 Weeks)</div>
+            <div class="text-xs text-ink-500 mt-1">Extensive multi-page custom portal with payment gateways and custom integrations.</div>
           </button>
         </div>
       </div>
 
       <!-- RESULTS SCREEN -->
       <div class="quiz-result hidden" data-result-screen>
-        <div class="rounded-xl bg-brand-50/80 border border-brand-200 p-5 sm:p-7">
+        <div class="rounded-2xl bg-brand-50/70 border border-brand-200 p-5 sm:p-7 shadow-sm">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-brand-200 pb-4 mb-4">
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-brand-700">Recommended Match For You</span>
-              <h4 class="font-display text-xl sm:text-2xl font-bold text-ink-950 mt-0.5" data-res-name>
-                Business Website
+              <span class="text-[11px] font-bold uppercase tracking-wider text-brand-700 bg-brand-100 border border-brand-200 px-2.5 py-0.5 rounded-md" data-res-badge>
+                Recommended Package
+              </span>
+              <h4 class="font-display text-xl sm:text-2xl font-bold text-ink-950 mt-1.5" data-res-name>
+                Starter Local Storefront & WhatsApp Catalog
               </h4>
             </div>
-            <div class="text-right">
-              <span class="text-xs text-ink-500 font-medium">Estimated Investment</span>
-              <div class="font-mono text-xl sm:text-2xl font-bold text-brand-700" data-res-price>
-                ₹35,000 – ₹70,000
+            <div class="text-left sm:text-right">
+              <span class="text-xs text-ink-500 font-medium block">Total Fixed Investment</span>
+              <div class="font-mono text-2xl sm:text-3xl font-extrabold text-brand-700" data-res-price>
+                ₹4,999 one-time
               </div>
             </div>
           </div>
 
           <div class="grid sm:grid-cols-2 gap-5 mb-5 text-xs sm:text-sm">
             <div>
-              <div class="font-semibold text-ink-900 mb-1.5">Why this fits your business:</div>
+              <div class="font-semibold text-ink-900 mb-1.5 flex items-center gap-1.5">
+                <span>🎯</span> Why this fits your business:
+              </div>
               <p class="text-ink-700 leading-relaxed" data-res-reason>
-                Ideal for a business needing up to 12 pages with appointment booking and strong Google local SEO presence.
+                Built specifically for local shops and retailers to showcase stock, take direct WhatsApp orders, and stop paying 15-25% aggregator cuts.
               </p>
             </div>
             <div>
-              <div class="font-semibold text-ink-900 mb-1.5">What is included:</div>
-              <ul class="space-y-1 text-ink-700 list-disc list-inside" data-res-features>
-                <li>Up to 12 mobile-first pages</li>
-                <li>Structured schema for Google search</li>
-                <li>Direct booking & inquiry flows</li>
-                <li>2 rounds of revisions included</li>
+              <div class="font-semibold text-ink-900 mb-1.5 flex items-center gap-1.5">
+                <span>📦</span> What is included in this scope:
+              </div>
+              <ul class="space-y-1.5 text-ink-700" data-res-features>
+                <li class="flex items-start gap-1.5"><Icon name="check" class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" /> 1-Page high-converting mobile catalog (&lt; 0.8s on 4G)</li>
+                <li class="flex items-start gap-1.5"><Icon name="check" class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" /> Direct 1-tap WhatsApp cart & UPI payment QR</li>
+                <li class="flex items-start gap-1.5"><Icon name="check" class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" /> Google Business Profile & Google Maps pin setup</li>
+                <li class="flex items-start gap-1.5"><Icon name="check" class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" /> Countertop UPI QR code standee design for billing desk</li>
+                <li class="flex items-start gap-1.5"><Icon name="check" class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" /> 100% code ownership — zero monthly software rent</li>
               </ul>
+            </div>
+          </div>
+
+          <!-- Market Reality / Competitive Benchmark Box -->
+          <div class="rounded-xl bg-white border border-brand-200 p-3.5 mb-5 text-xs text-ink-700 leading-relaxed flex items-start gap-2.5 shadow-2xs">
+            <span class="text-base shrink-0">💡</span>
+            <div>
+              <strong class="text-ink-900">Why this makes financial sense:</strong>
+              <span class="block mt-0.5 text-ink-600" data-res-comparison>
+                Shopify costs ₹2,499/mo (₹29,880/yr) + 2% transaction fees. With ATITTLE, you pay ₹4,999 once, keep 100% of your earnings, and own your customer database forever.
+              </span>
             </div>
           </div>
 
           <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-brand-200">
             <div class="text-xs text-ink-600">
-              <span>Estimated Delivery:</span>
-              <strong class="text-ink-900" data-res-timeline>3 to 5 weeks</strong>
+              <span>Guaranteed Delivery:</span>
+              <strong class="text-ink-900 font-mono text-sm ml-1" data-res-timeline>Within 48 Hours</strong>
             </div>
 
-            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
               <button
                 type="button"
-                class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-5 py-3 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition"
+                class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition cursor-pointer active:scale-98"
                 data-apply-quiz-btn
               >
                 Apply This Scope to Enquiry Form ↓
               </button>
+              <a
+                href="https://wa.me/919330393298?text=Hi%20ATITTLE,%20I%20completed%20your%20Scope%20Matcher%20quiz%20and%20matched%20with%20the%20Starter%20Storefront%20(Rs%204,999).%20Let's%20discuss%20getting%20this%20live."
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-50 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-800 hover:bg-emerald-100 transition"
+                data-quiz-wa
+              >
+                <Icon name="whatsapp" class="h-4 w-4 text-[#25D366]" />
+                WhatsApp Founder
+              </a>
               <button
                 type="button"
-                class="inline-flex items-center justify-center p-3 rounded-md border border-ink-300 bg-white text-ink-700 hover:bg-ink-100 transition text-xs font-semibold"
+                class="inline-flex items-center justify-center p-3 rounded-xl border border-ink-300 bg-white text-ink-700 hover:bg-ink-100 transition text-xs font-semibold cursor-pointer shadow-2xs"
                 title="Restart quiz"
                 data-restart-quiz
               >
@@ -241,10 +319,10 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
 
     let currentStep = 1;
     const answers: Record<string, string> = {
-      industry: 'Hotels & Resorts',
-      goal: 'booking',
-      scope: 'business',
-      timeline: '4weeks'
+      industry: 'Retail Shops & Local Stores',
+      goal: 'whatsapp-retail',
+      scope: 'micro',
+      timeline: '48h'
     };
 
     const stepIndicator = root.querySelector<HTMLElement>('[data-step-indicator]');
@@ -253,49 +331,74 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
     const steps = root.querySelectorAll<HTMLElement>('.quiz-step');
     const resultScreen = root.querySelector<HTMLElement>('[data-result-screen]');
 
+    const resBadge = root.querySelector<HTMLElement>('[data-res-badge]');
     const resName = root.querySelector<HTMLElement>('[data-res-name]');
     const resPrice = root.querySelector<HTMLElement>('[data-res-price]');
     const resReason = root.querySelector<HTMLElement>('[data-res-reason]');
+    const resFeatures = root.querySelector<HTMLElement>('[data-res-features]');
+    const resComparison = root.querySelector<HTMLElement>('[data-res-comparison]');
     const resTimeline = root.querySelector<HTMLElement>('[data-res-timeline]');
     const applyBtn = root.querySelector<HTMLButtonElement>('[data-apply-quiz-btn]');
+    const waBtn = root.querySelector<HTMLAnchorElement>('[data-quiz-wa]');
     const restartBtn = root.querySelector<HTMLButtonElement>('[data-restart-quiz]');
 
     const packages = {
+      micro: {
+        name: 'Starter Local Storefront & WhatsApp Catalog',
+        price: '₹4,999 one-time',
+        timeline: 'Within 48 Hours',
+        badge: 'Local Retail & Shopkeeper Choice',
+        reason: 'Engineered specifically for local retail shops, kiranas, boutiques, and neighborhood stores to showcase products and take direct WhatsApp orders without 15-25% aggregator cuts.',
+        features: [
+          '1-Page high-converting mobile catalog (< 0.8s on 4G)',
+          'Direct 1-tap WhatsApp cart & instant UPI payment',
+          'Google Business Profile & Google Maps location pin setup',
+          'Printable countertop UPI QR code standee design for billing desk',
+          '100% code ownership — zero monthly software rent (unlike Shopify ₹2,499/mo)'
+        ],
+        comparison: 'Shopify costs ₹2,499/mo (₹29,880/yr) + 2% cuts. With ATITTLE you pay ₹4,999 once and keep 100% of your earnings forever.'
+      },
       starter: {
         name: 'Starter Brochure Site',
         price: '₹18,000 – ₹32,000',
         timeline: '2 to 3 weeks',
-        reason: 'Perfect for a single business needing a clean, fast mobile site with clear contact details and Google Maps location.',
+        badge: 'Professional Small Business',
+        reason: 'Perfect for established businesses needing a 5-page mobile-first presence with doctor/consultant profiles, Google rankings, and direct enquiry forms.',
         features: [
-          'Up to 5 mobile-first pages',
+          'Up to 5 mobile-first custom pages',
           'Fast 0.4s load time with zero bloated plugins',
-          '1-tap call & direct enquiry forms',
-          'Basic on-page SEO & Google Profile guidance'
-        ]
+          '1-tap call & direct enquiry forms with email/WhatsApp alerts',
+          'Full local on-page SEO & Google Business Profile optimization'
+        ],
+        comparison: 'Eliminates reliance on aggregators like Justdial or Practo by establishing your own branded search authority.'
       },
       business: {
-        name: 'Business Website',
+        name: 'Business Website & Booking Flow',
         price: '₹35,000 – ₹70,000',
         timeline: '3 to 5 weeks',
-        reason: 'The sweet spot for growing businesses requiring multi-service pages, booking/enquiry flows, and full Google search schema.',
+        badge: 'Growing SMB Standard',
+        reason: 'The sweet spot for growing clinics, resorts, restaurants, and builders requiring dedicated service subpages, direct booking flows, and structured schema for Google rankings.',
         features: [
-          'Up to 12 custom designed pages',
-          'Booking or appointment enquiry flows',
-          'Structured schema.org for Google rankings',
-          '2 rounds of design revisions'
-        ]
+          'Up to 12 custom designed pages with industry-specific modules',
+          'Direct booking, room dates, or appointment calendar flows',
+          'Structured schema.org (LocalBusiness, MedicalBusiness, Hotel) for Google and AI answers',
+          '2 rounds of detailed design revisions'
+        ],
+        comparison: 'Saves ₹1.5L to ₹3L annually in aggregator commissions (MakeMyTrip, Zomato, Practo) by driving direct customer conversions.'
       },
       custom: {
         name: 'Custom / E-Commerce Build',
         price: '₹70,000 – ₹1,50,000',
         timeline: '5 to 9 weeks',
-        reason: 'Built for businesses with extensive product catalogues, custom calculators, or bespoke functional requirements.',
+        badge: 'Scale & E-commerce',
+        reason: 'Built for businesses with extensive product catalogues, custom calculators, multi-city delivery tracking, or bespoke functional requirements.',
         features: [
-          'Full agreed scope and custom interactive tools',
-          'Dynamic product filters or custom booking logic',
+          'Full custom software architecture with automated Razorpay payment gateway',
+          'Dynamic product filters, inventory sync, and order management',
           'Performance & accessibility audit before launch',
-          '3 rounds of revisions included'
-        ]
+          '3 rounds of revisions and dedicated launch support'
+        ],
+        comparison: 'Own your complete platform without paying 15-20% Amazon/Flipkart marketplace seller fees or monthly app store add-ons.'
       }
     };
 
@@ -330,21 +433,39 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
     }
 
     function computeResult() {
-      let tierKey: 'starter' | 'business' | 'custom' = 'business';
+      let tierKey: 'micro' | 'starter' | 'business' | 'custom' = 'micro';
 
-      if (answers.scope === 'starter' && answers.goal === 'calls') {
+      if (answers.scope === 'micro' || answers.goal === 'whatsapp-retail' || answers.timeline === '48h') {
+        tierKey = 'micro';
+      } else if (answers.scope === 'starter' || answers.goal === 'calls') {
         tierKey = 'starter';
-      } else if (answers.scope === 'custom' || answers.goal === 'catalogue') {
+      } else if (answers.scope === 'custom' || answers.goal === 'ecommerce') {
         tierKey = 'custom';
       } else {
         tierKey = 'business';
       }
 
       const p = packages[tierKey];
+      if (resBadge) resBadge.textContent = p.badge;
       if (resName) resName.textContent = p.name;
       if (resPrice) resPrice.textContent = p.price;
-      if (resReason) resReason.textContent = `${p.reason} Tailored for your ${answers.industry} requirements.`;
+      if (resReason) resReason.textContent = `${p.reason} Tailored for your ${answers.industry} operations.`;
       if (resTimeline) resTimeline.textContent = p.timeline;
+      if (resComparison) resComparison.textContent = p.comparison;
+
+      if (resFeatures) {
+        resFeatures.innerHTML = p.features.map(f => `
+          <li class="flex items-start gap-1.5">
+            <svg class="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span>${f}</span>
+          </li>
+        `).join('');
+      }
+
+      if (waBtn) {
+        const msg = `Hi ATITTLE, I ran your 45-Second Scope Matcher for my ${answers.industry} business. I matched with the ${p.name} (${p.price}). I'd like to talk about launching this.`;
+        waBtn.href = `https://wa.me/919330393298?text=${encodeURIComponent(msg)}`;
+      }
     }
 
     // Option clicks
@@ -390,12 +511,12 @@ const { id = "package-quiz", class: className = "" } = Astro.props;
         }
 
         if (needsSelect) {
-          needsSelect.value = answers.scope === 'custom' ? 'ecommerce' : 'new-website';
+          needsSelect.value = (answers.scope === 'custom' || answers.scope === 'micro') ? 'ecommerce' : 'new-website';
         }
 
         if (messageArea) {
-          const tier = resName?.textContent?.trim() ?? 'Business Website';
-          messageArea.value = `[Quiz Matched Scope] Recommended Package: ${tier} (${resPrice?.textContent?.trim()}). Industry: ${answers.industry}. Primary Goal: ${answers.goal}. Timeline: ${answers.timeline}.`;
+          const tier = resName?.textContent?.trim() ?? 'Starter Storefront';
+          messageArea.value = `[Scope Matcher Quiz] Recommended Solution: ${tier} (${resPrice?.textContent?.trim()}). Industry: ${answers.industry}. Goal: ${answers.goal}. Timeline: ${answers.timeline}.`;
         }
 
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });

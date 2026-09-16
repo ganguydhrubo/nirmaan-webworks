@@ -1,4 +1,6 @@
 ---
+import Icon from "@/components/ui/Icon.astro";
+
 interface Props {
   id?: string;
   class?: string;
@@ -11,42 +13,66 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-      <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 border border-emerald-300 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 mb-3 tracking-wide uppercase">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
-        Aggregator Bleed Calculator
+      <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 border border-emerald-300 px-3.5 py-1.5 text-xs font-semibold text-emerald-800 mb-3 tracking-wide uppercase shadow-2xs">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+        Aggregator Bleed & Direct Profit Calculator
       </div>
       <h2 class="font-display text-2xl sm:text-4xl font-semibold tracking-tight text-ink-950">
         How much are you losing to aggregator commissions?
       </h2>
       <p class="mt-3 text-sm sm:text-base text-ink-700 leading-relaxed max-w-2xl mx-auto">
-        MakeMyTrip, Zomato, Swiggy, and Practo take 18% to 28% of every rupee you earn. Calculate how quickly an ATITTLE direct-booking site pays for itself.
+        Marketplace seller fees, Zomato, Swiggy, and MakeMyTrip take 15% to 32% of every sale. For local shops, an ATITTLE ₹4,999 direct storefront pays for itself in less than 2 weeks.
       </p>
     </div>
 
     <!-- Interactive Card -->
-    <div class="mx-auto max-w-4xl rounded-2xl border border-ink-300 bg-white p-5 sm:p-8 shadow-lg" data-roi-root>
+    <div class="mx-auto max-w-5xl rounded-3xl border border-ink-300 bg-white p-5 sm:p-8 shadow-xl" data-roi-root>
+      <!-- Quick Scenario Presets -->
+      <div class="mb-5 flex flex-wrap items-center gap-2 text-xs">
+        <span class="font-semibold text-ink-500 mr-1">1-Tap Indian Scenarios:</span>
+        <button type="button" class="roi-preset-btn rounded-lg border border-ink-200 bg-ink-50 px-2.5 py-1 text-ink-800 hover:border-brand-500 hover:bg-brand-50 font-medium transition cursor-pointer" data-preset="retail-small">
+          🛍️ Surat Saree Shop (₹1.2L/mo)
+        </button>
+        <button type="button" class="roi-preset-btn rounded-lg border border-ink-200 bg-ink-50 px-2.5 py-1 text-ink-800 hover:border-brand-500 hover:bg-brand-50 font-medium transition cursor-pointer" data-preset="cafe">
+          ☕ Lucknow Bakery/Cafe (₹2.5L/mo)
+        </button>
+        <button type="button" class="roi-preset-btn rounded-lg border border-ink-200 bg-ink-50 px-2.5 py-1 text-ink-800 hover:border-brand-500 hover:bg-brand-50 font-medium transition cursor-pointer" data-preset="resort">
+          🏨 Jaipur Homestay (₹3.5L/mo)
+        </button>
+        <button type="button" class="roi-preset-btn rounded-lg border border-ink-200 bg-ink-50 px-2.5 py-1 text-ink-800 hover:border-brand-500 hover:bg-brand-50 font-medium transition cursor-pointer" data-preset="clinic">
+          🏥 Pune Dental Practice (₹1.8L/mo)
+        </button>
+      </div>
+
       <!-- Industry Model Switcher Tabs -->
       <div class="flex flex-wrap gap-2 border-b border-ink-200 pb-5 mb-6 justify-center sm:justify-start">
         <button
           type="button"
-          class="roi-tab-btn active px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-brand-500 bg-brand-50 text-brand-700"
-          data-tab="hotel"
+          class="roi-tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition border border-brand-500 bg-brand-50 text-brand-700 shadow-xs cursor-pointer"
+          data-tab="retail"
         >
-          🏨 Hotels & Resorts
+          🛍️ Retail Shops & Local Stores
         </button>
         <button
           type="button"
-          class="roi-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100"
+          class="roi-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100 cursor-pointer"
           data-tab="restaurant"
         >
           🍽️ Restaurants & Cafés
         </button>
         <button
           type="button"
-          class="roi-tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100"
+          class="roi-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100 cursor-pointer"
+          data-tab="hotel"
+        >
+          🏨 Hotels & Homestays
+        </button>
+        <button
+          type="button"
+          class="roi-tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition border border-ink-200 bg-ink-50 text-ink-700 hover:bg-ink-100 cursor-pointer"
           data-tab="clinic"
         >
-          🏥 Clinics & Studios
+          🏥 Clinics & Healthcare
         </button>
       </div>
 
@@ -58,25 +84,25 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
           <div>
             <div class="flex items-center justify-between mb-2">
               <label for="roi-input-rev" class="text-xs sm:text-sm font-semibold text-ink-900" data-label-rev>
-                Monthly Room Bookings (₹)
+                Monthly Retail Orders / Sales (₹)
               </label>
               <span class="font-mono text-sm sm:text-base font-bold text-brand-600" data-val-rev>
-                ₹3,00,000
+                ₹1,20,000
               </span>
             </div>
             <input
               id="roi-input-rev"
               type="range"
-              min="50000"
-              max="1500000"
-              step="25000"
-              value="300000"
+              min="25000"
+              max="1000000"
+              step="15000"
+              value="120000"
               class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-brand-600"
             />
             <div class="flex justify-between text-[11px] text-ink-400 mt-1">
-              <span>₹50,000</span>
-              <span>₹7.5 Lakhs</span>
-              <span>₹15 Lakhs</span>
+              <span data-min-rev>₹25,000</span>
+              <span data-mid-rev>₹5 Lakhs</span>
+              <span data-max-rev>₹10 Lakhs</span>
             </div>
           </div>
 
@@ -84,7 +110,7 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
           <div>
             <div class="flex items-center justify-between mb-2">
               <label for="roi-input-comm" class="text-xs sm:text-sm font-semibold text-ink-900" data-label-comm>
-                MakeMyTrip / OTA Commission
+                Marketplace / Aggregator Cut (Amazon, Blinkit, Swiggy Minis)
               </label>
               <span class="font-mono text-sm sm:text-base font-bold text-brand-600" data-val-comm>
                 18%
@@ -100,88 +126,107 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
               class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-brand-600"
             />
             <div class="flex justify-between text-[11px] text-ink-400 mt-1">
-              <span>10%</span>
-              <span>20%</span>
-              <span>35%</span>
+              <span>10% (Low)</span>
+              <span>20% (Avg)</span>
+              <span>35% (High + Ads)</span>
             </div>
           </div>
 
           <!-- Input 3: Direct Shift Potential -->
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label for="roi-input-shift" class="text-xs sm:text-sm font-semibold text-ink-900">
-                Bookings Shifted to Direct Website
+              <label for="roi-input-shift" class="text-xs sm:text-sm font-semibold text-ink-900" data-label-shift>
+                Orders Shifted to Direct WhatsApp Storefront
               </label>
               <span class="font-mono text-sm sm:text-base font-bold text-emerald-700" data-val-shift>
-                25%
+                30%
               </span>
             </div>
             <input
               id="roi-input-shift"
               type="range"
-              min="10"
-              max="60"
+              min="15"
+              max="70"
               step="5"
-              value="25"
+              value="30"
               class="roi-slider w-full h-2 rounded-lg bg-ink-200 appearance-none cursor-pointer accent-emerald-600"
             />
             <div class="flex justify-between text-[11px] text-ink-400 mt-1">
-              <span>10% (Conservative)</span>
-              <span>35%</span>
-              <span>60% (High Retention)</span>
+              <span>15% (Conservative)</span>
+              <span>35% (Realistic)</span>
+              <span>70% (High Retention)</span>
             </div>
           </div>
 
-          <p class="text-xs text-ink-500 italic">
-            * Estimates based on real Indian industry averages: OTA (18–22%), Food Aggregators (24–28%), Clinic no-shows.
-          </p>
+          <div class="rounded-xl bg-ink-50 p-3.5 border border-ink-200 text-xs text-ink-600 space-y-1">
+            <div class="font-semibold text-ink-800 flex items-center gap-1.5">
+              <span>💡</span> Real 2026 Aggregator Bleed Reality:
+            </div>
+            <p data-bleed-note>
+              Paid in marketplace seller commissions, delivery platform cuts & ad listings.
+            </p>
+          </div>
         </div>
 
         <!-- Real-Time Results Summary Column -->
-        <div class="lg:col-span-5 rounded-xl border border-ink-200 bg-ink-50 p-5 sm:p-6 flex flex-col justify-between gap-5">
+        <div class="lg:col-span-5 rounded-2xl border border-ink-200 bg-ink-50 p-5 sm:p-6 flex flex-col justify-between gap-5 shadow-inner">
           <div>
             <span class="text-xs uppercase tracking-wider font-bold text-ink-500">Your Monthly Bleed</span>
             <div class="mt-1 text-2xl sm:text-3xl font-bold font-mono text-error" data-result-loss>
-              ₹54,000 / mo
+              ₹21,600 / mo
             </div>
             <p class="text-xs text-ink-600 mt-1">
-              Paid to third-party portals every single month.
+              Surrendered to aggregators and platforms every single month.
             </p>
           </div>
 
           <div class="pt-4 border-t border-ink-200">
-            <span class="text-xs uppercase tracking-wider font-bold text-emerald-800">Annual Profit Recovered</span>
+            <span class="text-xs uppercase tracking-wider font-bold text-emerald-800">Annual Direct Profit Saved</span>
             <div class="mt-1 text-2xl sm:text-3xl font-bold font-mono text-emerald-700" data-result-savings>
-              ₹1,62,000 / yr
+              ₹77,760 / yr
             </div>
             <p class="text-xs text-ink-600 mt-1">
-              Retained in your bank account with a direct-booking website.
+              Retained in your bank account with a direct ATITTLE website.
             </p>
           </div>
 
-          <div class="pt-4 border-t border-ink-200 rounded-lg bg-white p-3.5 border border-brand-200">
+          <div class="pt-4 border-t border-ink-200 rounded-xl bg-white p-4 border border-brand-200 shadow-xs">
             <div class="flex items-center justify-between">
               <span class="text-xs font-semibold text-ink-700">ATITTLE Website Cost</span>
-              <span class="text-xs font-bold text-ink-900">₹35,000 one-time</span>
-            </div>
-            <div class="mt-2 text-sm font-bold text-brand-700 flex items-center justify-between">
-              <span>Payback Timeline:</span>
-              <span class="font-mono text-base text-brand-600 font-extrabold" data-result-payback>
-                2.6 Months
+              <span class="text-xs font-bold text-brand-700 font-mono" data-website-cost>
+                ₹4,999 one-time
               </span>
             </div>
-            <p class="text-[11px] text-ink-500 mt-1 leading-snug">
-              After payback, all direct booking savings are 100% pure ongoing profit.
+            <div class="mt-2 text-sm font-bold text-ink-900 flex items-center justify-between">
+              <span>Payback Timeline:</span>
+              <span class="font-mono text-base text-emerald-600 font-extrabold" data-result-payback>
+                14 Days!
+              </span>
+            </div>
+            <p class="text-[11px] text-ink-500 mt-1.5 leading-relaxed" data-comparison-note>
+              Shopify costs ₹2,499/mo (₹29,880/yr) + 2% cuts. With ATITTLE, you pay ₹4,999 once and keep 100% of order revenue.
             </p>
           </div>
 
-          <button
-            type="button"
-            class="w-full inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition"
-            data-roi-cta
-          >
-            Claim Your Direct-Booking System →
-          </button>
+          <div class="space-y-2">
+            <button
+              type="button"
+              class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition cursor-pointer active:scale-98"
+              data-roi-cta
+            >
+              Claim Your ₹4,999 Storefront →
+            </button>
+            <a
+              href="https://wa.me/919330393298?text=Hi%20ATITTLE,%20I%20ran%20my%20numbers%20on%20your%20Aggregator%20Bleed%20Calculator.%20I%20want%20to%20stop%20paying%20marketplace%20cuts%20and%20launch%20my%20direct%20storefront."
+              target="_blank"
+              rel="noopener"
+              class="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-50 px-4 py-2.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 transition"
+              data-roi-wa
+            >
+              <Icon name="whatsapp" class="h-4 w-4 text-[#25D366]" />
+              Discuss Calculations on WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -194,12 +239,21 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
     if (!root) return;
 
     const tabs = root.querySelectorAll<HTMLButtonElement>('.roi-tab-btn');
+    const presetBtns = root.querySelectorAll<HTMLButtonElement>('.roi-preset-btn');
     const inputRev = root.querySelector<HTMLInputElement>('#roi-input-rev');
     const inputComm = root.querySelector<HTMLInputElement>('#roi-input-comm');
     const inputShift = root.querySelector<HTMLInputElement>('#roi-input-shift');
 
     const labelRev = root.querySelector<HTMLElement>('[data-label-rev]');
     const labelComm = root.querySelector<HTMLElement>('[data-label-comm]');
+    const labelShift = root.querySelector<HTMLElement>('[data-label-shift]');
+    const bleedNote = root.querySelector<HTMLElement>('[data-bleed-note]');
+    const comparisonNote = root.querySelector<HTMLElement>('[data-comparison-note]');
+    const websiteCostEl = root.querySelector<HTMLElement>('[data-website-cost]');
+
+    const minRevEl = root.querySelector<HTMLElement>('[data-min-rev]');
+    const midRevEl = root.querySelector<HTMLElement>('[data-mid-rev]');
+    const maxRevEl = root.querySelector<HTMLElement>('[data-max-rev]');
 
     const valRev = root.querySelector<HTMLElement>('[data-val-rev]');
     const valComm = root.querySelector<HTMLElement>('[data-val-comm]');
@@ -209,30 +263,119 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
     const resultSavings = root.querySelector<HTMLElement>('[data-result-savings]');
     const resultPayback = root.querySelector<HTMLElement>('[data-result-payback]');
     const ctaBtn = root.querySelector<HTMLButtonElement>('[data-roi-cta]');
+    const waBtn = root.querySelector<HTMLAnchorElement>('[data-roi-wa]');
 
-    let currentModel = 'hotel';
+    let currentModel = 'retail';
 
-    const models: Record<string, { labelRev: string; defaultRev: number; labelComm: string; defaultComm: number; websiteCost: number }> = {
+    const models: Record<string, {
+      labelRev: string;
+      defaultRev: number;
+      minRev: number;
+      maxRev: number;
+      stepRev: number;
+      minRevLabel: string;
+      midRevLabel: string;
+      maxRevLabel: string;
+      labelComm: string;
+      defaultComm: number;
+      minComm: number;
+      maxComm: number;
+      defaultShift: number;
+      labelShift: string;
+      websiteCost: number;
+      websiteCostLabel: string;
+      ctaText: string;
+      industryName: string;
+      bleedNote: string;
+      comparisonNote: string;
+    }> = {
+      retail: {
+        labelRev: 'Monthly Retail Orders / Sales (₹)',
+        defaultRev: 120000,
+        minRev: 25000,
+        maxRev: 1000000,
+        stepRev: 15000,
+        minRevLabel: '₹25,000',
+        midRevLabel: '₹5 Lakhs',
+        maxRevLabel: '₹10 Lakhs',
+        labelComm: 'Marketplace Cut (Amazon, Blinkit, Swiggy Minis 15–25%)',
+        defaultComm: 18,
+        minComm: 10,
+        maxComm: 30,
+        defaultShift: 30,
+        labelShift: 'Orders Shifted to Direct WhatsApp Storefront',
+        websiteCost: 4999,
+        websiteCostLabel: '₹4,999 one-time (Starter Storefront)',
+        ctaText: 'Claim Your ₹4,999 Retail Storefront →',
+        industryName: 'Retail Shop & Local Store',
+        bleedNote: 'Paid in marketplace seller commissions, delivery platform cuts & ad listings.',
+        comparisonNote: 'Shopify costs ₹2,499/mo (₹29,880/yr) + 2% cuts. With ATITTLE, you pay ₹4,999 once and keep 100% of order revenue.',
+      },
+      restaurant: {
+        labelRev: 'Monthly Food Delivery Volume (₹)',
+        defaultRev: 250000,
+        minRev: 50000,
+        maxRev: 1500000,
+        stepRev: 25000,
+        minRevLabel: '₹50,000',
+        midRevLabel: '₹7.5 Lakhs',
+        maxRevLabel: '₹15 Lakhs',
+        labelComm: 'Zomato & Swiggy Commission (+ GST & promo cuts)',
+        defaultComm: 26,
+        minComm: 18,
+        maxComm: 35,
+        defaultShift: 25,
+        labelShift: 'Food Orders Shifted to Direct WhatsApp Menu',
+        websiteCost: 18000,
+        websiteCostLabel: '₹18,000 one-time (Direct Ordering Site)',
+        ctaText: 'Start Direct WhatsApp Ordering →',
+        industryName: 'Restaurant & Café',
+        bleedNote: 'Deducted directly from food bills through commissions, promo subsidies & delivery cuts.',
+        comparisonNote: 'Every order shifted to direct WhatsApp saves 26% instantly with zero platform lock-in.',
+      },
       hotel: {
         labelRev: 'Monthly Room Bookings (₹)',
         defaultRev: 300000,
-        labelComm: 'MakeMyTrip / OTA Commission',
+        minRev: 50000,
+        maxRev: 2000000,
+        stepRev: 25000,
+        minRevLabel: '₹50,000',
+        midRevLabel: '₹10 Lakhs',
+        maxRevLabel: '₹20 Lakhs',
+        labelComm: 'MakeMyTrip / OTA Commission (18% - 24%)',
         defaultComm: 18,
+        minComm: 12,
+        maxComm: 32,
+        defaultShift: 25,
+        labelShift: 'Bookings Shifted to Direct Website Engine',
         websiteCost: 35000,
-      },
-      restaurant: {
-        labelRev: 'Monthly Food Delivery Orders (₹)',
-        defaultRev: 220000,
-        labelComm: 'Zomato & Swiggy Commission',
-        defaultComm: 26,
-        websiteCost: 35000,
+        websiteCostLabel: '₹35,000 one-time (Direct Booking Engine)',
+        ctaText: 'Build Your Direct Booking Site →',
+        industryName: 'Hotel & Homestay',
+        bleedNote: 'Paid to third-party travel OTAs every single month on your occupied rooms.',
+        comparisonNote: 'Guests booking direct get best rate guarantee while you keep 100% of the room tariff.',
       },
       clinic: {
-        labelRev: 'Monthly Consultation & Treatment Volume (₹)',
-        defaultRev: 180000,
-        labelComm: 'Practo / Aggregator / Lost Lead Rate',
-        defaultComm: 15,
-        websiteCost: 28000,
+        labelRev: 'Monthly Patient Consultations (₹)',
+        defaultRev: 150000,
+        minRev: 30000,
+        maxRev: 800000,
+        stepRev: 10000,
+        minRevLabel: '₹30,000',
+        midRevLabel: '₹4 Lakhs',
+        maxRevLabel: '₹8 Lakhs',
+        labelComm: 'Practo / Aggregator Lead Cut & No-Show Loss',
+        defaultComm: 20,
+        minComm: 10,
+        maxComm: 30,
+        defaultShift: 35,
+        labelShift: 'Patients Booking Directly on Clinic Website',
+        websiteCost: 18000,
+        websiteCostLabel: '₹18,000 one-time (Clinic Booking System)',
+        ctaText: 'Get Direct Patient Bookings →',
+        industryName: 'Clinic & Healthcare Practice',
+        bleedNote: 'Lost to lead marketplace listing charges and aggregator booking commissions.',
+        comparisonNote: 'Patients book verified appointment slots on your branded clinic domain with 0 middleman fees.',
       }
     };
 
@@ -247,10 +390,11 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
     function calculate() {
       if (!inputRev || !inputComm || !inputShift) return;
 
+      const cfg = models[currentModel]!;
       const rev = Number(inputRev.value);
       const commRate = Number(inputComm.value) / 100;
       const shiftRate = Number(inputShift.value) / 100;
-      const websiteCost = models[currentModel]?.websiteCost ?? 35000;
+      const websiteCost = cfg.websiteCost;
 
       // Monthly bleed = revenue * commission rate
       const monthlyLoss = rev * commRate;
@@ -258,7 +402,9 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
       const monthlySaved = rev * shiftRate * commRate;
       const annualSaved = monthlySaved * 12;
 
-      // Payback in months
+      // Payback in days / months
+      const dailySaved = monthlySaved / 30;
+      const paybackDays = dailySaved > 0 ? Math.ceil(websiteCost / dailySaved) : 999;
       const paybackMonths = monthlySaved > 0 ? (websiteCost / monthlySaved) : 0;
 
       if (valRev) valRev.textContent = formatInr(rev);
@@ -269,29 +415,96 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
       if (resultSavings) resultSavings.textContent = `${formatInr(annualSaved)} / yr`;
 
       if (resultPayback) {
-        if (paybackMonths <= 1) {
-          resultPayback.textContent = `${Math.max(12, Math.round(paybackMonths * 30))} Days!`;
+        if (paybackDays <= 20) {
+          resultPayback.textContent = `< ${paybackDays} Days!`;
+        } else if (paybackDays <= 45) {
+          resultPayback.textContent = `${paybackDays} Days (${(paybackDays / 7).toFixed(1)} Weeks)`;
         } else {
           resultPayback.textContent = `${paybackMonths.toFixed(1)} Months`;
         }
       }
+
+      if (waBtn) {
+        const msg = `Hi ATITTLE, I calculated my business numbers on your Aggregator Bleed Calculator for ${cfg.industryName}. Monthly volume: ${formatInr(rev)}, aggregator commission: ${inputComm.value}%. Your calculator shows I could recover ${formatInr(annualSaved)}/year with a direct site. I'd like to talk about launching this.`;
+        waBtn.href = `https://wa.me/919330393298?text=${encodeURIComponent(msg)}`;
+      }
+    }
+
+    function setModel(modelKey: string) {
+      currentModel = modelKey;
+      const cfg = models[currentModel]!;
+
+      tabs.forEach((t) => {
+        if (t.dataset.tab === currentModel) {
+          t.classList.add('border-brand-500', 'bg-brand-50', 'text-brand-700', 'active');
+          t.classList.remove('border-ink-200', 'bg-ink-50', 'text-ink-700');
+        } else {
+          t.classList.remove('border-brand-500', 'bg-brand-50', 'text-brand-700', 'active');
+          t.classList.add('border-ink-200', 'bg-ink-50', 'text-ink-700');
+        }
+      });
+
+      if (labelRev) labelRev.textContent = cfg.labelRev;
+      if (labelComm) labelComm.textContent = cfg.labelComm;
+      if (labelShift) labelShift.textContent = cfg.labelShift;
+      if (bleedNote) bleedNote.textContent = cfg.bleedNote;
+      if (comparisonNote) comparisonNote.textContent = cfg.comparisonNote;
+      if (websiteCostEl) websiteCostEl.textContent = cfg.websiteCostLabel;
+      if (ctaBtn) ctaBtn.textContent = cfg.ctaText;
+
+      if (inputRev) {
+        inputRev.min = String(cfg.minRev);
+        inputRev.max = String(cfg.maxRev);
+        inputRev.step = String(cfg.stepRev);
+        inputRev.value = String(cfg.defaultRev);
+      }
+      if (inputComm) {
+        inputComm.min = String(cfg.minComm);
+        inputComm.max = String(cfg.maxComm);
+        inputComm.value = String(cfg.defaultComm);
+      }
+      if (inputShift) {
+        inputShift.value = String(cfg.defaultShift);
+      }
+
+      if (minRevEl) minRevEl.textContent = cfg.minRevLabel;
+      if (midRevEl) midRevEl.textContent = cfg.midRevLabel;
+      if (maxRevEl) maxRevEl.textContent = cfg.maxRevLabel;
+
+      calculate();
     }
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
-        tabs.forEach((t) => {
-          t.classList.remove('border-brand-500', 'bg-brand-50', 'text-brand-700');
-          t.classList.add('border-ink-200', 'bg-ink-50', 'text-ink-700');
-        });
-        tab.classList.add('border-brand-500', 'bg-brand-50', 'text-brand-700');
-        tab.classList.remove('border-ink-200', 'bg-ink-50', 'text-ink-700');
+        setModel(tab.dataset.tab || 'retail');
+      });
+    });
 
-        currentModel = tab.dataset.tab || 'hotel';
-        const cfg = models[currentModel]!;
-        if (labelRev) labelRev.textContent = cfg.labelRev;
-        if (labelComm) labelComm.textContent = cfg.labelComm;
-        if (inputRev) inputRev.value = String(cfg.defaultRev);
-        if (inputComm) inputComm.value = String(cfg.defaultComm);
+    // Preset Buttons
+    presetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const preset = btn.dataset.preset;
+        if (preset === 'retail-small') {
+          setModel('retail');
+          if (inputRev) inputRev.value = '120000';
+          if (inputComm) inputComm.value = '18';
+          if (inputShift) inputShift.value = '35';
+        } else if (preset === 'cafe') {
+          setModel('restaurant');
+          if (inputRev) inputRev.value = '250000';
+          if (inputComm) inputComm.value = '26';
+          if (inputShift) inputShift.value = '30';
+        } else if (preset === 'resort') {
+          setModel('hotel');
+          if (inputRev) inputRev.value = '350000';
+          if (inputComm) inputComm.value = '18';
+          if (inputShift) inputShift.value = '25';
+        } else if (preset === 'clinic') {
+          setModel('clinic');
+          if (inputRev) inputRev.value = '180000';
+          if (inputComm) inputComm.value = '20';
+          if (inputShift) inputShift.value = '40';
+        }
         calculate();
       });
     });
@@ -315,21 +528,22 @@ const { id = "roi-calculator", class: className = "" } = Astro.props;
         const needsSelect = form.elements.namedItem('needs') as HTMLSelectElement | null;
         const messageArea = (form.elements.namedItem('message') || form.elements.namedItem('notes')) as HTMLTextAreaElement | null;
 
-        const categoryMap: Record<string, string> = {
-          hotel: 'Hotels & Resorts',
-          restaurant: 'Restaurants',
-          clinic: 'Clinics'
-        };
+        const cfg = models[currentModel]!;
 
-        const targetCategory = categoryMap[currentModel];
-        if (categorySelect && targetCategory) {
-          categorySelect.value = targetCategory;
+        if (categorySelect && cfg.industryName) {
+          for (let i = 0; i < categorySelect.options.length; i++) {
+            const opt = categorySelect.options[i];
+            if (opt && (opt.text.includes(cfg.industryName) || cfg.industryName.includes(opt.text))) {
+              categorySelect.selectedIndex = i;
+              break;
+            }
+          }
         }
         if (needsSelect) {
-          needsSelect.value = 'new-website';
+          needsSelect.value = currentModel === 'retail' ? 'ecommerce' : 'new-website';
         }
         if (messageArea && resultSavings && resultLoss) {
-          messageArea.value = `[ROI Calculator Inquiry] Estimated monthly bleed to aggregators: ${resultLoss.textContent}. Interested in setting up a direct booking website to recover ~${resultSavings.textContent}.`;
+          messageArea.value = `[Aggregator Bleed Calculator] Model: ${cfg.industryName}. Monthly bleed to aggregators: ${resultLoss.textContent}. Target: recover ~${resultSavings.textContent}/yr. Selected Solution: ${cfg.websiteCostLabel}.`;
         }
 
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
