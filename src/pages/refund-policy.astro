@@ -6,36 +6,66 @@ import { mailLink } from "@/lib/contact-links";
 export const prerender = true;
 ---
 
-<BaseLayout title="Refund policy" description="Our payment milestones and refund terms for website projects.">
+<BaseLayout title="Refund policy" description="Our payment milestones, cancellation terms and refund process for website projects, in line with Indian consumer protection law.">
   <section class="bg-white py-14 sm:py-20">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h1 class="font-display text-3xl font-semibold text-ink-950">Refund policy</h1>
-      <p class="mt-2 text-sm text-ink-500">Last updated: 13 September 2026</p>
+      <h1 class="font-display text-3xl font-semibold text-ink-950">Refund &amp; cancellation policy</h1>
+      <p class="mt-2 text-sm text-ink-500">Last updated: 16 September 2026</p>
 
       <div class="mt-8 space-y-8 text-ink-700">
         <section>
-          <h2 class="font-display text-xl font-semibold text-ink-950">Payment structure</h2>
-          <p class="mt-2">Projects are typically split into two milestones: 50% to begin work after scope is confirmed, and 50% before final handover and domain connection. For smaller Starter packages, we may request full payment upfront — this is always stated clearly in your quote before you accept it.</p>
+          <h2 class="font-display text-xl font-semibold text-ink-950">How payment works</h2>
+          <p class="mt-2">We don't take payment through this website — there's no checkout or stored card details anywhere on it. Payment is collected directly by us, by bank transfer, UPI, or a payment link, after you've accepted a written quote. Projects are typically split into two milestones: 50% to begin work after scope is confirmed, and 50% before final handover and domain connection. For smaller Starter packages we may request full payment upfront — this is always stated in your quote before you accept it, never added afterwards.</p>
         </section>
 
         <section>
-          <h2 class="font-display text-xl font-semibold text-ink-950">Before work begins</h2>
-          <p class="mt-2">If you cancel before we begin any design or development work, your initial payment is refunded in full, minus any payment-processing fees already incurred.</p>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Cancelling before work begins</h2>
+          <p class="mt-2">If you cancel before we begin any design or development work, your payment is refunded in full, minus any fee actually deducted by the payment processor or bank in moving that money (this is rare for a direct bank transfer or UPI payment, and never a markup we add).</p>
         </section>
 
         <section>
-          <h2 class="font-display text-xl font-semibold text-ink-950">After work has started</h2>
-          <p class="mt-2">Once design or development work has started, the initial milestone payment is non-refundable, as it covers time and resources already committed. If you cancel partway through, we'll deliver whatever work is complete at that point.</p>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Cancelling after work has started</h2>
+          <p class="mt-2">Once design or development work has started, the milestone payment covering that work is non-refundable, as it covers time and resources already committed. If you cancel partway through, we'll hand over whatever work is complete at that point. If what's been delivered doesn't reasonably match the scope we agreed in writing, that's treated as a deficiency in service, not a change of mind — see the next section.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">If delivered work doesn't match the agreed scope</h2>
+          <p class="mt-2">Under the Consumer Protection Act, 2019, you're entitled to have a deficient service put right or refunded — we don't ask you to sign away that right, and nothing in this policy limits it. If what we deliver materially fails to match the scope, pages, or functionality confirmed in your written quote, tell us and we'll fix it at no extra cost within a reasonable window. If we're unable to fix it, we'll refund the portion of payment tied to the affected work.</p>
         </section>
 
         <section>
           <h2 class="font-display text-xl font-semibold text-ink-950">If we can't deliver</h2>
-          <p class="mt-2">In the rare case we're unable to complete a project we've accepted, we'll refund any payment for work not yet delivered.</p>
+          <p class="mt-2">In the rare case we're unable to complete a project we've accepted — for reasons other than a genuine force-majeure event outside anyone's control — we'll refund any payment for work not yet delivered, with the refund initiated within 7 business days of us confirming this to you.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Monthly maintenance retainers</h2>
+          <p class="mt-2">Maintenance retainers renew monthly and can be cancelled at any time, effective at the end of the period you've already paid for — no minimum lock-in, no cancellation fee, and no need to jump through extra steps beyond a simple email or WhatsApp message. We won't make cancelling harder than signing up was.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">Duplicate or failed payments</h2>
+          <p class="mt-2">If a UPI or bank transfer to us fails or is charged twice due to a technical error on the payment app or bank's side, that's a matter between you and your bank, governed by the RBI's Turn Around Time (TAT) rules for failed transactions (typically reversed automatically within T+1 to T+5 working days). Where a duplicate or erroneous payment has actually reached our account, we'll confirm and refund it within 5 business days of you flagging it — we won't wait for you to chase us.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">GST on refunds</h2>
+          <p class="mt-2">{siteConfig.gstNote} Where GST has been charged on a payment that's later refunded, we issue a GST credit note under Section 34 of the CGST Act, 2017 to reflect the adjustment.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">How and when refunds are paid</h2>
+          <p class="mt-2">Approved refunds are sent back to the same bank account or UPI ID the payment came from, initiated within 7 business days of the refund being approved. From there, how quickly it lands in your account depends on your bank or UPI app.</p>
         </section>
 
         <section>
           <h2 class="font-display text-xl font-semibold text-ink-950">Requesting a refund</h2>
-          <p class="mt-2">Email <a href={mailLink("Refund request")} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a> with your project details. We aim to resolve refund requests within 7 business days.</p>
+          <p class="mt-2">Email <a href={mailLink("Refund request")} class="font-medium text-brand-600 underline hover:text-brand-700">{siteConfig.primaryEmail}</a> with your project details. We'll acknowledge your request within 2 business days and aim to resolve it within 30 days, in line with the grievance-redressal timelines under the Consumer Protection (E-Commerce) Rules, 2020.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-semibold text-ink-950">If you're still not satisfied</h2>
+          <p class="mt-2">If we haven't resolved things to your satisfaction, you can contact the National Consumer Helpline (dial 1915, or use the UMANG app / consumerhelpline.gov.in) or file a complaint with the District Consumer Disputes Redressal Commission with jurisdiction in {siteConfig.address.city}, {siteConfig.address.state}, under the Consumer Protection Act, 2019.</p>
         </section>
       </div>
     </div>
