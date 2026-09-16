@@ -342,23 +342,25 @@ const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] 
             Click a sector to switch the live interactive viewport. Every screen is recorded directly from the production build.
           </p>
         </div>
-        <!-- Spotlight Selector Tabs -->
-        <div class="flex flex-wrap gap-2" id="spotlight-selector" role="tablist">
-          {spotlightDemos.map((item, idx) => (
-            <button
-              type="button"
-              role="tab"
-              aria-selected={idx === 0 ? "true" : "false"}
-              class={`spotlight-tab-btn rounded-lg px-3.5 py-2 text-xs font-semibold transition border ${
-                idx === 0
-                  ? "bg-brand-600 text-white border-brand-600 shadow-sm"
-                  : "bg-cream text-ink-700 border-ink-200 hover:border-brand-400 hover:text-ink-950"
-              }`}
-              data-spotlight-id={item.id}
-            >
-              {getShortTitle(item.title)}
-            </button>
-          ))}
+        <!-- Spotlight Selector Tabs with Scroller & Fade Mask -->
+        <div class="scroller-mask relative max-w-full -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div class="flex items-center gap-2 overflow-x-auto sm:flex-wrap pb-2 sm:pb-0 scrollbar-none" id="spotlight-selector" role="tablist">
+            {spotlightDemos.map((item, idx) => (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={idx === 0 ? "true" : "false"}
+                class={`spotlight-tab-btn shrink-0 rounded-lg px-3.5 py-2 text-xs font-semibold transition border ${
+                  idx === 0
+                    ? "bg-brand-600 text-white border-brand-600 shadow-sm"
+                    : "bg-cream text-ink-700 border-ink-200 hover:border-brand-400 hover:text-ink-950"
+                }`}
+                data-spotlight-id={item.id}
+              >
+                {getShortTitle(item.title)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -494,57 +496,59 @@ const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] 
         </p>
       </div>
 
-      <!-- Filter Tabs Bar -->
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-2" id="industry-filter-bar">
-        <button
-          type="button"
-          class="filter-btn active rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-brand-600 bg-brand-600 text-white shadow-sm"
-          data-filter="all"
-        >
-          All Industries (15)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="healthcare"
-        >
-          Healthcare & Clinics (3)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="hospitality"
-        >
-          Stays & Dining (2)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="retail"
-        >
-          Retail & Boutiques (2)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="spaces"
-        >
-          Real Estate & Spaces (2)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="services"
-        >
-          Coaching & Services (2)
-        </button>
-        <button
-          type="button"
-          class="filter-btn rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
-          data-filter="lifestyle"
-        >
-          Lifestyle & Automotive (4)
-        </button>
+      <!-- Filter Tabs Bar with Scroller & Fade Mask -->
+      <div class="scroller-mask relative mt-8 max-w-full -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div class="flex items-center gap-2 overflow-x-auto sm:flex-wrap sm:justify-center pb-2 sm:pb-0 scrollbar-none" id="industry-filter-bar" role="tablist">
+          <button
+            type="button"
+            class="filter-btn active shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-brand-600 bg-brand-600 text-white shadow-sm"
+            data-filter="all"
+          >
+            All Industries (15)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="healthcare"
+          >
+            Healthcare & Clinics (3)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="hospitality"
+          >
+            Stays & Dining (2)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="retail"
+          >
+            Retail & Boutiques (2)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="spaces"
+          >
+            Real Estate & Spaces (2)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="services"
+          >
+            Coaching & Services (2)
+          </button>
+          <button
+            type="button"
+            class="filter-btn shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition border border-ink-300 bg-white text-ink-700 hover:border-brand-500 hover:text-ink-950"
+            data-filter="lifestyle"
+          >
+            Lifestyle & Automotive (4)
+          </button>
+        </div>
       </div>
 
       <!-- 15-Card Responsive Grid -->
@@ -819,6 +823,21 @@ const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] 
 </BaseLayout>
 
 <style>
+  /* Horizontal Tab Scroller Edge Fade Mask */
+  @media (max-width: 640px) {
+    .scroller-mask {
+      mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+    }
+    .scrollbar-none {
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   /* Spotlight Video Sheen Animation */
   .spotlight-sheen {
     position: absolute;
