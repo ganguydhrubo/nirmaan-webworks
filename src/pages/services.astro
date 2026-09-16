@@ -5,6 +5,15 @@ import EnquiryForm from "@/components/sections/EnquiryForm.astro";
 import AiConsultationBoard from "@/components/services/AiConsultationBoard.astro";
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
+import { Image } from "astro:assets";
+
+import imgAds from "@/assets/demos/expansion/wedding-detail.jpg";
+import imgSeo from "@/assets/demos/sanjeevani.jpg";
+import imgSaas from "@/assets/demos/shivalik.jpg";
+import imgRepair from "@/assets/demos/expansion/car-hero.jpg";
+import imgIot from "@/assets/demos/expansion/lab-hero.jpg";
+import imgAiTransform from "@/assets/demos/expansion/ceramics-01.jpg";
+import imgAiAgent from "@/assets/demos/kayal.jpg";
 
 export const prerender = true;
 
@@ -15,52 +24,87 @@ const meta = {
 
 const services = siteConfig.otherServices;
 
-const startingPills = [
-  "Starts from ₹499 (Ad Test) · Scale to ₹35,000+",
-  "Starts from ₹799 (Schema Fix) · Scale to ₹35,000+",
-  "Starts from ₹2,499 (MVP Spec) · Scale to ₹85,000+",
-  "Starts from ₹499 (Single Bug Patch) · Scale to ₹30,000+",
-  "Starts from ₹1,499 (Sensor Spec) · Scale to ₹65,000+",
-  "Starts from ₹999 (Invoice Automation) · Scale to ₹40,000+",
-  "Starts from ₹1,499 (WhatsApp Bot) · Scale to ₹50,000+",
+const relatableImages = [
+  {
+    image: imgAds,
+    caption: "Retail Boutique & Jewellery Customer Acquisition",
+    context: "Targeted shoppers searching for products & services near them",
+    alt: "High-intent retail customer shopping and luxury jewelry showroom",
+  },
+  {
+    image: imgSeo,
+    caption: "Healthcare Clinic & High-Trust Local Discovery",
+    context: "Verified schema answering patient queries on Google & ChatGPT",
+    alt: "Modern clinic doctor desk and patient consultation area",
+  },
+  {
+    image: imgSaas,
+    caption: "Real Estate & Builder Enterprise SaaS Portal",
+    context: "Custom booking engine eliminating broker commissions and spreadsheets",
+    alt: "Modern architectural facade and property development",
+  },
+  {
+    image: imgRepair,
+    caption: "Precision Diagnostic Bay & System Overhaul",
+    context: "Rescuing crashed checkouts, sluggish load times, and legacy code",
+    alt: "Automotive engineering diagnostics and precision workshop",
+  },
+  {
+    image: imgIot,
+    caption: "Culinary Cold Storage & Equipment Telemetry",
+    context: "Live temperature, power, and machine telemetry tracked on your phone",
+    alt: "Warm restaurant dining table and kitchen preservation setup",
+  },
+  {
+    image: imgAiTransform,
+    caption: "Artisanal Studio & Workshop Automation",
+    context: "Converting messy voice notes and paper slips into GST invoices in 1.4s",
+    alt: "Artisan ceramics workshop and craft production studio",
+  },
+  {
+    image: imgAiAgent,
+    caption: "Boutique Hospitality 24/7 Digital Concierge",
+    context: "Autonomous WhatsApp agent answering booking queries day and night",
+    alt: "Tranquil resort backwater and guest hospitality retreat",
+  },
 ];
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
-  <!-- Top Cinematic Dark Luxury Hero -->
-  <section class="relative overflow-hidden bg-ink-950 py-16 sm:py-24 text-cream border-b border-ink-800">
-    <!-- Ambient 3D Radial Glows -->
+  <!-- Top Cinematic Warm Brand Hero (Aligned with Main Site Theme) -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-brand-50/70 via-cream to-cream py-16 sm:py-24 text-ink-900 border-b border-ink-200">
+    <!-- Ambient Warm Radial Glows -->
     <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-brand-500/15 blur-3xl"></div>
-      <div class="absolute top-1/2 right-10 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(#2a221b_1px,transparent_1px)] [background-size:28px_28px] opacity-30"></div>
+      <div class="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-brand-200/30 blur-3xl"></div>
+      <div class="absolute top-1/2 right-10 h-80 w-80 rounded-full bg-gold-200/25 blur-3xl"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(#dcd0c2_1px,transparent_1px)] [background-size:28px_28px] opacity-40"></div>
     </div>
 
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-3xl mx-auto">
         <!-- Live Discovery Badge -->
-        <div class="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-gold-950/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold-300 mb-6 backdrop-blur">
-          <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
-          From ₹499 Micro Solutions to Scale Enterprise &middot; 7 Practices
+        <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/95 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-700 mb-6 shadow-xs backdrop-blur">
+          <span class="inline-block h-2 w-2 rounded-full bg-brand-500 animate-pulse" aria-hidden="true"></span>
+          Beyond Websites &middot; 7 Specialized Practices
         </div>
 
-        <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-cream text-balance leading-[1.12]">
+        <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-ink-950 text-balance leading-[1.12]">
           Websites are where we started. <br />
-          <span class="bg-gradient-to-r from-brand-400 via-gold-300 to-brand-300 bg-clip-text text-transparent italic">
+          <span class="text-brand-600 italic">
             Here's everything else.
           </span>
         </h1>
 
-        <p class="mt-5 text-base sm:text-lg text-ink-300 leading-relaxed max-w-2xl mx-auto">
+        <p class="mt-5 text-base sm:text-lg text-ink-700 leading-relaxed max-w-2xl mx-auto">
           A high-converting website is the anchor. But when your business needs high-intent customers from ads, top citations on ChatGPT & Gemini, recurring subscription software, connected hardware, or a 24/7 AI employee — we engineer the complete system.
         </p>
 
         <!-- Sound Toolbar Affordance & Quick Scroller -->
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <div class="inline-flex items-center gap-3 rounded-full border border-ink-700 bg-ink-900/90 px-4 py-2 text-xs font-medium text-ink-300 shadow-sm backdrop-blur">
+          <div class="inline-flex items-center gap-3 rounded-full border border-ink-200 bg-white/90 px-4 py-2 text-xs font-medium text-ink-700 shadow-xs backdrop-blur">
             <button
               type="button"
-              class="services-sound-btn inline-flex items-center gap-1.5 font-semibold text-cream hover:text-brand-400 transition cursor-pointer"
+              class="services-sound-btn inline-flex items-center gap-1.5 font-semibold text-ink-950 hover:text-brand-600 transition cursor-pointer"
               data-services-sound-btn
               aria-label="Toggle arrival sound effects"
               title="Toggle arrival sound effects"
@@ -68,25 +112,25 @@ const startingPills = [
               <span class="services-sound-icon" data-services-sound-icon>🔊</span>
               <span class="services-sound-label" data-services-sound-label>Sound ON</span>
             </button>
-            <span class="text-ink-600">•</span>
-            <span class="text-ink-400">Interactive 3D Stages</span>
+            <span class="text-ink-300">•</span>
+            <span class="text-ink-500">Interactive 3D Stages</span>
           </div>
 
           <a
             href="#ai-consultation-board"
-            class="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-950/70 px-4 py-2 text-xs font-semibold text-emerald-300 hover:bg-emerald-900 transition"
+            class="inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-4 py-2 text-xs font-semibold text-brand-700 hover:bg-brand-100 transition shadow-xs"
           >
             <span>Try AI Digital Architect &darr;</span>
           </a>
         </div>
 
-        <!-- Quick Jump Practice Strip (Sticky on Desktop) -->
-        <div class="mt-10 flex flex-wrap items-center justify-center gap-2 pt-6 border-t border-ink-800/80 text-xs">
+        <!-- Quick Jump Practice Strip -->
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-2 pt-6 border-t border-ink-200/80 text-xs">
           <span class="text-ink-500 mr-1 hidden sm:inline">Jump to practice:</span>
           {services.map((s, idx) => (
             <a
               href={`#${s.id}`}
-              class="rounded-lg border border-ink-800 bg-ink-900/60 px-2.5 py-1 text-ink-300 hover:border-brand-500 hover:text-white transition"
+              class="rounded-lg border border-ink-200 bg-white px-2.5 py-1 text-ink-700 hover:border-brand-400 hover:text-brand-700 transition shadow-2xs font-medium"
             >
               0{idx + 1} {s.name.split(" ")[0]}
             </a>
@@ -96,341 +140,364 @@ const startingPills = [
     </div>
   </section>
 
-  <!-- The 7 Cinematic Service Scenes with 3D Dolly Stages -->
-  <section class="services-flow bg-ink-900 py-16 sm:py-24 text-cream" data-services-flow>
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-32">
-      {services.map((s, idx) => (
-        <article
-          id={s.id}
-          class="service-scene group relative rounded-3xl border border-ink-800 bg-ink-950/90 p-6 sm:p-10 lg:p-12 transition-all duration-300 scroll-mt-24 shadow-2xl backdrop-blur"
-          data-service-scene
-          data-service-index={idx}
-        >
-          <!-- Specular Glare Reflection Layer -->
-          <div class="scene-glare pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
+  <!-- The 7 Service Scenes (Warm Brand Palette with Real-World Photos & Interactive 3D Stages) -->
+  <section class="services-flow bg-cream py-16 sm:py-24 text-ink-900" data-services-flow>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+      {services.map((s, idx) => {
+        const relatable = relatableImages[idx]!;
+        return (
+          <article
+            id={s.id}
+            class="service-scene group relative rounded-3xl border border-ink-200/90 bg-white p-6 sm:p-10 lg:p-12 transition-all duration-300 scroll-mt-24 shadow-sm hover:shadow-md"
+            data-service-scene
+            data-service-index={idx}
+          >
+            <!-- Specular Glare Reflection Layer -->
+            <div class="scene-glare pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
 
-          <!-- Top Chrome Header Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-ink-800 pb-5 mb-8">
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-950 border border-brand-500/40 text-sm font-mono font-bold text-brand-400">
-                0{idx + 1}
-              </span>
-              <div>
-                <span class="inline-block text-[11px] font-bold uppercase tracking-widest text-emerald-400">
-                  {s.badge}
+            <!-- Top Chrome Header Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-ink-100 pb-5 mb-8">
+              <div class="flex items-center gap-3">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 border border-brand-200 text-sm font-mono font-bold text-brand-700">
+                  0{idx + 1}
                 </span>
-                <h2 class="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-cream mt-0.5">
-                  {s.name}
-                </h2>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <span class="rounded bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-1 text-[11px] font-mono text-emerald-400 font-medium">
-                {startingPills[idx]}
-              </span>
-              <span class="text-xs font-mono text-ink-400 hidden sm:inline">
-                Practice 0{idx + 1} / 07
-              </span>
-            </div>
-          </div>
-
-          <!-- Two-Column Cinematic Layout: Narrative (Left) + Interactive Visual 3D Stage (Right) -->
-          <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
-            <!-- Left: SMB Narrative & Plain-English Takeaways -->
-            <div>
-              <h3 class="font-display text-lg sm:text-2xl font-semibold text-brand-300 leading-snug mb-4">
-                "{s.headline}"
-              </h3>
-
-              <p class="text-sm sm:text-base text-ink-300 leading-relaxed mb-6">
-                {s.analogy}
-              </p>
-
-              <!-- What This Means For You Callout Card -->
-              <div class="rounded-xl border border-brand-500/30 bg-brand-950/50 p-4 sm:p-5 mb-6">
-                <div class="text-xs font-bold uppercase tracking-wider text-brand-300 mb-1 flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
-                  What this means for you:
-                </div>
-                <p class="text-xs sm:text-sm font-medium text-ink-100 leading-relaxed">
-                  {s.takeaway}
-                </p>
-              </div>
-
-              <!-- Optional Live Tool Cross-link -->
-              {s.crossLink && (
-                <div class="mb-6 rounded-lg border border-emerald-500/30 bg-emerald-950/40 p-3.5 flex items-center justify-between gap-3 text-xs sm:text-sm">
-                  <span class="text-emerald-300 font-medium">
-                    Live proof: {s.crossLink.label}
+                <div>
+                  <span class="inline-block text-[11px] font-bold uppercase tracking-widest text-teal-700 bg-teal-50 border border-teal-200/70 px-2 py-0.5 rounded-md">
+                    {s.badge}
                   </span>
-                  <a
-                    href={s.crossLink.href}
-                    class="shrink-0 font-semibold text-emerald-400 hover:text-emerald-200 underline"
-                  >
-                    Launch Tool
-                  </a>
+                  <h2 class="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-ink-950 mt-1">
+                    {s.name}
+                  </h2>
                 </div>
-              )}
+              </div>
 
-              <!-- Action CTAs -->
-              <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-ink-800">
-                <a
-                  href={waLink(s.whatsappMessage)}
-                  target="_blank"
-                  rel="noopener"
-                  aria-label={`Chat on WhatsApp about ${s.name} (opens WhatsApp)`}
-                  class="inline-flex items-center gap-2 rounded-md bg-[#25D366] hover:bg-[#1EBE5D] text-white px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition active:scale-98"
-                  data-analytics-event="whatsapp_click"
-                >
-                  <Icon name="whatsapp" class="h-4 w-4" />
-                  Discuss on WhatsApp
-                </a>
-
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-1.5 rounded-md border border-ink-700 bg-ink-900 hover:bg-ink-800 px-4 py-2.5 text-xs sm:text-sm font-semibold text-ink-200 transition active:scale-98 cursor-pointer"
-                  data-discuss-onsite-btn
-                  data-service-name={s.name}
-                >
-                  Discuss On-Site &darr;
-                </button>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono font-semibold text-ink-500 bg-ink-50 border border-ink-200/80 px-2.5 py-1 rounded-md">
+                  Practice 0{idx + 1} / 07
+                </span>
               </div>
             </div>
 
-            <!-- Right: Interactive 3D Visual Stage (Custom for each of the 7 services) -->
-            <div class="relative rounded-2xl border border-ink-800 bg-ink-900/90 p-4 sm:p-6 shadow-inner overflow-hidden">
-              <!-- Practice 01: Meta & Google Ads Live Simulator -->
-              {idx === 0 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● Live Campaign Simulation</span>
-                    <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-400 font-mono">ROAS: 4.8x</span>
-                  </div>
+            <!-- Two-Column Layout: Narrative (Left) + Relatable Photo & Interactive Stage (Right) -->
+            <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-start">
+              <!-- Left: SMB Narrative & Plain-English Takeaways -->
+              <div>
+                <h3 class="font-display text-lg sm:text-2xl font-semibold text-brand-700 leading-snug mb-4">
+                  "{s.headline}"
+                </h3>
 
-                  <!-- Google Search Ad Mockup -->
-                  <div class="rounded-xl border border-ink-700 bg-ink-950 p-3.5 space-y-1.5 text-xs shadow-md">
-                    <div class="flex items-center gap-2">
-                      <span class="rounded bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 text-[10px] font-bold uppercase">Sponsored</span>
-                      <span class="text-ink-400 font-mono text-[11px]">atittle-client.in/jaipur-gems</span>
-                    </div>
-                    <div class="font-semibold text-brand-300 text-sm">
-                      Jaipur Silver & Solitaires | Certified Hallmark Jewelry
-                    </div>
-                    <p class="text-ink-300 text-[11px] leading-relaxed">
-                      Custom handmade polki & 925 silver. 100% certified unboxing video verification. Direct founder WhatsApp support.
+                <p class="text-sm sm:text-base text-ink-700 leading-relaxed mb-6">
+                  {s.analogy}
+                </p>
+
+                <!-- What This Means For You Callout Card -->
+                <div class="rounded-xl border border-brand-200/80 bg-brand-50/50 p-4 sm:p-5 mb-6">
+                  <div class="text-xs font-bold uppercase tracking-wider text-brand-800 mb-1 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                    What this means for you:
+                  </div>
+                  <p class="text-xs sm:text-sm font-medium text-ink-800 leading-relaxed">
+                    {s.takeaway}
+                  </p>
+                </div>
+
+                <!-- Optional Live Tool Cross-link -->
+                {s.crossLink && (
+                  <div class="mb-6 rounded-lg border border-teal-200 bg-teal-50/70 p-3.5 flex items-center justify-between gap-3 text-xs sm:text-sm">
+                    <span class="text-teal-900 font-medium">
+                      Live proof: {s.crossLink.label}
+                    </span>
+                    <a
+                      href={s.crossLink.href}
+                      class="shrink-0 font-semibold text-brand-600 hover:text-brand-700 underline"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                )}
+
+                <!-- Action CTAs -->
+                <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-ink-100">
+                  <a
+                    href={waLink(s.whatsappMessage)}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={`Chat on WhatsApp about ${s.name} (opens WhatsApp)`}
+                    class="inline-flex items-center gap-2 rounded-md bg-[#25D366] hover:bg-[#1EBE5D] text-white px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-xs transition active:scale-98"
+                    data-analytics-event="whatsapp_click"
+                  >
+                    <Icon name="whatsapp" class="h-4 w-4" />
+                    Discuss on WhatsApp
+                  </a>
+
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-1.5 rounded-md border border-ink-300 bg-white hover:bg-ink-50 px-4 py-2.5 text-xs sm:text-sm font-semibold text-ink-800 transition active:scale-98 cursor-pointer shadow-2xs"
+                    data-discuss-onsite-btn
+                    data-service-name={s.name}
+                  >
+                    Discuss On-Site &darr;
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right: Relatable Visual Photo + Interactive Visual 3D Stage -->
+              <div class="space-y-4">
+                <!-- Relatable Real-World Context Photo -->
+                <div class="group/img relative overflow-hidden rounded-2xl border border-ink-200 bg-ink-100 shadow-xs">
+                  <Image
+                    src={relatable.image}
+                    alt={relatable.alt}
+                    widths={[360, 540, 720]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
+                    class="h-44 sm:h-52 w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-950/90 via-ink-950/60 to-transparent p-3 sm:p-3.5 text-cream">
+                    <span class="inline-block rounded bg-gold-400/20 border border-gold-300/30 px-2 py-0.5 text-[10px] font-semibold text-gold-200 uppercase tracking-wider mb-1">
+                      {relatable.caption}
+                    </span>
+                    <p class="text-[11px] text-ink-200 leading-snug">
+                      {relatable.context}
                     </p>
-                    <div class="flex flex-wrap gap-2 pt-1 text-[10px] text-emerald-400">
-                      <span class="rounded bg-ink-900 border border-ink-800 px-2 py-0.5">📞 +91 93303 93298</span>
-                      <span class="rounded bg-ink-900 border border-ink-800 px-2 py-0.5">💬 WhatsApp Direct</span>
-                    </div>
-                  </div>
-
-                  <!-- Live Lead Ticker -->
-                  <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs">
-                    <div class="rounded-lg bg-ink-950 p-2 border border-ink-800">
-                      <div class="text-[10px] text-ink-400 uppercase">Monthly Spend</div>
-                      <div class="font-mono font-bold text-cream mt-0.5">₹12,450</div>
-                    </div>
-                    <div class="rounded-lg bg-ink-950 p-2 border border-ink-800">
-                      <div class="text-[10px] text-ink-400 uppercase">WhatsApp Leads</div>
-                      <div class="font-mono font-bold text-emerald-400 mt-0.5">48 Chats</div>
-                    </div>
-                    <div class="rounded-lg bg-ink-950 p-2 border border-ink-800">
-                      <div class="text-[10px] text-ink-400 uppercase">Cost / Lead</div>
-                      <div class="font-mono font-bold text-brand-300 mt-0.5">₹259</div>
-                    </div>
                   </div>
                 </div>
-              )}
 
-              <!-- Practice 02: SEO & AEO (AI Engine Citation Lens) -->
-              {idx === 1 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● AI Engine Citation (ChatGPT & Gemini)</span>
-                    <span class="rounded bg-purple-950 px-2 py-0.5 text-purple-300 font-mono">Rank #1 Citation</span>
-                  </div>
+                <!-- Interactive 3D Visual Stage (Custom for each practice) -->
+                <div class="relative rounded-2xl border border-ink-800 bg-ink-950 p-4 sm:p-5 shadow-md overflow-hidden text-cream">
+                  <!-- Practice 01: Meta & Google Ads Live Simulator -->
+                  {idx === 0 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● Live Campaign Simulation</span>
+                        <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-400 font-mono">ROAS: 4.8x</span>
+                      </div>
 
-                  <div class="rounded-xl border border-purple-500/30 bg-ink-950 p-3.5 space-y-2 text-xs">
-                    <div class="flex items-center gap-1.5 text-ink-400 text-[11px]">
-                      <span class="text-purple-400 font-bold">Query:</span>
-                      <span class="italic text-ink-200">"Best cosmetic dental implant clinic in Nagpur?"</span>
-                    </div>
-                    <div class="rounded bg-ink-900/80 p-2.5 text-ink-200 text-[11px] leading-relaxed border-l-2 border-purple-500">
-                      "Based on clinical sterilization protocols and verified patient reviews, <strong>Sanjeevani Clinic</strong> in Nagpur is prominently recognized for 3D digital implantology..."
-                    </div>
-                    <div class="flex items-center justify-between pt-1 text-[10px]">
-                      <span class="text-emerald-400 font-mono">[1] sanjeevani.in/implants - Verified Schema</span>
-                      <span class="text-purple-300 font-mono">100% Direct Citation</span>
-                    </div>
-                  </div>
+                      <!-- Google Search Ad Mockup -->
+                      <div class="rounded-xl border border-ink-700 bg-ink-900/90 p-3 space-y-1 text-xs shadow-xs">
+                        <div class="flex items-center gap-2">
+                          <span class="rounded bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 text-[10px] font-bold uppercase">Sponsored</span>
+                          <span class="text-ink-400 font-mono text-[11px]">atittle-client.in/jaipur-gems</span>
+                        </div>
+                        <div class="font-semibold text-gold-300 text-sm">
+                          Jaipur Silver & Solitaires | Certified Hallmark Jewelry
+                        </div>
+                        <p class="text-ink-300 text-[11px] leading-relaxed">
+                          Custom handmade polki & 925 silver. 100% certified unboxing video verification. Direct founder WhatsApp support.
+                        </p>
+                        <div class="flex flex-wrap gap-2 pt-1 text-[10px] text-emerald-400">
+                          <span class="rounded bg-ink-950 border border-ink-800 px-2 py-0.5">📞 +91 93303 93298</span>
+                          <span class="rounded bg-ink-950 border border-ink-800 px-2 py-0.5">💬 WhatsApp Direct</span>
+                        </div>
+                      </div>
 
-                  <div class="rounded-lg bg-ink-950 p-2.5 border border-ink-800 text-[11px] font-mono text-ink-300 flex items-center justify-between">
-                    <span>Schema.org MedicalBusiness</span>
-                    <span class="text-emerald-400">Valid 2026 Structured Data ✓</span>
-                  </div>
-                </div>
-              )}
-
-              <!-- Practice 03: End-to-End SaaS Multi-Tenant Console -->
-              {idx === 2 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● SaaS Multi-Tenant Pulse</span>
-                    <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Razorpay Active</span>
-                  </div>
-
-                  <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="rounded-xl bg-ink-950 p-3 border border-ink-800">
-                      <div class="text-[10px] text-ink-400 uppercase">Monthly Recurring (MRR)</div>
-                      <div class="font-mono text-lg font-bold text-cream mt-0.5">₹2,48,000</div>
-                      <div class="text-[10px] text-emerald-400 mt-1">↑ +28.4% this month</div>
-                    </div>
-                    <div class="rounded-xl bg-ink-950 p-3 border border-ink-800">
-                      <div class="text-[10px] text-ink-400 uppercase">Active Subscriptions</div>
-                      <div class="font-mono text-lg font-bold text-cream mt-0.5">412 SMBs</div>
-                      <div class="text-[10px] text-ink-400 mt-1">0.8% low churn</div>
-                    </div>
-                  </div>
-
-                  <div class="rounded-xl bg-ink-950 p-3 border border-ink-800 text-xs font-mono space-y-1">
-                    <div class="text-[10px] text-ink-500 uppercase">Live Webhook Stream</div>
-                    <div class="text-emerald-400 text-[11px] flex items-center gap-1.5">
-                      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                      <span>sub_N89xL charged ₹1,499 (UPI AutoPay)</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <!-- Practice 04: Fixing Broken Systems Code Rescue Console -->
-              {idx === 3 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● Before vs After Recovery</span>
-                    <span class="rounded bg-brand-950 px-2 py-0.5 text-brand-300 font-mono">Rescue Mode</span>
-                  </div>
-
-                  <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="rounded-xl bg-red-950/40 p-3 border border-red-500/30 text-red-300">
-                      <div class="font-bold uppercase text-[10px]">Before ATITTLE</div>
-                      <div class="font-mono text-base font-bold mt-1">504 Crash</div>
-                      <div class="text-[10px] text-red-400 mt-0.5">TTFB: 4.8s · Lost Sales</div>
-                    </div>
-                    <div class="rounded-xl bg-emerald-950/40 p-3 border border-emerald-500/30 text-emerald-300">
-                      <div class="font-bold uppercase text-[10px]">After Rescue</div>
-                      <div class="font-mono text-base font-bold mt-1">0.28s Edge</div>
-                      <div class="text-[10px] text-emerald-400 mt-0.5">99.99% Cloudflare Uptime</div>
-                    </div>
-                  </div>
-
-                  <div class="rounded-xl bg-ink-950 p-3 border border-ink-800 text-[11px] font-mono text-ink-300">
-                    <div class="text-ink-500 text-[10px]">Audit Resolution:</div>
-                    <div class="text-emerald-400">✓ Database pool indexed & query bottleneck fixed</div>
-                    <div class="text-emerald-400">✓ Insecure legacy dependencies isolated</div>
-                  </div>
-                </div>
-              )}
-
-              <!-- Practice 05: End-to-End IoT Telemetry Simulator -->
-              {idx === 4 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● Hardware Telemetry (ESP32 / Cellular)</span>
-                    <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Ping: 18ms</span>
-                  </div>
-
-                  <div class="rounded-xl bg-ink-950 p-3.5 border border-ink-800 space-y-2 text-xs">
-                    <div class="flex items-center justify-between">
-                      <span class="text-ink-400">Cold Storage Tank Sensor:</span>
-                      <span class="rounded-full bg-emerald-900/60 border border-emerald-500/40 px-2 py-0.5 text-emerald-300 text-[10px] font-mono font-bold">
-                        OPTIMAL ZONE
-                      </span>
-                    </div>
-                    <div class="flex items-baseline gap-2">
-                      <span class="font-mono text-3xl font-bold text-cream">-18.4°C</span>
-                      <span class="text-xs text-ink-400">Threshold: -15.0°C</span>
-                    </div>
-                    <div class="w-full bg-ink-800 h-2 rounded-full overflow-hidden">
-                      <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full w-[78%] rounded-full"></div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center justify-between rounded-xl bg-ink-950 p-3 border border-ink-800 text-xs">
-                    <span class="font-mono text-ink-300">Relay Switch: Auto-Compressor</span>
-                    <span class="text-emerald-400 font-mono font-bold">ACTIVE [ON]</span>
-                  </div>
-                </div>
-              )}
-
-              <!-- Practice 06: AI Transformation Workflow Pipeline -->
-              {idx === 5 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● Zero-Touch Invoicing Pipeline</span>
-                    <span class="rounded bg-brand-950 px-2 py-0.5 text-brand-300 font-mono">Execution: 1.4s</span>
-                  </div>
-
-                  <div class="space-y-2 text-xs">
-                    <div class="rounded-lg bg-ink-950 p-2.5 border border-ink-800 flex items-center justify-between">
-                      <span class="text-ink-400">1. Customer Voice/WhatsApp Note</span>
-                      <span class="text-cream font-mono">"50 Box Ceramic Tiles"</span>
-                    </div>
-                    <div class="rounded-lg bg-ink-950 p-2.5 border border-ink-800 flex items-center justify-between">
-                      <span class="text-ink-400">2. AI Inventory & GST Parser</span>
-                      <span class="text-emerald-400 font-mono">SKU Verified · 18% GST</span>
-                    </div>
-                    <div class="rounded-lg bg-emerald-950/40 p-2.5 border border-emerald-500/30 flex items-center justify-between text-emerald-300">
-                      <span class="font-semibold">3. PDF Invoice Generated</span>
-                      <span class="font-mono font-bold">Sent to WhatsApp ✓</span>
-                    </div>
-                  </div>
-
-                  <div class="text-[11px] text-ink-400 text-center">
-                    Saves ~2.5 hours of manual transcription every business day.
-                  </div>
-                </div>
-              )}
-
-              <!-- Practice 07: Custom AI Agents 24/7 Digital Employee Console -->
-              {idx === 6 && (
-                <div class="space-y-4">
-                  <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2.5 text-ink-400">
-                    <span class="font-mono text-emerald-400">● Autonomous WhatsApp Agent</span>
-                    <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Active 24/7</span>
-                  </div>
-
-                  <div class="rounded-xl bg-ink-950 p-3.5 space-y-2 text-xs shadow-inner">
-                    <!-- User Msg -->
-                    <div class="flex justify-end">
-                      <div class="rounded-2xl rounded-tr-sm bg-brand-700 px-3 py-2 text-cream max-w-[85%] text-[11px]">
-                        Hi, do you have 30 rooms available for a wedding on Nov 28th?
+                      <!-- Live Lead Ticker -->
+                      <div class="grid grid-cols-3 gap-2 pt-1 text-center text-xs">
+                        <div class="rounded-lg bg-ink-900 p-2 border border-ink-800">
+                          <div class="text-[10px] text-ink-400 uppercase">Monthly Spend</div>
+                          <div class="font-mono font-bold text-cream mt-0.5">₹12,450</div>
+                        </div>
+                        <div class="rounded-lg bg-ink-900 p-2 border border-ink-800">
+                          <div class="text-[10px] text-ink-400 uppercase">WhatsApp Leads</div>
+                          <div class="font-mono font-bold text-emerald-400 mt-0.5">48 Chats</div>
+                        </div>
+                        <div class="rounded-lg bg-ink-900 p-2 border border-ink-800">
+                          <div class="text-[10px] text-ink-400 uppercase">Cost / Lead</div>
+                          <div class="font-mono font-bold text-gold-300 mt-0.5">₹259</div>
+                        </div>
                       </div>
                     </div>
+                  )}
 
-                    <!-- AI Reasoning Step -->
-                    <div class="rounded bg-ink-900/90 border border-ink-800 p-2 text-[10px] font-mono text-purple-300">
-                      ⚡ Agent Thought: Checking PMS database for 28-Nov-2026... 34 deluxe rooms available. Applying wedding tariff.
-                    </div>
+                  <!-- Practice 02: SEO & AEO (AI Engine Citation Lens) -->
+                  {idx === 1 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● AI Citation Engine (ChatGPT & Gemini)</span>
+                        <span class="rounded bg-purple-950 px-2 py-0.5 text-purple-300 font-mono">Rank #1 Citation</span>
+                      </div>
 
-                    <!-- AI Response -->
-                    <div class="flex justify-start">
-                      <div class="rounded-2xl rounded-tl-sm bg-ink-800 px-3 py-2 text-cream max-w-[88%] text-[11px] leading-relaxed">
-                        Namaste! Yes, we have 34 deluxe rooms available for Nov 28th. Our wedding buyout package includes poolside catering. Shall I hold the dates and email the itinerary?
+                      <div class="rounded-xl border border-purple-500/30 bg-ink-900/90 p-3 space-y-2 text-xs">
+                        <div class="flex items-center gap-1.5 text-ink-400 text-[11px]">
+                          <span class="text-purple-400 font-bold">Query:</span>
+                          <span class="italic text-ink-200">"Best cosmetic dental implant clinic in Nagpur?"</span>
+                        </div>
+                        <div class="rounded bg-ink-950 p-2.5 text-ink-200 text-[11px] leading-relaxed border-l-2 border-purple-500">
+                          "Based on clinical sterilization protocols and verified patient reviews, <strong>Sanjeevani Clinic</strong> in Nagpur is prominently recognized for 3D digital implantology..."
+                        </div>
+                        <div class="flex items-center justify-between pt-1 text-[10px]">
+                          <span class="text-emerald-400 font-mono">[1] sanjeevani.in/implants - Verified Schema</span>
+                          <span class="text-purple-300 font-mono">100% Direct Citation</span>
+                        </div>
+                      </div>
+
+                      <div class="rounded-lg bg-ink-900 p-2.5 border border-ink-800 text-[11px] font-mono text-ink-300 flex items-center justify-between">
+                        <span>Schema.org MedicalBusiness</span>
+                        <span class="text-emerald-400">Valid 2026 Structured Data ✓</span>
                       </div>
                     </div>
-                  </div>
+                  )}
 
-                  <div class="rounded-lg bg-ink-950 p-2 border border-ink-800 text-[10px] text-center text-emerald-400 font-mono">
-                    Zero latency · Never sleeps · Never misses an inquiry
-                  </div>
+                  <!-- Practice 03: End-to-End SaaS Multi-Tenant Console -->
+                  {idx === 2 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● SaaS Multi-Tenant Pulse</span>
+                        <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Razorpay Active</span>
+                      </div>
+
+                      <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="rounded-xl bg-ink-900 p-3 border border-ink-800">
+                          <div class="text-[10px] text-ink-400 uppercase">Monthly Recurring (MRR)</div>
+                          <div class="font-mono text-base sm:text-lg font-bold text-cream mt-0.5">₹2,48,000</div>
+                          <div class="text-[10px] text-emerald-400 mt-1">↑ +28.4% this month</div>
+                        </div>
+                        <div class="rounded-xl bg-ink-900 p-3 border border-ink-800">
+                          <div class="text-[10px] text-ink-400 uppercase">Active Subscriptions</div>
+                          <div class="font-mono text-base sm:text-lg font-bold text-cream mt-0.5">412 SMBs</div>
+                          <div class="text-[10px] text-ink-400 mt-1">0.8% low churn</div>
+                        </div>
+                      </div>
+
+                      <div class="rounded-xl bg-ink-900 p-2.5 border border-ink-800 text-xs font-mono space-y-1">
+                        <div class="text-[10px] text-ink-500 uppercase">Live Webhook Stream</div>
+                        <div class="text-emerald-400 text-[11px] flex items-center gap-1.5">
+                          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                          <span>sub_N89xL charged ₹1,499 (UPI AutoPay)</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <!-- Practice 04: Fixing Broken Systems Code Rescue Console -->
+                  {idx === 3 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● Before vs After Recovery</span>
+                        <span class="rounded bg-brand-950 px-2 py-0.5 text-brand-300 font-mono">Rescue Mode</span>
+                      </div>
+
+                      <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="rounded-xl bg-red-950/40 p-3 border border-red-500/30 text-red-300">
+                          <div class="font-bold uppercase text-[10px]">Before ATITTLE</div>
+                          <div class="font-mono text-base font-bold mt-1">504 Crash</div>
+                          <div class="text-[10px] text-red-400 mt-0.5">TTFB: 4.8s · Lost Sales</div>
+                        </div>
+                        <div class="rounded-xl bg-emerald-950/40 p-3 border border-emerald-500/30 text-emerald-300">
+                          <div class="font-bold uppercase text-[10px]">After Rescue</div>
+                          <div class="font-mono text-base font-bold mt-1">0.28s Edge</div>
+                          <div class="text-[10px] text-emerald-400 mt-0.5">99.99% Cloudflare Uptime</div>
+                        </div>
+                      </div>
+
+                      <div class="rounded-xl bg-ink-900 p-2.5 border border-ink-800 text-[11px] font-mono text-ink-300">
+                        <div class="text-ink-500 text-[10px]">Audit Resolution:</div>
+                        <div class="text-emerald-400">✓ Database pool indexed & query bottleneck fixed</div>
+                        <div class="text-emerald-400">✓ Insecure legacy dependencies isolated</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <!-- Practice 05: End-to-End IoT Telemetry Simulator -->
+                  {idx === 4 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● Hardware Telemetry (ESP32 / Cellular)</span>
+                        <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Ping: 18ms</span>
+                      </div>
+
+                      <div class="rounded-xl bg-ink-900 p-3 border border-ink-800 space-y-2 text-xs">
+                        <div class="flex items-center justify-between">
+                          <span class="text-ink-400">Cold Storage Tank Sensor:</span>
+                          <span class="rounded-full bg-emerald-900/60 border border-emerald-500/40 px-2 py-0.5 text-emerald-300 text-[10px] font-mono font-bold">
+                            OPTIMAL ZONE
+                          </span>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                          <span class="font-mono text-2xl sm:text-3xl font-bold text-cream">-18.4°C</span>
+                          <span class="text-xs text-ink-400">Threshold: -15.0°C</span>
+                        </div>
+                        <div class="w-full bg-ink-800 h-2 rounded-full overflow-hidden">
+                          <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full w-[78%] rounded-full"></div>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center justify-between rounded-xl bg-ink-900 p-2.5 border border-ink-800 text-xs">
+                        <span class="font-mono text-ink-300">Relay Switch: Auto-Compressor</span>
+                        <span class="text-emerald-400 font-mono font-bold">ACTIVE [ON]</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <!-- Practice 06: AI Transformation Workflow Pipeline -->
+                  {idx === 5 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● Zero-Touch Invoicing Pipeline</span>
+                        <span class="rounded bg-brand-950 px-2 py-0.5 text-brand-300 font-mono">Execution: 1.4s</span>
+                      </div>
+
+                      <div class="space-y-2 text-xs">
+                        <div class="rounded-lg bg-ink-900 p-2 border border-ink-800 flex items-center justify-between">
+                          <span class="text-ink-400">1. Customer Voice/WhatsApp Note</span>
+                          <span class="text-cream font-mono">"50 Box Ceramic Tiles"</span>
+                        </div>
+                        <div class="rounded-lg bg-ink-900 p-2 border border-ink-800 flex items-center justify-between">
+                          <span class="text-ink-400">2. AI Inventory & GST Parser</span>
+                          <span class="text-emerald-400 font-mono">SKU Verified · 18% GST</span>
+                        </div>
+                        <div class="rounded-lg bg-emerald-950/40 p-2 border border-emerald-500/30 flex items-center justify-between text-emerald-300">
+                          <span class="font-semibold">3. PDF Invoice Generated</span>
+                          <span class="font-mono font-bold">Sent to WhatsApp ✓</span>
+                        </div>
+                      </div>
+
+                      <div class="text-[11px] text-ink-400 text-center">
+                        Saves ~2.5 hours of manual transcription every business day.
+                      </div>
+                    </div>
+                  )}
+
+                  <!-- Practice 07: Custom AI Agents 24/7 Digital Employee Console -->
+                  {idx === 6 && (
+                    <div class="space-y-3.5">
+                      <div class="flex items-center justify-between text-xs border-b border-ink-800 pb-2 text-ink-400">
+                        <span class="font-mono text-emerald-400">● Autonomous WhatsApp Agent</span>
+                        <span class="rounded bg-emerald-950 px-2 py-0.5 text-emerald-300 font-mono">Active 24/7</span>
+                      </div>
+
+                      <div class="rounded-xl bg-ink-900 p-3 space-y-2 text-xs shadow-inner">
+                        <!-- User Msg -->
+                        <div class="flex justify-end">
+                          <div class="rounded-2xl rounded-tr-sm bg-brand-700 px-3 py-1.5 text-cream max-w-[85%] text-[11px]">
+                            Hi, do you have 30 rooms available for a wedding on Nov 28th?
+                          </div>
+                        </div>
+
+                        <!-- AI Reasoning Step -->
+                        <div class="rounded bg-ink-950 border border-ink-800 p-2 text-[10px] font-mono text-purple-300">
+                          ⚡ Agent Thought: Checking PMS database for 28-Nov-2026... 34 deluxe rooms available. Applying wedding tariff.
+                        </div>
+
+                        <!-- AI Response -->
+                        <div class="flex justify-start">
+                          <div class="rounded-2xl rounded-tl-sm bg-ink-800 px-3 py-2 text-cream max-w-[88%] text-[11px] leading-relaxed">
+                            Namaste! Yes, we have 34 deluxe rooms available for Nov 28th. Our wedding buyout package includes poolside catering. Shall I hold the dates and email the itinerary?
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="rounded-lg bg-ink-900 p-2 border border-ink-800 text-[10px] text-center text-emerald-400 font-mono">
+                        Zero latency · Never sleeps · Never misses an inquiry
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   </section>
 
@@ -438,21 +505,21 @@ const startingPills = [
   <AiConsultationBoard id="ai-consultation-board" />
 
   <!-- Bottom On-Site Direct Scoping Form -->
-  <section id="services-contact" class="bg-ink-950 py-16 sm:py-24 border-t border-ink-800 text-cream">
+  <section id="services-contact" class="bg-cream py-16 sm:py-24 border-t border-ink-200 text-ink-900">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-8">
-        <div class="inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-950 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-300 mb-2">
+        <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 mb-2">
           Direct Scoping
         </div>
-        <h2 class="font-display text-2xl sm:text-4xl font-semibold text-cream">
+        <h2 class="font-display text-2xl sm:text-4xl font-semibold text-ink-950">
           Tell us about your project
         </h2>
-        <p class="mt-3 text-sm sm:text-base text-ink-300">
-          Whether it's an ad campaign, custom software, or code repair — explain your requirement in plain words and we'll reply with an honest scope and rupee pricing within 24 hours.
+        <p class="mt-3 text-sm sm:text-base text-ink-700">
+          Whether it's an ad campaign, custom software, or code repair — explain your requirement in plain words and we'll reply with an honest scope and clear proposal within 24 hours.
         </p>
       </div>
 
-      <div class="rounded-3xl border border-ink-800 bg-ink-900 p-6 sm:p-10 shadow-2xl">
+      <div class="rounded-3xl border border-ink-200 bg-white p-6 sm:p-10 shadow-md">
         <EnquiryForm id="services-enquiry-form" />
       </div>
     </div>
@@ -606,16 +673,16 @@ const startingPills = [
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
 
         s.style.setProperty('--rot-x', `${rotateX.toFixed(2)}deg`);
         s.style.setProperty('--rot-y', `${rotateY.toFixed(2)}deg`);
 
         const glare = s.querySelector<HTMLElement>('.scene-glare');
         if (glare) {
-          glare.style.opacity = '0.12';
-          glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.25) 0%, transparent 70%)`;
+          glare.style.opacity = '0.08';
+          glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(193, 82, 46, 0.15) 0%, transparent 65%)`;
         }
       });
 
@@ -639,7 +706,7 @@ const startingPills = [
 
         if (needsSelect) needsSelect.value = 'not-sure';
         if (messageArea && serviceName) {
-          messageArea.value = `I am interested in ATITTLE's ${serviceName} practice. Please get in touch to discuss requirements and pricing.`;
+          messageArea.value = `I am interested in ATITTLE's ${serviceName} practice. Please get in touch to discuss requirements and next steps.`;
         }
 
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -663,13 +730,13 @@ const startingPills = [
     --rot-x: 0deg;
     --rot-y: 0deg;
     transform: perspective(1000px) rotateX(var(--rot-x)) rotateY(var(--rot-y)) translateZ(0);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 4px 20px -2px rgba(33, 26, 21, 0.05), 0 2px 6px -1px rgba(33, 26, 21, 0.03);
     transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 240ms ease;
     will-change: transform;
   }
 
   .service-scene.scene-active {
-    box-shadow: 0 28px 60px -24px rgba(193, 82, 46, 0.25), 0 16px 32px -16px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 16px 36px -4px rgba(193, 82, 46, 0.1), 0 6px 16px -2px rgba(33, 26, 21, 0.06);
   }
 
   @media (prefers-reduced-motion: reduce) {
