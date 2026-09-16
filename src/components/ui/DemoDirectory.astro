@@ -414,11 +414,31 @@ const { open = false } = Astro.props;
     .demo-sheen {
       display: none !important;
     }
+  /* Touch Devices: Smooth Native Mobile Scrolling Without Hover Overhead */
+  @media (hover: none) {
+    .demo-card:hover {
+      transform: none !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+      border-color: rgba(226, 232, 240, 0.9) !important;
+    }
+    .demo-card:hover .demo-thumb {
+      transform: none !important;
+    }
+    .demo-hover-banner {
+      display: none !important;
+    }
+    .demo-sheen {
+      display: none !important;
+    }
+    .demo-video {
+      display: none !important;
+    }
   }
 </style>
 
 <script>
   function initDemoCards() {
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) return;
     const cards = document.querySelectorAll<HTMLElement>('[data-demo-card]');
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 

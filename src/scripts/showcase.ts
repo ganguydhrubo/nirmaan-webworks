@@ -13,40 +13,43 @@ function getAudioContext(): AudioContext | null {
   return audioCtx;
 }
 
-async function unlockAudio(): Promise<boolean> {
+function unlockAudio(): void {
   const ctx = getAudioContext();
-  if (!ctx) return false;
+  if (!ctx) return;
   if (ctx.state === 'suspended') {
-    try {
-      await ctx.resume();
-    } catch {}
+    void ctx.resume();
   }
-  if (ctx.state === 'running') {
+  try {
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(ctx.destination);
+    src.start(0);
     audioUnlocked = true;
-    return true;
-  }
-  return false;
+  } catch {}
 }
 
 // Global user gesture unlocker: unlocks audio on first click, touch, or key anywhere on the page
 if (typeof window !== 'undefined') {
   const unlock = () => {
-    void unlockAudio();
+    unlockAudio();
     if (audioUnlocked) {
       window.removeEventListener('pointerdown', unlock, true);
       window.removeEventListener('click', unlock, true);
       window.removeEventListener('keydown', unlock, true);
       window.removeEventListener('touchstart', unlock, true);
+      window.removeEventListener('touchend', unlock, true);
     }
   };
+  window.addEventListener('touchstart', unlock, { capture: true, passive: true });
+  window.addEventListener('touchend', unlock, { capture: true, passive: true });
   window.addEventListener('pointerdown', unlock, { capture: true, passive: true });
   window.addEventListener('click', unlock, { capture: true, passive: true });
   window.addEventListener('keydown', unlock, { capture: true, passive: true });
-  window.addEventListener('touchstart', unlock, { capture: true, passive: true });
 }
 
-function playWhoosh(force = false, soundEnabled = false, visible = false) {
-  if ((!soundEnabled && !force) || document.hidden || (!visible && !force)) return;
+function playWhoosh(force = false, soundEnabled = false) {
+  if ((!soundEnabled && !force) || document.hidden) return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
@@ -56,9 +59,9 @@ function playWhoosh(force = false, soundEnabled = false, visible = false) {
     const now = ctx.currentTime;
     const duration = 0.28;
 
-    // Master gain: soothing, gentle, and relaxing
+    // Master gain: soothing, gentle, and clearly audible on phone speakers
     const master = ctx.createGain();
-    master.gain.setValueAtTime(0.32, now);
+    master.gain.setValueAtTime(0.48, now);
     master.connect(ctx.destination);
 
     // Layer 1: Silky pink-noise air (soft page-flip sweep, no harsh hiss)
@@ -210,14 +213,14 @@ function mountShowcase(root: HTMLElement): () => void {
   updateSound();
 
   if (soundBtn) {
-    soundBtn.addEventListener('click', async (e) => {
+    soundBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      await unlockAudio();
+      unlockAudio();
       soundEnabled = !soundEnabled;
       try { localStorage.setItem('atittle_showcase_sound', String(soundEnabled)); } catch {}
       updateSound();
       if (soundEnabled) {
-        playWhoosh(true, true, true);
+        playWhoosh(true, true);
       }
     }, { signal });
   }
@@ -313,7 +316,7 @@ function mountShowcase(root: HTMLElement): () => void {
     updateNavigation(manual);
     stack.classList.add('is-advancing');
     if (!media.matches) {
-      playWhoosh(false, soundEnabled, visible);
+      playWhoosh(false, soundEnabled);
     }
     transitionTimer = setTimeout(() => {
       outgoing.classList.remove('is-outgoing');
@@ -405,7 +408,7 @@ function mountShowcase(root: HTMLElement): () => void {
     updatePlayback();
     if (visible && !document.hidden) void prepare(active + 1);
   }, { threshold: 0.15 });
-  observer.observe(stage.querySelector('.showcase-visual')!);
+  observer.observe(stage);
   controls.inert = false;
   root.dataset.active = String(active);
   root.dataset.enhanced = 'true';
