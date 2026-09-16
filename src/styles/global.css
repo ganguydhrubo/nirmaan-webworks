@@ -306,14 +306,14 @@
   }
 
   /* Hero Headline Entrance & Kinetic Typography */
-  html.hook h1 {
-    animation: hero-headline-entrance 750ms var(--spring) 120ms backwards;
+  .hero-copy h1 {
+    animation: hero-headline-entrance 850ms var(--spring) 120ms backwards;
     will-change: transform;
   }
   @keyframes hero-headline-entrance {
     from {
-      transform: translateY(24px) scale(0.98);
-      filter: blur(4px);
+      transform: translateY(22px) scale(0.98);
+      filter: blur(3px);
     }
     to {
       transform: translateY(0) scale(1);
@@ -322,24 +322,29 @@
   }
 
   .hero-highlight {
-    display: inline;
-    color: inherit;
-    transition: color 300ms ease;
+    display: inline-block;
+    background: linear-gradient(
+      120deg,
+      #075E54 0%,
+      #128C7E 20%,
+      #25D366 50%,
+      #128C7E 80%,
+      #075E54 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-text-shimmer 3.5s ease-in-out infinite;
   }
-  html.hook .hero-highlight {
-    animation: hero-highlight-glow 1400ms ease-out 600ms forwards;
-  }
-  @keyframes hero-highlight-glow {
+  @keyframes hero-text-shimmer {
     0% {
-      color: inherit;
+      background-position: 0% center;
     }
-    40% {
-      color: #25D366;
-      text-shadow: 0 0 16px rgba(37, 211, 102, 0.45);
+    50% {
+      background-position: 100% center;
     }
     100% {
-      color: #075E54;
-      text-shadow: none;
+      background-position: 0% center;
     }
   }
 
@@ -470,8 +475,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html.hook h1,
-    html.hook .hero-highlight,
+    .hero-copy h1,
+    .hero-highlight,
     html.hook .hero-eyebrow-pin,
     html.hook #floating-dock,
     html.hook .dock-live-beacon,
