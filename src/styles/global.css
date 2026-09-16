@@ -181,6 +181,12 @@
     scroll-behavior: smooth;
   }
 
+  /* Section anchor jump clearance below sticky header */
+  section[id],
+  [data-dock-section] {
+    scroll-margin-top: 5.5rem;
+  }
+
   body {
     background-color: var(--color-cream);
     color: var(--color-ink-900);

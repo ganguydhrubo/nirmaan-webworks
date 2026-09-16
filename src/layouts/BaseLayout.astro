@@ -1,7 +1,7 @@
 ---
 import Header from "@/components/sections/Header.astro";
 import Footer from "@/components/sections/Footer.astro";
-import MobileStickyBar from "@/components/sections/MobileStickyBar.astro";
+import Dock from "@/components/Dock.astro";
 import WhatsAppFloating from "@/components/sections/WhatsAppFloating.astro";
 import { siteConfig } from "@config/site";
 import { organizationJsonLd, websiteJsonLd, localBusinessJsonLd } from "@/lib/seo";
@@ -70,14 +70,14 @@ const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJson
 
     {structuredData.map((data) => <script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />)}
   </head>
-  <body class:list={["atittle-main", !hideStickyBar && "pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0"]}>
+  <body class:list={["atittle-main", !hideStickyBar && "pb-[calc(4.75rem+env(safe-area-inset-bottom,1rem))]"]}>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <Header />
     <main id="main-content">
       <slot />
     </main>
     <Footer />
-    {!hideStickyBar && <MobileStickyBar />}
+    {!hideStickyBar && <Dock />}
     <WhatsAppFloating />
 
     <script src="../scripts/reveal.ts"></script>

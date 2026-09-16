@@ -1,0 +1,424 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { telLink, waLink } from "@/lib/contact-links";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<!-- Liquid Glass Floating Dock Navigation -->
+<nav
+  id="floating-dock"
+  role="navigation"
+  aria-label="Quick Navigation Dock"
+  class:list={["dock-container", className]}
+  data-dock-theme="dark"
+>
+  <!-- Home Item -->
+  <a
+    href="/"
+    class="dock-item group"
+    data-dock-action="home"
+    aria-label="Home"
+  >
+    <span class="dock-icon-box">
+      <Icon name="home" class="h-5 w-5" />
+    </span>
+    <span class="dock-dot" aria-hidden="true"></span>
+    <span class="dock-tooltip" role="tooltip">Home</span>
+  </a>
+
+  <!-- Page Sections (Opens Bottom Sheet) -->
+  <button
+    type="button"
+    class="dock-item group"
+    data-dock-action="sections"
+    aria-label="View Page Sections"
+    aria-expanded="false"
+    aria-controls="dock-sheet"
+  >
+    <span class="dock-icon-box">
+      <Icon name="layers" class="h-5 w-5" />
+    </span>
+    <span class="dock-dot" aria-hidden="true"></span>
+    <span class="dock-tooltip" role="tooltip">Sections</span>
+  </button>
+
+  <!-- 15 Working Demos -->
+  <a
+    href="/industries"
+    class="dock-item group"
+    data-dock-action="demos"
+    aria-label="15 Working Demos"
+  >
+    <span class="dock-icon-box">
+      <Icon name="sparkle" class="h-5 w-5" />
+    </span>
+    <span class="dock-dot" aria-hidden="true"></span>
+    <span class="dock-tooltip" role="tooltip">Demos</span>
+  </a>
+
+  <div class="dock-divider" aria-hidden="true"></div>
+
+  <!-- WhatsApp Action -->
+  <a
+    href={waLink(siteConfig.whatsappMessageTemplates.mobileStickyBar)}
+    target="_blank"
+    rel="noopener"
+    class="dock-item dock-item-whatsapp group"
+    data-dock-action="whatsapp"
+    aria-label="Chat with us on WhatsApp"
+  >
+    <span class="dock-icon-box dock-icon-whatsapp">
+      <Icon name="whatsapp" class="h-5 w-5" />
+      <span class="dock-live-beacon" aria-hidden="true"></span>
+    </span>
+    <span class="dock-tooltip" role="tooltip">WhatsApp</span>
+  </a>
+
+  <!-- Direct Call Action -->
+  <a
+    href={telLink()}
+    class="dock-item group"
+    data-dock-action="call"
+    aria-label="Call ATITTLE directly"
+  >
+    <span class="dock-icon-box">
+      <Icon name="phone" class="h-5 w-5" />
+    </span>
+    <span class="dock-tooltip" role="tooltip">Call</span>
+  </a>
+</nav>
+
+<!-- Accessible Section Sheet Modal -->
+<div
+  id="dock-sheet"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dock-sheet-title"
+  class="dock-sheet"
+  hidden
+>
+  <div class="dock-sheet-backdrop" data-dock-sheet-close></div>
+
+  <div class="dock-sheet-panel">
+    <div class="dock-sheet-handle" aria-hidden="true"></div>
+
+    <div class="dock-sheet-header">
+      <div class="flex items-center gap-2">
+        <Icon name="layers" class="h-4 w-4 text-brand-600" />
+        <h2 id="dock-sheet-title" class="text-sm font-bold tracking-tight font-display text-ink-950">
+          Page Navigation
+        </h2>
+      </div>
+      <button
+        type="button"
+        class="dock-sheet-close"
+        data-dock-sheet-close
+        aria-label="Close sections navigation"
+      >
+        <Icon name="close" class="h-4 w-4" />
+      </button>
+    </div>
+
+    <div class="dock-sheet-body" id="dock-sheet-list" role="list">
+      <!-- Dynamically populated by dock.ts -->
+      <div class="py-6 text-center text-xs text-ink-400">Loading page sections...</div>
+    </div>
+
+    <div class="dock-sheet-footer">
+      <div class="flex items-center justify-between text-[11px] text-ink-500">
+        <span>Tap any section to scroll</span>
+        <span class="font-mono text-brand-600 font-medium">ATITTLE · 2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* --- Liquid Glass Floating Dock Styling --- */
+  .dock-container {
+    position: fixed;
+    left: 50%;
+    bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+    transform: translateX(-50%);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.28), 0 4px 12px -2px rgba(0, 0, 0, 0.16);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+    transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Dark Theme Glass (over dark sections / default) */
+  .dock-container[data-dock-theme="dark"] {
+    background-color: rgba(22, 17, 13, 0.84);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 12px 36px -4px rgba(0, 0, 0, 0.45);
+    color: var(--color-cream);
+  }
+
+  /* Light Theme Glass (over light cream/white sections) */
+  .dock-container[data-dock-theme="light"] {
+    background-color: rgba(251, 246, 238, 0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(74, 63, 52, 0.2);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.85), 0 10px 30px -4px rgba(0, 0, 0, 0.14);
+    color: var(--color-ink-950);
+  }
+
+  /* Fallback for browsers without backdrop-filter support */
+  @supports not ((-webkit-backdrop-filter: blur(20px)) or (backdrop-filter: blur(20px))) {
+    .dock-container[data-dock-theme="dark"] {
+      background-color: #1a1410;
+    }
+    .dock-container[data-dock-theme="light"] {
+      background-color: #f7f1e6;
+    }
+  }
+
+  .dock-divider {
+    width: 1px;
+    height: 1.5rem;
+    margin: 0 0.15rem;
+    opacity: 0.25;
+    background-color: currentColor;
+  }
+
+  /* Dock Item Core */
+  .dock-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    color: inherit;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    --dock-scale: 1;
+    transform-origin: bottom center;
+  }
+
+  .dock-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    transform: scale(var(--dock-scale, 1));
+    transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms ease;
+  }
+
+  .dock-item:focus-visible .dock-icon-box {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  .dock-item:hover .dock-icon-box {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  .dock-container[data-dock-theme="light"] .dock-item:hover .dock-icon-box {
+    background-color: rgba(0, 0, 0, 0.07);
+  }
+
+  /* Active Section / Home Indicator Dot */
+  .dock-dot {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background-color: var(--color-brand-400);
+    transition: transform 200ms ease;
+  }
+  .dock-item.is-active .dock-dot {
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* WhatsApp Live Pulse Beacon */
+  .dock-icon-whatsapp {
+    position: relative;
+  }
+  .dock-live-beacon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background-color: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+    animation: beacon-pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes beacon-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
+  }
+
+  /* Tooltips */
+  .dock-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 0.6rem;
+    transform: translateX(-50%) translateY(4px);
+    opacity: 0;
+    pointer-events: none;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    background-color: rgba(22, 17, 13, 0.94);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: opacity 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dock-item:hover .dock-tooltip,
+  .dock-item:focus-visible .dock-tooltip,
+  .dock-item.is-touching .dock-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .dock-icon-box {
+      transform: none !important;
+      transition: none !important;
+    }
+    .dock-container {
+      transition: none !important;
+    }
+    .dock-live-beacon {
+      animation: none !important;
+    }
+  }
+
+  /* --- Accessible Section Sheet Modal --- */
+  .dock-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .dock-sheet[hidden] {
+    display: none;
+  }
+
+  .dock-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: fadeIn 200ms ease-out;
+  }
+
+  .dock-sheet-panel {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 32rem;
+    max-height: 80svh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-ink-200);
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+    animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dock-sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 9999px;
+    background-color: var(--color-ink-300);
+    margin: 0.6rem auto 0.2rem auto;
+  }
+
+  .dock-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-ink-100);
+  }
+
+  .dock-sheet-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    background-color: var(--color-ink-100);
+    color: var(--color-ink-700);
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+  .dock-sheet-close:hover {
+    background-color: var(--color-ink-200);
+  }
+
+  .dock-sheet-body {
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dock-sheet-footer {
+    padding: 0.75rem 1.25rem 0.25rem 1.25rem;
+    border-top: 1px solid var(--color-ink-100);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+</style>
+
+<script src="../scripts/dock.ts"></script>
