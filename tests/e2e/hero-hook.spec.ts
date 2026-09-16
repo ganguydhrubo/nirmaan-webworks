@@ -200,19 +200,10 @@ test.describe('Mobile First-View "2-Second Hook"', () => {
     }
   });
 
-  test('Stubbed PerformanceObserver keeps speed chip cleanly unrendered', async ({ page }) => {
-    await page.addInitScript(() => {
-      // Stub out PerformanceObserver
-      // @ts-ignore
-      delete window.PerformanceObserver;
-    });
-
+  test('Speed chip is removed from hero to keep first view clean and uncluttered', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/', { waitUntil: 'load' });
-    await page.waitForTimeout(500);
-
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     const speedContainer = page.locator('#speed-chip-container');
-    const isHidden = await speedContainer.evaluate((el) => el.classList.contains('hidden'));
-    expect(isHidden).toBe(true);
+    expect(await speedContainer.count()).toBe(0);
   });
 });

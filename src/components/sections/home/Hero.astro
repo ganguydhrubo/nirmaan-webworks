@@ -4,7 +4,6 @@ import { waLink } from "@/lib/contact-links";
 import Icon from "@/components/ui/Icon.astro";
 import DemoShowcase from "@/components/ui/DemoShowcase.astro";
 import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro";
-import HeroSpeedChip from "@/components/sections/home/HeroSpeedChip.astro";
 ---
 
 <section
@@ -61,13 +60,10 @@ import HeroSpeedChip from "@/components/sections/home/HeroSpeedChip.astro";
         </a>
       </div>
 
-      <!-- Trust Bar & Real LCP Speed Chip -->
-      <div class="hero-trust-bar flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-3">
-        <HeroSpeedChip />
-        <p class="hero-response text-ink-600">
-          {siteConfig.responseCommitment} No sales call required to get a price.
-        </p>
-      </div>
+      <!-- Trust Commitment -->
+      <p class="hero-response text-ink-600 mt-3">
+        {siteConfig.responseCommitment} No sales call required to get a price.
+      </p>
 
       <!-- Proof & AI Evaluator Links -->
       <div class="hero-links-strip flex flex-wrap items-center gap-2.5 sm:gap-3 mt-3">
