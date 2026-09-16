@@ -20,6 +20,20 @@ export interface WhatsAppTemplates {
   demoGeneric: (demoName: string) => string;
   industryPage: (industryName: string) => string;
   postEnquiryConfirmation: (name: string, category: string) => string;
+  serviceSpecific?: (serviceName: string) => string;
+}
+
+export interface OtherServiceEntry {
+  id: string;
+  name: string;
+  shortName: string;
+  headline: string;
+  analogy: string;
+  takeaway: string;
+  icon: string;
+  badge: string;
+  whatsappMessage: string;
+  crossLink?: { label: string; href: string };
 }
 
 export interface PriceBand {
@@ -163,6 +177,8 @@ export const siteConfig = {
       `Hi, I run a ${industryName.toLowerCase()} business and I'd like a website built for it.`,
     postEnquiryConfirmation: (name: string, category: string) =>
       `Hi, this is ${name}. I just submitted an enquiry about a ${category} website on your site — following up here.`,
+    serviceSpecific: (serviceName: string) =>
+      `Hi, I saw your ${serviceName} service on your website and I'd like to discuss how you can help my business with this.`,
   } satisfies WhatsAppTemplates,
 
   analyticsProvider: "cloudflare" as "cloudflare" | "umami" | "none",
@@ -293,6 +309,88 @@ export const siteConfig = {
     {"slug":"torque-district","businessName":"Torque District","industrySlug":"automotive","tagline":"Good machines. No guesswork.","city":"Pune, Maharashtra","noindex":true},
     {"slug":"clearline-labs","businessName":"Clearline Diagnostics","industrySlug":"diagnostics-labs","tagline":"Clarity, at every step.","city":"Chandigarh","noindex":true},
   ] satisfies DemoRegistryEntry[],
+
+  otherServices: [
+    {
+      id: "meta-google-ads",
+      name: "Meta & Google Ads",
+      shortName: "Paid Ads",
+      headline: "Put your business in front of people already searching for it.",
+      analogy: "You know how when you search \"dentist near me\", a few clinics show up right at the top marked 'Ad'? Or how a jewellery ad shows up while you're scrolling Instagram? That's not luck — someone paid a small, controlled amount to be shown to exactly the right people. We set that up for you: pick the right customers, write the ad, set a daily budget you're comfortable with, and make sure the money is actually turning into phone calls and WhatsApp messages — not just 'likes'.",
+      takeaway: "You tell us your monthly budget — even ₹5,000/month is enough to start — we handle everything else and show you, in plain numbers, what it brought back.",
+      icon: "target",
+      badge: "High-Intent Traffic",
+      whatsappMessage: "Hi, I'm interested in Meta and Google Ads for my business. I'd like to discuss setting up targeted campaigns to bring phone and WhatsApp enquiries.",
+    },
+    {
+      id: "seo-aeo",
+      name: "SEO & AEO (Search + Answer Engine Optimization)",
+      shortName: "SEO & AEO",
+      headline: "Get found on Google — and now, on AI answers too.",
+      analogy: "SEO (Search Engine Optimization) means making sure that when someone searches for what you do, your business shows up on Google without paying for an ad — like being on the main road instead of a back alley. AEO (Answer Engine Optimization) is the newer version of this: people are starting to ask ChatGPT or Google's AI \"best dentist in Nagpur\" instead of typing it into a search box — AEO makes sure your business is the one those AI tools actually mention by name.",
+      takeaway: "Think of it as making sure your shop's signboard is readable both by people walking by (Google) and by the new AI 'shop assistants' people are starting to ask instead (ChatGPT, Gemini).",
+      icon: "search",
+      badge: "Google & AI Discovery",
+      whatsappMessage: "Hi, I'd like to ask about SEO and AEO to get my business recommended by Google and AI answer engines like ChatGPT and Gemini.",
+    },
+    {
+      id: "saas",
+      name: "End-to-end SaaS (Software as a Service)",
+      shortName: "SaaS Products",
+      headline: "Got a software idea? We build the whole business, not just a demo.",
+      analogy: "SaaS (Software as a Service) just means software people pay a monthly subscription for — like Netflix, but for a business tool. If you've got an idea (say, a booking system to sell to other clinics, or an inventory tool for shop owners like you), we build the entire thing: people can sign up, pay automatically every month, use the product, and you get paid — without you needing to write a single line of code.",
+      takeaway: "If you can explain your idea in two minutes over a phone call, we can tell you honestly whether it's buildable and what it would take.",
+      icon: "cloud",
+      badge: "Subscription Software",
+      whatsappMessage: "Hi, I have a software/SaaS idea and I'd like to discuss building an end-to-end subscription tool with ATITTLE.",
+    },
+    {
+      id: "fixing-broken-systems",
+      name: "Fixing Broken Systems or Apps",
+      shortName: "System Repairs",
+      headline: "Inherited a mess from a previous developer? We clean it up.",
+      analogy: "Sometimes a business already has a website or app — but it's slow, keeps crashing, the person who built it has disappeared, or nobody remembers the login anymore. We go in, figure out exactly what's wrong without judging how it got that way, and fix it — patch it, speed it up, or rebuild only the broken part — instead of throwing everything away and starting over unless that's genuinely the cheaper option.",
+      takeaway: "Send us the login details and tell us what's going wrong — we'll tell you honestly whether it needs a small fix or a full rebuild, before you spend a rupee.",
+      icon: "wrench",
+      badge: "Code Rescue & Fixes",
+      whatsappMessage: "Hi, I have an existing website or app that is slow, broken, or abandoned by a previous developer. I'd like an honest review of how to fix it.",
+    },
+    {
+      id: "iot",
+      name: "End-to-end IoT (Internet of Things)",
+      shortName: "IoT & Hardware Dashboards",
+      headline: "Connect real machines to an app you can check from anywhere.",
+      analogy: "IoT (Internet of Things) means physical devices — a water tank sensor, a factory machine, an electricity meter, a delivery vehicle — that can 'talk' to the internet. We connect that hardware to a simple app or dashboard, so instead of physically walking over to check something, you can see it, get alerted, or even control it from your phone, from anywhere.",
+      takeaway: "If you've ever thought \"I wish I could just check this from my phone instead of driving there,\" that's exactly what this is for.",
+      icon: "cpu",
+      badge: "Connected Hardware",
+      whatsappMessage: "Hi, I'm interested in connecting machines or sensors to a phone app/dashboard (IoT). Let's discuss what's possible for my business.",
+    },
+    {
+      id: "ai-transformation",
+      name: "AI Transformation",
+      shortName: "AI Workflow Automation",
+      headline: "We find the boring, repetitive parts of your business AI can take off your plate.",
+      analogy: "This isn't about 'adding AI' for the sake of it. We sit with you, look at the parts of your day that are repetitive — replying to the same customer questions, manually entering data, chasing follow-ups — and figure out exactly where a bit of AI can save real hours, with real, measurable savings, not buzzwords.",
+      takeaway: "We'll tell you honestly if AI isn't worth it for a particular task — we're not here to sell you AI you don't need.",
+      icon: "sparkles",
+      badge: "Practical Automation",
+      crossLink: { label: "Test our live AI Website Evaluator right now →", href: "/tools/website-evaluator" },
+      whatsappMessage: "Hi, I want to explore practical AI automation for repetitive tasks in my business. Can we discuss where it makes financial sense?",
+    },
+    {
+      id: "ai-agent",
+      name: "AI Agent",
+      shortName: "Digital Staff Agents",
+      headline: "A tireless digital staff member trained just for your business.",
+      analogy: "An AI agent is like hiring a very fast, very patient staff member who never sleeps — one that can answer customer questions on WhatsApp, take bookings, follow up with leads, or handle one specific repetitive job, trained specifically on your business's information (your prices, your services, your policies) so it never gives a wrong or generic answer.",
+      takeaway: "Think of it as the first reply to every customer being handled instantly, any time of day — with a real person stepping in only when it actually needs a human.",
+      icon: "bot",
+      badge: "24/7 Digital Assistant",
+      crossLink: { label: "Try our live AI-powered tool on your site right now →", href: "/tools/website-evaluator" },
+      whatsappMessage: "Hi, I'm interested in building a custom AI agent trained on my business services, pricing, and FAQs to handle customer inquiries.",
+    },
+  ] satisfies OtherServiceEntry[],
 } as const;
 
 export type SiteConfig = typeof siteConfig;

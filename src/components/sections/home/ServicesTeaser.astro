@@ -1,0 +1,96 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id = "services-teaser", class: className = "" } = Astro.props;
+const services = siteConfig.otherServices;
+---
+
+<section id={id} class:list={["bg-ink-950 py-16 sm:py-24 text-cream border-t border-ink-800", className]}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal grid items-center gap-10 rounded-3xl border border-ink-800 bg-ink-900 p-5 sm:p-10 lg:p-16 lg:grid-cols-[1.1fr_0.9fr] shadow-2xl">
+      <!-- Left: Narrative & Discovery Callout -->
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-950/50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+          <span class="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
+          ✨ 7 More Ways We Help You Grow
+        </div>
+
+        <h2 class="font-display mt-4 text-3xl font-semibold text-cream sm:text-4xl lg:text-5xl leading-tight">
+          Websites are where we started. <br class="hidden sm:inline" />
+          <span class="text-brand-400 italic">Here's everything else.</span>
+        </h2>
+
+        <p class="mt-4 text-base text-ink-300 leading-relaxed">
+          A fast, mobile-first website gets your business in the door. But when you are ready to scale with paid ads, Google & AI answer rankings, custom subscription software, connected hardware, or an autonomous 24/7 AI staff member — we engineer the entire system.
+        </p>
+
+        <ul class="mt-6 space-y-2.5 text-sm text-ink-300">
+          <li class="flex items-start gap-2">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>No technical jargon</strong> — explained in plain business language</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>Fixed rupee pricing & honest scopes</strong> — no surprise invoices</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <span><strong>Direct founder delivery</strong> — no junior account managers</span>
+          </li>
+        </ul>
+
+        <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 text-sm sm:text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700 active:scale-98"
+            data-analytics-event="cta_click"
+          >
+            Explore Beyond Websites
+            <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+          <span class="text-xs text-ink-400">Takes 2 minutes to browse</span>
+        </div>
+      </div>
+
+      <!-- Right: Compact Interactive Capability Reel -->
+      <div class="rounded-2xl border border-ink-800 bg-ink-950 p-5 sm:p-6 shadow-inner">
+        <div class="flex items-center justify-between border-b border-ink-800 pb-3 mb-4 text-xs font-semibold text-ink-400">
+          <span>ATITTLE Extended Capabilities</span>
+          <span class="text-emerald-400 font-mono">7 Active Practices</span>
+        </div>
+
+        <div class="space-y-2.5">
+          {services.map((s, idx) => (
+            <a
+              href={`/services#${s.id}`}
+              class="group flex items-center justify-between rounded-xl border border-ink-800/80 bg-ink-900/60 p-3 text-xs sm:text-sm transition hover:border-brand-500/50 hover:bg-brand-950/20"
+            >
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-ink-800 text-xs font-mono font-bold text-ink-300 group-hover:bg-brand-900/60 group-hover:text-brand-300 transition-colors">
+                  0{idx + 1}
+                </span>
+                <div class="truncate">
+                  <div class="font-semibold text-cream group-hover:text-brand-300 transition-colors truncate">
+                    {s.name}
+                  </div>
+                  <div class="text-[11px] text-ink-400 truncate">
+                    {s.headline}
+                  </div>
+                </div>
+              </div>
+              <span class="text-ink-500 group-hover:text-brand-400 group-hover:translate-x-0.5 transition ml-2 shrink-0">
+                →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

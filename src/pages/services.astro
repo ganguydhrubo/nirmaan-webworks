@@ -1,0 +1,359 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/ui/Icon.astro";
+import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+import { siteConfig } from "@config/site";
+import { waLink } from "@/lib/contact-links";
+
+export const prerender = true;
+
+const meta = {
+  title: "Beyond Websites — Digital Services for Growing Businesses | ATITTLE",
+  description: "Websites are where we started. Explore our 7 specialized practices: Meta & Google Ads, SEO & AEO, SaaS development, system repairs, IoT hardware, and custom AI agents.",
+};
+
+const services = siteConfig.otherServices;
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <!-- Top Cinematic Intro Banner -->
+  <section class="relative overflow-hidden bg-cream py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <!-- Live Discovery Badge -->
+        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-800 mb-4">
+          <span class="inline-block h-2 w-2 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true"></span>
+          Beyond Websites &middot; 7 Specialized Practices
+        </div>
+
+        <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-ink-950 text-balance leading-[1.12]">
+          Websites are where we started. <br />
+          <span class="text-brand-600 italic">Here's everything else.</span>
+        </h1>
+
+        <p class="mt-5 text-base sm:text-lg text-ink-700 leading-relaxed max-w-2xl mx-auto">
+          A high-converting website is the anchor. But when your business needs customers from paid ads, rankings on AI answer engines, subscription software, connected hardware, or a 24/7 digital staff member — we build the complete system.
+        </p>
+
+        <!-- Sound Toolbar Affordance -->
+        <div class="mt-8 inline-flex items-center gap-3 rounded-full border border-ink-300 bg-white px-4 py-2 text-xs font-medium text-ink-700 shadow-sm">
+          <button
+            type="button"
+            class="services-sound-btn inline-flex items-center gap-1.5 font-semibold text-ink-900 hover:text-brand-600 transition"
+            data-services-sound-btn
+            aria-label="Toggle arrival sound effects"
+            title="Toggle arrival sound effects"
+          >
+            <span class="services-sound-icon" data-services-sound-icon>🔊</span>
+            <span class="services-sound-label" data-services-sound-label>Sound ON</span>
+          </button>
+          <span class="text-ink-300">•</span>
+          <span class="text-ink-500">Scroll to explore each practice</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The 7 Cinematic Service Scenes -->
+  <section class="services-flow bg-ink-50 py-16 sm:py-24" data-services-flow>
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
+      {services.map((s, idx) => (
+        <article
+          id={s.id}
+          class="service-scene group relative rounded-3xl border border-ink-300 bg-white p-6 sm:p-10 lg:p-12 transition-all duration-300 scroll-mt-24"
+          data-service-scene
+          data-service-index={idx}
+        >
+          <!-- Top Chrome Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-ink-200 pb-5 mb-6">
+            <div class="flex items-center gap-3">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 border border-brand-200 text-sm font-mono font-bold text-brand-700">
+                0{idx + 1}
+              </span>
+              <div>
+                <span class="inline-block text-[11px] font-bold uppercase tracking-widest text-brand-600">
+                  {s.badge}
+                </span>
+                <h2 class="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-ink-950 mt-0.5">
+                  {s.name}
+                </h2>
+              </div>
+            </div>
+
+            <!-- Jump Tag -->
+            <span class="text-xs font-mono text-ink-400">
+              Practice 0{idx + 1} / 07
+            </span>
+          </div>
+
+          <!-- Headline -->
+          <h3 class="font-display text-lg sm:text-xl font-semibold text-brand-700 leading-snug mb-4">
+            "{s.headline}"
+          </h3>
+
+          <!-- Analogy & Explanation (Plain English) -->
+          <p class="text-sm sm:text-base text-ink-700 leading-relaxed mb-6">
+            {s.analogy}
+          </p>
+
+          <!-- What This Means For You (Takeaway Card) -->
+          <div class="rounded-xl border border-brand-200 bg-brand-50/70 p-4 sm:p-5 mb-6">
+            <div class="text-xs font-bold uppercase tracking-wider text-brand-800 mb-1 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
+              What this means for you:
+            </div>
+            <p class="text-xs sm:text-sm font-medium text-ink-900 leading-relaxed">
+              {s.takeaway}
+            </p>
+          </div>
+
+          <!-- Optional Cross-link for AI Tools -->
+          {s.crossLink && (
+            <div class="mb-6 rounded-lg border border-emerald-200 bg-emerald-50/60 p-3.5 flex items-center justify-between gap-3 text-xs sm:text-sm">
+              <span class="text-emerald-900 font-medium">
+                Live proof: {s.crossLink.label}
+              </span>
+              <a
+                href={s.crossLink.href}
+                class="shrink-0 font-semibold text-emerald-800 hover:text-emerald-950 underline"
+              >
+                Launch Tool
+              </a>
+            </div>
+          )}
+
+          <!-- Action Footer -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-5 border-t border-ink-200">
+            <a
+              href={waLink(s.whatsappMessage)}
+              target="_blank"
+              rel="noopener"
+              aria-label={`Chat on WhatsApp about ${s.name} (opens WhatsApp)`}
+              class="inline-flex items-center gap-2 rounded-md bg-[#25D366] hover:bg-[#1EBE5D] text-white px-4 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition"
+              data-analytics-event="whatsapp_click"
+            >
+              <Icon name="whatsapp" class="h-4 w-4" />
+              Discuss on WhatsApp
+            </a>
+
+            <button
+              type="button"
+              class="inline-flex items-center gap-1.5 rounded-md border border-ink-300 bg-white hover:bg-ink-50 px-4 py-2.5 text-xs sm:text-sm font-semibold text-ink-800 transition"
+              data-discuss-onsite-btn
+              data-service-name={s.name}
+            >
+              Discuss On-Site &darr;
+            </button>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Bottom On-Site Enquiry Section -->
+  <section id="services-contact" class="bg-cream py-16 sm:py-24 border-t border-ink-200">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-brand-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-800 mb-2">
+          Direct Scoping
+        </div>
+        <h2 class="font-display text-2xl sm:text-4xl font-semibold text-ink-950">
+          Tell us about your project
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-600">
+          Whether it's an ad campaign, custom software, or code repair — explain your requirement in plain words and we'll reply with an honest scope and rupee pricing within 24 hours.
+        </p>
+      </div>
+
+      <div class="rounded-3xl border border-ink-300 bg-white p-6 sm:p-10 shadow-lg">
+        <EnquiryForm id="services-enquiry-form" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function initServicesCinematics() {
+    // Sound & Web Audio Engine
+    let audioCtx: AudioContext | null = null;
+    let audioUnlocked = false;
+
+    function getAudio(): AudioContext | null {
+      if (typeof window === 'undefined') return null;
+      if (!audioCtx) {
+        const AudioClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioClass) audioCtx = new AudioClass();
+      }
+      return audioCtx;
+    }
+
+    function unlock(): void {
+      const ctx = getAudio();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') void ctx.resume();
+      try {
+        const buf = ctx.createBuffer(1, 1, 22050);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.connect(ctx.destination);
+        src.start(0);
+        audioUnlocked = true;
+      } catch {}
+    }
+
+    // Global gesture unlock
+    if (typeof window !== 'undefined') {
+      const onUserGesture = () => {
+        unlock();
+        if (audioUnlocked) {
+          window.removeEventListener('pointerdown', onUserGesture, true);
+          window.removeEventListener('click', onUserGesture, true);
+          window.removeEventListener('touchstart', onUserGesture, true);
+          window.removeEventListener('keydown', onUserGesture, true);
+        }
+      };
+      window.addEventListener('pointerdown', onUserGesture, { capture: true, passive: true });
+      window.addEventListener('click', onUserGesture, { capture: true, passive: true });
+      window.addEventListener('touchstart', onUserGesture, { capture: true, passive: true });
+      window.addEventListener('keydown', onUserGesture, { capture: true, passive: true });
+    }
+
+    // Sound toggle state (defaults to true matching showcase)
+    let soundEnabled = true;
+    try {
+      const s = localStorage.getItem('atittle_services_sound');
+      if (s === 'false') soundEnabled = false;
+    } catch {}
+
+    const soundBtn = document.querySelector<HTMLButtonElement>('[data-services-sound-btn]');
+    const soundIcon = document.querySelector<HTMLElement>('[data-services-sound-icon]');
+    const soundLabel = document.querySelector<HTMLElement>('[data-services-sound-label]');
+
+    function updateSoundUI() {
+      if (soundIcon) soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+      if (soundLabel) soundLabel.textContent = soundEnabled ? 'Sound ON' : 'Sound OFF';
+    }
+    updateSoundUI();
+
+    if (soundBtn) {
+      soundBtn.addEventListener('click', () => {
+        unlock();
+        soundEnabled = !soundEnabled;
+        try { localStorage.setItem('atittle_services_sound', String(soundEnabled)); } catch {}
+        updateSoundUI();
+        if (soundEnabled) playChime();
+      });
+    }
+
+    function playChime() {
+      if (!soundEnabled || document.hidden) return;
+      const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (media.matches) return;
+
+      const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
+      if (nav.connection?.saveData || nav.connection?.effectiveType === '2g' || nav.connection?.effectiveType === 'slow-2g') return;
+
+      try {
+        const ctx = getAudio();
+        if (!ctx || ctx.state !== 'running') return;
+        const now = ctx.currentTime;
+        const dur = 0.22;
+
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.28, now);
+        master.connect(ctx.destination);
+
+        // Soft dual-sine bell chime (C5 523Hz + E5 659Hz)
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(523.25, now);
+        osc1.frequency.exponentialRampToValueAtTime(587.33, now + dur);
+
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(659.25, now);
+        osc2.frequency.exponentialRampToValueAtTime(783.99, now + dur);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(master);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + dur);
+        osc2.stop(now + dur);
+      } catch {}
+    }
+
+    // IntersectionObserver for Scene Pan/Zoom & Chime
+    const scenes = document.querySelectorAll<HTMLElement>('[data-service-scene]');
+    const visitedScenes = new Set<string>();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          target.classList.add('scene-active');
+          if (!visitedScenes.has(target.id)) {
+            visitedScenes.add(target.id);
+            if (audioUnlocked) playChime();
+          }
+        }
+      });
+    }, { threshold: 0.35 });
+
+    scenes.forEach((s) => observer.observe(s));
+
+    // "Discuss On-Site" button handler: scrolls to form and populates notes
+    document.querySelectorAll<HTMLButtonElement>('[data-discuss-onsite-btn]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const serviceName = btn.dataset.serviceName;
+        const form = document.querySelector<HTMLFormElement>('#services-enquiry-form');
+        if (!form) return;
+
+        const needsSelect = form.elements.namedItem('needs') as HTMLSelectElement | null;
+        const messageArea = (form.elements.namedItem('message') || form.elements.namedItem('notes')) as HTMLTextAreaElement | null;
+
+        if (needsSelect) needsSelect.value = 'not-sure';
+        if (messageArea && serviceName) {
+          messageArea.value = `I am interested in ATITTLE's ${serviceName} service. Please get in touch to discuss requirements and pricing.`;
+        }
+
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        form.classList.add('ring-2', 'ring-brand-500', 'ring-offset-4');
+        setTimeout(() => {
+          form.classList.remove('ring-2', 'ring-brand-500', 'ring-offset-4');
+        }, 2500);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initServicesCinematics);
+  } else {
+    initServicesCinematics();
+  }
+</script>
+
+<style>
+  .service-scene {
+    box-shadow: 0 16px 28px -18px rgba(51, 43, 35, 0.35);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 320ms ease;
+  }
+  .service-scene:hover,
+  .service-scene.scene-active {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 20px 34px -14px rgba(51, 43, 35, 0.45);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .service-scene {
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
