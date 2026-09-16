@@ -352,21 +352,7 @@ function initDock(): void {
     item.addEventListener("touchmove", clearLongPress, { passive: true });
   });
 
-  // First-visit ever floating labels (1400-3000ms)
-  try {
-    const hasSeenDockLabels = localStorage.getItem("atittle-dock-labels-seen");
-    if (!hasSeenDockLabels && !isReducedMotion && !isSaveData) {
-      setTimeout(() => {
-        items.forEach((item) => item.classList.add("is-label-visible"));
-        setTimeout(() => {
-          items.forEach((item) => item.classList.remove("is-label-visible"));
-          try {
-            localStorage.setItem("atittle-dock-labels-seen", "1");
-          } catch (_) {}
-        }, 1600);
-      }, 1400);
-    }
-  } catch (_) {}
+
 
   // --------------------------------------------------------------------------
   // 6. Idle Scroll Hint (3.5s after settle ~5.6s post load)
