@@ -103,6 +103,9 @@ test.describe('Floating Liquid Glass Dock Navigation', () => {
     const dock = page.locator('#floating-dock');
     const homeItem = dock.locator('[data-dock-action="home"]');
 
+    // Wait for dock entrance animation to settle
+    await page.waitForTimeout(1500);
+
     const box = await homeItem.boundingBox();
     expect(box).not.toBeNull();
     if (box) {

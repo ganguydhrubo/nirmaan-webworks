@@ -45,7 +45,7 @@ const demos = siteConfig.demoRegistry.map(demo => ({
     <div class="showcase-stack" aria-label="Upcoming demo">
       <div class="showcase-stack-card showcase-stack-card--third" aria-hidden="true"></div>
       <div class="showcase-stack-card showcase-stack-card--second" aria-hidden="true"><span data-after-next>{demos[2]?.category}</span></div>
-      <button type="button" class="showcase-stack-card showcase-stack-card--next" data-next-card aria-label={`Next demo: ${demos[1]?.businessName}`}>
+      <button type="button" class="showcase-stack-card showcase-stack-card--next" data-next-card>
         <span class="showcase-stack-number" aria-hidden="true">UP<br/>NEXT</span>
         <span class="showcase-stack-text"><span data-next-category>{demos[1]?.category}</span><strong data-next-name>{demos[1]?.businessName}</strong></span>
         <span class="showcase-stack-arrow" aria-hidden="true">↗</span>

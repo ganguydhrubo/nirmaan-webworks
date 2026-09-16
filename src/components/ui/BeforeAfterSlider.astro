@@ -26,8 +26,8 @@ const { id = "before-after-slider", class: className = "" } = Astro.props;
     <div class="comparison-wrapper relative mx-auto max-w-5xl rounded-2xl border border-ink-800 bg-ink-900/90 shadow-2xl p-2 sm:p-4">
       <!-- Top Meta Badges -->
       <div class="flex items-center justify-between px-2 sm:px-4 py-2 border-b border-ink-800 text-xs sm:text-sm font-medium mb-3">
-        <div class="flex items-center gap-1.5 text-error">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-error"></span>
+        <div class="flex items-center gap-1.5 text-rose-400">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-400"></span>
           <span class="font-semibold">Standard Freelancer Template</span>
           <span class="hidden sm:inline text-ink-500">• 4.8s Slow Load</span>
         </div>
@@ -53,7 +53,7 @@ const { id = "before-after-slider", class: className = "" } = Astro.props;
         aria-valuenow="50"
       >
         <!-- RIGHT SIDE: AFTER (ATITTLE Build) — Underneath layer -->
-        <div class="absolute inset-0 w-full h-full bg-[#fbf6ee] text-ink-900 flex flex-col justify-between p-4 sm:p-8 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 w-full h-full bg-[#fbf6ee] text-ink-900 flex flex-col justify-between p-4 sm:p-8 overflow-hidden pointer-events-none" aria-hidden="true">
           <!-- Live Demo Browser Chrome -->
           <div class="flex items-center justify-between border-b border-ink-200 pb-3">
             <div class="flex items-center gap-2.5">
@@ -108,6 +108,7 @@ const { id = "before-after-slider", class: className = "" } = Astro.props;
           class="comparison-overlay absolute inset-0 w-full h-full bg-[#f1f3f5] text-[#333] flex flex-col justify-between p-4 sm:p-8 overflow-hidden pointer-events-none border-r border-ink-600 shadow-2xl"
           data-slider-clip
           style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);"
+          aria-hidden="true"
         >
           <!-- Old Browser Chrome -->
           <div class="flex items-center justify-between border-b border-gray-300 pb-3 bg-gray-200 -m-4 sm:-m-8 p-3 mb-2">
@@ -132,19 +133,19 @@ const { id = "before-after-slider", class: className = "" } = Astro.props;
               We provide all types of sweets, namkeen, fast food, bakery items, marriage hall booking. Please call on mobile numbers for rate list and enquiry.
             </p>
             <div class="mt-3 flex flex-wrap gap-2">
-              <span class="bg-blue-600 text-white text-[11px] px-2 py-1 font-bold">
+              <span class="bg-blue-800 text-white text-[11px] px-2 py-1 font-bold">
                 CLICK HERE FOR INQUIRY
               </span>
-              <span class="bg-gray-300 text-gray-700 text-[11px] px-2 py-1">
+              <span class="bg-gray-300 text-gray-800 text-[11px] px-2 py-1">
                 Download PDF Menu (45MB)
               </span>
             </div>
           </div>
 
           <!-- Old Broken Bottom -->
-          <div class="bg-gray-100 border border-gray-300 p-2 text-[10px] text-gray-500 flex justify-between items-center">
+          <div class="bg-gray-100 border border-gray-300 p-2 text-[10px] text-gray-700 flex justify-between items-center">
             <span>Visitor Counter: 004128</span>
-            <span class="text-red-600 font-bold">Best viewed on desktop 1024x768</span>
+            <span class="text-red-800 font-bold">Best viewed on desktop 1024x768</span>
           </div>
         </div>
 
@@ -168,28 +169,28 @@ const { id = "before-after-slider", class: className = "" } = Astro.props;
         <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
           <div class="text-ink-400 font-medium">Page Load Time</div>
           <div class="mt-1 font-semibold text-cream flex items-center justify-between">
-            <span class="text-error line-through text-[11px]">4.8s</span>
+            <span class="text-rose-400 line-through text-[11px]">4.8s</span>
             <span class="text-emerald-400 font-bold">0.38s</span>
           </div>
         </div>
         <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
           <div class="text-ink-400 font-medium">Mobile Experience</div>
           <div class="mt-1 font-semibold text-cream flex items-center justify-between">
-            <span class="text-error line-through text-[11px]">Broken Zoom</span>
+            <span class="text-rose-400 line-through text-[11px]">Broken Zoom</span>
             <span class="text-emerald-400 font-bold">60fps Native</span>
           </div>
         </div>
         <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
           <div class="text-ink-400 font-medium">Customer Action</div>
           <div class="mt-1 font-semibold text-cream flex items-center justify-between">
-            <span class="text-error line-through text-[11px]">Lost Visitor</span>
+            <span class="text-rose-400 line-through text-[11px]">Lost Visitor</span>
             <span class="text-emerald-400 font-bold">1-Tap Direct Call</span>
           </div>
         </div>
         <div class="p-2.5 rounded-lg bg-ink-950/60 border border-ink-800/80">
           <div class="text-ink-400 font-medium">Pricing Clarity</div>
           <div class="mt-1 font-semibold text-cream flex items-center justify-between">
-            <span class="text-error line-through text-[11px]">"Call for rate"</span>
+            <span class="text-rose-400 line-through text-[11px]">"Call for rate"</span>
             <span class="text-emerald-400 font-bold">Transparent ₹</span>
           </div>
         </div>

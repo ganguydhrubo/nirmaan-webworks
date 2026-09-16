@@ -30,8 +30,8 @@ const currentPath = Astro.url.pathname;
     fixed-position descendants (the panel, the scrim) correctly position
     against the viewport instead.
   -->
-  <div class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/95 backdrop-blur">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8 xl:gap-4">
+  <div class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/95 backdrop-blur transition-transform duration-200" id="site-header-bar">
+  <div class="header-inner mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-2 sm:py-3 sm:px-6 lg:px-8 xl:gap-4 transition-transform duration-200">
     <Logo />
 
     <nav aria-label="Primary" class="hidden lg:block">
@@ -135,3 +135,38 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 </header>
+
+<script>
+  (function () {
+    const bar = document.getElementById("site-header-bar");
+    if (!bar) return;
+    let isScrolled = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrolled = window.scrollY > 40;
+        if (scrolled !== isScrolled) {
+          isScrolled = scrolled;
+          bar.classList.toggle("header--scrolled", scrolled);
+        }
+      },
+      { passive: true }
+    );
+  })();
+</script>
+
+<style>
+  #site-header-bar.header--scrolled {
+    transform: translateY(-2px);
+  }
+  #site-header-bar.header--scrolled .header-inner {
+    transform: scale(0.98);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #site-header-bar,
+    #site-header-bar .header-inner {
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>

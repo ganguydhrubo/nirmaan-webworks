@@ -69,6 +69,30 @@ const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJson
     <link rel="preload" href="/fonts/fraunces-600-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     {structuredData.map((data) => <script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />)}
+    <!-- Mobile First-View 2-Second Hook Gate -->
+    <script is:inline>
+      (function () {
+        try {
+          var isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var isSaveData = Boolean(navigator.connection && navigator.connection.saveData);
+          var hasPlayed = sessionStorage.getItem('atittle-hook-played');
+
+          if (!isReducedMotion && !isSaveData && !hasPlayed) {
+            document.documentElement.classList.add('hook');
+            setTimeout(function () {
+              try {
+                sessionStorage.setItem('atittle-hook-played', '1');
+              } catch (_) {}
+            }, 2100);
+          }
+          window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+              document.documentElement.classList.remove('hook');
+            }
+          });
+        } catch (_) {}
+      })();
+    </script>
   </head>
   <body class:list={["atittle-main", !hideStickyBar && "pb-[calc(4.75rem+env(safe-area-inset-bottom,1rem))]"]}>
     <a href="#main-content" class="skip-link">Skip to main content</a>

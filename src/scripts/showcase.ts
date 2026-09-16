@@ -278,7 +278,7 @@ function mountShowcase(root: HTMLElement): () => void {
     root.querySelector<HTMLElement>('[data-next-name]')!.textContent = next.dataset.name!;
     root.querySelector<HTMLElement>('[data-next-category]')!.textContent = next.dataset.category!;
     root.querySelector<HTMLElement>('[data-after-next]')!.textContent = scenes[wrap(active + 2)]!.dataset.category!;
-    root.querySelector('[data-next-card]')!.setAttribute('aria-label', `Next demo: ${next.dataset.name}`);
+    root.querySelector('[data-next-card]')!.removeAttribute('aria-label');
     if (manual) announcement.textContent = `${active + 1} of ${scenes.length}: ${scenes[active]!.dataset.name}`;
   }
 

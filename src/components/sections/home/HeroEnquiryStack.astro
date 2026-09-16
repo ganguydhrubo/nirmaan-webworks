@@ -1,0 +1,731 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { waLink } from "@/lib/contact-links";
+
+const enquiryData = [
+  {
+    business: "Sanjeevani Multispecialty Clinic",
+    slug: "sanjeevani-clinic",
+    route: "/demos/sanjeevani-clinic",
+    category: "Clinic",
+    message: "Is the paediatrician available Saturday morning?",
+    reply: "Yes, 11:00 is open. Shall I book it?",
+    waPrefill: "Hi ATITTLE, I run a clinic/healthcare centre and want a website that turns visitors into patient appointments like Sanjeevani Clinic.",
+  },
+  {
+    business: "Anaar — The Awadhi Table",
+    slug: "anaar-awadhi-table",
+    route: "/demos/anaar-awadhi-table",
+    category: "Restaurant",
+    message: "Table for 6 tonight at 8:30? One high chair please.",
+    reply: "Done — window table held till 8:45.",
+    waPrefill: "Hi ATITTLE, I run a restaurant/dining venue and want direct table bookings like Anaar.",
+  },
+  {
+    business: "Kayal Backwaters Resort",
+    slug: "kayal-backwaters",
+    route: "/demos/kayal-backwaters",
+    category: "Resort",
+    message: "Lake-view room free 14–16 Dec for 2 adults?",
+    reply: "Available. Direct rate saves you the OTA fee.",
+    waPrefill: "Hi ATITTLE, I run a boutique hotel/resort and want direct room bookings like Kayal Backwaters.",
+  },
+  {
+    business: "Sunehri Atelier",
+    slug: "sunehri-atelier",
+    route: "/demos/sunehri-atelier",
+    category: "Jeweller",
+    message: "Can I see the 22K jhumkas before visiting?",
+    reply: "Sending photos with weight and price now.",
+    waPrefill: "Hi ATITTLE, I run a jewellery studio and want customer enquiries like Sunehri Atelier.",
+  },
+  {
+    business: "Shivalik Homes & Developers",
+    slug: "shivalik-homes",
+    route: "/demos/shivalik-homes",
+    category: "Real Estate",
+    message: "EMI for the 3BHK on a 20-year loan?",
+    reply: "Around ₹41,800/month — try our calculator.",
+    waPrefill: "Hi ATITTLE, I run a real estate development firm and want qualified buyer leads like Shivalik Homes.",
+  },
+];
+
+const firstEnquiry = enquiryData[0]!;
+---
+
+<div class="hero-enquiry-wrapper relative w-full" id="enquiry-stack-wrapper">
+  <!-- Typing dots slot (appears 300-700ms during initial hook) -->
+  <div class="enquiry-typing-slot pointer-events-none" id="enquiry-typing-dots" aria-hidden="true">
+    <div class="inline-flex items-center gap-1.5 rounded-2xl bg-white/90 border border-ink-200/80 px-4 py-2.5 shadow-sm">
+      <span class="h-2 w-2 rounded-full bg-[#25D366] animate-pulse"></span>
+      <span class="text-xs text-ink-500 font-medium">Incoming WhatsApp enquiry</span>
+      <div class="flex items-center gap-1 ml-1 text-ink-400">
+        <span class="dot-bounce dot-1"></span>
+        <span class="dot-bounce dot-2"></span>
+        <span class="dot-bounce dot-3"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsed Stack Cards Container -->
+  <div
+    class="enquiry-card-slot"
+    id="enquiry-card-slot"
+    role="region"
+    aria-label="Recent WhatsApp customer enquiries demonstration"
+  >
+    <!-- Background Stacking Depth Card -->
+    <div class="enquiry-card enquiry-card-back pointer-events-none" id="enquiry-card-back" aria-hidden="true">
+      <div class="flex items-center justify-between text-[11px] text-ink-500 mb-1">
+        <div class="flex items-center gap-1.5 font-semibold text-ink-800">
+          <Icon name="whatsapp" class="h-3.5 w-3.5 text-[#25D366]" />
+          <span class="truncate back-business">Business</span>
+        </div>
+        <span class="text-ink-400">now</span>
+      </div>
+      <p class="text-xs text-ink-700 truncate back-message">Customer message</p>
+    </div>
+
+    <!-- Active Foreground Card (interactive button) -->
+    <button
+      type="button"
+      class="enquiry-card enquiry-card-active"
+      id="enquiry-card-btn"
+      aria-expanded="false"
+      aria-controls="enquiry-chat-panel"
+      aria-live="off"
+    >
+      <div class="flex items-center justify-between text-[11px] text-ink-500 mb-1 pointer-events-none">
+        <div class="flex items-center gap-1.5 font-semibold text-ink-800 min-w-0">
+          <Icon name="whatsapp" class="h-3.5 w-3.5 text-[#25D366] shrink-0" />
+          <span class="truncate font-display font-medium text-ink-900" id="card-active-business">
+            {firstEnquiry.business}
+          </span>
+        </div>
+        <span class="text-ink-600 shrink-0 ml-2 font-mono text-[10px]">now</span>
+      </div>
+      <div class="flex items-center justify-between gap-2 pointer-events-none">
+        <p class="text-xs text-ink-800 font-medium truncate text-left" id="card-active-message">
+          "{firstEnquiry.message}"
+        </p>
+        <span class="double-ticks shrink-0 flex items-center" id="card-double-tick" aria-hidden="true">
+          <!-- Double tick SVG -->
+          <svg class="h-3.5 w-3.5 tick-icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.5 4.5l3.5-3.5a.5.5 0 0 1 .708.708l-3.854 3.854a.5.5 0 0 1-.708 0L6.354 8.768a.5.5 0 0 1 .708-.708l.792.794z"/>
+          </svg>
+        </span>
+      </div>
+    </button>
+  </div>
+
+  <!-- Honest Caption -->
+  <p class="enquiry-caption text-[11px] text-ink-500 mt-1.5 flex items-center justify-between px-1">
+    <span>Sample enquiries on our demo sites</span>
+    <span class="text-[10px] text-brand-700 font-medium">Tap card to test conversation &rarr;</span>
+  </p>
+
+  <!-- Expanded Interactive Chat Panel (FLIP Transition) -->
+  <div
+    class="enquiry-chat-panel"
+    id="enquiry-chat-panel"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="panel-chat-title"
+  >
+    <div class="enquiry-chat-header">
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="h-7 w-7 rounded-full bg-brand-50 border border-brand-200 flex items-center justify-center shrink-0">
+          <Icon name="whatsapp" class="h-4 w-4 text-[#25D366]" />
+        </div>
+        <div class="min-w-0">
+          <h3 id="panel-chat-title" class="text-xs font-bold text-ink-950 truncate">
+            {firstEnquiry.business}
+          </h3>
+          <div class="flex items-center gap-1 text-[10px] text-emerald-600 font-medium">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Online &middot; Direct WhatsApp
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="enquiry-chat-close"
+        id="enquiry-chat-close"
+        aria-label="Close interactive conversation"
+      >
+        <Icon name="close" class="h-3.5 w-3.5" />
+      </button>
+    </div>
+
+    <div class="enquiry-chat-body">
+      <!-- Customer Message Bubble -->
+      <div class="chat-bubble chat-bubble-customer">
+        <p class="text-xs text-ink-900" id="panel-customer-msg">
+          "{firstEnquiry.message}"
+        </p>
+        <div class="chat-time-ticks text-[10px] text-ink-400 font-mono">
+          <span>10:42 AM</span>
+          <svg class="h-3 w-3 text-[#34B7F1] inline ml-0.5" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.5 4.5l3.5-3.5a.5.5 0 0 1 .708.708l-3.854 3.854a.5.5 0 0 1-.708 0L6.354 8.768a.5.5 0 0 1 .708-.708l.792.794z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Business Typing Indicator -->
+      <div class="chat-typing-indicator" id="panel-typing-indicator">
+        <span class="text-[10px] text-ink-500 font-medium mr-1">Replying</span>
+        <span class="dot-bounce dot-1"></span>
+        <span class="dot-bounce dot-2"></span>
+        <span class="dot-bounce dot-3"></span>
+      </div>
+
+      <!-- Business Reply Bubble -->
+      <div class="chat-bubble chat-bubble-reply" id="panel-reply-bubble">
+        <p class="text-xs text-ink-900 font-medium" id="panel-reply-msg">
+          "{firstEnquiry.reply}"
+        </p>
+        <span class="chat-time text-[10px] text-ink-400 font-mono">10:42 AM</span>
+      </div>
+    </div>
+
+    <div class="enquiry-chat-footer flex flex-col gap-2 pt-2 border-t border-ink-100">
+      <a
+        href={firstEnquiry.route}
+        id="panel-open-demo-btn"
+        class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-brand-600 px-3 py-2 text-xs font-semibold text-cream shadow-sm hover:bg-brand-700 transition"
+      >
+        <span>Open this demo</span>
+        <Icon name="chevron-right" class="h-3.5 w-3.5" />
+      </a>
+      <a
+        href={waLink(firstEnquiry.waPrefill)}
+        id="panel-wa-prefill-btn"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-ink-200 bg-cream/40 px-3 py-1.5 text-[11px] font-medium text-ink-800 hover:border-brand-500 hover:bg-white transition"
+      >
+        <Icon name="whatsapp" class="h-3.5 w-3.5 text-[#25D366]" />
+        <span>Get this for my business</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero-enquiry-wrapper {
+    margin-top: 0.75rem;
+    max-width: 32rem;
+  }
+
+  .enquiry-card-slot {
+    position: relative;
+    height: 74px; /* Reserved height to guarantee zero CLS */
+    width: 100%;
+  }
+
+  /* Typing Dots Slot */
+  .enquiry-typing-slot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+  html.hook .enquiry-typing-slot {
+    animation: typing-slot-in 400ms ease-out 300ms forwards, typing-slot-out 300ms ease-in 700ms forwards;
+  }
+  @keyframes typing-slot-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes typing-slot-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-6px); }
+  }
+
+  /* Enquiry Cards Base */
+  .enquiry-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    border: 1px solid rgba(74, 63, 52, 0.16);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: left;
+    outline: none;
+    touch-action: pan-y;
+  }
+  .enquiry-card:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  /* Back Card */
+  .enquiry-card-back {
+    transform: translateY(-6px) scale(0.95);
+    opacity: 0.45;
+    z-index: 1;
+    background: #fbf8f5;
+  }
+
+  /* Active Card */
+  .enquiry-card-active {
+    z-index: 2;
+    transition: transform 250ms var(--spring), box-shadow 250ms ease;
+  }
+  .enquiry-card-active:hover {
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+    border-color: rgba(193, 82, 46, 0.4);
+  }
+
+  /* Hook Entrance for Card (700-1100ms) */
+  html.hook .enquiry-card-active {
+    animation: card-appear 400ms var(--spring) 700ms backwards;
+  }
+  @keyframes card-appear {
+    0% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+      filter: blur(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+    }
+  }
+
+  /* Double Ticks Blue Read Receipt */
+  .double-ticks {
+    color: #94a3b8;
+    transition: color 250ms ease;
+  }
+  .double-ticks.is-read {
+    color: #34B7F1 !important;
+  }
+  html.hook .double-ticks {
+    animation: tick-turn-blue 300ms ease-out 1300ms forwards;
+  }
+  @keyframes tick-turn-blue {
+    from { color: #94a3b8; }
+    to { color: #34B7F1; }
+  }
+
+  /* Bouncing Dots */
+  .dot-bounce {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .dot-2 { animation-delay: 0.2s; }
+  .dot-3 { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Expanded Chat Panel */
+  .enquiry-chat-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: #ffffff;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(74, 63, 52, 0.2);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.22);
+    padding: 1rem;
+    box-sizing: border-box;
+    animation: panel-spring-in 300ms var(--spring) forwards;
+  }
+  .enquiry-chat-panel[hidden] {
+    display: none;
+  }
+  @keyframes panel-spring-in {
+    from {
+      opacity: 0;
+      transform: scale(0.94) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .enquiry-chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-ink-100);
+  }
+  .enquiry-chat-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    background: var(--color-ink-100);
+    color: var(--color-ink-600);
+    border: none;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+  .enquiry-chat-close:hover {
+    background: var(--color-ink-200);
+  }
+
+  .enquiry-chat-body {
+    padding-block: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .chat-bubble {
+    max-width: 86%;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0.85rem;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .chat-bubble-customer {
+    align-self: flex-start;
+    background: var(--color-ink-50);
+    border: 1px solid var(--color-ink-200);
+    border-bottom-left-radius: 0.2rem;
+  }
+  .chat-bubble-reply {
+    align-self: flex-end;
+    background: #d9fdd3; /* WhatsApp reply green */
+    border: 1px solid #bbf7d0;
+    border-bottom-right-radius: 0.2rem;
+    animation: reply-slide-in 300ms var(--spring) forwards;
+  }
+  @keyframes reply-slide-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-time-ticks {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+  }
+  .chat-time {
+    display: block;
+    text-align: right;
+    margin-top: 0.25rem;
+  }
+
+  .chat-typing-indicator {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.6rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.hook .enquiry-typing-slot,
+    html.hook .enquiry-card-active,
+    html.hook .double-ticks,
+    .enquiry-chat-panel,
+    .chat-bubble-reply {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Inline interactive logic for enquiry stack
+  (function () {
+    const data = [
+      {
+        business: "Sanjeevani Multispecialty Clinic",
+        route: "/demos/sanjeevani-clinic",
+        category: "Clinic",
+        message: "Is the paediatrician available Saturday morning?",
+        reply: "Yes, 11:00 is open. Shall I book it?",
+        waPrefill: "Hi ATITTLE, I run a clinic/healthcare centre and want a website that turns visitors into patient appointments like Sanjeevani Clinic.",
+      },
+      {
+        business: "Anaar — The Awadhi Table",
+        route: "/demos/anaar-awadhi-table",
+        category: "Restaurant",
+        message: "Table for 6 tonight at 8:30? One high chair please.",
+        reply: "Done — window table held till 8:45.",
+        waPrefill: "Hi ATITTLE, I run a restaurant/dining venue and want direct table bookings like Anaar.",
+      },
+      {
+        business: "Kayal Backwaters Resort",
+        route: "/demos/kayal-backwaters",
+        category: "Resort",
+        message: "Lake-view room free 14–16 Dec for 2 adults?",
+        reply: "Available. Direct rate saves you the OTA fee.",
+        waPrefill: "Hi ATITTLE, I run a boutique hotel/resort and want direct room bookings like Kayal Backwaters.",
+      },
+      {
+        business: "Sunehri Atelier",
+        route: "/demos/sunehri-atelier",
+        category: "Jeweller",
+        message: "Can I see the 22K jhumkas before visiting?",
+        reply: "Sending photos with weight and price now.",
+        waPrefill: "Hi ATITTLE, I run a jewellery studio and want customer enquiries like Sunehri Atelier.",
+      },
+      {
+        business: "Shivalik Homes & Developers",
+        route: "/demos/shivalik-homes",
+        category: "Real Estate",
+        message: "EMI for the 3BHK on a 20-year loan?",
+        reply: "Around ₹41,800/month — try our calculator.",
+        waPrefill: "Hi ATITTLE, I run a real estate development firm and want qualified buyer leads like Shivalik Homes.",
+      },
+    ];
+
+    let currentIndex = 0;
+    let loopCount = 0;
+    let isUserInteracted = false;
+    let isExpanded = false;
+    let isHovered = false;
+    let isHeroInView = true;
+    let cycleTimer: number | null = null;
+
+    const cardBtn = document.getElementById("enquiry-card-btn");
+    const cardBack = document.getElementById("enquiry-card-back");
+    const activeBusiness = document.getElementById("card-active-business");
+    const activeMsg = document.getElementById("card-active-message");
+    const doubleTick = document.getElementById("card-double-tick");
+    const chatPanel = document.getElementById("enquiry-chat-panel");
+    const chatCloseBtn = document.getElementById("enquiry-chat-close");
+
+    const panelTitle = document.getElementById("panel-chat-title");
+    const panelCustomerMsg = document.getElementById("panel-customer-msg");
+    const panelReplyMsg = document.getElementById("panel-reply-msg");
+    const panelTyping = document.getElementById("panel-typing-indicator");
+    const panelReplyBubble = document.getElementById("panel-reply-bubble");
+    const panelOpenDemoBtn = document.getElementById("panel-open-demo-btn") as HTMLAnchorElement | null;
+    const panelWaBtn = document.getElementById("panel-wa-prefill-btn") as HTMLAnchorElement | null;
+
+    function renderCard(idx: number, isSwipe = false) {
+      const item = data[idx];
+      const nextItem = data[(idx + 1) % data.length];
+      if (!item || !activeBusiness || !activeMsg) return;
+
+      if (cardBack && nextItem) {
+        const backBiz = cardBack.querySelector(".back-business");
+        const backMsg = cardBack.querySelector(".back-message");
+        if (backBiz) backBiz.textContent = nextItem.business;
+        if (backMsg) backMsg.textContent = nextItem.message;
+      }
+
+      if (isSwipe && cardBtn) {
+        cardBtn.style.transform = "translateX(12px)";
+        setTimeout(() => {
+          activeBusiness.textContent = item.business;
+          activeMsg.textContent = `"${item.message}"`;
+          if (cardBtn) cardBtn.style.transform = "translateX(0)";
+        }, 120);
+      } else {
+        activeBusiness.textContent = item.business;
+        activeMsg.textContent = `"${item.message}"`;
+      }
+
+      if (doubleTick) {
+        doubleTick.classList.add("is-read");
+      }
+    }
+
+    function advanceCard() {
+      if (isUserInteracted || isExpanded || isHovered || !isHeroInView || document.hidden) return;
+      loopCount++;
+      if (loopCount >= data.length * 2) return; // Stop permanently after 2 full passes (10 cards)
+
+      currentIndex = (currentIndex + 1) % data.length;
+      renderCard(currentIndex);
+    }
+
+    function startLoop() {
+      if (cycleTimer) clearInterval(cycleTimer);
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) return;
+      cycleTimer = window.setInterval(advanceCard, 3200);
+    }
+
+    // Hero visibility tracking to pause loop when scrolled out of view
+    const heroEl = document.getElementById("hero");
+    if (heroEl && "IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          isHeroInView = entry.isIntersecting;
+        });
+      }, { threshold: 0.1 });
+      observer.observe(heroEl);
+    }
+
+    // Pause on tab hidden
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && cycleTimer) {
+        clearInterval(cycleTimer);
+      } else if (!document.hidden && !isUserInteracted) {
+        startLoop();
+      }
+    });
+
+    // Hover & press pause
+    cardBtn?.addEventListener("mouseenter", () => { isHovered = true; });
+    cardBtn?.addEventListener("mouseleave", () => { isHovered = false; });
+
+    // Open FLIP chat panel
+    function openPanel() {
+      if (!chatPanel || !cardBtn) return;
+      isUserInteracted = true;
+      isExpanded = true;
+      if (cycleTimer) clearInterval(cycleTimer);
+
+      const current = data[currentIndex];
+      if (!current) return;
+      if (panelTitle) panelTitle.textContent = current.business;
+      if (panelCustomerMsg) panelCustomerMsg.textContent = `"${current.message}"`;
+      if (panelReplyMsg) panelReplyMsg.textContent = `"${current.reply}"`;
+      if (panelOpenDemoBtn) panelOpenDemoBtn.href = current.route;
+      if (panelWaBtn) {
+        panelWaBtn.href = `https://wa.me/919330393298?text=${encodeURIComponent(current.waPrefill)}`;
+      }
+
+      // Typing simulation
+      if (panelTyping && panelReplyBubble) {
+        panelTyping.style.display = "flex";
+        panelReplyBubble.style.display = "none";
+        setTimeout(() => {
+          if (panelTyping && panelReplyBubble) {
+            panelTyping.style.display = "none";
+            panelReplyBubble.style.display = "block";
+          }
+        }, 600);
+      }
+
+      chatPanel.hidden = false;
+      cardBtn.setAttribute("aria-expanded", "true");
+      chatCloseBtn?.focus();
+
+      document.addEventListener("keydown", handleKeydown);
+    }
+
+    function closePanel() {
+      if (!chatPanel || !cardBtn) return;
+      isExpanded = false;
+      chatPanel.hidden = true;
+      cardBtn.setAttribute("aria-expanded", "false");
+      document.removeEventListener("keydown", handleKeydown);
+      cardBtn.focus();
+    }
+
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        closePanel();
+      }
+    }
+
+    cardBtn?.addEventListener("click", () => {
+      openPanel();
+    });
+
+    chatCloseBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closePanel();
+    });
+
+    // Close on click outside
+    document.addEventListener("click", (e) => {
+      if (!isExpanded || !chatPanel) return;
+      const target = e.target as HTMLElement;
+      if (!chatPanel.contains(target) && !cardBtn?.contains(target)) {
+        closePanel();
+      }
+    });
+
+    // Swipe Gesture on Collapsed Card (Touch & Mouse Drag)
+    let startX = 0;
+    let diffX = 0;
+    let isSwiping = false;
+
+    cardBtn?.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches[0]) {
+        startX = e.touches[0].clientX;
+        isSwiping = true;
+      }
+    }, { passive: true });
+
+    cardBtn?.addEventListener("touchmove", (e) => {
+      if (!isSwiping) return;
+      if (e.touches && e.touches[0]) {
+        diffX = e.touches[0].clientX - startX;
+        if (cardBtn) {
+          cardBtn.style.transform = `translateX(${diffX * 0.4}px)`;
+        }
+      }
+    }, { passive: true });
+
+    // Mouse drag support
+    cardBtn?.addEventListener("mousedown", (e) => {
+      startX = e.clientX;
+      isSwiping = true;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isSwiping) return;
+      diffX = e.clientX - startX;
+      if (cardBtn) {
+        cardBtn.style.transform = `translateX(${diffX * 0.4}px)`;
+      }
+    });
+
+    const finishSwipe = () => {
+      if (!isSwiping) return;
+      isSwiping = false;
+      if (cardBtn) cardBtn.style.transform = "translateX(0)";
+
+      if (diffX < -40) {
+        // Swipe left -> Next business
+        isUserInteracted = true;
+        currentIndex = (currentIndex + 1) % data.length;
+        renderCard(currentIndex, true);
+      } else if (diffX > 40) {
+        // Swipe right -> Prev business
+        isUserInteracted = true;
+        currentIndex = (currentIndex - 1 + data.length) % data.length;
+        renderCard(currentIndex, true);
+      }
+      diffX = 0;
+    };
+
+    cardBtn?.addEventListener("touchend", finishSwipe, { passive: true });
+    window.addEventListener("mouseup", finishSwipe);
+
+    // Initialize loop after 2.1s settle
+    setTimeout(() => {
+      startLoop();
+    }, 2100);
+  })();
+</script>

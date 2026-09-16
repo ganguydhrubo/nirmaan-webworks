@@ -288,6 +288,92 @@ function initDock(): void {
 
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // --------------------------------------------------------------------------
+  // 5. First-Visit Dock Floating Labels & Long-Press
+  // --------------------------------------------------------------------------
+  const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isSaveData = Boolean((navigator as any).connection?.saveData);
+
+  // Long press on touch (400ms)
+  items.forEach((item) => {
+    let longPressTimer: number | null = null;
+
+    item.addEventListener(
+      "touchstart",
+      () => {
+        longPressTimer = window.setTimeout(() => {
+          item.classList.add("is-label-visible");
+        }, 400);
+      },
+      { passive: true }
+    );
+
+    const clearLongPress = () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+      item.classList.remove("is-label-visible");
+    };
+
+    item.addEventListener("touchend", clearLongPress, { passive: true });
+    item.addEventListener("touchcancel", clearLongPress, { passive: true });
+    item.addEventListener("touchmove", clearLongPress, { passive: true });
+  });
+
+  // First-visit ever floating labels (1400-3000ms)
+  try {
+    const hasSeenDockLabels = localStorage.getItem("atittle-dock-labels-seen");
+    if (!hasSeenDockLabels && !isReducedMotion && !isSaveData) {
+      setTimeout(() => {
+        items.forEach((item) => item.classList.add("is-label-visible"));
+        setTimeout(() => {
+          items.forEach((item) => item.classList.remove("is-label-visible"));
+          try {
+            localStorage.setItem("atittle-dock-labels-seen", "1");
+          } catch (_) {}
+        }, 1600);
+      }, 1400);
+    }
+  } catch (_) {}
+
+  // --------------------------------------------------------------------------
+  // 6. Idle Scroll Hint (3.5s after settle ~5.6s post load)
+  // --------------------------------------------------------------------------
+  try {
+    const hasSeenScrollHint = sessionStorage.getItem("atittle-scroll-hint-seen");
+    if (!hasSeenScrollHint && !isReducedMotion) {
+      let hintTimer: number | null = window.setTimeout(() => {
+        const nextEyebrow = document.querySelector<HTMLElement>(
+          ".showcase-topline, #home-showcase .showcase-topline, .category-bar"
+        );
+        if (nextEyebrow && window.scrollY < 80) {
+          nextEyebrow.animate(
+            [
+              { transform: "translateY(0)" },
+              { transform: "translateY(-6px)" },
+              { transform: "translateY(0)" },
+              { transform: "translateY(-6px)" },
+              { transform: "translateY(0)" },
+            ],
+            { duration: 1000, easing: "ease-in-out" }
+          );
+          sessionStorage.setItem("atittle-scroll-hint-seen", "1");
+        }
+      }, 5600);
+
+      const cancelHint = () => {
+        if (hintTimer) {
+          clearTimeout(hintTimer);
+          hintTimer = null;
+        }
+      };
+
+      window.addEventListener("scroll", cancelHint, { passive: true, once: true });
+      window.addEventListener("touchstart", cancelHint, { passive: true, once: true });
+    }
+  } catch (_) {}
 }
 
 if (document.readyState === "loading") {
