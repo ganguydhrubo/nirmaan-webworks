@@ -235,6 +235,44 @@ const spotlightDemos = [
   },
 ];
 
+const aggregatorComparison = [
+  {
+    sector: "Hotels & Resorts",
+    aggregator: "MakeMyTrip, Agoda, Booking.com",
+    bleedCost: "18% – 22% per room night",
+    ownedSolution: "Direct WhatsApp booking engine",
+    savings: "₹1,40,000 – ₹4,20,000+",
+  },
+  {
+    sector: "Restaurants & Cafes",
+    aggregator: "Zomato, Swiggy",
+    bleedCost: "25% – 32% per order + ad bids",
+    ownedSolution: "Direct menu & table reservation",
+    savings: "₹1,20,000 – ₹3,50,000+",
+  },
+  {
+    sector: "Healthcare & Dental",
+    aggregator: "Practo, Justdial",
+    bleedCost: "₹250 – ₹500 per lead (shared)",
+    ownedSolution: "Exclusive doctor OPD calendar",
+    savings: "₹60,000 – ₹1,80,000+",
+  },
+  {
+    sector: "Retail & Local Shops",
+    aggregator: "Shopify + Marketplace cuts",
+    bleedCost: "₹29,880/yr rent + 15%–28% cuts",
+    ownedSolution: "₹4,999 one-time WhatsApp store",
+    savings: "₹29,880+ saved annually",
+  },
+  {
+    sector: "Real Estate & Builders",
+    aggregator: "MagicBricks, 99acres",
+    bleedCost: "₹15,000 – ₹35,000/month listing fees",
+    ownedSolution: "RERA-verified floor plans portal",
+    savings: "100% exclusive buyer leads",
+  },
+];
+
 const defaultSpotlight = spotlightDemos[0]!;
 const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] || title;
 ---
@@ -645,54 +683,57 @@ const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] 
         </p>
       </div>
 
-      <!-- Bleed Table -->
-      <div class="mt-10 overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-sm">
-        <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[620px]">
+      <!-- Bleed Table / Responsive Cards -->
+      <!-- Mobile View (< 768px): Semantic stacked cards -->
+      <div class="mt-8 grid gap-4 md:hidden">
+        {aggregatorComparison.map((row) => (
+          <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+            <div class="flex items-center justify-between border-b border-ink-100 pb-2.5 mb-3">
+              <h3 class="font-display text-base font-bold text-ink-950">{row.sector}</h3>
+              <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-200">
+                {row.savings}
+              </span>
+            </div>
+            <dl class="space-y-2 text-xs">
+              <div class="flex flex-col gap-0.5">
+                <dt class="font-semibold text-ink-500 uppercase tracking-wider text-[10px]">Aggregator Monopoly</dt>
+                <dd class="text-ink-800">{row.aggregator}</dd>
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <dt class="font-semibold text-red-600 uppercase tracking-wider text-[10px]">Bleed Cost Per Transaction</dt>
+                <dd class="font-medium text-red-700">{row.bleedCost}</dd>
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <dt class="font-semibold text-brand-700 uppercase tracking-wider text-[10px]">ATITTLE Owned Website</dt>
+                <dd class="font-medium text-brand-800">{row.ownedSolution}</dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+
+      <!-- Tablet & Desktop View (>= 768px): Full Table with semantic th scopes -->
+      <div class="mt-10 hidden md:block overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-sm">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse">
           <thead>
             <tr class="border-b border-ink-200 bg-cream text-ink-900 font-semibold">
-              <th class="py-3.5 px-4">Industry Sector</th>
-              <th class="py-3.5 px-4">Aggregator Monopoly</th>
-              <th class="py-3.5 px-4 text-red-600">Bleed Cost Per Transaction</th>
-              <th class="py-3.5 px-4 text-brand-700">ATITTLE Owned Website</th>
-              <th class="py-3.5 px-4 text-emerald-700 font-bold">Annual Savings</th>
+              <th scope="col" class="py-3.5 px-4">Industry Sector</th>
+              <th scope="col" class="py-3.5 px-4">Aggregator Monopoly</th>
+              <th scope="col" class="py-3.5 px-4 text-red-600">Bleed Cost Per Transaction</th>
+              <th scope="col" class="py-3.5 px-4 text-brand-700">ATITTLE Owned Website</th>
+              <th scope="col" class="py-3.5 px-4 text-emerald-700 font-bold">Annual Savings</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-ink-100 text-ink-700">
-            <tr class="hover:bg-cream/40 transition">
-              <td class="py-3 px-4 font-semibold text-ink-950">Hotels & Resorts</td>
-              <td class="py-3 px-4">MakeMyTrip, Agoda, Booking.com</td>
-              <td class="py-3 px-4 text-red-700 font-medium">18% – 22% per room night</td>
-              <td class="py-3 px-4 text-brand-700 font-medium">Direct WhatsApp booking engine</td>
-              <td class="py-3 px-4 font-bold text-emerald-700">₹1,40,000 – ₹4,20,000+</td>
-            </tr>
-            <tr class="hover:bg-cream/40 transition">
-              <td class="py-3 px-4 font-semibold text-ink-950">Restaurants & Cafes</td>
-              <td class="py-3 px-4">Zomato, Swiggy</td>
-              <td class="py-3 px-4 text-red-700 font-medium">25% – 32% per order + ad bids</td>
-              <td class="py-3 px-4 text-brand-700 font-medium">Direct menu & table reservation</td>
-              <td class="py-3 px-4 font-bold text-emerald-700">₹1,20,000 – ₹3,50,000+</td>
-            </tr>
-            <tr class="hover:bg-cream/40 transition">
-              <td class="py-3 px-4 font-semibold text-ink-950">Healthcare & Dental</td>
-              <td class="py-3 px-4">Practo, Justdial</td>
-              <td class="py-3 px-4 text-red-700 font-medium">₹250 – ₹500 per lead (shared)</td>
-              <td class="py-3 px-4 text-brand-700 font-medium">Exclusive doctor OPD calendar</td>
-              <td class="py-3 px-4 font-bold text-emerald-700">₹60,000 – ₹1,80,000+</td>
-            </tr>
-            <tr class="hover:bg-cream/40 transition">
-              <td class="py-3 px-4 font-semibold text-ink-950">Retail & Local Shops</td>
-              <td class="py-3 px-4">Shopify + Marketplace cuts</td>
-              <td class="py-3 px-4 text-red-700 font-medium">₹29,880/yr rent + 15%–28% cuts</td>
-              <td class="py-3 px-4 text-brand-700 font-medium">₹4,999 one-time WhatsApp store</td>
-              <td class="py-3 px-4 font-bold text-emerald-700">₹29,880+ saved annually</td>
-            </tr>
-            <tr class="hover:bg-cream/40 transition">
-              <td class="py-3 px-4 font-semibold text-ink-950">Real Estate & Builders</td>
-              <td class="py-3 px-4">MagicBricks, 99acres</td>
-              <td class="py-3 px-4 text-red-700 font-medium">₹15,000 – ₹35,000/month listing fees</td>
-              <td class="py-3 px-4 text-brand-700 font-medium">RERA-verified floor plans portal</td>
-              <td class="py-3 px-4 font-bold text-emerald-700">100% exclusive buyer leads</td>
-            </tr>
+            {aggregatorComparison.map((row) => (
+              <tr class="hover:bg-cream/40 transition">
+                <th scope="row" class="py-3 px-4 font-semibold text-ink-950">{row.sector}</th>
+                <td class="py-3 px-4">{row.aggregator}</td>
+                <td class="py-3 px-4 text-red-700 font-medium">{row.bleedCost}</td>
+                <td class="py-3 px-4 text-brand-700 font-medium">{row.ownedSolution}</td>
+                <td class="py-3 px-4 font-bold text-emerald-700">{row.savings}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -761,7 +802,7 @@ const getShortTitle = (title: string) => title.split(" — ")[0]?.split(" ")[0] 
 
       <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
         <a
-          href="https://wa.me/919999999999?text=Hi%20ATITTLE,%20I'm%20exploring%20a%20website%20for%20my%20business%20category.%20Can%20we%20discuss%20architecture%20and%20pricing?"
+          href={`https://wa.me/${siteConfig.whatsappNumber}?text=Hi%20ATITTLE,%20I'm%20exploring%20a%20website%20for%20my%20business%20category.%20Can%20we%20discuss%20architecture%20and%20pricing?`}
           class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-brand-500 transition"
         >
           <Icon name="whatsapp" class="h-5 w-5" /> Chat On WhatsApp

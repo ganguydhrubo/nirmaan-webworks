@@ -172,6 +172,11 @@
     color-scheme: light;
   }
 
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -188,6 +193,8 @@
     font-family: var(--font-display);
     color: var(--color-ink-950);
     letter-spacing: -0.01em;
+    overflow-wrap: break-word;
+    text-wrap: balance;
   }
 
   a {
@@ -227,16 +234,34 @@
 @layer utilities {
   .skip-link {
     position: absolute;
-    left: -9999px;
-    top: 0;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
     z-index: 100;
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.25rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
     background: var(--color-ink-950);
     color: var(--color-cream);
-    padding: 0.75rem 1.25rem;
-    border-radius: 0 0 var(--radius-md) 0;
-  }
-  .skip-link:focus {
-    left: 0;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    outline: 3px solid var(--color-teal-500);
+    outline-offset: 2px;
   }
 
   /* Reveal-on-scroll primitive — driven by an IntersectionObserver island,
