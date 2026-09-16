@@ -110,7 +110,10 @@ export const siteConfig = {
   gstNote:
     "GST is charged extra as applicable, shown separately on every quote. Registration and GSTIN details are shared on request during the enquiry process.",
 
-  socialLinks: [] as { platform: string; url: string }[],
+  socialLinks: [
+    { platform: "facebook", name: "Facebook", url: "https://www.facebook.com/atittleweb" },
+    { platform: "instagram", name: "Instagram", url: "https://www.instagram.com/atittleweb/" },
+  ],
 
   priceRanges: [
     {
