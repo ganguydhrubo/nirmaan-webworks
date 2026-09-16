@@ -2,33 +2,80 @@
 import Icon from "@/components/ui/Icon.astro";
 
 const deliverables = [
-  { icon: "bolt" as const, title: "A site that loads fast on a real phone", body: "Built and measured on a mid-range Android over a throttled connection, not just tested on office WiFi." },
-  { icon: "whatsapp" as const, title: "WhatsApp, call and map built in", body: "Every page makes it obvious how to reach you — no hunting for a contact page." },
-  { icon: "shield" as const, title: "You own the domain, the code and the content", body: "No lock-in. If you ever want to move host or hand it to another developer, you can." },
-  { icon: "rupee" as const, title: "One clear rupee price before you commit", body: "You'll know what's included, what's not, and what renewal costs before any work starts." },
-  { icon: "check" as const, title: "Real content, not lorem ipsum left in", body: "We write or adapt the words with you — no site ships with placeholder text." },
-  { icon: "star" as const, title: "Basic SEO and a Google Business Profile set up", body: "So people searching your category and city can actually find you." },
+  {
+    icon: "bolt" as const,
+    badge: "99/100 Mobile Score",
+    title: "A site that loads fast on a real phone",
+    body: "Engineered and benchmarked on a real mid-range Android phone over a throttled 4G connection — not just verified on high-speed studio WiFi.",
+  },
+  {
+    icon: "whatsapp" as const,
+    badge: "Pre-filled 1-Tap Trigger",
+    title: "WhatsApp, call and map built in",
+    body: "Every single page makes contacting you natural and thumb-friendly. Customers tap once and arrive in your WhatsApp with the exact service name pre-filled.",
+  },
+  {
+    icon: "shield" as const,
+    badge: "Zero Platform Hostage",
+    title: "You own the domain, the code and the content",
+    body: "Full GitHub repository code, hosting accounts, and domain DNS are assigned directly to your name. If you ever want to move host, you have 100% control.",
+  },
+  {
+    icon: "rupee" as const,
+    badge: "Fixed Rupee Contract",
+    title: "One clear rupee price before you commit",
+    body: "You receive an exact INR scope breakdown before any advance is paid. You will know exactly what is included, what isn't, and what renewals cost upfront.",
+  },
+  {
+    icon: "check" as const,
+    badge: "Written For Your City",
+    title: "Real content, not lorem ipsum left in",
+    body: "We write and shape the words with you — your authentic menu, doctor qualifications, room inclusions, and price lists. No site ever ships with dummy text.",
+  },
+  {
+    icon: "star" as const,
+    badge: "Pre-baked JSON-LD Schema",
+    title: "Local SEO and Google Business Profile set up",
+    body: "Structured LocalBusiness schema so customers searching for your category and locality on Google and AI answer engines find your real website first.",
+  },
 ];
 ---
 
-<section class="bg-white py-16 sm:py-24">
+<section class="bg-white py-16 sm:py-24 border-b border-ink-200">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="reveal mx-auto max-w-2xl text-center">
-      <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">What you actually get</h2>
-      <p class="mt-4 text-lg text-ink-700">Concrete deliverables, not adjectives.</p>
+    <div class="reveal mx-auto max-w-3xl text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-brand-50/80 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 shadow-sm">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-600"></span>
+        Concrete Deliverables, Not Adjectives
+      </div>
+      <h2 class="mt-4 font-display text-3xl font-bold text-ink-950 sm:text-4xl">
+        What you actually get
+      </h2>
+      <p class="mt-3 text-base sm:text-lg text-ink-700 leading-relaxed">
+        Everything engineered for real Indian buying behavior — transparent, measurable, and owned 100% by your business.
+      </p>
     </div>
-    <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {deliverables.map((d) => (
-        <div class="reveal min-w-0 flex gap-4">
-          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal-500/10 text-teal-700">
-            <Icon name={d.icon} class="h-5 w-5" />
+        <div class="reveal group relative flex flex-col rounded-2xl border border-ink-200 bg-cream/40 p-6 shadow-sm transition duration-300 hover:border-brand-500 hover:bg-white hover:shadow-md">
+          <div class="flex items-center justify-between gap-3">
+            <span class="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-brand-700 border border-brand-200 shadow-2xs">
+              {d.badge}
+            </span>
+            <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 border border-ink-200 shadow-2xs transition group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600">
+              <Icon name={d.icon} class="h-5 w-5" />
+            </div>
           </div>
-          <div class="min-w-0">
-            <h3 class="font-semibold text-ink-950">{d.title}</h3>
-            <p class="mt-1 text-sm text-ink-600">{d.body}</p>
-          </div>
+          <h3 class="mt-4 font-display text-lg font-bold text-ink-950 leading-snug">
+            {d.title}
+          </h3>
+          <p class="mt-2 text-xs sm:text-sm text-ink-600 leading-relaxed">
+            {d.body}
+          </p>
         </div>
       ))}
     </div>
   </div>
 </section>
+

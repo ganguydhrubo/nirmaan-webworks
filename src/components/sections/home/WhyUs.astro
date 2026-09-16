@@ -4,56 +4,117 @@ import Icon from "@/components/ui/Icon.astro";
 const reasons = [
   {
     icon: "bolt" as const,
+    badge: "Lighthouse 99/100",
     title: "Speed we publish, not promise",
-    body: "Every page we ship is measured with Lighthouse on a throttled mobile connection before launch, and we'll show you the number.",
+    body: "Every single page we ship is benchmarked on a throttled mobile 4G connection before launch, and we share the live URL score with you.",
   },
   {
     icon: "smartphone" as const,
-    title: "Built mobile-first, checked on real devices",
-    body: "We design for a 360px-wide Android screen first, then scale up — not the other way round.",
+    badge: "360px Tested",
+    title: "Built mobile-first on real devices",
+    body: "We design for mid-range Indian Android screens first, verifying tap targets and thumb ergonomics before expanding to desktop.",
   },
   {
     icon: "shield" as const,
-    title: "No lock-in",
-    body: "The domain, hosting account and code are yours. We'll hand over access, not hold it hostage for renewals.",
+    badge: "100% Client Owned",
+    title: "Zero platform lock-in",
+    body: "The domain, hosting, and code are completely yours. We hand over full root access upon launch — zero hostage renewals.",
   },
   {
     icon: "rupee" as const,
+    badge: "Public INR Rates",
     title: "Rupee pricing, shown upfront",
-    body: "You can see our starting price bands on this site before you ever talk to us — see Pricing below.",
+    body: "Starting price bands are published right on this site (from ₹4,999 micro-stores upwards). No inflated quotes based on who is asking.",
+  },
+];
+
+const donts = [
+  {
+    label: "No Bloated Checkouts",
+    desc: "We don't build unnecessary login systems or paid payment gateways when a direct WhatsApp flow converts 3x faster.",
+  },
+  {
+    label: "No Infinite Revision Drift",
+    desc: "We don't offer vague 'unlimited revisions' that drag projects across 6 months. Fixed revision rounds keep delivery dates honest.",
+  },
+  {
+    label: "No Fake #1 Ranking Promises",
+    desc: "Anyone promising '#1 on Google in 7 days' is guessing or lying. We engineer clean schema, lightning speed, and let Google reward quality.",
   },
 ];
 ---
 
-<section class="bg-cream py-16 sm:py-24">
+<section class="bg-cream py-16 sm:py-24 border-b border-ink-200">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid gap-12 lg:grid-cols-2 lg:items-start">
-      <div class="reveal min-w-0">
-        <h2 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Why businesses choose us over a freelancer or a template</h2>
-        <p class="mt-4 max-w-lg text-lg text-ink-700">
-          Not because we're the cheapest — because you can verify what you're getting before you pay for it.
-        </p>
-        <div class="mt-8 rounded-xl border border-ink-200 bg-white p-6">
-          <h3 class="font-semibold text-ink-950">What we don't do</h3>
-          <ul class="mt-3 space-y-2 text-sm text-ink-600">
-            <li>— We don't build login systems, user accounts or payment checkouts. If you need those, we'll tell you upfront and point you to what does.</li>
-            <li>— We don't offer unlimited free revisions forever — scope is agreed before we start, so timelines stay honest.</li>
-            <li>— We don't guarantee a specific Google ranking. Anyone who promises "#1 on Google" is guessing.</li>
-          </ul>
+    <div class="grid gap-12 lg:grid-cols-12 lg:items-start">
+      <!-- Left Column: Anti-Bullshit Charter -->
+      <div class="reveal lg:col-span-5 flex flex-col justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-brand-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 shadow-sm">
+            The ATITTLE Standard
+          </div>
+          <h2 class="mt-4 font-display text-3xl font-bold text-ink-950 sm:text-4xl leading-tight">
+            Why businesses choose us over a freelancer or a template
+          </h2>
+          <p class="mt-4 text-base text-ink-700 leading-relaxed">
+            Not because we're the cheapest — because you can verify what you're getting before you pay for it.
+          </p>
+        </div>
+
+        <!-- The Anti-Bullshit Charter Box -->
+        <div class="mt-8 rounded-2xl border border-ink-200 bg-white p-6 sm:p-7 shadow-sm">
+          <div class="flex items-center justify-between pb-3 border-b border-ink-100">
+            <h3 class="font-display text-base font-bold text-ink-950">
+              The Anti-Bullshit Charter
+            </h3>
+            <span class="rounded-full bg-red-50 text-red-700 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+              What We Don't Do
+            </span>
+          </div>
+
+          <div class="mt-4 space-y-3.5">
+            {donts.map((d) => (
+              <div class="flex items-start gap-2.5 text-xs text-ink-700">
+                <span class="text-red-500 font-bold shrink-0 mt-0.5">✕</span>
+                <div>
+                  <strong class="text-ink-950 block">{d.label}</strong>
+                  <span class="text-ink-600 leading-relaxed">{d.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-5 rounded-xl bg-cream/70 border border-ink-100 p-3 text-[11px] text-ink-600 flex items-center gap-2">
+            <span class="text-brand-600 font-bold">✓</span>
+            <span>Every project ships with a signed scope and deliverable checklist.</span>
+          </div>
         </div>
       </div>
 
-      <div class="grid min-w-0 gap-6 sm:grid-cols-2">
+      <!-- Right Column: 4 Proof Pillars -->
+      <div class="lg:col-span-7 grid min-w-0 gap-5 sm:grid-cols-2">
         {reasons.map((r) => (
-          <div class="reveal rounded-xl border border-ink-200 bg-white p-5">
-            <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-              <Icon name={r.icon} class="h-5 w-5" />
+          <div class="reveal group relative flex flex-col rounded-2xl border border-ink-200 bg-white p-6 shadow-sm transition duration-300 hover:border-brand-500 hover:shadow-md">
+            <div class="flex items-center justify-between gap-2">
+              <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-700 border border-brand-200/80">
+                {r.badge}
+              </span>
+              <div class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cream text-brand-600 border border-ink-200 transition group-hover:bg-brand-600 group-hover:text-white group-hover:border-brand-600">
+                <Icon name={r.icon} class="h-4 w-4" />
+              </div>
             </div>
-            <h3 class="font-semibold text-ink-950">{r.title}</h3>
-            <p class="mt-1.5 text-sm text-ink-600">{r.body}</p>
+
+            <h3 class="mt-4 font-display text-base sm:text-lg font-bold text-ink-950 leading-snug">
+              {r.title}
+            </h3>
+
+            <p class="mt-2 text-xs sm:text-sm text-ink-600 leading-relaxed flex-grow">
+              {r.body}
+            </p>
           </div>
         ))}
       </div>
     </div>
   </div>
 </section>
+

@@ -1,55 +1,453 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Process from "@/components/sections/home/Process.astro";
 import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const prerender = true;
 
-const whatWeNeed = [
-  { title: "Your content", body: "Photos, price lists, service details — whatever you have. We'll help fill gaps and write copy where needed." },
-  { title: "A decision-maker", body: "One point of contact who can approve the scope and sign off on the design preview, to keep revisions moving." },
-  { title: "Domain access (or a plan to buy one)", body: "If you already own a domain, we'll need access to point it live. If not, we'll guide you through buying one." },
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Work Process", url: `${siteConfig.siteUrl}/work-process` },
+  ]),
+];
+
+// Interactive sprint velocity tiers
+const tiers = [
+  {
+    id: "micro",
+    name: "Micro-Starter Storefront",
+    timeframe: "48 Hours",
+    priceAnchor: "₹4,999",
+    summary: "Built for local retailers, boutiques, and single-service businesses who need a lightning-fast WhatsApp catalog without monthly platform fees.",
+    schedule: [
+      { day: "Hour 0–6", title: "Intake & Rupee Scope", detail: "Share your top 10–30 products, prices, and UPI/WhatsApp number. Scope confirmed in 1 hour." },
+      { day: "Hour 6–30", title: "Catalogue Build & Optimization", detail: "We engineer a zero-bloat mobile catalog with quick-view modals and 1-tap WhatsApp triggers." },
+      { day: "Hour 30–40", title: "Phone Review Pass", detail: "You test ordering products on your own phone via a private preview link." },
+      { day: "Hour 40–48", title: "Domain Live & Handover", detail: "DNS connected, Google Maps tag linked, and full Cloudflare/Vercel keys delivered." },
+    ],
+  },
+  {
+    id: "business",
+    name: "Standard Business Website",
+    timeframe: "10–14 Days",
+    priceAnchor: "₹18,000 – ₹24,000",
+    summary: "Built for healthcare clinics, resorts, restaurants, coaching centers, and studios that need multi-page booking and local search domination.",
+    schedule: [
+      { day: "Day 1", title: "Scoping & Fixed Rupee Quote", detail: "In-depth review of your services, current aggregator commission bleed, and exact page count." },
+      { day: "Days 2–4", title: "Content Architecture & Mapping", detail: "OPD hours, room galleries, menu items, and WhatsApp flows mapped for thumb ergonomics." },
+      { day: "Days 5–10", title: "Mobile-First Astro 7 Build", detail: "Engineering with 99/100 Core Web Vitals, local SEO schema, and custom photography layout." },
+      { day: "Days 11–13", title: "Owner Live Review on Phone", detail: "You test the live private link. We implement one comprehensive consolidated revision pass." },
+      { day: "Day 14", title: "DNS Launch & 100% Handover", detail: "Live domain cutover, Google Business Profile schema verified, full GitHub repository keys handed over." },
+    ],
+  },
+  {
+    id: "custom",
+    name: "Custom Architecture & SaaS",
+    timeframe: "3–4 Weeks",
+    priceAnchor: "₹35,000 – ₹75,000+",
+    summary: "Built for multi-location builders, diagnostic lab directories, IoT telemetry dashboards, and proprietary customer portals.",
+    schedule: [
+      { day: "Week 1", title: "Technical Blueprint & Wireframes", detail: "Schema modelling, third-party API specs, database models, and sprint milestones." },
+      { day: "Week 2", title: "Core Engine & UI Implementation", detail: "Interactive calculators, searchable filterable directories, and responsive touch stages." },
+      { day: "Week 3", title: "Integration & Edge Telemetry", detail: "WhatsApp webhooks, IoT sensor relays, automated lead notifications, and security audit." },
+      { day: "Week 4", title: "Staging Sign-off & Production Rollout", detail: "Production staging review, load testing, DNS cutover, and developer documentation handover." },
+    ],
+  },
+];
+
+const readinessPillars = [
+  {
+    icon: "sparkle" as const,
+    title: "Your Authentic Content & Rupee Rates",
+    body: "Photos of your clinic, restaurant, or store, your current service list, and transparent rupee pricing. Even unedited phone camera shots or old price brochures work — our team optimizes, crops, and structures them into editorial standards.",
+    badge: "We Help Shape It",
+  },
+  {
+    icon: "smartphone" as const,
+    title: "One Clear Decision-Maker",
+    body: "A single point of contact on WhatsApp who can review live preview links on their phone and sign off on milestone passes. Having one clear decision-maker protects your delivery date from committee delays.",
+    badge: "Keeps Launch Fast",
+  },
+  {
+    icon: "shield" as const,
+    title: "Domain Access (Or Guidance to Buy One)",
+    body: "If you already own a domain on GoDaddy, Hostinger, or Namecheap, we provide 3 simple DNS records to point. If you don't own one yet, we guide you to purchase it directly in your own name so you retain 100% ownership.",
+    badge: "100% In Your Name",
+  },
+];
+
+const revisionRules = [
+  {
+    title: "Consolidated Feedback, Not Infinite Drift",
+    body: "Every package includes dedicated revision passes. We share a private live URL that works on your phone. You review it with your team, gather all changes into one consolidated WhatsApp message or doc, and we execute it in one clean pass.",
+  },
+  {
+    title: "Under 2-Hour WhatsApp Response",
+    body: "We don't bury project communication in opaque ticketing systems. You get a dedicated WhatsApp group with the lead engineer and designer during active build hours.",
+  },
+  {
+    title: "Zero Hidden Maintenance Traps",
+    body: "Once your site is live, there are no mandatory monthly maintenance retainers. You own the code, the hosting accounts, and the domain. You can edit content yourself or hire anyone you wish.",
+  },
 ];
 ---
 
-<BaseLayout title="Our process" description="How an atittle.com project actually runs, week by week — from enquiry to launch and handover.">
-  <section class="bg-cream py-14 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-      <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">How a project actually runs</h1>
-      <p class="mt-4 text-lg text-ink-700">No vague "let's hop on a call" loop — a clear sequence with realistic timelines.</p>
+<BaseLayout
+  title="Our Work Process & Sprint Roadmap | ATITTLE"
+  description="How an ATITTLE project runs from Day 1 scoping to live launch. Transparent timelines, private staging previews on your phone, consolidated revisions, and 100% code ownership."
+  jsonLd={jsonLd}
+>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-cream pt-14 pb-16 sm:pt-20 sm:pb-24 border-b border-ink-200">
+    <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-96 w-full max-w-7xl bg-gradient-to-b from-brand-100/40 via-amber-100/20 to-transparent blur-3xl" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-brand-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-700 shadow-sm">
+        <span class="h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span>
+        Milestone-Gated Sprints · Predictable Indian Timelines
+      </div>
+
+      <h1 class="mt-6 font-display text-3xl font-bold tracking-tight text-ink-950 sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight">
+        How an ATITTLE Project Actually Runs — <span class="text-brand-600">From Day 1 to Live Launch</span>
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-ink-700 leading-relaxed">
+        No vague "let's hop on a 45-minute discovery call" ping-pong. A predictable, transparent engineering sequence with a private working preview tested on your phone before you pay the balance.
+      </p>
+
+      <!-- Proof Metrics Bar -->
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 max-w-3xl mx-auto text-left">
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">48h Turn</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Micro-Starter Stores</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-brand-600">10–14 Days</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Standard Business Sites</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">1 Staging URL</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Tested on your phone</p>
+        </div>
+        <div class="rounded-xl border border-ink-200 bg-white p-4 shadow-sm">
+          <div class="font-display text-2xl font-bold text-ink-950">100% Keys</div>
+          <p class="text-xs text-ink-600 font-medium mt-0.5">Code & DNS handed over</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <Process />
+  <!-- Interactive Sprint Velocity Selector -->
+  <section class="bg-white py-14 sm:py-20 border-b border-ink-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Tailored Sprint Schedules</span>
+        <h2 class="mt-2 font-display text-2xl sm:text-3xl font-bold text-ink-950">
+          Pick Your Package Velocity
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-700">
+          Click a tier below to see the exact milestone breakdown and turnaround guarantee.
+        </p>
+      </div>
 
-  <section class="bg-cream py-16 sm:py-20">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display text-2xl font-semibold text-ink-950">What we need from you</h2>
-      <div class="mt-8 grid gap-6 sm:grid-cols-3">
-        {whatWeNeed.map((item) => (
-          <div class="min-w-0 rounded-xl border border-ink-200 bg-white p-6">
-            <h3 class="font-semibold text-ink-950">{item.title}</h3>
-            <p class="mt-2 text-sm text-ink-600">{item.body}</p>
+      <!-- Tier Selector Buttons -->
+      <div class="mt-8 flex flex-wrap justify-center gap-2.5" role="tablist">
+        {tiers.map((t, idx) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={idx === 1 ? "true" : "false"}
+            class={`tier-tab-btn rounded-full px-5 py-2.5 text-xs sm:text-sm font-semibold transition border ${
+              idx === 1
+                ? "bg-brand-600 text-white border-brand-600 shadow-sm"
+                : "bg-cream text-ink-700 border-ink-300 hover:border-brand-500 hover:text-ink-950"
+            }`}
+            data-tier-id={t.id}
+          >
+            {t.name} ({t.timeframe})
+          </button>
+        ))}
+      </div>
+
+      <!-- Dynamic Tier Card Presentation -->
+      <div class="mt-10 rounded-2xl border border-ink-200 bg-cream/40 p-6 sm:p-10 shadow-sm" id="tier-display-box">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-ink-200">
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="tier-timeframe-badge" class="rounded-full bg-brand-100 text-brand-800 px-3 py-1 text-xs font-bold">
+                {tiers[1]!.timeframe} Guaranteed Launch
+              </span>
+              <span id="tier-price-badge" class="rounded-full bg-white border border-ink-200 px-3 py-1 text-xs font-bold text-ink-900">
+                Starts {tiers[1]!.priceAnchor}
+              </span>
+            </div>
+            <h3 id="tier-title" class="mt-3 font-display text-2xl sm:text-3xl font-bold text-ink-950">
+              {tiers[1]!.name}
+            </h3>
+            <p id="tier-summary" class="mt-2 text-sm sm:text-base text-ink-700 max-w-2xl">
+              {tiers[1]!.summary}
+            </p>
+          </div>
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition shrink-0"
+          >
+            Start Scoping This Tier <Icon name="chevron-right" class="h-4 w-4" />
+          </a>
+        </div>
+
+        <!-- Sprint Milestones List -->
+        <div class="mt-8 space-y-4" id="tier-schedule-list">
+          {tiers[1]!.schedule.map((item) => (
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 rounded-xl border border-ink-200/80 bg-white p-4 sm:p-5 shadow-2xs">
+              <span class="rounded-lg bg-ink-950 px-3 py-1.5 text-xs font-mono font-bold text-cream shrink-0 text-center sm:w-28">
+                {item.day}
+              </span>
+              <div class="min-w-0 flex-1">
+                <h4 class="font-display text-base font-bold text-ink-950">
+                  {item.title}
+                </h4>
+                <p class="text-xs sm:text-sm text-ink-600 mt-1">
+                  {item.detail}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Readiness Blueprint ("What We Need From You") -->
+  <section class="bg-cream py-16 sm:py-24 border-b border-ink-200">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Client Readiness Blueprint</span>
+        <h2 class="mt-2 font-display text-3xl font-bold text-ink-950 sm:text-4xl">
+          What We Need From You to Move Fast
+        </h2>
+        <p class="mt-3 text-base text-ink-700">
+          You don't need a finished branding deck or technical expertise. Just three straightforward items.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-3">
+        {readinessPillars.map((item) => (
+          <div class="reveal relative flex flex-col rounded-2xl border border-ink-200 bg-white p-6 sm:p-7 shadow-sm transition duration-300 hover:border-brand-500 hover:shadow-md">
+            <div class="flex items-center justify-between gap-2">
+              <span class="rounded-full bg-cream border border-ink-200 px-2.5 py-1 text-[11px] font-semibold text-brand-700">
+                {item.badge}
+              </span>
+              <div class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                <Icon name={item.icon} class="h-4 w-4" />
+              </div>
+            </div>
+
+            <h3 class="mt-5 font-display text-lg font-bold text-ink-950 leading-snug">
+              {item.title}
+            </h3>
+
+            <p class="mt-2 text-xs sm:text-sm text-ink-600 leading-relaxed flex-grow">
+              {item.body}
+            </p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="bg-white py-16 sm:py-20">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-display text-2xl font-semibold text-ink-950">Revisions and communication</h2>
-      <p class="mt-4 text-ink-700">
-        Each package includes a fixed number of design revision rounds (see Pricing). A revision round means you review the live preview link and send back consolidated feedback — not unlimited back-and-forth edits stretched over months. Extra rounds beyond what's included are quoted separately, so timelines stay predictable for both sides.
+  <!-- Revisions SLA & Communication Guarantee -->
+  <section class="bg-white py-16 sm:py-24 border-b border-ink-200">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Honest Project Management</span>
+        <h2 class="mt-2 font-display text-3xl font-bold text-ink-950 sm:text-4xl">
+          Revisions & WhatsApp SLA Guarantees
+        </h2>
+        <p class="mt-3 text-base text-ink-700">
+          How we keep communication smooth and protect your target launch date from endless scope creep.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-3">
+        {revisionRules.map((rule) => (
+          <div class="rounded-2xl border border-ink-200 bg-cream/30 p-6 sm:p-7 flex flex-col justify-between shadow-2xs">
+            <div>
+              <h3 class="font-display text-lg font-bold text-ink-950">
+                {rule.title}
+              </h3>
+              <p class="mt-3 text-xs sm:text-sm text-ink-600 leading-relaxed">
+                {rule.body}
+              </p>
+            </div>
+            <div class="mt-5 pt-3 border-t border-ink-200/60 text-[11px] font-bold text-brand-700 flex items-center gap-1.5">
+              <span>✓ Guaranteed in Writing</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Quick Interactive Tools Teaser Row -->
+      <div class="mt-12 rounded-2xl border border-ink-200 bg-cream p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+          <h4 class="font-display text-xl font-bold text-ink-950">
+            Unsure which package fits your exact timeline?
+          </h4>
+          <p class="mt-1 text-xs sm:text-sm text-ink-700">
+            Take our 45-second quiz or calculate your monthly aggregator bleed savings in real rupee figures.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <a
+            href="/tools/package-quiz"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-brand-600 bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-brand-700 transition"
+          >
+            45s Package Quiz →
+          </a>
+          <a
+            href="/tools/roi-calculator"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-ink-300 bg-white px-4 py-2 text-xs font-semibold text-ink-800 hover:border-brand-500 transition"
+          >
+            Rupee Bleed Calculator →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="bg-ink-950 py-16 sm:py-24 text-white">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-xs font-semibold uppercase tracking-widest text-brand-400">Ready to Ship?</span>
+      <h2 class="mt-3 font-display text-3xl font-bold sm:text-4xl text-cream">
+        Let's Lock Your Rupee Scope in 24 Hours
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-base text-ink-300">
+        Share what your business does and what you need. We'll send back an itemized scope sheet with fixed rupee pricing before any advance is paid.
       </p>
-      <p class="mt-4 text-ink-700">
-        We communicate over WhatsApp and email — whichever you prefer — and share a private preview link as soon as there's something real to look at, not just at the very end.
-      </p>
-      <div class="mt-8 text-center">
-        <a href="/contact" class="inline-flex items-center gap-2 rounded-md bg-brand-600 px-6 py-3.5 font-semibold text-cream hover:bg-brand-700" data-analytics-event="cta_click">
-          Start with a scoping enquiry <Icon name="chevron-right" class="h-4 w-4" />
+
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="https://wa.me/919999999999?text=Hi%20ATITTLE,%20I'd%20like%20to%20discuss%20a%20website%20project%20timeline%20and%20scoping%20quote."
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-brand-500 transition"
+        >
+          <Icon name="whatsapp" class="h-5 w-5" /> Chat on WhatsApp
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-cream hover:bg-white/10 transition"
+        >
+          Submit Scoping Form <Icon name="chevron-right" class="h-4 w-4" />
         </a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const tiersData = [
+    {
+      id: "micro",
+      name: "Micro-Starter Storefront",
+      timeframe: "48 Hours Guaranteed",
+      priceAnchor: "Starts ₹4,999",
+      summary: "Built for local retailers, boutiques, and single-service businesses who need a lightning-fast WhatsApp catalog without monthly platform fees.",
+      schedule: [
+        { day: "Hour 0–6", title: "Intake & Rupee Scope", detail: "Share your top 10–30 products, prices, and UPI/WhatsApp number. Scope confirmed in 1 hour." },
+        { day: "Hour 6–30", title: "Catalogue Build & Optimization", detail: "We engineer a zero-bloat mobile catalog with quick-view modals and 1-tap WhatsApp triggers." },
+        { day: "Hour 30–40", title: "Phone Review Pass", detail: "You test ordering products on your own phone via a private preview link." },
+        { day: "Hour 40–48", title: "Domain Live & Handover", detail: "DNS connected, Google Maps tag linked, and full Cloudflare/Vercel keys delivered." },
+      ],
+    },
+    {
+      id: "business",
+      name: "Standard Business Website",
+      timeframe: "10–14 Days Guaranteed",
+      priceAnchor: "Starts ₹18,000",
+      summary: "Built for healthcare clinics, resorts, restaurants, coaching centers, and studios that need multi-page booking and local search domination.",
+      schedule: [
+        { day: "Day 1", title: "Scoping & Fixed Rupee Quote", detail: "In-depth review of your services, current aggregator commission bleed, and exact page count." },
+        { day: "Days 2–4", title: "Content Architecture & Mapping", detail: "OPD hours, room galleries, menu items, and WhatsApp flows mapped for thumb ergonomics." },
+        { day: "Days 5–10", title: "Mobile-First Astro 7 Build", detail: "Engineering with 99/100 Core Web Vitals, local SEO schema, and custom photography layout." },
+        { day: "Days 11–13", title: "Owner Live Review on Phone", detail: "You test the live private link. We implement one comprehensive consolidated revision pass." },
+        { day: "Day 14", title: "DNS Launch & 100% Handover", detail: "Live domain cutover, Google Business Profile schema verified, full GitHub repository keys handed over." },
+      ],
+    },
+    {
+      id: "custom",
+      name: "Custom Architecture & SaaS",
+      timeframe: "3–4 Weeks",
+      priceAnchor: "Starts ₹35,000",
+      summary: "Built for multi-location builders, diagnostic lab directories, IoT telemetry dashboards, and proprietary customer portals.",
+      schedule: [
+        { day: "Week 1", title: "Technical Blueprint & Wireframes", detail: "Schema modelling, third-party API specs, database models, and sprint milestones." },
+        { day: "Week 2", title: "Core Engine & UI Implementation", detail: "Interactive calculators, searchable filterable directories, and responsive touch stages." },
+        { day: "Week 3", title: "Integration & Edge Telemetry", detail: "WhatsApp webhooks, IoT sensor relays, automated lead notifications, and security audit." },
+        { day: "Week 4", title: "Staging Sign-off & Production Rollout", detail: "Production staging review, load testing, DNS cutover, and developer documentation handover." },
+      ],
+    },
+  ];
+
+  function initWorkProcessPage() {
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>(".tier-tab-btn");
+    const timeframeBadge = document.getElementById("tier-timeframe-badge");
+    const priceBadge = document.getElementById("tier-price-badge");
+    const title = document.getElementById("tier-title");
+    const summary = document.getElementById("tier-summary");
+    const scheduleList = document.getElementById("tier-schedule-list");
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-tier-id");
+        const data = tiersData.find((t) => t.id === id);
+        if (!data) return;
+
+        // Active button styles
+        tabButtons.forEach((b) => {
+          b.setAttribute("aria-selected", "false");
+          b.className = "tier-tab-btn rounded-full px-5 py-2.5 text-xs sm:text-sm font-semibold transition border bg-cream text-ink-700 border-ink-300 hover:border-brand-500 hover:text-ink-950";
+        });
+        btn.setAttribute("aria-selected", "true");
+        btn.className = "tier-tab-btn rounded-full px-5 py-2.5 text-xs sm:text-sm font-semibold transition border bg-brand-600 text-white border-brand-600 shadow-sm";
+
+        // Update DOM
+        if (timeframeBadge) timeframeBadge.textContent = data.timeframe;
+        if (priceBadge) priceBadge.textContent = data.priceAnchor;
+        if (title) title.textContent = data.name;
+        if (summary) summary.textContent = data.summary;
+
+        if (scheduleList) {
+          scheduleList.innerHTML = data.schedule
+            .map(
+              (item) => `
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 rounded-xl border border-ink-200/80 bg-white p-4 sm:p-5 shadow-2xs">
+              <span class="rounded-lg bg-ink-950 px-3 py-1.5 text-xs font-mono font-bold text-cream shrink-0 text-center sm:w-28">
+                ${item.day}
+              </span>
+              <div class="min-w-0 flex-1">
+                <h4 class="font-display text-base font-bold text-ink-950">
+                  ${item.title}
+                </h4>
+                <p class="text-xs sm:text-sm text-ink-600 mt-1">
+                  ${item.detail}
+                </p>
+              </div>
+            </div>
+          `
+            )
+            .join("");
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWorkProcessPage);
+  } else {
+    initWorkProcessPage();
+  }
+  document.addEventListener("astro:page-load", initWorkProcessPage);
+</script>
+
