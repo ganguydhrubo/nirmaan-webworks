@@ -86,7 +86,7 @@ const currentPath = Astro.url.pathname;
   </div>
 
   <!-- Mobile nav overlay: deliberately outside the sticky/blur div above, see the comment on <header> for why. -->
-  <div data-nav-scrim hidden class="fixed inset-0 z-40 bg-ink-950/40 lg:hidden"></div>
+  <div data-nav-scrim hidden class="mobile-nav-scrim fixed inset-0 z-40 bg-ink-950/40 lg:hidden"></div>
   <div
     id="mobile-nav-panel"
     data-nav-panel
@@ -94,12 +94,12 @@ const currentPath = Astro.url.pathname;
     role="dialog"
     aria-modal="true"
     aria-label="Menu"
-    class="fixed inset-y-0 right-0 z-50 flex w-[85%] max-w-sm flex-col gap-6 overflow-y-auto bg-cream p-6 shadow-xl lg:hidden"
+    class="mobile-nav-panel fixed inset-y-0 right-0 z-50 flex w-[85%] max-w-sm flex-col gap-6 overflow-y-auto bg-cream p-6 shadow-2xl lg:hidden"
     style="padding-top: max(1.5rem, env(safe-area-inset-top)); padding-bottom: max(1.5rem, env(safe-area-inset-bottom));"
   >
     <div class="flex items-center justify-between">
       <Logo />
-      <button type="button" data-nav-close aria-label="Close menu" class="inline-flex h-11 w-11 items-center justify-center rounded-md text-ink-800">
+      <button type="button" data-nav-close aria-label="Close menu" class="inline-flex h-11 w-11 items-center justify-center rounded-md text-ink-800 hover:bg-ink-100 transition-colors">
         <Icon name="close" class="h-6 w-6" />
       </button>
     </div>
@@ -107,15 +107,16 @@ const currentPath = Astro.url.pathname;
       <ul class="flex flex-col gap-1">
         {navItems.map((item) => (
           <li>
-            <a href={item.href} class="flex items-center justify-between rounded-md px-3 py-3 text-lg font-medium text-ink-900 hover:bg-ink-100">
-              <span class="inline-flex items-center gap-2">
-                {item.label}
+            <a href={item.href} class="mobile-nav-link flex items-center justify-between rounded-md px-3 py-3 text-lg font-medium text-ink-900 hover:bg-ink-100 transition-colors">
+              <span class="mobile-nav-typed inline-flex items-center gap-2" data-nav-label={item.label}>
+                <span class="typed-text">{item.label}</span>
+                <span class="typed-cursor is-done" aria-hidden="true"></span>
                 {item.hasDot && (
-                  <span class="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+                  <span class="nav-pulse-dot inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
                 )}
               </span>
               {item.hasDot && (
-                <span class="rounded bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">7 New</span>
+                <span class="nav-badge-new rounded bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">7 New</span>
               )}
             </a>
           </li>
@@ -162,11 +163,108 @@ const currentPath = Astro.url.pathname;
   #site-header-bar.header--scrolled .header-inner {
     transform: scale(0.98);
   }
+
+  /* Mobile Nav Panel & Scrim Smooth Transitions */
+  .mobile-nav-scrim {
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mobile-nav-scrim.is-open {
+    opacity: 1;
+  }
+
+  .mobile-nav-panel {
+    transform: translateX(100%);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mobile-nav-panel.is-open {
+    transform: translateX(0);
+  }
+
+  /* Menu Items Typing & Stable States */
+  .mobile-nav-link {
+    opacity: 0;
+    transform: translateX(14px);
+    transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1), transform 240ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms ease;
+  }
+  .mobile-nav-link.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .typed-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.15em;
+    background-color: var(--color-brand-600);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: cursorBlink 600ms infinite ease-in-out;
+  }
+  .typed-cursor.is-done {
+    display: none;
+  }
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .mobile-nav-typed.is-stable .typed-text {
+    animation: textSettle 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes textSettle {
+    0% {
+      color: var(--color-brand-600);
+      letter-spacing: -0.015em;
+    }
+    50% {
+      letter-spacing: 0.01em;
+    }
+    100% {
+      color: var(--color-ink-900);
+      letter-spacing: 0;
+    }
+  }
+
+  .nav-badge-new {
+    opacity: 0;
+    transform: scale(0.65);
+    transition: opacity 250ms ease, transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.25);
+  }
+  .nav-badge-new.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .nav-pulse-dot {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 200ms ease, transform 250ms cubic-bezier(0.2, 0.9, 0.3, 1.25);
+  }
+  .nav-pulse-dot.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #site-header-bar,
-    #site-header-bar .header-inner {
+    #site-header-bar .header-inner,
+    .mobile-nav-scrim,
+    .mobile-nav-panel,
+    .mobile-nav-link,
+    .nav-badge-new,
+    .nav-pulse-dot {
       transform: none !important;
       transition: none !important;
+      opacity: 1 !important;
+    }
+    .typed-cursor {
+      display: none !important;
+    }
+    .mobile-nav-typed.is-stable .typed-text {
+      animation: none !important;
     }
   }
 </style>
