@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 const meta = {
   title: "AI Website Evaluator | atittle.com",
@@ -20,9 +21,17 @@ const industries = [
   { value: "B2B Professional Services", label: "B2B / CA / Legal / Consulting" },
   { value: "Local Trade & Service Business", label: "Other Local Trade Service" },
 ];
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Tools", url: `${siteConfig.siteUrl}/tools/website-evaluator` },
+    { name: "AI Website Evaluator", url: `${siteConfig.siteUrl}/tools/website-evaluator` },
+  ]),
+];
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} jsonLd={jsonLd}>
   <!-- Hero Section -->
   <section class="relative overflow-hidden border-b border-ink-200/70 bg-gradient-to-b from-cream to-cream-50 py-12 sm:py-16">
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">

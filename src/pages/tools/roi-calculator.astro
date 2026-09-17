@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import RoiCalculator from "@/components/tools/RoiCalculator.astro";
 import EnquiryForm from "@/components/sections/EnquiryForm.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const prerender = true;
 
@@ -9,9 +11,16 @@ const meta = {
   title: "Industry OTA & Aggregator Commission Calculator | ATITTLE",
   description: "Calculate how much revenue you are losing to MakeMyTrip, Zomato, Swiggy, and Practo commissions, and see how fast an ATITTLE direct-booking site pays for itself in rupees.",
 };
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "ROI Calculator", url: `${siteConfig.siteUrl}/tools/roi-calculator` },
+  ]),
+];
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} jsonLd={jsonLd}>
   <div class="bg-cream pt-10 pb-6 border-b border-ink-200">
     <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
       <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-2">Interactive Financial Tool</p>

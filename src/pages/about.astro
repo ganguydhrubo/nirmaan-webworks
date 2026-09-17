@@ -3,8 +3,16 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { siteConfig } from "@config/site";
 import { telLink, waLink, mailLink } from "@/lib/contact-links";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const prerender = true;
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "About", url: `${siteConfig.siteUrl}/about` },
+  ]),
+];
 
 const benchmarks = [
   { metric: "0.6s", label: "Median Mobile FCP", note: "Tested on Indian 4G/LTE" },
@@ -77,8 +85,9 @@ const nonNegotiables = [
 ---
 
 <BaseLayout
-  title="About Us | Built for Real Phones, Not Just Office WiFi"
+  title="About ATITTLE — Mobile-First Web Design Studio, Kolkata"
   description="ATITTLE is an independent web engineering studio based in Newtown, Kolkata. We build lightning-fast, mobile-first websites for Indian businesses, tested on real budget phones over Indian 4G networks."
+  jsonLd={jsonLd}
 >
   <!-- 1. Hero Section: Studio Mission & Hardware Ethos -->
   <section class="relative overflow-hidden bg-cream py-12 sm:py-16 md:py-20 border-b border-ink-200/70">

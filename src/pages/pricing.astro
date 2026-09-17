@@ -2,15 +2,23 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const prerender = true;
 
 function formatInr(n: number): string {
   return `₹${n.toLocaleString("en-IN")}`;
 }
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Pricing", url: `${siteConfig.siteUrl}/pricing` },
+  ]),
+];
 ---
 
-<BaseLayout title="Pricing" description="Transparent INR pricing for websites built for Indian businesses — starting ranges, what's included, and what renewal actually costs.">
+<BaseLayout title="Website Pricing in INR — Transparent Packages | ATITTLE" description="Starter to custom website packages for Indian businesses, all priced in plain rupees. See exactly what's included, excluded, and what renewal actually costs." jsonLd={jsonLd}>
   <section class="bg-cream py-14 sm:py-20">
     <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
       <h1 class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Pricing, in plain rupees</h1>

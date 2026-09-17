@@ -16,14 +16,13 @@ import ServicesTeaser from "@/components/sections/home/ServicesTeaser.astro";
 import PackageQuiz from "@/components/tools/PackageQuiz.astro";
 import FaqTeaser from "@/components/sections/home/FaqTeaser.astro";
 import FinalCta from "@/components/sections/home/FinalCta.astro";
-import { siteConfig } from "@config/site";
 
 export const prerender = true;
 ---
 
 <BaseLayout
-  title={siteConfig.tagline}
-  description={siteConfig.shortDescription}
+  title="Fast, Mobile-First Websites for Indian Businesses | ATITTLE"
+  description="ATITTLE builds mobile-first websites for Indian shops, clinics, restaurants and studios — transparent INR pricing, Kolkata-based team, delivered in weeks."
 >
   <Hero />
   <CategoryBar />

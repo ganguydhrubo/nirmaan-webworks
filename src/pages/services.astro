@@ -5,6 +5,7 @@ import EnquiryForm from "@/components/sections/EnquiryForm.astro";
 import AiConsultationBoard from "@/components/services/AiConsultationBoard.astro";
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { Image } from "astro:assets";
 
 import imgAds from "@/assets/demos/expansion/wedding-detail.jpg";
@@ -68,9 +69,16 @@ const relatableImages = [
     alt: "Tranquil resort backwater and guest hospitality retreat",
   },
 ];
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Services", url: `${siteConfig.siteUrl}/services` },
+  ]),
+];
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} jsonLd={jsonLd}>
   <!-- Top Cinematic Warm Brand Hero (Aligned with Main Site Theme) -->
   <section class="relative overflow-hidden bg-gradient-to-b from-brand-50/70 via-cream to-cream py-16 sm:py-24 text-ink-900 border-b border-ink-200">
     <!-- Ambient Warm Radial Glows -->

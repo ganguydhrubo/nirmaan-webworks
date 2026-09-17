@@ -3,9 +3,17 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import DemoShowcase from "@/components/ui/DemoShowcase.astro";
 import DemoDirectory from "@/components/ui/DemoDirectory.astro";
 import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
 export const prerender = true;
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Demo Websites", url: `${siteConfig.siteUrl}/demos` },
+  ]),
+];
 ---
-<BaseLayout title="Live demo websites" description={`${siteConfig.demoRegistry.length} full, working demo websites — one for each industry we build for. Every page, filter and form actually works.`}>
+<BaseLayout title="Live Demo Websites by Industry | ATITTLE" description={`${siteConfig.demoRegistry.length} full, working demo websites — one for each industry we build for. Every page, filter and form actually works.`} jsonLd={jsonLd}>
   <section class="bg-cream pb-16 pt-8 sm:pb-20 sm:pt-8">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mb-8 max-w-4xl sm:mb-8">
