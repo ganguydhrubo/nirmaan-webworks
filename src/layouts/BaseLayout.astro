@@ -34,6 +34,10 @@ const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJson
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en-IN" href={canonicalUrl} />
+    <link rel="alternate" hreflang="bn-IN" href={`${canonicalUrl}?lang=bn`} />
+    <link rel="alternate" hreflang="hi-IN" href={`${canonicalUrl}?lang=hi`} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
     <meta name="author" content={siteConfig.businessName} />
     {noindex ? (
       <meta name="robots" content="noindex, nofollow" />
@@ -105,6 +109,7 @@ const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJson
     <WhatsAppFloating />
 
     <script src="../scripts/reveal.ts"></script>
+    <script src="../scripts/i18n.ts"></script>
     <script src="../scripts/analytics-client.ts"></script>
     <script src="../scripts/mobile-nav.ts"></script>
   </body>

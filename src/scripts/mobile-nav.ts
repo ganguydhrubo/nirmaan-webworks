@@ -183,4 +183,9 @@ if (toggle && panel) {
   document.addEventListener("astro:before-preparation", () => {
     if (!panel.hidden) close();
   });
+
+  // Re-sync nav labels if language changes while panel is open
+  window.addEventListener("atittle:langchange", () => {
+    if (!panel.hidden) resetToStableState();
+  });
 }

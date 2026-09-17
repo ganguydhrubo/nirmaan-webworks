@@ -29,7 +29,7 @@ const { class: className = "" } = Astro.props;
       <Icon name="home" class="h-5 w-5" />
     </span>
     <span class="dock-dot" aria-hidden="true"></span>
-    <span class="dock-tooltip" role="tooltip">Home</span>
+    <span class="dock-tooltip" role="tooltip" data-i18n="dock.home">Home</span>
   </a>
 
   <!-- Page Sections (Opens Bottom Sheet) -->
@@ -45,7 +45,7 @@ const { class: className = "" } = Astro.props;
       <Icon name="layers" class="h-5 w-5" />
     </span>
     <span class="dock-dot" aria-hidden="true"></span>
-    <span class="dock-tooltip" role="tooltip">Sections</span>
+    <span class="dock-tooltip" role="tooltip" data-i18n="dock.sections">Sections</span>
   </button>
 
   <!-- AI Website Audit -->
@@ -59,7 +59,7 @@ const { class: className = "" } = Astro.props;
       <Icon name="sparkle" class="h-5 w-5" />
     </span>
     <span class="dock-dot" aria-hidden="true"></span>
-    <span class="dock-tooltip" role="tooltip">AI audit</span>
+    <span class="dock-tooltip" role="tooltip" data-i18n="dock.aiAudit">AI audit</span>
   </a>
 
   <div class="dock-divider" aria-hidden="true"></div>
@@ -72,12 +72,13 @@ const { class: className = "" } = Astro.props;
     class="dock-item dock-item-whatsapp group"
     data-dock-action="whatsapp"
     aria-label="Chat with us on WhatsApp"
+    data-wa-template="mobileStickyBar"
   >
     <span class="dock-icon-box dock-icon-whatsapp">
       <Icon name="whatsapp" class="h-5 w-5" />
       <span class="dock-live-beacon" aria-hidden="true"></span>
     </span>
-    <span class="dock-tooltip" role="tooltip">WhatsApp</span>
+    <span class="dock-tooltip" role="tooltip" data-i18n="dock.whatsapp">WhatsApp</span>
   </a>
 
   <!-- Direct Call Action -->
@@ -90,7 +91,7 @@ const { class: className = "" } = Astro.props;
     <span class="dock-icon-box">
       <Icon name="phone" class="h-5 w-5" />
     </span>
-    <span class="dock-tooltip" role="tooltip">Call</span>
+    <span class="dock-tooltip" role="tooltip" data-i18n="dock.call">Call</span>
   </a>
 </nav>
 
@@ -111,7 +112,7 @@ const { class: className = "" } = Astro.props;
     <div class="dock-sheet-header">
       <div class="flex items-center gap-2">
         <Icon name="layers" class="h-4 w-4 text-brand-600" />
-        <h2 id="dock-sheet-title" class="text-sm font-bold tracking-tight font-display text-ink-950">
+        <h2 id="dock-sheet-title" class="text-sm font-bold tracking-tight font-display text-ink-950" data-i18n="dock.sheetTitle">
           Page Navigation
         </h2>
       </div>
@@ -120,6 +121,7 @@ const { class: className = "" } = Astro.props;
         class="dock-sheet-close"
         data-dock-sheet-close
         aria-label="Close sections navigation"
+        data-i18n-attr="aria-label:dock.sheetClose"
       >
         <Icon name="close" class="h-4 w-4" />
       </button>

@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
     <div class="grid min-w-0 gap-8 sm:grid-cols-2 lg:grid-cols-4">
       <div class="sm:col-span-2 lg:col-span-1">
         <Logo variant="light" />
-        <p class="mt-4 max-w-xs text-sm text-ink-400">{siteConfig.shortDescription}</p>
+        <p class="mt-4 max-w-xs text-sm text-ink-400" data-i18n="footer.description">{siteConfig.shortDescription}</p>
         <div class="mt-5 flex items-center gap-3">
           <a
             href="https://www.facebook.com/atittleweb"
@@ -38,19 +38,19 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Company</h2>
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400" data-i18n="footer.companyTitle">Company</h2>
         <ul class="space-y-2 text-sm">
-          <li><a href="/about" class="hover:text-cream">About us</a></li>
-          <li><a href="/work-process" class="hover:text-cream">Our process</a></li>
-          <li><a href="/pricing" class="hover:text-cream">Pricing</a></li>
-          <li><a href="/tools/website-evaluator" class="text-brand-400 hover:text-cream font-medium">AI Website Evaluator</a></li>
-          <li><a href="/faq" class="hover:text-cream">FAQ</a></li>
-          <li><a href="/contact" class="hover:text-cream">Contact</a></li>
+          <li><a href="/about" class="hover:text-cream" data-i18n="footer.aboutUs">About us</a></li>
+          <li><a href="/work-process" class="hover:text-cream" data-i18n="footer.ourProcess">Our process</a></li>
+          <li><a href="/pricing" class="hover:text-cream" data-i18n="footer.pricing">Pricing</a></li>
+          <li><a href="/tools/website-evaluator" class="text-brand-400 hover:text-cream font-medium" data-i18n="footer.aiEvaluator">AI Website Evaluator</a></li>
+          <li><a href="/faq" class="hover:text-cream" data-i18n="footer.faq">FAQ</a></li>
+          <li><a href="/contact" class="hover:text-cream" data-i18n="footer.contact">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Industries we build for</h2>
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400" data-i18n="footer.industriesTitle">Industries we build for</h2>
         <ul class="space-y-2 text-sm">
           {siteConfig.industryRegistry.map((i) => (
             <li><a href={`/industries/${i.slug}`} class="hover:text-cream">{i.shortName}</a></li>
@@ -59,7 +59,7 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400">Get in touch</h2>
+        <h2 class="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-400" data-i18n="footer.getInTouchTitle">Get in touch</h2>
         <ul class="space-y-3 text-sm">
           <li>
             <a href={telLink()} class="flex items-center gap-2 hover:text-cream" data-analytics-event="call_click">
@@ -67,8 +67,8 @@ const year = new Date().getFullYear();
             </a>
           </li>
           <li>
-            <a href={waLink(siteConfig.whatsappMessageTemplates.footer)} target="_blank" rel="noopener" aria-label="WhatsApp us (opens WhatsApp)" class="flex items-center gap-2 hover:text-cream" data-analytics-event="whatsapp_click">
-              <Icon name="whatsapp" class="h-4 w-4 shrink-0" /> WhatsApp us
+            <a href={waLink(siteConfig.whatsappMessageTemplates.footer)} target="_blank" rel="noopener" aria-label="WhatsApp us (opens WhatsApp)" class="flex items-center gap-2 hover:text-cream" data-analytics-event="whatsapp_click" data-wa-template="footer">
+              <Icon name="whatsapp" class="h-4 w-4 shrink-0" /> <span data-i18n="footer.whatsappUs">WhatsApp us</span>
             </a>
           </li>
           <li>
@@ -98,13 +98,13 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="mt-6 flex flex-col gap-3 border-t border-ink-800 pt-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {year} {siteConfig.legalEntityName}. All rights reserved.</p>
+      <p>© {year} {siteConfig.legalEntityName}. <span data-i18n="footer.rightsReserved">All rights reserved.</span></p>
       <nav aria-label="Legal">
         <ul class="flex flex-wrap gap-x-4 gap-y-1">
-          <li><a href="/privacy" class="hover:text-cream">Privacy policy</a></li>
-          <li><a href="/terms" class="hover:text-cream">Terms</a></li>
-          <li><a href="/refund-policy" class="hover:text-cream">Refund policy</a></li>
-          <li><a href="/sitemap-index.xml" class="hover:text-cream">Sitemap</a></li>
+          <li><a href="/privacy" class="hover:text-cream" data-i18n="footer.privacyPolicy">Privacy policy</a></li>
+          <li><a href="/terms" class="hover:text-cream" data-i18n="footer.termsOfService">Terms</a></li>
+          <li><a href="/refund-policy" class="hover:text-cream" data-i18n="footer.refundPolicy">Refund policy</a></li>
+          <li><a href="/sitemap-index.xml" class="hover:text-cream" data-i18n="footer.sitemap">Sitemap</a></li>
         </ul>
       </nav>
     </div>

@@ -10,8 +10,8 @@ function formatInr(n: number): string {
 <section id="pricing" data-theme="dark" data-dock-title="Pricing" data-dock-desc="Starting rupee ranges" class="bg-ink-950 py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="reveal mx-auto max-w-2xl text-center">
-      <h2 class="font-display text-3xl font-semibold text-cream sm:text-4xl">Pricing, before you ever talk to us</h2>
-      <p class="mt-4 text-lg text-ink-300">Starting ranges. Your exact quote depends on pages and features — confirmed in writing before work begins.</p>
+      <h2 class="font-display text-3xl font-semibold text-cream sm:text-4xl" data-i18n="pricingTeaser.heading">Pricing, before you ever talk to us</h2>
+      <p class="mt-4 text-lg text-ink-300" data-i18n="pricingTeaser.subheading">Starting ranges. Your exact quote depends on pages and features — confirmed in writing before work begins.</p>
     </div>
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -39,7 +39,7 @@ function formatInr(n: number): string {
       {siteConfig.gstNote} Optional maintenance: {formatInr(siteConfig.maintenanceMonthlyInr.min)}–{formatInr(siteConfig.maintenanceMonthlyInr.max)}/month — never required to keep your site live.
     </p>
     <div class="reveal mt-8 text-center">
-      <a href="/pricing" class="text-sm font-semibold text-brand-400 hover:text-brand-300">See the full pricing breakdown →</a>
+      <a href="/pricing" class="text-sm font-semibold text-brand-400 hover:text-brand-300" data-i18n="pricingTeaser.viewFullPricing">See the full pricing breakdown →</a>
     </div>
   </div>
 </section>

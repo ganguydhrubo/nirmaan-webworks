@@ -24,12 +24,12 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
       </p>
 
       <!-- H1 Headline with Kinetic Reveal Animation -->
-      <h1 class="font-display font-semibold text-ink-950">
+      <h1 class="font-display font-semibold text-ink-950" data-i18n="hero.title">
         A website that gets your business found — and turns visitors into <span class="hero-highlight">WhatsApp enquiries.</span>
       </h1>
 
       <!-- Subcopy Paragraph: Clear, readable value proposition -->
-      <p class="hero-description text-ink-800">
+      <p class="hero-description text-ink-800" data-i18n="hero.subtitle">
         We build fast, mobile-first websites for Indian shops, clinics, restaurants, jewellers and builders — priced in plain rupees, with no login systems or paid plugins you don't need.
       </p>
 
@@ -44,7 +44,7 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           data-analytics-event="cta_click"
         >
           <span class="quote-cta-sheen" aria-hidden="true"></span>
-          <span>Get a free quote</span>
+          <span data-i18n="hero.ctaPrimary">Get a free quote</span>
           <Icon name="chevron-right" class="h-4 w-4" />
         </a>
         <a
@@ -54,15 +54,16 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           aria-label="Chat on WhatsApp (opens WhatsApp)"
           class="cta-touch-btn cta-whatsapp-btn inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-4 py-3 font-semibold text-ink-800 transition hover:border-teal-500 hover:text-teal-700"
           data-analytics-event="whatsapp_click"
+          data-wa-template="heroSecondary"
         >
           <Icon name="whatsapp" class="h-5 w-5 text-[#25D366] wa-icon-wiggle shrink-0" />
-          <span>Chat on WhatsApp</span>
+          <span data-i18n="hero.ctaSecondary">Chat on WhatsApp</span>
         </a>
       </div>
 
       <!-- Trust Commitment -->
-      <p class="hero-response text-ink-600 mt-3">
-        {siteConfig.responseCommitment} No sales call required to get a price.
+      <p class="hero-response text-ink-600 mt-3" data-i18n="hero.commitment">
+        ⚡ Direct WhatsApp response within 15 minutes
       </p>
 
       <!-- Proof & AI Evaluator Links -->
@@ -75,7 +76,7 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           class="inline-flex items-center gap-1.5 rounded-full border border-amber-300/90 bg-amber-50/90 px-3 py-1 text-xs font-semibold text-amber-900 shadow-2xs hover:bg-amber-100 hover:border-amber-400 transition"
         >
           <Icon name="sparkle" class="h-3.5 w-3.5 text-amber-500" />
-          <span>AI Website Evaluator &darr;</span>
+          <span data-i18n="evaluatorTeaser.badge">AI Website Evaluator &darr;</span>
         </a>
       </div>
     </div>

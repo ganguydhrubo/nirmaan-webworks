@@ -8,8 +8,8 @@ const homePerf = performanceReport.pages.find((p) => p.path === "/");
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="reveal grid gap-8 sm:gap-10 rounded-2xl border border-ink-200 bg-cream p-5 sm:p-10 lg:p-12 lg:grid-cols-2 lg:items-center">
       <div>
-        <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink-950">We measure this site, we don't just describe it</h2>
-        <p class="mt-3 text-sm sm:text-base text-ink-700">
+        <h2 class="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-ink-950" data-i18n="proof.heading">We measure this site, we don't just describe it</h2>
+        <p class="mt-3 text-sm sm:text-base text-ink-700" data-i18n="proof.subheading">
           Every claim an agency makes about speed is easy to say and hard to check. So instead of telling you this site is fast, here is the actual Lighthouse score for the page you're reading right now, tested on a throttled mobile connection.
         </p>
         {performanceReport.measured && (

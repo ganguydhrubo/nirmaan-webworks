@@ -29,14 +29,14 @@ const { id = "evaluator", class: className = "" } = Astro.props;
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
             <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-500"></span>
           </span>
-          <span class="truncate">⚡ Free AI Diagnostic · 100-Point Audit</span>
+          <span class="truncate" data-i18n="evaluatorTeaser.badge">⚡ Free AI Diagnostic · 100-Point Audit</span>
         </div>
 
-        <h2 class="font-display mt-4 text-2xl sm:text-4xl lg:text-5xl font-semibold text-cream leading-tight break-words">
+        <h2 class="font-display mt-4 text-2xl sm:text-4xl lg:text-5xl font-semibold text-cream leading-tight break-words" data-i18n="evaluatorTeaser.heading">
           Does your website reflect your <span class="text-brand-400 italic">actual craft</span> — or look like template slop?
         </h2>
 
-        <p class="mt-4 text-sm sm:text-base text-ink-300 leading-relaxed break-words">
+        <p class="mt-4 text-sm sm:text-base text-ink-300 leading-relaxed break-words" data-i18n="evaluatorTeaser.subheading">
           Most Indian business websites lose customers because they sound like generic corporate templates. Run our free 100-point AI audit to test 3-second clarity, trade authenticity, WhatsApp friction, and mobile readiness before spending a single rupee on redesign.
         </p>
 
@@ -61,7 +61,7 @@ const { id = "evaluator", class: className = "" } = Astro.props;
             class="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-3.5 text-sm sm:text-base font-semibold text-cream shadow-lg shadow-brand-900/50 transition hover:bg-brand-500 active:scale-98"
             data-analytics-event="cta_click"
           >
-            <span>Run Free Website Audit</span>
+            <span data-i18n="evaluatorTeaser.ctaButton">Run Free Website Audit</span>
             <Icon name="chevron-right" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
           <span class="text-xs text-ink-400">Takes 30 seconds · Instant browser score</span>

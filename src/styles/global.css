@@ -9,8 +9,8 @@
  * WCAG 2.2 AA and recorded in ARCHITECTURE.md / AUDIT.md.
  */
 @theme {
-  --font-display: "Fraunces", "Fraunces Fallback", ui-serif, Georgia, serif;
-  --font-body: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Fraunces", "Fraunces Fallback", "Noto Serif Bengali", "Noto Serif Devanagari", ui-serif, Georgia, serif;
+  --font-body: "Manrope", "Manrope Fallback", "Noto Sans Bengali", "Noto Sans Devanagari", "Mukta", "Hind", "Kohinoor Devanagari", "Nirmala UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   /* Brand: warm terracotta. Contrast verified (see ARCHITECTURE.md):
      brand-600 on cream = 6.01:1 (safe for solid buttons/small text/links);
