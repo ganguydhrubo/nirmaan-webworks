@@ -13,7 +13,17 @@ const demos = siteConfig.demoRegistry.map(demo => ({
 <section id={id} class:list={["showcase", compact && "showcase--compact"]} data-showcase aria-label="Live website showcase" aria-roledescription="carousel">
   <div class="showcase-topline">
     <span><span class="showcase-live-dot" aria-hidden="true"></span> Real websites. Ready to explore.</span>
-    <span class="showcase-edition">ATITTLE / SELECTED WORK</span>
+    <button
+      type="button"
+      class="showcase-theatre-header-btn"
+      data-open-theatre=""
+      data-magnetic
+      aria-label="Launch 3D Cinematic Demo Theatre"
+    >
+      <span class="theatre-pulse-icon" aria-hidden="true">🎬</span>
+      <span>Watch 3D Theatre</span>
+      <span class="theatre-pill-count">15 Demos</span>
+    </button>
   </div>
   <div class="showcase-stage" data-stage>
     {demos.map((demo, index) => (
@@ -39,7 +49,7 @@ const demos = siteConfig.demoRegistry.map(demo => ({
           <div class="showcase-actions-row">
             <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>Open live demo <span aria-hidden="true">↗</span></a>
             <button type="button" class="showcase-theatre-pill" data-open-theatre={demo.slug} aria-label={`Open 3D Theatre for ${demo.businessName}`} title="Expand into full 3D Cinematic Theatre">
-              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              <span aria-hidden="true">🎬</span>
               <span>3D Reel</span>
             </button>
           </div>
