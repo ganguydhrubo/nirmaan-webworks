@@ -43,6 +43,16 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
     <meta name="robots" content="noindex, nofollow" />
     <link rel="stylesheet" href={fontsHref} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      if (new URLSearchParams(window.location.search).has('theatre')) {
+        document.documentElement.classList.add('in-theatre');
+      }
+    </script>
+    <style>
+      :global(html.in-theatre [data-demo-banner]) {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <a href="#demo-content" class="skip-link">Skip to demo content</a>

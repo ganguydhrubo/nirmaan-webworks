@@ -52,7 +52,8 @@ function initTheatreController() {
   let activeFilter = "all";
 
   // Elements
-  const videoMobile = document.getElementById("theatre-video-mobile") as HTMLVideoElement | null;
+  const iframeMobile = document.getElementById("theatre-iframe-mobile") as HTMLIFrameElement | null;
+  const posterMobile = document.getElementById("theatre-poster-mobile") as HTMLImageElement | null;
   const videoDesktop = document.getElementById("theatre-video-desktop") as HTMLVideoElement | null;
   const phoneFrame = document.getElementById("theatre-phone-frame");
   const glow = document.getElementById("theatre-glow");
@@ -131,17 +132,31 @@ function initTheatreController() {
       glow.style.background = `radial-gradient(circle, ${color} 0%, rgba(0, 0, 0, 0) 70%)`;
     }
 
-    // Load & Play Video Reel
-    const videoUrl = `/videos/demos/${demo.slug}.webm`;
-    [videoMobile, videoDesktop].forEach((vid) => {
-      if (!vid) return;
-      vid.pause();
-      vid.src = videoUrl;
-      vid.load();
-      vid.play().catch(() => {
-        // Autoplay policy fallback: muted video is allowed, catch silent fails
-      });
-    });
+    // Update Phone Screen with real live mobile demo + instant mobile snapshot
+    if (posterMobile) {
+      posterMobile.src = `/images/showcase/${demo.slug}-mobile.webp`;
+      posterMobile.style.opacity = "1";
+    }
+    if (iframeMobile) {
+      const demoUrl = `/demos/${demo.slug}/?theatre=1`;
+      iframeMobile.src = demoUrl;
+      iframeMobile.onload = () => {
+        if (posterMobile) {
+          setTimeout(() => {
+            posterMobile.style.opacity = "0";
+          }, 200);
+        }
+      };
+    }
+
+    // Load & Play Desktop Video Reel
+    if (videoDesktop) {
+      const videoUrl = `/videos/demos/${demo.slug}.webm`;
+      videoDesktop.pause();
+      videoDesktop.src = videoUrl;
+      videoDesktop.load();
+      videoDesktop.play().catch(() => {});
+    }
 
     // Update active thumbnail
     if (thumbTrack) {
@@ -177,9 +192,12 @@ function initTheatreController() {
     theatre.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 
-    [videoMobile, videoDesktop].forEach((vid) => {
-      if (vid) vid.pause();
-    });
+    if (videoDesktop) {
+      videoDesktop.pause();
+    }
+    if (iframeMobile) {
+      iframeMobile.src = "about:blank";
+    }
 
     if (window.atittleAudio) {
       window.atittleAudio.playClick(450);
@@ -278,10 +296,9 @@ function initTheatreController() {
       selectDemo(currentIndex - 1);
     } else if (e.key === " " && e.target === document.body) {
       e.preventDefault();
-      const currentVid = currentMode === "mobile" ? videoMobile : videoDesktop;
-      if (currentVid) {
-        if (currentVid.paused) currentVid.play();
-        else currentVid.pause();
+      if (currentMode === "desktop" && videoDesktop) {
+        if (videoDesktop.paused) videoDesktop.play();
+        else videoDesktop.pause();
       }
     }
   });
