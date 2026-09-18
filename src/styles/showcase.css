@@ -68,9 +68,12 @@
 .showcase-location { display:flex; align-items:center; gap:.35rem; margin-top:1rem; font-size:.75rem; color:var(--color-ink-600); }
 .showcase-location svg { flex-shrink:0; width:14px; height:14px; }
 .showcase-description { margin-top:.8rem; font-size:.9rem; color:var(--color-ink-700); line-height:1.6; }
-.showcase-open { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:48px; padding:.8rem 1rem; margin-top:1.5rem; border-radius:var(--radius-md); color:var(--color-cream); background:var(--color-brand-600); font-size:.8rem; font-weight:700; transition:background 150ms; }
+.showcase-actions-row { display:flex; align-items:center; gap:.5rem; margin-top:1.25rem; }
+.showcase-open { flex:1; display:flex; align-items:center; justify-content:space-between; gap:.6rem; min-height:46px; padding:.7rem 1rem; border-radius:var(--radius-md); color:var(--color-cream); background:var(--color-brand-600); font-size:.8rem; font-weight:700; transition:background 150ms; }
 .showcase-open:hover { background:var(--color-brand-700); }
-.showcase-open > span { font-size:1.25rem; }
+.showcase-open > span { font-size:1.15rem; }
+.showcase-theatre-pill { display:inline-flex; align-items:center; gap:.4rem; min-height:46px; padding:.7rem .9rem; border-radius:var(--radius-md); border:1px solid rgba(234, 88, 12, 0.4); background:rgba(24, 24, 27, 0.85); color:#fed7aa; font-size:.78rem; font-weight:700; cursor:pointer; transition:all 150ms ease; }
+.showcase-theatre-pill:hover { background:#c1522e; color:#fff; border-color:#fff; transform:translateY(-1px); }
 .showcase-navigation { padding-top:1.1rem; }
 .showcase:not([data-enhanced]) .showcase-navigation { visibility:hidden; }
 .showcase-stack { position:relative; height:95px; max-width:520px; margin-inline:auto; isolation:isolate; }

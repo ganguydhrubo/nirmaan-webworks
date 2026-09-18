@@ -19,7 +19,7 @@ const demos = siteConfig.demoRegistry.map(demo => ({
     {demos.map((demo, index) => (
       <article class:list={["showcase-scene", index === 0 && "is-active"]} data-scene data-index={index} data-name={demo.businessName} data-category={demo.category} aria-roledescription="slide" aria-label={`${index + 1} of ${demos.length}: ${demo.businessName}`} aria-hidden={index !== 0 ? "true" : undefined} inert={index !== 0}>
         <div class="showcase-visual">
-          <div class="showcase-window">
+          <div class="showcase-window" data-kinetic-tilt data-kinetic-glow data-tilt-max="5">
             <div class="showcase-chrome" aria-hidden="true">
               <span class="showcase-window-dots"><i></i><i></i><i></i></span>
               <span>{demo.slug}.example</span>
@@ -36,7 +36,13 @@ const demos = siteConfig.demoRegistry.map(demo => ({
           <h2>{demo.businessName}</h2>
           <p class="showcase-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{demo.city}</p>
           <p class="showcase-description">{demo.tagline}</p>
-          <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>Open live demo <span aria-hidden="true">↗</span></a>
+          <div class="showcase-actions-row">
+            <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>Open live demo <span aria-hidden="true">↗</span></a>
+            <button type="button" class="showcase-theatre-pill" data-open-theatre={demo.slug} aria-label={`Open 3D Theatre for ${demo.businessName}`} title="Expand into full 3D Cinematic Theatre">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              <span>3D Reel</span>
+            </button>
+          </div>
         </div>
       </article>
     ))}

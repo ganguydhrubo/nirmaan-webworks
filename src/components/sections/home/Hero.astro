@@ -42,6 +42,7 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           href="/contact"
           class="cta-touch-btn quote-cta-btn inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-3 font-semibold text-cream shadow-sm transition hover:bg-brand-700"
           data-analytics-event="cta_click"
+          data-magnetic
         >
           <span class="quote-cta-sheen" aria-hidden="true"></span>
           <span data-i18n="hero.ctaPrimary">Get a free quote</span>
@@ -55,6 +56,7 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           class="cta-touch-btn cta-whatsapp-btn inline-flex items-center justify-center gap-2 rounded-md border border-ink-300 bg-white px-4 py-3 font-semibold text-ink-800 transition hover:border-teal-500 hover:text-teal-700"
           data-analytics-event="whatsapp_click"
           data-wa-template="heroSecondary"
+          data-magnetic
         >
           <Icon name="whatsapp" class="h-5 w-5 text-[#25D366] wa-icon-wiggle shrink-0" />
           <span data-i18n="hero.ctaSecondary">Chat on WhatsApp</span>
@@ -68,6 +70,19 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
 
       <!-- Proof & AI Evaluator Links -->
       <div class="hero-links-strip flex flex-wrap items-center gap-2.5 sm:gap-3 mt-3">
+        <button
+          type="button"
+          class="hero-theatre-btn inline-flex items-center gap-2 rounded-full border border-brand-300/90 bg-brand-50/90 px-3.5 py-1.5 text-xs font-semibold text-brand-800 shadow-2xs hover:bg-brand-100 hover:border-brand-400 transition cursor-pointer"
+          data-open-theatre=""
+          data-magnetic
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
+          </span>
+          <span>Watch 3D Demo Theatre</span>
+          <span aria-hidden="true">🎬</span>
+        </button>
         <a class="hero-proof-link" href="/demos">
           {siteConfig.demoRegistry.length} industries. {siteConfig.demoRegistry.length} working websites. <span aria-hidden="true">&nearr;</span>
         </a>

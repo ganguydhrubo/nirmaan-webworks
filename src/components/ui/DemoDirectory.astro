@@ -22,16 +22,28 @@ const {
         {title}
       </h2>
     </div>
-    <span class="text-xs sm:text-sm font-medium text-ink-600">
-      {subtitle}
-    </span>
+    <div class="flex items-center gap-3">
+      <span class="text-xs sm:text-sm font-medium text-ink-600 hidden sm:inline">
+        {subtitle}
+      </span>
+      <button
+        type="button"
+        class="cinematic-theatre-trigger-btn"
+        data-open-theatre=""
+        data-magnetic
+      >
+        <span class="theatre-btn-pulse" aria-hidden="true"></span>
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+        <span>Cinematic Theatre</span>
+      </button>
+    </div>
   </div>
   
   <div class="demo-directory-grid">
     {siteConfig.demoRegistry.map(demo => {
       const industry = siteConfig.industryRegistry.find(item => item.slug === demo.industrySlug)!;
       return (
-        <a href={`/demos/${demo.slug}`} class="demo-card group" data-demo-card>
+        <a href={`/demos/${demo.slug}`} class="demo-card group" data-demo-card data-kinetic-tilt data-kinetic-glow>
           <div class="demo-media">
             <!-- Poster Snapshot (Instant Paint & Crisp Retina Quality) -->
             <img
@@ -70,10 +82,18 @@ const {
               <span>Live Site</span>
             </div>
 
-            <!-- Hover Snap Preview Hint -->
+            <!-- Hover Snap Preview Hint with Theatre Trigger -->
             <div class="demo-hover-banner">
-              <span class="demo-reel-tag">Snap Reel</span>
-              <span class="demo-cta-tag">Open demo ↗</span>
+              <button
+                type="button"
+                class="demo-theatre-reel-btn"
+                data-open-theatre={demo.slug}
+                aria-label={`Watch 3D reel for ${demo.businessName}`}
+              >
+                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                <span>3D Reel</span>
+              </button>
+              <span class="demo-cta-tag">Open site ↗</span>
             </div>
           </div>
 
@@ -430,6 +450,67 @@ const {
     .demo-sheen {
       display: none !important;
     }
+  }
+
+  /* Cinematic Theatre Trigger Button */
+  .cinematic-theatre-trigger-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+    border: 1px solid rgba(234, 88, 12, 0.4);
+    border-radius: 9999px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 0 15px rgba(234, 88, 12, 0.15);
+    transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cinematic-theatre-trigger-btn:hover {
+    background: linear-gradient(135deg, #c1522e 0%, #a13f22 100%);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 18px rgba(193, 82, 46, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .theatre-btn-pulse {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: #ea580c;
+    border-radius: 9999px;
+    opacity: 0.75;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Reel trigger inside card */
+  .demo-theatre-reel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(193, 82, 46, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 150ms ease;
+  }
+
+  .demo-theatre-reel-btn:hover {
+    background: #ea580c;
+    transform: scale(1.06);
+    border-color: #fff;
   }
 </style>
 

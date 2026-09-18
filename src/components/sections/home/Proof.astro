@@ -25,7 +25,7 @@ const homePerf = performanceReport.pages.find((p) => p.path === "/");
             { label: "Best Practices", value: homePerf.bestPractices },
             { label: "SEO", value: homePerf.seo },
           ].map((m) => (
-            <div class="rounded-xl border border-ink-200 bg-white p-3.5 sm:p-5 text-center min-w-0 shadow-2xs">
+            <div class="rounded-xl border border-ink-200 bg-white p-3.5 sm:p-5 text-center min-w-0 shadow-2xs transition-shadow cursor-default" data-kinetic-tilt data-kinetic-glow data-tilt-max="10">
               <p class="font-display text-2xl sm:text-3xl font-bold text-brand-600 tabular-nums">{m.value}</p>
               <p class="mt-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-ink-500 break-words leading-tight">{m.label}</p>
             </div>
