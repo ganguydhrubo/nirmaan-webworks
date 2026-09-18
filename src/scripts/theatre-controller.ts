@@ -54,11 +54,38 @@ function initTheatreController() {
   // Elements
   const iframeMobile = document.getElementById("theatre-iframe-mobile") as HTMLIFrameElement | null;
   const posterMobile = document.getElementById("theatre-poster-mobile") as HTMLImageElement | null;
-  const videoDesktop = document.getElementById("theatre-video-desktop") as HTMLVideoElement | null;
+  const iframeDesktop = document.getElementById("theatre-iframe-desktop") as HTMLIFrameElement | null;
+  const posterDesktop = document.getElementById("theatre-poster-desktop") as HTMLImageElement | null;
+  const desktopScreen = document.getElementById("theatre-desktop-screen");
   const phoneFrame = document.getElementById("theatre-phone-frame");
   const glow = document.getElementById("theatre-glow");
   const soundBtn = document.getElementById("theatre-sound-btn");
   const soundLabel = document.getElementById("theatre-sound-label");
+
+  // Dynamic scaling for desktop studio iframe (render true 1280px desktop resolution)
+  const updateDesktopIframeScale = () => {
+    if (!desktopScreen || !iframeDesktop) return;
+    const rect = desktopScreen.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      const scale = rect.width / 1280;
+      const iframeHeight = rect.height / scale;
+      iframeDesktop.style.transform = `scale(${scale})`;
+      iframeDesktop.style.height = `${iframeHeight}px`;
+    }
+  };
+
+  if (desktopScreen && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(() => {
+      if (currentMode === "desktop") {
+        updateDesktopIframeScale();
+      }
+    }).observe(desktopScreen);
+  }
+  window.addEventListener("resize", () => {
+    if (currentMode === "desktop") {
+      updateDesktopIframeScale();
+    }
+  });
 
   // Inspector Elements
   const cardTitle = document.getElementById("theatre-card-title");
@@ -149,13 +176,22 @@ function initTheatreController() {
       };
     }
 
-    // Load & Play Desktop Video Reel
-    if (videoDesktop) {
-      const videoUrl = `/videos/demos/${demo.slug}.webm`;
-      videoDesktop.pause();
-      videoDesktop.src = videoUrl;
-      videoDesktop.load();
-      videoDesktop.play().catch(() => {});
+    // Update Studio Desktop Screen with real live desktop demo + instant desktop snapshot
+    if (posterDesktop) {
+      posterDesktop.src = `/images/showcase/${demo.slug}-desktop.webp`;
+      posterDesktop.style.opacity = "1";
+    }
+    if (iframeDesktop) {
+      const demoUrl = `/demos/${demo.slug}/?theatre=1`;
+      iframeDesktop.src = demoUrl;
+      iframeDesktop.onload = () => {
+        updateDesktopIframeScale();
+        if (posterDesktop) {
+          setTimeout(() => {
+            posterDesktop.style.opacity = "0";
+          }, 200);
+        }
+      };
     }
 
     // Update active thumbnail
@@ -185,6 +221,9 @@ function initTheatreController() {
       if (found !== -1) targetIndex = found;
     }
     selectDemo(targetIndex, false);
+    if (currentMode === "desktop") {
+      setTimeout(updateDesktopIframeScale, 100);
+    }
   };
 
   const closeTheatre = () => {
@@ -192,8 +231,8 @@ function initTheatreController() {
     theatre.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 
-    if (videoDesktop) {
-      videoDesktop.pause();
+    if (iframeDesktop) {
+      iframeDesktop.src = "about:blank";
     }
     if (iframeMobile) {
       iframeMobile.src = "about:blank";
@@ -235,6 +274,10 @@ function initTheatreController() {
         b.classList.toggle("is-active", isSelected);
         b.setAttribute("aria-checked", isSelected ? "true" : "false");
       });
+
+      if (vp === "desktop") {
+        setTimeout(updateDesktopIframeScale, 50);
+      }
 
       if (window.atittleAudio) {
         window.atittleAudio.playClick(800);
@@ -294,12 +337,6 @@ function initTheatreController() {
     } else if (e.key === "ArrowLeft") {
       e.preventDefault();
       selectDemo(currentIndex - 1);
-    } else if (e.key === " " && e.target === document.body) {
-      e.preventDefault();
-      if (currentMode === "desktop" && videoDesktop) {
-        if (videoDesktop.paused) videoDesktop.play();
-        else videoDesktop.pause();
-      }
     }
   });
 

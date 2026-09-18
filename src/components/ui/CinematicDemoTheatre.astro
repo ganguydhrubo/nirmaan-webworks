@@ -144,15 +144,21 @@ const demos = siteConfig.demoRegistry.map((demo) => {
               </div>
               <div class="desktop-badge">PROTOTYPE</div>
             </div>
-            <div class="desktop-screen">
-              <video
-                id="theatre-video-desktop"
-                class="theatre-media-video"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              ></video>
+            <div class="desktop-screen" id="theatre-desktop-screen">
+              <img
+                id="theatre-poster-desktop"
+                class="theatre-poster-desktop"
+                src={`/images/showcase/${demos[0]?.slug || "shivalik-homes"}-desktop.webp`}
+                alt="Desktop Preview"
+                loading="eager"
+              />
+              <iframe
+                id="theatre-iframe-desktop"
+                class="theatre-live-iframe-desktop"
+                title="Desktop Live Prototype"
+                loading="lazy"
+                src={`/demos/${demos[0]?.slug || "shivalik-homes"}/?theatre=1`}
+              ></iframe>
             </div>
           </div>
         </div>
@@ -639,16 +645,20 @@ const demos = siteConfig.demoRegistry.map((demo) => {
   /* --- Desktop Studio Frame --- */
   .theatre-desktop-frame {
     display: none;
-    width: 740px;
-    max-width: 90vw;
-    height: 480px;
-    max-height: calc(100vh - 280px);
+    width: 840px;
+    max-width: calc(100vw - 440px);
+    height: 520px;
+    max-height: calc(100vh - 220px);
     background: #18181b;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 30px 80px -15px rgba(0, 0, 0, 0.95),
+      0 0 50px rgba(193, 82, 46, 0.2);
     overflow: hidden;
     flex-direction: column;
+    position: relative;
   }
 
   .desktop-header-bar {
@@ -658,6 +668,8 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     padding: 0.6rem 1rem;
     background: #121215;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    z-index: 10;
   }
 
   .desktop-dots {
@@ -684,7 +696,7 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     border-radius: 6px;
     font-size: 0.74rem;
     color: rgba(255, 255, 255, 0.7);
-    width: 260px;
+    width: 280px;
     justify-content: center;
   }
 
@@ -699,14 +711,31 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     flex: 1;
     position: relative;
     overflow: hidden;
-    background: #000;
+    background: #ffffff;
   }
 
-  .theatre-media-video {
+  .theatre-poster-desktop {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    object-position: top center;
+    z-index: 5;
+    transition: opacity 250ms ease;
+    background: #fff;
+  }
+
+  .theatre-live-iframe-desktop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 750px;
+    border: none;
+    background: #ffffff;
+    z-index: 6;
+    transform-origin: top left;
   }
 
   /* Switch view mode */
