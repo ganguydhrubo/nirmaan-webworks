@@ -35,13 +35,23 @@ const demos = siteConfig.demoRegistry.map((demo) => {
         </div>
       </div>
 
-      <!-- Device Viewport Toggle (Mobile 3D Phone vs Studio Desktop) -->
+      <!-- Device Viewport Toggle (3D Reel vs Mobile 3D Phone vs Studio Desktop) -->
       <div class="theatre-viewport-switcher" role="radiogroup" aria-label="Device viewport">
         <button
           type="button"
           class="theatre-vp-btn is-active"
-          data-viewport="mobile"
+          data-viewport="reel"
           aria-checked="true"
+          role="radio"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>3D Cinema Reel</span>
+        </button>
+        <button
+          type="button"
+          class="theatre-vp-btn"
+          data-viewport="mobile"
+          aria-checked="false"
           role="radio"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
@@ -101,6 +111,41 @@ const demos = siteConfig.demoRegistry.map((demo) => {
       <!-- Left / Center: Interactive Staging Device (With 3D Gyro/Cursor Tilt) -->
       <div class="theatre-stage-wrapper">
         <div class="theatre-device-stage" id="theatre-device-container">
+          <!-- 3D Cinema Reel Frame (Holographic Curved Stage + 60fps Video Reel) -->
+          <div class="theatre-reel-frame" id="theatre-reel-frame">
+            <div class="reel-cinema-bar" aria-hidden="true">
+              <div class="reel-status-left">
+                <span class="theatre-live-dot"></span>
+                <span class="reel-cinema-title">3D CINEMATIC REEL</span>
+              </div>
+              <div class="reel-controls-center">
+                <button type="button" id="theatre-reel-play-toggle" class="reel-btn-play" aria-label="Toggle playback">
+                  <svg id="reel-icon-pause" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                  <svg id="reel-icon-play" class="h-3.5 w-3.5 hidden" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </button>
+                <div class="reel-progress-track" id="theatre-reel-progress-track">
+                  <div class="reel-progress-fill" id="theatre-reel-progress-fill"></div>
+                </div>
+              </div>
+              <div class="reel-status-right">
+                <span class="reel-fps-badge">60 FPS CGI</span>
+              </div>
+            </div>
+            <div class="reel-screen" id="theatre-reel-screen">
+              <video
+                id="theatre-video-reel"
+                class="theatre-reel-video"
+                src={`/videos/demos/${demos[0]?.slug || "shivalik-homes"}.webm`}
+                loop
+                muted
+                playsinline
+                autoplay
+                aria-label="3D Demo Motion Reel"
+              ></video>
+              <div class="reel-lens-reflection" aria-hidden="true"></div>
+            </div>
+          </div>
+
           <!-- Mobile Frame (Titanium finish, Dynamic Island, Specular Glare) -->
           <div class="theatre-phone-frame" id="theatre-phone-frame">
             <div class="phone-dynamic-island" aria-hidden="true">
@@ -738,7 +783,147 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     transform-origin: top left;
   }
 
+  /* --- 3D Cinema Reel Frame --- */
+  .theatre-reel-frame {
+    display: flex;
+    flex-direction: column;
+    width: 820px;
+    max-width: calc(100vw - 440px);
+    aspect-ratio: 16 / 10.2;
+    max-height: calc(100vh - 220px);
+    background: #0e0e13;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 30px 80px -15px rgba(0, 0, 0, 0.95),
+      0 0 50px rgba(193, 82, 46, 0.3);
+    overflow: hidden;
+    position: relative;
+    transform: perspective(1000px) rotateX(2deg);
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reel-cinema-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: #131318;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  .reel-status-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reel-cinema-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .reel-controls-center {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    max-width: 320px;
+    margin: 0 1rem;
+  }
+
+  .reel-btn-play {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+  .reel-btn-play:hover {
+    background: #ea580c;
+  }
+
+  .reel-progress-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+
+  .reel-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ea580c, #fb923c);
+    border-radius: 9999px;
+    transition: width 100ms linear;
+  }
+
+  .reel-status-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .reel-fps-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 0.15rem 0.45rem;
+    border-radius: 9999px;
+    letter-spacing: 0.05em;
+  }
+
+  .reel-screen {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theatre-reel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .reel-lens-reflection {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
   /* Switch view mode */
+  .cinematic-theatre:not([data-mode]) .theatre-reel-frame,
+  .cinematic-theatre[data-mode="reel"] .theatre-reel-frame { display: flex; }
+  .cinematic-theatre:not([data-mode]) .theatre-phone-frame,
+  .cinematic-theatre[data-mode="reel"] .theatre-phone-frame { display: none; }
+  .cinematic-theatre:not([data-mode]) .theatre-desktop-frame,
+  .cinematic-theatre[data-mode="reel"] .theatre-desktop-frame { display: none; }
+
+  .cinematic-theatre[data-mode="mobile"] .theatre-reel-frame { display: none; }
+  .cinematic-theatre[data-mode="mobile"] .theatre-phone-frame { display: block; }
+  .cinematic-theatre[data-mode="mobile"] .theatre-desktop-frame { display: none; }
+
+  .cinematic-theatre[data-mode="desktop"] .theatre-reel-frame { display: none; }
   .cinematic-theatre[data-mode="desktop"] .theatre-phone-frame { display: none; }
   .cinematic-theatre[data-mode="desktop"] .theatre-desktop-frame { display: flex; }
 
@@ -994,6 +1179,12 @@ const demos = siteConfig.demoRegistry.map((demo) => {
       width: 100%;
       justify-content: center;
     }
+    .theatre-reel-frame {
+      max-height: 440px;
+      margin: 0 auto;
+      width: min(720px, 94vw);
+      max-width: 94vw;
+    }
     .theatre-phone-frame {
       max-height: 540px;
       margin: 0 auto;
@@ -1001,6 +1192,7 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     .theatre-desktop-frame {
       max-height: 380px;
       margin: 0 auto;
+      max-width: 94vw;
     }
     .theatre-inspector {
       height: auto;
@@ -1018,16 +1210,44 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     .theatre-header {
       padding: 0.45rem 0.75rem;
       border-radius: 14px;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .theatre-subline {
       display: none;
     }
     .theatre-viewport-switcher {
-      display: none; /* Mobile phone defaults to native mobile frame */
+      display: flex;
+      gap: 0.35rem;
+      padding: 0.2rem;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 9999px;
+    }
+    .theatre-vp-btn {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      gap: 0.3rem;
+    }
+    .theatre-vp-btn[data-viewport="desktop"] {
+      display: none;
     }
     .theatre-stage-area {
       gap: 1.25rem;
       padding: 0.25rem 0 1.25rem 0;
+    }
+    .theatre-device-stage {
+      width: 100%;
+    }
+    .theatre-reel-frame {
+      width: min(340px, 92vw);
+      max-width: 92vw;
+      aspect-ratio: 16 / 10.5;
+      max-height: 48vh;
+      margin: 0 auto;
+      border-radius: 16px;
+    }
+    .reel-controls-center {
+      margin: 0 0.5rem;
     }
     .theatre-phone-frame {
       width: min(290px, 84vw);

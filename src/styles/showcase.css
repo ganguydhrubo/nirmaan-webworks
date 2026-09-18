@@ -90,9 +90,38 @@
 .showcase-chrome > span:nth-child(2) { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .showcase-window-dots { display:flex; flex-shrink:0; gap:4px; }
 .showcase-window-dots i { width:5px; height:5px; background:var(--color-ink-300); border-radius:50%; }
-.showcase-window-label { margin-left:auto; font-size:.5rem; letter-spacing:.08em; }
-.showcase-window picture { display:block; aspect-ratio:4/3; background:var(--color-ink-100); }
-.showcase-window img { display:block; width:100%; height:100%; aspect-ratio:4/3; object-fit:contain; }
+.showcase-media-stage { position:relative; overflow:hidden; aspect-ratio:4/3; background:var(--color-ink-100); }
+.showcase-media-stage picture { display:block; width:100%; height:100%; }
+.showcase-screen-poster { display:block; width:100%; height:100%; aspect-ratio:4/3; object-fit:contain; }
+.showcase-screen-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 400ms ease; z-index:2; pointer-events:none; }
+.showcase-scene.is-active .showcase-screen-video { opacity:1; }
+.showcase-overlay-theatre-chip {
+  position:absolute; bottom:.75rem; right:.75rem;
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.35rem .75rem;
+  background:rgba(24, 24, 27, 0.88);
+  border:1px solid rgba(255, 255, 255, 0.18);
+  border-radius:9999px;
+  color:#fff;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.02em;
+  backdrop-filter:blur(10px);
+  z-index:5;
+  cursor:pointer;
+  transition:all 180ms ease;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.showcase-overlay-theatre-chip:hover {
+  background:var(--color-brand-600);
+  border-color:var(--color-brand-500);
+  transform:scale(1.04);
+}
+.chip-live-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 0 2px rgba(34, 197, 94, 0.3);
+}
 .showcase-copy { min-width:0; padding:2rem; }
 .showcase-category { color:var(--color-brand-600); text-transform:uppercase; letter-spacing:.13em; font-size:.65rem; font-weight:700; }
 .showcase-copy h2 { font-size:clamp(1.6rem,3cqi,2.6rem); line-height:1.13; margin-top:.75rem; text-wrap:balance; }

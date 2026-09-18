@@ -10,6 +10,7 @@
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
 import Icon from "@/components/ui/Icon.astro";
+import CinematicDemoTheatre from "@/components/ui/CinematicDemoTheatre.astro";
 import "@/styles/global.css";
 
 interface Props {
@@ -49,50 +50,307 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
       }
     </script>
     <style>
-      :global(html.in-theatre [data-demo-banner]) {
+      :global(html.in-theatre [data-demo-banner]),
+      :global(html.in-theatre .demo-floating-dock),
+      :global(html.in-theatre #demo-theatre-wrapper) {
         display: none !important;
+      }
+
+      /* Executive Cinematic Demo Bar */
+      .demo-banner {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(12, 12, 16, 0.95);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.4rem 0.75rem;
+        color: #f5f5f7;
+      }
+      .demo-banner-inner {
+        max-width: 1280px;
+        margin-inline: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+      .demo-banner-left,
+      .demo-banner-center,
+      .demo-banner-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .demo-home-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.3rem 0.65rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 150ms ease;
+      }
+      .demo-home-btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+      .demo-industry-pill {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* 3D Cinematic Reel & Studio Buttons in Banner */
+      .banner-reel-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 9999px;
+        background: rgba(234, 88, 12, 0.2);
+        border: 1.5px solid rgba(234, 88, 12, 0.6);
+        color: #fed7aa;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 180ms ease;
+        box-shadow: 0 0 15px rgba(234, 88, 12, 0.2);
+      }
+      .banner-reel-btn:hover {
+        background: #ea580c;
+        border-color: #f97316;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 0 20px rgba(234, 88, 12, 0.45);
+      }
+      .banner-pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
+      }
+      .banner-stage-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 180ms ease;
+      }
+      .banner-stage-btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+        color: #fff;
+        transform: translateY(-1px);
+      }
+      .banner-cta-link {
+        font-size: 0.74rem;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 150ms ease;
+      }
+      .banner-cta-link:hover {
+        color: #fed7aa;
+      }
+      .banner-wa-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.3rem 0.65rem;
+        border-radius: 9999px;
+        background: rgba(34, 197, 94, 0.18);
+        border: 1px solid rgba(34, 197, 94, 0.4);
+        color: #86efac;
+        font-size: 0.74rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 150ms ease;
+      }
+      .banner-wa-btn:hover {
+        background: #16a34a;
+        color: #fff;
+      }
+
+      /* Floating 3D Studio Dock */
+      .demo-floating-dock {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 45;
+        max-width: calc(100vw - 2rem);
+      }
+      .dock-theatre-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.15rem;
+        border-radius: 9999px;
+        background: rgba(15, 15, 20, 0.88);
+        border: 1.5px solid rgba(234, 88, 12, 0.5);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        backdrop-filter: blur(16px);
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 88, 12, 0.25);
+        transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .dock-theatre-btn:hover {
+        background: #ea580c;
+        border-color: #f97316;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.8), 0 0 30px rgba(234, 88, 12, 0.5);
+      }
+      .dock-pulse-beacon {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4);
+        animation: pulse-dot 1.8s infinite;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.3); opacity: 0.7; }
+      }
+
+      /* Responsive Mobile Constraints */
+      @media (max-width: 768px) {
+        .demo-banner-inner {
+          justify-content: space-between;
+          gap: 0.4rem;
+        }
+        .demo-industry-pill,
+        .banner-stage-btn,
+        .banner-cta-link {
+          display: none;
+        }
+        .banner-reel-btn {
+          padding: 0.3rem 0.65rem;
+          font-size: 0.72rem;
+          gap: 0.35rem;
+        }
+        .banner-wa-btn {
+          padding: 0.3rem 0.55rem;
+          font-size: 0.72rem;
+        }
+        .demo-floating-dock {
+          bottom: 1.1rem;
+          right: 1.1rem;
+        }
+        .dock-theatre-btn {
+          padding: 0.55rem 0.95rem;
+          font-size: 0.75rem;
+        }
       }
     </style>
   </head>
   <body>
     <a href="#demo-content" class="skip-link">Skip to demo content</a>
-    <div data-demo-banner class="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 bg-ink-950 px-3 py-2.5 text-center text-xs font-medium text-cream sm:gap-x-3 sm:text-sm">
-      <a
-        href="/"
-        class="inline-flex shrink-0 items-center gap-1 rounded-md border border-ink-700 bg-ink-900 px-2.5 py-1.5 font-semibold text-cream hover:border-brand-500 hover:text-brand-300"
-        aria-label={`Back to ${siteConfig.businessName} homepage`}
-        data-analytics-event="cta_click"
-      >
-        <Icon name="chevron-left" class="h-3.5 w-3.5 shrink-0" /> {siteConfig.businessName}
-      </a>
-      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
-      <span>Demo site</span>
-      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
-      <a
-        href={`/contact?category=${encodeURIComponent(industry?.shortName ?? "")}&demo=${demo.slug}`}
-        class="underline decoration-brand-400 decoration-2 underline-offset-2 hover:text-brand-300"
-        data-analytics-event="cta_click"
-        data-demo-slug={demo.slug}
-      >
-        Want one for your business?
-      </a>
-      <span class="hidden text-ink-600 sm:inline" aria-hidden="true">&middot;</span>
-      <a
-        href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric(demo.businessName))}
-        target="_blank"
-        rel="noopener"
-        aria-label="Ask on WhatsApp about this demo (opens WhatsApp)"
-        class="underline decoration-brand-400 decoration-2 underline-offset-2 hover:text-brand-300"
-        data-analytics-event="whatsapp_click"
-        data-demo-slug={demo.slug}
-      >
-        Ask on WhatsApp
-      </a>
+    
+    <div data-demo-banner class="demo-banner">
+      <div class="demo-banner-inner">
+        <div class="demo-banner-left">
+          <a
+            href="/"
+            class="demo-home-btn"
+            aria-label={`Back to ${siteConfig.businessName} homepage`}
+            data-analytics-event="cta_click"
+          >
+            <Icon name="chevron-left" class="h-3.5 w-3.5 shrink-0" />
+            <span>{siteConfig.businessName}</span>
+          </a>
+          <span class="demo-industry-pill">Demo · {industry?.name}</span>
+        </div>
+
+        <div class="demo-banner-center">
+          <button
+            type="button"
+            class="banner-reel-btn"
+            data-open-theatre={demo.slug}
+            data-theatre-mode="reel"
+            title="Watch 60fps 3D Cinematic Reel"
+          >
+            <span class="banner-pulse-dot" aria-hidden="true"></span>
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Watch 3D Reel</span>
+          </button>
+
+          <button
+            type="button"
+            class="banner-stage-btn"
+            data-open-theatre={demo.slug}
+            data-theatre-mode="mobile"
+            title="Inspect in 3D Device Stage"
+          >
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            <span>3D Studio Stage</span>
+          </button>
+        </div>
+
+        <div class="demo-banner-right">
+          <a
+            href={`/contact?category=${encodeURIComponent(industry?.shortName ?? "")}&demo=${demo.slug}`}
+            class="banner-cta-link"
+            data-analytics-event="cta_click"
+            data-demo-slug={demo.slug}
+          >
+            Want one for your business?
+          </a>
+          <a
+            href={waLink(siteConfig.whatsappMessageTemplates.demoGeneric(demo.businessName))}
+            target="_blank"
+            rel="noopener"
+            aria-label="Ask on WhatsApp about this demo (opens WhatsApp)"
+            class="banner-wa-btn"
+            data-analytics-event="whatsapp_click"
+            data-demo-slug={demo.slug}
+          >
+            <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div id="demo-content" tabindex="-1"><slot /></div>
 
+    <!-- Floating 3D Studio Dock on Demo Sites -->
+    <aside class="demo-floating-dock" aria-label="3D Cinematic Controls">
+      <button
+        type="button"
+        class="dock-theatre-btn"
+        data-open-theatre={demo.slug}
+        data-theatre-mode="reel"
+        aria-label={`Watch 3D video reel and explore 3D stage for ${demo.businessName}`}
+        title="Open 3D Cinematic Reel & Studio Staging"
+        data-magnetic
+      >
+        <span class="dock-pulse-beacon" aria-hidden="true"></span>
+        <span>🎬 3D Reel · Studio View</span>
+      </button>
+    </aside>
+
+    <div id="demo-theatre-wrapper">
+      <CinematicDemoTheatre />
+    </div>
+
     <script src="../scripts/analytics-client.ts"></script>
     <script src="../scripts/reveal.ts"></script>
+    <script src="../scripts/kinetic-motion.ts"></script>
+    <script src="../scripts/theatre-controller.ts"></script>
   </body>
 </html>

@@ -313,6 +313,16 @@ function mountShowcase(root: HTMLElement): () => void {
     incoming.inert = false;
     incoming.removeAttribute('aria-hidden');
     incoming.classList.add('is-active');
+
+    const outVid = outgoing.querySelector<HTMLVideoElement>('.showcase-screen-video');
+    if (outVid) { outVid.pause(); }
+
+    const inVid = incoming.querySelector<HTMLVideoElement>('.showcase-screen-video');
+    if (inVid && !prefersSavingData()) {
+      inVid.currentTime = 0;
+      inVid.play().catch(() => {});
+    }
+
     active = target;
     root.dataset.active = String(active);
     try {
@@ -454,6 +464,10 @@ function mountShowcase(root: HTMLElement): () => void {
     else scene.setAttribute('aria-hidden', 'true');
   });
   void prepare(active);
+  const initialVid = scenes[active]?.querySelector<HTMLVideoElement>('.showcase-screen-video');
+  if (initialVid && !prefersSavingData()) {
+    initialVid.play().catch(() => {});
+  }
   try {
     history.replaceState({ ...history.state, showcaseActive: active }, '');
     sessionStorage.setItem('atittle_showcase_active', String(active));

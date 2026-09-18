@@ -35,10 +35,31 @@ const demos = siteConfig.demoRegistry.map(demo => ({
               <span>{demo.slug}.example</span>
               <span class="showcase-window-label">DEMO</span>
             </div>
-            <picture>
-              <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp`} width="585" height="780" />
-              <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" />
-            </picture>
+            <div class="showcase-media-stage">
+              <picture>
+                <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp`} width="585" height="780" />
+                <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" class="showcase-screen-poster" />
+              </picture>
+              <video
+                class="showcase-screen-video"
+                src={`/videos/demos/${demo.slug}.webm`}
+                loop
+                muted
+                playsinline
+                preload={index === 0 ? "auto" : "none"}
+                aria-hidden="true"
+              ></video>
+              <button
+                type="button"
+                class="showcase-overlay-theatre-chip"
+                data-open-theatre={demo.slug}
+                data-theatre-mode="reel"
+                aria-label={`Open full 3D Cinematic Theatre for ${demo.businessName}`}
+              >
+                <span class="chip-live-dot" aria-hidden="true"></span>
+                <span>🎬 3D Reel · Tap to Expand</span>
+              </button>
+            </div>
           </div>
         </div>
         <div class="showcase-copy">

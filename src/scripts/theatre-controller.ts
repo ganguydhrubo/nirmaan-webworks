@@ -48,10 +48,18 @@ function initTheatreController() {
   if (demos.length === 0) return;
 
   let currentIndex = 0;
-  let currentMode: "mobile" | "desktop" = "mobile";
+  let currentMode: "reel" | "mobile" | "desktop" = "reel";
   let activeFilter = "all";
 
   // Elements
+  const videoReel = document.getElementById("theatre-video-reel") as HTMLVideoElement | null;
+  const reelPlayToggle = document.getElementById("theatre-reel-play-toggle");
+  const reelIconPlay = document.getElementById("reel-icon-play");
+  const reelIconPause = document.getElementById("reel-icon-pause");
+  const reelProgressFill = document.getElementById("theatre-reel-progress-fill");
+  const reelProgressTrack = document.getElementById("theatre-reel-progress-track");
+  const reelFrame = document.getElementById("theatre-reel-frame");
+
   const iframeMobile = document.getElementById("theatre-iframe-mobile") as HTMLIFrameElement | null;
   const posterMobile = document.getElementById("theatre-poster-mobile") as HTMLImageElement | null;
   const iframeDesktop = document.getElementById("theatre-iframe-desktop") as HTMLIFrameElement | null;
@@ -159,6 +167,15 @@ function initTheatreController() {
       glow.style.background = `radial-gradient(circle, ${color} 0%, rgba(0, 0, 0, 0) 70%)`;
     }
 
+    // Update 3D Cinema Reel Video
+    if (videoReel) {
+      videoReel.src = `/videos/demos/${demo.slug}.webm`;
+      videoReel.currentTime = 0;
+      if (currentMode === "reel") {
+        videoReel.play().catch(() => {});
+      }
+    }
+
     // Update Phone Screen with real live mobile demo + instant mobile snapshot
     if (posterMobile) {
       posterMobile.src = `/images/showcase/${demo.slug}-mobile.webp`;
@@ -209,11 +226,42 @@ function initTheatreController() {
     }
   };
 
+  const setMode = (vp: "reel" | "mobile" | "desktop") => {
+    currentMode = vp;
+    theatre.setAttribute("data-mode", vp);
+
+    theatre.querySelectorAll("[data-viewport]").forEach((b) => {
+      const isSelected = (b as HTMLElement).dataset.viewport === vp;
+      b.classList.toggle("is-active", isSelected);
+      b.setAttribute("aria-checked", isSelected ? "true" : "false");
+    });
+
+    if (vp === "reel") {
+      if (videoReel) {
+        videoReel.play().catch(() => {});
+      }
+    } else {
+      if (videoReel) {
+        videoReel.pause();
+      }
+    }
+
+    if (vp === "desktop") {
+      setTimeout(updateDesktopIframeScale, 50);
+    }
+  };
+
   // Open & Close methods
-  const openTheatre = (slug?: string) => {
+  const openTheatre = (slug?: string, initialMode?: "reel" | "mobile" | "desktop") => {
     theatre.classList.add("is-open");
     theatre.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+
+    if (initialMode) {
+      setMode(initialMode);
+    } else {
+      setMode(currentMode);
+    }
 
     let targetIndex = 0;
     if (slug) {
@@ -221,9 +269,6 @@ function initTheatreController() {
       if (found !== -1) targetIndex = found;
     }
     selectDemo(targetIndex, false);
-    if (currentMode === "desktop") {
-      setTimeout(updateDesktopIframeScale, 100);
-    }
   };
 
   const closeTheatre = () => {
@@ -231,6 +276,9 @@ function initTheatreController() {
     theatre.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 
+    if (videoReel) {
+      videoReel.pause();
+    }
     if (iframeDesktop) {
       iframeDesktop.src = "about:blank";
     }
@@ -243,10 +291,60 @@ function initTheatreController() {
     }
   };
 
+  // Video Reel Controls
+  if (videoReel) {
+    videoReel.addEventListener("timeupdate", () => {
+      if (!videoReel.duration || !reelProgressFill) return;
+      const pct = (videoReel.currentTime / videoReel.duration) * 100;
+      reelProgressFill.style.width = `${pct}%`;
+    });
+
+    videoReel.addEventListener("play", () => {
+      if (reelIconPlay) reelIconPlay.classList.add("hidden");
+      if (reelIconPause) reelIconPause.classList.remove("hidden");
+    });
+
+    videoReel.addEventListener("pause", () => {
+      if (reelIconPlay) reelIconPlay.classList.remove("hidden");
+      if (reelIconPause) reelIconPause.classList.add("hidden");
+    });
+
+    if (reelPlayToggle) {
+      reelPlayToggle.addEventListener("click", () => {
+        if (videoReel.paused) {
+          videoReel.play().catch(() => {});
+        } else {
+          videoReel.pause();
+        }
+      });
+    }
+
+    if (reelProgressTrack) {
+      reelProgressTrack.addEventListener("click", (e: MouseEvent) => {
+        const rect = reelProgressTrack.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        if (videoReel.duration) {
+          videoReel.currentTime = pos * videoReel.duration;
+        }
+      });
+    }
+  }
+
   // Event Listeners for Open / Close
   window.addEventListener("atittle:open-theatre", (e: Event) => {
-    const custom = e as CustomEvent<{ slug?: string }>;
-    openTheatre(custom.detail?.slug);
+    const custom = e as CustomEvent<{ slug?: string; mode?: "reel" | "mobile" | "desktop" }>;
+    openTheatre(custom.detail?.slug, custom.detail?.mode);
+  });
+
+  // Global trigger for [data-open-theatre]
+  document.addEventListener("click", (e) => {
+    const trigger = (e.target as HTMLElement).closest<HTMLElement>("[data-open-theatre]");
+    if (trigger) {
+      e.preventDefault();
+      const slug = trigger.getAttribute("data-open-theatre") || undefined;
+      const mode = trigger.getAttribute("data-theatre-mode") as "reel" | "mobile" | "desktop" | null;
+      openTheatre(slug, mode || "reel");
+    }
   });
 
   theatre.querySelectorAll("[data-theatre-close]").forEach((btn) => {
@@ -261,23 +359,12 @@ function initTheatreController() {
     nextBtn.addEventListener("click", () => selectDemo(currentIndex + 1));
   }
 
-  // Viewport Switcher (Mobile vs Desktop)
+  // Viewport Switcher (Reel vs Mobile vs Desktop)
   theatre.querySelectorAll<HTMLButtonElement>("[data-viewport]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const vp = btn.dataset.viewport as "mobile" | "desktop";
+      const vp = btn.dataset.viewport as "reel" | "mobile" | "desktop";
       if (!vp || vp === currentMode) return;
-      currentMode = vp;
-      theatre.setAttribute("data-mode", vp);
-
-      theatre.querySelectorAll("[data-viewport]").forEach((b) => {
-        const isSelected = b === btn;
-        b.classList.toggle("is-active", isSelected);
-        b.setAttribute("aria-checked", isSelected ? "true" : "false");
-      });
-
-      if (vp === "desktop") {
-        setTimeout(updateDesktopIframeScale, 50);
-      }
+      setMode(vp);
 
       if (window.atittleAudio) {
         window.atittleAudio.playClick(800);
@@ -357,6 +444,26 @@ function initTheatreController() {
 
     phoneFrame.addEventListener("mouseleave", () => {
       phoneFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+    });
+  }
+
+  // 3D Cinema Reel Frame Tilt on Cursor Movement (Desktop Only)
+  if (reelFrame && !window.matchMedia("(hover: none)").matches) {
+    reelFrame.addEventListener("mousemove", (e) => {
+      const rect = reelFrame.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const normX = (x - rect.width / 2) / (rect.width / 2);
+      const normY = (y - rect.height / 2) / (rect.height / 2);
+
+      const rotX = (-normY * 6).toFixed(2);
+      const rotY = (normX * 8).toFixed(2);
+
+      reelFrame.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.01, 1.01, 1.01)`;
+    });
+
+    reelFrame.addEventListener("mouseleave", () => {
+      reelFrame.style.transform = "perspective(1000px) rotateX(2deg) rotateY(0deg) scale3d(1, 1, 1)";
     });
   }
 }
