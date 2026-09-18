@@ -99,31 +99,12 @@
 .showcase-location { display:flex; align-items:center; gap:.35rem; margin-top:1rem; font-size:.75rem; color:var(--color-ink-600); }
 .showcase-location svg { flex-shrink:0; width:14px; height:14px; }
 .showcase-description { margin-top:.8rem; font-size:.9rem; color:var(--color-ink-700); line-height:1.6; }
-.showcase-actions-row { display:flex; align-items:center; gap:.5rem; margin-top:1.25rem; }
-.showcase-open { flex:1; display:flex; align-items:center; justify-content:space-between; gap:.6rem; min-height:46px; padding:.7rem 1rem; border-radius:var(--radius-md); color:var(--color-cream); background:var(--color-brand-600); font-size:.8rem; font-weight:700; transition:background 150ms; }
+.showcase-actions { display:flex; flex-direction:column; gap:.55rem; margin-top:1.25rem; }
+.showcase-open { width:100%; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:.6rem; min-height:46px; padding:.7rem 1.15rem; border-radius:var(--radius-md); color:var(--color-cream); background:var(--color-brand-600); font-size:.82rem; font-weight:700; text-decoration:none; transition:background 150ms; }
 .showcase-open:hover { background:var(--color-brand-700); }
-.showcase-theatre-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 46px;
-  padding: 0.7rem 1.15rem;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--color-brand-300);
-  background: #ffffff;
-  color: var(--color-brand-700);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 150ms ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-.showcase-theatre-pill:hover {
-  background: var(--color-brand-50);
-  border-color: var(--color-brand-500);
-  color: var(--color-brand-800);
-  transform: translateY(-1px);
-}
+.showcase-open > span:last-child { font-size:1.15rem; }
+.showcase-theatre-secondary-btn { width:100%; box-sizing:border-box; display:flex; align-items:center; justify-content:center; gap:.5rem; min-height:42px; padding:.6rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--color-brand-200); background:#fff7ed; color:var(--color-brand-800); font-size:.78rem; font-weight:700; cursor:pointer; transition:all 150ms ease; }
+.showcase-theatre-secondary-btn:hover { background:var(--color-brand-100); border-color:var(--color-brand-300); transform:translateY(-1px); }
 .showcase-navigation { padding-top:1.1rem; }
 .showcase:not([data-enhanced]) .showcase-navigation { visibility:hidden; }
 .showcase-stack { position:relative; height:95px; max-width:520px; margin-inline:auto; isolation:isolate; }

@@ -45,12 +45,20 @@ const demos = siteConfig.demoRegistry.map(demo => ({
           <p class="showcase-category">{demo.category}</p>
           <h2>{demo.businessName}</h2>
           <p class="showcase-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{demo.city}</p>
-          <p class="showcase-description">{demo.tagline}</p>
-          <div class="showcase-actions-row">
-            <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>Open live demo <span aria-hidden="true">↗</span></a>
-            <button type="button" class="showcase-theatre-pill" data-open-theatre={demo.slug} aria-label={`Open 3D Theatre for ${demo.businessName}`} title="Expand into full 3D Cinematic Theatre">
+          <div class="showcase-actions">
+            <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>
+              <span>Open live demo</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <button
+              type="button"
+              class="showcase-theatre-secondary-btn"
+              data-open-theatre={demo.slug}
+              aria-label={`Open 3D Demo Theatre for ${demo.businessName}`}
+              title="Expand into full 3D Cinematic Theatre"
+            >
               <span aria-hidden="true">🎬</span>
-              <span>3D Reel</span>
+              <span>Watch 3D Demo Theatre</span>
             </button>
           </div>
         </div>
