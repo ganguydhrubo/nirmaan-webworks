@@ -26,6 +26,10 @@ export default defineConfig({
       // they must not compete with the indexable /industries/[slug] pages,
       // so they're excluded from the sitemap as well as noindexed in meta.
       filter: (page) => !page.includes("/demos/") && !page.includes("/api/") && !page.includes("/enquiry-") && !/\/(404|500|privacy|terms|refund-policy)(\/|$)/.test(page),
+      // Purely cosmetic: renders as a styled table instead of the browser's
+      // raw-XML tree view when a human opens the sitemap URL directly.
+      // Crawlers ignore the xml-stylesheet PI and read the XML as normal.
+      xslURL: "/sitemap.xsl",
     }),
   ],
   image: {
