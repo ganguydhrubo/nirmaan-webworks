@@ -372,6 +372,7 @@ function initCursorFollower() {
   const ring = document.createElement("div");
   ring.className = "cursor-follower";
   ring.setAttribute("aria-hidden", "true");
+  ring.innerHTML = '<span class="cursor-follower-ring"></span>';
   document.body.appendChild(ring);
 
   let targetX = window.innerWidth / 2;
@@ -379,14 +380,21 @@ function initCursorFollower() {
   let curX = targetX;
   let curY = targetY;
   let visible = false;
+  let running = false;
+  let raf = 0;
 
   const tick = () => {
     curX += (targetX - curX) * 0.18;
     curY += (targetY - curY) * 0.18;
-    ring.style.transform = `translate3d(${curX.toFixed(1)}px, ${curY.toFixed(1)}px, 0) translate(-50%, -50%)`;
-    requestAnimationFrame(tick);
+    ring.style.transform = `translate3d(${curX.toFixed(1)}px, ${curY.toFixed(1)}px, 0)`;
+
+    if (Math.abs(targetX - curX) > 0.3 || Math.abs(targetY - curY) > 0.3) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      running = false;
+      cancelAnimationFrame(raf);
+    }
   };
-  requestAnimationFrame(tick);
 
   window.addEventListener(
     "mousemove",
@@ -396,6 +404,10 @@ function initCursorFollower() {
       if (!visible) {
         visible = true;
         ring.classList.add("is-active");
+      }
+      if (!running) {
+        running = true;
+        tick();
       }
       const target = e.target as HTMLElement | null;
       const interactive = target?.closest("a, button, [role='button'], input, select, textarea, summary");

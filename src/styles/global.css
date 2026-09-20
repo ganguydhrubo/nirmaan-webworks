@@ -304,26 +304,34 @@
     }
   }
 
-  /* Cursor-follower ring — trails the real (still visible) cursor. */
+  /* Cursor-follower ring — trails the real (still visible) cursor. The
+     outer element is positioned by JS (translate3d only, every frame);
+     the inner ring is scaled by CSS on hover so that grow/shrink stays
+     compositor-only (transform), never triggering layout via width/height. */
   .cursor-follower {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: -14px;
+    left: -14px;
     z-index: 1000;
     width: 28px;
     height: 28px;
-    border-radius: 9999px;
-    border: 1.5px solid rgba(217, 119, 6, 0.55);
     pointer-events: none;
     opacity: 0;
-    transition: opacity 200ms ease, width 220ms var(--ease-spring), height 220ms var(--ease-spring), background 220ms ease;
+    transition: opacity 200ms ease;
   }
   .cursor-follower.is-active {
     opacity: 1;
   }
-  .cursor-follower.is-interactive {
-    width: 44px;
-    height: 44px;
+  .cursor-follower-ring {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(217, 119, 6, 0.55);
+    transition: transform 220ms var(--ease-spring), background 220ms ease, border-color 220ms ease;
+  }
+  .cursor-follower.is-interactive .cursor-follower-ring {
+    transform: scale(1.571);
     background: rgba(217, 119, 6, 0.12);
     border-color: rgba(217, 119, 6, 0.75);
   }
