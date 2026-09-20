@@ -23,19 +23,18 @@ import HeroEnquiryStack from "@/components/sections/home/HeroEnquiryStack.astro"
           </span>
           <span>Built in {siteConfig.address.city}, working across India</span>
         </p>
-        <button
-          type="button"
-          class="hero-theatre-badge inline-flex items-center gap-1.5 rounded-full border border-brand-200/90 bg-white px-3 py-1 text-xs font-semibold text-brand-700 shadow-2xs hover:bg-brand-50 hover:border-brand-300 transition cursor-pointer"
-          data-open-theatre=""
+        <a
+          href="/demos"
+          class="hero-theatre-badge inline-flex items-center gap-1.5 rounded-full border border-brand-200/90 bg-white px-3 py-1 text-xs font-semibold text-brand-700 shadow-2xs hover:bg-brand-50 hover:border-brand-300 transition"
           data-magnetic
         >
           <span class="relative flex h-2 w-2">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75"></span>
             <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-600"></span>
           </span>
-          <span>3D Demo Theatre</span>
-          <span aria-hidden="true">🎬</span>
-        </button>
+          <span>{siteConfig.demoRegistry.length} Live Demos</span>
+          <span aria-hidden="true">&nearr;</span>
+        </a>
       </div>
 
       <!-- H1 Headline with Kinetic Reveal Animation -->

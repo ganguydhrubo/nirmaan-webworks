@@ -114,6 +114,45 @@ class SoundFXEngine {
   }
 
   /**
+   * Gentle camera-shutter tick — sharp click + soft mechanical release,
+   * for demo card selection (distinct from the generic UI playClick).
+   */
+  public playShutter() {
+    if (!this.enabled) return;
+    const ctx = this.initCtx();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+
+      const click = ctx.createOscillator();
+      const clickGain = ctx.createGain();
+      click.type = "square";
+      click.frequency.setValueAtTime(1800, now);
+      click.frequency.exponentialRampToValueAtTime(600, now + 0.02);
+      clickGain.gain.setValueAtTime(0.025, now);
+      clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+      click.connect(clickGain);
+      clickGain.connect(ctx.destination);
+      click.start(now);
+      click.stop(now + 0.03);
+
+      const release = ctx.createOscillator();
+      const releaseGain = ctx.createGain();
+      const releaseStart = now + 0.07;
+      release.type = "sine";
+      release.frequency.setValueAtTime(220, releaseStart);
+      release.frequency.exponentialRampToValueAtTime(140, releaseStart + 0.05);
+      releaseGain.gain.setValueAtTime(0.018, releaseStart);
+      releaseGain.gain.exponentialRampToValueAtTime(0.0001, releaseStart + 0.06);
+      release.connect(releaseGain);
+      releaseGain.connect(ctx.destination);
+      release.start(releaseStart);
+      release.stop(releaseStart + 0.07);
+    } catch (_) {}
+  }
+
+  /**
    * Elegant dual-tone harmonic shimmer when opening the theatre
    */
   public playChime() {
@@ -260,6 +299,159 @@ function initMagneticButtons() {
 }
 
 /**
+ * Volumetric Ambient Spotlight — cursor-following warm glow for dark
+ * sections. Uses requestAnimationFrame + lerp for buttery smoothing and
+ * pure translate3d (compositor-only) for zero layout cost. Skipped
+ * entirely on touch devices and prefers-reduced-motion, leaving each
+ * element's CSS default (a static, centered glow) as the fallback —
+ * so there is no battery-draining tracking loop on mobile.
+ */
+function initAmbientSpotlight() {
+  const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia("(hover: none)").matches;
+  if (isReduced || isTouch) return;
+
+  const spots = document.querySelectorAll<HTMLElement>("[data-ambient-follow]");
+  if (spots.length === 0) return;
+
+  spots.forEach((spot) => {
+    const container = spot.closest<HTMLElement>("[data-ambient-spotlight]") ?? (spot.parentElement as HTMLElement);
+    if (!container) return;
+
+    const half = (spot.offsetWidth || 600) / 2;
+    let targetX = container.clientWidth * 0.45;
+    let targetY = container.clientHeight * 0.45;
+    let curX = targetX;
+    let curY = targetY;
+    let raf = 0;
+    let running = false;
+
+    const tick = () => {
+      curX += (targetX - curX) * 0.12;
+      curY += (targetY - curY) * 0.12;
+      spot.style.transform = `translate3d(${(curX - half).toFixed(1)}px, ${(curY - half).toFixed(1)}px, 0)`;
+
+      if (Math.abs(targetX - curX) > 0.3 || Math.abs(targetY - curY) > 0.3) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        running = false;
+        cancelAnimationFrame(raf);
+      }
+    };
+
+    container.addEventListener(
+      "mousemove",
+      (e: MouseEvent) => {
+        const rect = container.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        if (!running) {
+          running = true;
+          spot.classList.add("is-tracking");
+          tick();
+        }
+      },
+      { passive: true }
+    );
+  });
+}
+
+/**
+ * Cursor-Follower Ring — a small ring that trails the real cursor with
+ * RAF + lerp smoothing (same technique as initAmbientSpotlight, at a
+ * tighter radius), and scales up slightly over interactive elements.
+ * The native cursor is never hidden — this is a companion accent, not
+ * a replacement, so it never risks the usability regressions a full
+ * custom-cursor swap can cause. Desktop pointer devices only.
+ */
+function initCursorFollower() {
+  const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia("(hover: none)").matches;
+  if (isReduced || isTouch) return;
+
+  const ring = document.createElement("div");
+  ring.className = "cursor-follower";
+  ring.setAttribute("aria-hidden", "true");
+  document.body.appendChild(ring);
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let curX = targetX;
+  let curY = targetY;
+  let visible = false;
+
+  const tick = () => {
+    curX += (targetX - curX) * 0.18;
+    curY += (targetY - curY) * 0.18;
+    ring.style.transform = `translate3d(${curX.toFixed(1)}px, ${curY.toFixed(1)}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+
+  window.addEventListener(
+    "mousemove",
+    (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!visible) {
+        visible = true;
+        ring.classList.add("is-active");
+      }
+      const target = e.target as HTMLElement | null;
+      const interactive = target?.closest("a, button, [role='button'], input, select, textarea, summary");
+      ring.classList.toggle("is-interactive", Boolean(interactive));
+    },
+    { passive: true }
+  );
+
+  document.addEventListener("mouseleave", () => {
+    visible = false;
+    ring.classList.remove("is-active");
+  });
+}
+
+/**
+ * Hover-driven inner-image parallax — the image inside a card shifts a
+ * few px opposite the card's own movement as the cursor crosses it,
+ * distinct from the whole-card 3D tilt: a second, independent motion
+ * layer rather than one rigid rotation.
+ */
+function initImageParallax() {
+  const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia("(hover: none)").matches;
+  if (isReduced || isTouch) return;
+
+  document.querySelectorAll<HTMLElement>("[data-parallax-image]").forEach((card) => {
+    const layer = card.querySelector<HTMLElement>("[data-parallax-layer]");
+    if (!layer) return;
+    const strength = Number(card.dataset.parallaxStrength ?? 10);
+
+    card.addEventListener(
+      "mousemove",
+      (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const normX = (e.clientX - rect.left) / rect.width - 0.5;
+        const normY = (e.clientY - rect.top) / rect.height - 0.5;
+        layer.style.transform = `translate3d(${(normX * strength).toFixed(1)}px, ${(normY * strength).toFixed(1)}px, 0) scale(1.03)`;
+      },
+      { passive: true }
+    );
+
+    card.addEventListener(
+      "mouseleave",
+      () => {
+        layer.style.transition = "transform 450ms cubic-bezier(0.16, 1, 0.3, 1)";
+        layer.style.transform = "translate3d(0, 0, 0) scale(1)";
+        setTimeout(() => {
+          layer.style.transition = "";
+        }, 450);
+      },
+      { passive: true }
+    );
+  });
+}
+
+/**
  * Global Trigger Delegate for Cinematic Theatre and UI Audio
  */
 function initGlobalTriggers() {
@@ -267,13 +459,10 @@ function initGlobalTriggers() {
     const target = e.target as HTMLElement | null;
     if (!target) return;
 
-    // Cinematic Theatre Open Trigger
-    const theatreTrigger = target.closest<HTMLElement>("[data-open-theatre]");
-    if (theatreTrigger) {
-      e.preventDefault();
-      const slug = theatreTrigger.dataset.openTheatre || "shivalik-homes";
-      soundEngine.playChime();
-      window.dispatchEvent(new CustomEvent("atittle:open-theatre", { detail: { slug } }));
+    // Gentle shutter tick on demo card selection
+    const demoCard = target.closest<HTMLElement>("[data-demo-card]");
+    if (demoCard && !demoCard.hasAttribute("data-no-sound")) {
+      soundEngine.playShutter();
       return;
     }
 
@@ -291,6 +480,9 @@ if (typeof document !== "undefined") {
     init3DTilt();
     initSpotlightGlow();
     initMagneticButtons();
+    initAmbientSpotlight();
+    initCursorFollower();
+    initImageParallax();
     initGlobalTriggers();
   };
 

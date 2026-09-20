@@ -30,17 +30,18 @@ const trustPoints = [
   <div class="bg-white font-['Nunito'] text-manthan-900">
     <SiteHeader />
 
-    <section class="border-b border-manthan-100 bg-manthan-50">
+    <section class="relative border-b border-manthan-100 bg-manthan-50 overflow-hidden" style="background-image: repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(44,53,100,0.07) 28px), linear-gradient(to right, transparent 56px, rgba(180,60,60,0.22) 57px, transparent 58px);">
       <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:py-20 lg:px-8">
-        <div class="min-w-0">
-          <p class="mb-3 inline-flex items-center gap-2 rounded-full bg-manthan-900 px-3.5 py-1.5 text-sm font-semibold text-manthan-gold">
+        <div class="min-w-0 relative">
+          <svg class="hero-line absolute -right-4 top-0 h-20 w-20 text-red-600/70 sm:h-24 sm:w-24" style="animation-delay:480ms;transform:rotate(8deg)" viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M20 55 L40 72 L82 24" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="hero-line mb-3 inline-flex items-center gap-2 rounded-full bg-manthan-900 px-3.5 py-1.5 text-sm font-semibold text-manthan-gold" style="animation-delay:0ms">
             <Icon name="map-pin" class="h-4 w-4" /> Talwandi, Kota, Rajasthan
           </p>
-          <h1 class="font-['Domine'] text-4xl font-bold leading-[1.1] text-manthan-900 sm:text-5xl">Discipline, then results.</h1>
-          <p class="mt-5 max-w-lg text-lg text-manthan-700">
+          <h1 class="hero-line font-['Domine'] text-5xl font-bold leading-[1.05] text-manthan-900 sm:text-6xl" style="animation-delay:120ms">Discipline, then <span class="type-emphasis">results.</span></h1>
+          <p class="hero-line mt-5 max-w-lg text-lg text-manthan-700" style="animation-delay:240ms">
             Two-year JEE and NEET foundation batches, one-year target batches, and a Class 9–10 foundation course — taught by faculty who specialise in one subject each, in batches capped at 40 students.
           </p>
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div class="hero-line mt-8 flex flex-col gap-3 sm:flex-row" style="animation-delay:360ms">
             <a href="/demos/manthan-institute/courses" class="inline-flex items-center justify-center gap-2 rounded-md bg-manthan-600 px-6 py-3.5 font-bold text-white hover:bg-manthan-700">
               See all courses <Icon name="chevron-right" class="h-4 w-4" />
             </a>
@@ -80,7 +81,7 @@ const trustPoints = [
 
     <section class="bg-manthan-50 py-14 sm:py-20">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="chapter-numeral flex flex-wrap items-end justify-between gap-4" data-numeral="02">
           <h2 class="font-['Domine'] text-2xl font-bold text-manthan-900 sm:text-3xl">Courses</h2>
           <a href="/demos/manthan-institute/courses" class="text-sm font-bold text-manthan-700 hover:text-manthan-900">View all courses →</a>
         </div>

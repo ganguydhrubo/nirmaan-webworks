@@ -7,7 +7,8 @@ import { telLink, mailLink, waLink } from "@/lib/contact-links";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-ink-200 bg-ink-950 text-ink-200">
+<footer class="relative isolate overflow-hidden border-t border-ink-200 bg-ink-950 text-ink-200" data-ambient-spotlight>
+  <div class="footer-ambient-glow" data-ambient-follow aria-hidden="true"></div>
   <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
     <div class="grid min-w-0 gap-8 sm:grid-cols-2 lg:grid-cols-4">
       <div class="sm:col-span-2 lg:col-span-1">
@@ -18,9 +19,11 @@ const year = new Date().getFullYear();
             href="https://www.facebook.com/atittleweb"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-ink-800 bg-ink-900 text-ink-300 transition-colors hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white"
+            class="glass-panel inline-flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white"
             aria-label="Follow ATITTLE on Facebook (opens in a new tab)"
             data-analytics-event="social_facebook_click"
+            data-magnetic
+            data-magnetic-strength="0.4"
           >
             <Icon name="facebook" class="h-4 w-4" />
           </a>
@@ -28,9 +31,11 @@ const year = new Date().getFullYear();
             href="https://www.instagram.com/atittleweb/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-ink-800 bg-ink-900 text-ink-300 transition-colors hover:border-[#E4405F] hover:bg-[#E4405F] hover:text-white"
+            class="glass-panel inline-flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:border-[#E4405F] hover:bg-[#E4405F] hover:text-white"
             aria-label="Follow ATITTLE on Instagram (opens in a new tab)"
             data-analytics-event="social_instagram_click"
+            data-magnetic
+            data-magnetic-strength="0.4"
           >
             <Icon name="instagram" class="h-4 w-4" />
           </a>
@@ -110,3 +115,19 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-ambient-glow {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 520px;
+    height: 520px;
+    z-index: -1;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(217, 119, 6, 0.16) 0%, rgba(200, 145, 44, 0.08) 45%, transparent 72%);
+    filter: blur(70px);
+    transform: translate3d(-50%, -50%, 0);
+  }
+</style>

@@ -1,6 +1,6 @@
 /** One controller per stage. A decoded incoming scene replaces the whole composition. */
 const DWELL = 2600;
-const TRANSITION = 240;
+const TRANSITION = 380;
 
 let audioCtx: AudioContext | null = null;
 let audioUnlocked = false;
@@ -313,15 +313,6 @@ function mountShowcase(root: HTMLElement): () => void {
     incoming.inert = false;
     incoming.removeAttribute('aria-hidden');
     incoming.classList.add('is-active');
-
-    const outVid = outgoing.querySelector<HTMLVideoElement>('.showcase-screen-video');
-    if (outVid) { outVid.pause(); }
-
-    const inVid = incoming.querySelector<HTMLVideoElement>('.showcase-screen-video');
-    if (inVid && !prefersSavingData()) {
-      inVid.currentTime = 0;
-      inVid.play().catch(() => {});
-    }
 
     active = target;
     root.dataset.active = String(active);

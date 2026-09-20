@@ -3,7 +3,7 @@ interface Props { shape?: 'necklace' | 'earrings' | 'ring' | 'bangle'; stone?: s
 const { shape = 'necklace', stone = '#638876', id } = Astro.props;
 const gold = `url(#gold-${id})`;
 ---
-<svg viewBox="0 0 600 660" fill="none" aria-hidden="true" class="jewel-art">
+<svg viewBox="0 0 600 660" fill="none" aria-hidden="true" class="jewel-art sketch-draw">
   <defs>
     <linearGradient id={`gold-${id}`} x1="120" y1="130" x2="490" y2="570" gradientUnits="userSpaceOnUse"><stop stop-color="#705024"/><stop offset=".25" stop-color="#f9e4aa"/><stop offset=".5" stop-color="#b18442"/><stop offset=".72" stop-color="#ffecc0"/><stop offset="1" stop-color="#89612e"/></linearGradient>
     <radialGradient id={`glow-${id}`}><stop stop-color="#b99152" stop-opacity=".17"/><stop offset="1" stop-color="#b99152" stop-opacity="0"/></radialGradient>

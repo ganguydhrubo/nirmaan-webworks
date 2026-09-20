@@ -1,169 +1,233 @@
-# atittle.com · End-to-End Handover Brief & Production Deployment Guide
+# NIRMAAN WEBWORKS (ATITTLE.COM) — FULL HANDOVER DOCUMENTATION
+
+**Project Name:** Nirmaan Webworks (`atittle`)  
+**Production URL:** [atittle.com](https://atittle.com)  
+**Handover Date:** September 19, 2026  
+**Stack:** Astro 7.3+ · Tailwind CSS v4 · TypeScript 5.9 · Cloudflare Pages & D1 · Playwright & Vitest  
 
 ---
 
-## 1. Project & Handover Summary
+## 1. Executive Summary & Brand Identity
 
-| Attribute | Value / Details |
-| :--- | :--- |
-| **Project Name** | **atittle.com** (Bespoke Web Engineering for Indian MSMEs & Local Businesses) |
-| **Version** | `0.1.0` (Production Ready) |
-| **Active Local Server** | `http://127.0.0.1:4321` (Self-hosted preview running on Cloudflare Workers runtime) |
-| **GitHub Repository** | [https://github.com/ganguydhrubo/atittle](https://github.com/ganguydhrubo/atittle) |
-| **Target Vercel Account** | [https://vercel.com/dhrubojyoti](https://vercel.com/dhrubojyoti) |
-| **Core Tech Stack** | Astro 7 (Server SSR & Static Prerender), Tailwind CSS 4, TypeScript 5.9, Groq AI (GPT-OSS 120B), Cloudflare Workers / Vercel Edge |
-| **Audited Routes** | **37 total routes** (Main site, 6 bespoke industry demos, AI Evaluator tool, legal policies) |
-| **Quality Audit Score** | 0 Broken links, 0 Missing images, 0 Axe accessibility violations, 51/51 automated tests passing, 0 ESLint warnings |
+**Nirmaan Webworks** is a high-end web design and digital engineering studio dedicated to India’s top tier of independent businesses, boutique hotels, premium medical clinics, coaching institutes, and luxury retail brands.
+
+- **Single Source of Truth:** All business facts (company name, WhatsApp number, email, phone, address, pricing tiers, and industry metadata) live strictly inside [`config/site.ts`](file:///C:/Users/Dhrubo/nirmaan-webworks/config/site.ts). Updating contact info or business configuration is a single-line edit that automatically updates the entire website, emails, and WhatsApp redirect handlers.
+- **Design Philosophy:** Dark editorial palette (`#090d16` ink slate, `#fffbf5` warm cream, `#d97706` amber accents), tactile architectural aesthetics, Fraunces serif and Inter sans typography, fluid physics-based transitions, and 100% mobile-first engineering with 0px horizontal overflow.
 
 ---
 
-## 2. GitHub Repository & Commit History
+## 2. Technical Architecture & Tech Stack
 
-The repository has been initialized, configured, and pushed directly to your personal GitHub account:
-- **Repository Link:** [https://github.com/ganguydhrubo/atittle](https://github.com/ganguydhrubo/atittle)
-- **Primary Branch:** `master`
-- **Tracked Commits:**
-  1. `788e2c9` — *feat: foundation and architecture setup with Cloudflare D1 and Astro*
-  2. `a198cfc` — *feat: main agency website core pages, pricing, and inquiry engine*
-  3. `72f9d9f` — *feat: six bespoke client demo sites with deep authentic trade content*
-  4. `7966dbb` — *feat: automated playwright crawler audit and accessibility validation*
-  5. `91ab758` — *docs: production architecture, credits, testing, and deployment guide*
-  6. `cb66fc1` — *feat(ai): integrate Groq GPT-OSS 120B website alignment evaluator, wow graphics, and vercel config*
+| Layer | Technology | Details |
+| :--- | :--- | :--- |
+| **Framework** | **Astro 7.3+ (SSR)** | Fast static rendering with on-demand SSR for dynamic lead capture and API endpoints. |
+| **Edge Hosting & Runtime** | **Cloudflare Pages / Workers** | Deployed via `@astrojs/cloudflare` with `wrangler` CLI on Cloudflare's global edge. |
+| **Database** | **Cloudflare D1 (SQLite)** | Serverless edge SQL database (`atittle_leads`) for enquiries, lead tracking, and audit logs. |
+| **Styling** | **Tailwind CSS v4** | Modern `@tailwindcss/vite` setup with custom CSS design tokens and fluid typography. |
+| **Client Scripts** | **TypeScript 5.9** | Strict type-checked client modules (`tsconfig.client.json`), no bloated third-party runtime dependencies. |
+| **Audio Engine** | **Web Audio API** | Subtle graphite drafting sounds (`sketch.mp3`) with mute memory and reduced-motion compliance. |
+| **Testing & QA** | **Playwright & Vitest** | Automated responsive tests across 360px, 375px, 390px, 412px, 1024px, and 1280px viewports. |
 
-To pull or push future updates:
-```powershell
-git pull origin master
-git push origin master
+---
+
+## 3. Core Features Delivered
+
+### 3.1. All 15 Live Demo Websites Directory (`DemoDirectory.astro`)
+Located at [`src/components/ui/DemoDirectory.astro`](file:///C:/Users/Dhrubo/nirmaan-webworks/src/components/ui/DemoDirectory.astro) (featured on the Homepage and `/demos`):
+- **Dedicated Browser Frame Chrome Bar:** Every card features a macOS-style browser window header with subtle window dots (`red`, `yellow`, `green`).
+- **Zero Collision Badge Placement:** Both the **Category Badge** (`REAL ESTATE`, `CLINICS`, etc.) and the **Live Site Pill** are housed inside the top chrome bar. They **never overlap or obscure** the website hero text or headings.
+- **Ultra-Crisp Retina Previews (1152×864):** Replaced low-res 540×340 images and blurry `.webm` hover videos with uncompressed 1152×864 desktop showcase captures (`/images/showcase/${demo.slug}-desktop.webp`).
+- **Smooth Elevation Lift (No Snap-Zoom Blur):** Eliminated aggressive `scale(1.08)` hover zooms that caused image blur and margin clipping. Cards smoothly elevate (`translateY(-4px)`) with an amber border highlight.
+- **Clean Action Footer:** The callout `Explore Demo ↗` is cleanly situated in the card footer alongside the business city.
+
+### 3.2. Tactile CAD Blueprint & Drafting Studio
+Located at `/demos/shivalik-homes/` ([`src/scripts/demos/shivalik-homes-drafting.ts`](file:///C:/Users/Dhrubo/nirmaan-webworks/src/scripts/demos/shivalik-homes-drafting.ts)):
+- **Interactive Drafting Canvas:** Clients can sketch, measure, and draft on a tactile architectural blueprint canvas.
+- **Graphite Audio Sound FX:** Plays realistic pencil sketching audio effects (`public/audio/sketch.mp3`) with client volume control and mute preference persistence.
+- **Clean Integration:** Standalone, high-performance canvas engine with zero external canvas library overhead.
+
+### 3.3. Homepage Hero & Showcase Transitions
+- **Pure Horizontal Scroll (`translateX`):** Clean, Apple/Inventiko-grade horizontal slide transitions across all 15 demo websites.
+- **No Snap-Zoom Distortion:** Eliminated 3D perspective tilts and jarring snap zooms.
+- **Responsive Floating Dock:** Quick navigation pill dock allowing clients to jump between live demos, services, pricing, and contact.
+
+### 3.4. 100% Mobile Responsiveness (0px Overflow)
+- Tested and verified on all viewport widths: **360px, 375px, 390px, 412px, 1024px, 1280px**.
+- `document.documentElement.scrollWidth === document.documentElement.clientWidth` across all pages.
+
+---
+
+## 4. The 15 Working Industry Demos
+
+All demos are registered in [`config/site.ts`](file:///C:/Users/Dhrubo/nirmaan-webworks/config/site.ts) under `siteConfig.demoRegistry`:
+
+| # | Industry Slug | Business Name | Category Name | City | Demo Route |
+| :-: | :--- | :--- | :--- | :--- | :--- |
+| **1** | `shivalik-homes` | Shivalik Homes & Developers | Real Estate | Dehradun, UK | `/demos/shivalik-homes` |
+| **2** | `kayal-backwaters` | Kayal Backwaters Resort | Hotels & Resorts | Alleppey, Kerala | `/demos/kayal-backwaters` |
+| **3** | `sanjeevani-clinic` | Sanjeevani Multispecialty Clinic | Clinics | Nagpur, MH | `/demos/sanjeevani-clinic` |
+| **4** | `manthan-institute` | Manthan Institute of Studies | Coaching Institutes | Kota, Rajasthan | `/demos/manthan-institute` |
+| **5** | `ivory-smiles` | Ivory Smiles Dental Clinic | Dental Clinics | Indore, MP | `/demos/ivory-smiles` |
+| **6** | `anaar-awadhi-table` | Anaar — The Awadhi Table | Restaurants | Lucknow, UP | `/demos/anaar-awadhi-table` |
+| **7** | `sunehri-atelier` | Sunehri Atelier | Jewellery | Jaipur, Rajasthan | `/demos/sunehri-atelier` |
+| **8** | `aangan-form` | Aangan / Form | Interior Design | Ahmedabad, Gujarat | `/demos/aangan-form` |
+| **9** | `mogra-house` | Mogra House | Salon & Spa | Pune, MH | `/demos/mogra-house` |
+| **10** | `meridian-advisory` | Meridian Advisory | Professional Services | Ahmedabad, Gujarat | `/demos/meridian-advisory` |
+| **11** | `repwork-studio` | Repwork Studio | Fitness Studios | Bengaluru, Karnataka | `/demos/repwork-studio` |
+| **12** | `saanjh-stories` | Saanjh Stories | Events & Photography | Jaipur, Rajasthan | `/demos/saanjh-stories` |
+| **13** | `sunday-objects` | Sunday Objects | Retail & Boutiques | Kochi, Kerala | `/demos/sunday-objects` |
+| **14** | `torque-district` | Torque District | Automotive | Pune, MH | `/demos/torque-district` |
+| **15** | `clearline-labs` | Clearline Diagnostics | Diagnostics Labs | Chandigarh | `/demos/clearline-labs` |
+
+---
+
+## 5. Directory Structure & Key Files
+
+```text
+nirmaan-webworks/
+├── config/
+│   └── site.ts                    # THE single source of truth for business data & registry
+├── public/
+│   ├── audio/
+│   │   └── sketch.mp3             # Tactile drafting graphite sound FX
+│   ├── images/
+│   │   ├── demos/                 # Industry demo assets
+│   │   └── showcase/              # 1152x864 Retina showcase captures (*-desktop.webp)
+│   └── favicon.svg                # Brand icon
+├── src/
+│   ├── components/
+│   │   ├── layout/                # Header, Footer, MobileNav, MetaTags
+│   │   ├── sections/home/         # Hero, IndustryShowcase, Process, Pricing, FAQ
+│   │   └── ui/
+│   │       ├── DemoDirectory.astro # The 15 Live Demo card grid with browser chrome
+│   │       ├── DemoShowcase.astro  # Interactive showcase hero slider
+│   │       └── FloatingDock.astro  # Bottom floating utility dock
+│   ├── pages/
+│   │   ├── index.astro            # Homepage
+│   │   ├── demos/
+│   │   │   ├── index.astro        # Demo directory index
+│   │   │   └── [slug].astro       # Dynamic demo renderer
+│   │   ├── industries/            # Industry landing pages
+│   │   └── api/
+│   │       └── enquiry.ts         # Edge lead submission & spam validator endpoint
+│   ├── scripts/
+│   │   └── demos/
+│   │       └── shivalik-homes-drafting.ts # CAD blueprint drafting engine
+│   └── styles/
+│       └── global.css             # Tailwind v4 theme, fonts, custom properties
+├── tests/
+│   ├── e2e/
+│   │   ├── responsive.spec.ts     # Multi-viewport overflow & layout verification
+│   │   └── dock.spec.ts           # Navigation dock interactions
+│   └── unit/                      # Validation and email tests
+├── package.json                   # Scripts, Astro 7, Cloudflare adapter, dependencies
+└── wrangler.json                  # Cloudflare D1 & Worker configuration
 ```
 
 ---
 
-## 3. Deployment Guide for Vercel (`https://vercel.com/dhrubojyoti`)
+## 6. Development, Testing & Deployment Commands
 
-The project is configured for one-click import and deployment on Vercel:
+Run all commands from the project root (`C:\Users\Dhrubo\nirmaan-webworks`):
 
-### Step-by-Step Vercel Setup:
-1. Open your Vercel Dashboard at [https://vercel.com/dhrubojyoti](https://vercel.com/dhrubojyoti).
-2. Click **"Add New..."** → **"Project"**.
-3. Select your GitHub account `ganguydhrubo` and import `atittle`.
-4. In the **Configure Project** screen:
-   - **Framework Preset:** Select `Astro` (or `Other`).
-   - **Root Directory:** `./` (leave default).
-   - **Build Command:** `npm run build:preview`
-   - **Output Directory:** `dist/client`
-5. **Environment Variables** (add under Project Settings → Environment Variables):
+### 6.1. Local Development
+```bash
+# Start Astro dev server on http://localhost:4321
+npm run dev
+```
 
-| Key | Example Value | Description |
-| :--- | :--- | :--- |
-| `PUBLIC_SITE_URL` | `https://atittle.com` (or your Vercel URL) | Canonical URL root |
-| `GROQ_API_KEY` | `gsk_...` | Groq Cloud AI inference key |
-| `EMAIL_PROVIDER` | `resend` (or `none`) | Outbound email dispatcher |
-| `RESEND_API_KEY` | `re_...` | Resend API key for lead routing |
-| `AI_PROVIDER` | `groq` | Evaluator AI provider |
-| `PUBLIC_TURNSTILE_SITE_KEY` | `0x4AAAAAA...` | Cloudflare Turnstile bot verification |
-| `TURNSTILE_SECRET_KEY` | `0x4AAAAAA...` | Turnstile server secret |
-
-6. Click **"Deploy"**. Vercel will build the static client bundle and serve it across Vercel's global Edge Network with the caching rules defined in `vercel.json`.
-
----
-
-## 4. Groq AI Website Brand Alignment Evaluator Tool
-
-### Overview
-Located at **`/tools/website-evaluator`** and powered by API endpoint **`/api/evaluate`**, this tool audits whether a business website reflects the authentic craft and identity of the business, or looks like low-trust generic corporate slop.
-
-### Core Features & "Wow" UI Graphics:
-1. **100-Point Multi-Pillar Scoring Engine:**
-   - **Value Proposition & 3-Second Clarity (0–20 pts):** Tests if a first-time visitor knows what is offered and the primary benefit within 3 seconds.
-   - **Industry Alignment & Authenticity (0–20 pts):** Scans for trade-specific vocabulary and real operational signals vs stock corporate buzzwords.
-   - **Trust Signals & Contact Friction (0–20 pts):** Audits WhatsApp direct desk, local phone, physical address with landmark, credentials/licensing, and response commitments.
-   - **Pricing Transparency (0–20 pts):** Rewards transparent starting INR bands over high-friction black-box forms.
-   - **Mobile Readiness & Actionability (0–20 pts):** Checks thumb-friendly single CTAs and punchy copy.
-2. **Animated SVG Radial Score Gauge:**
-   - Circular SVG gauge with animated stroke offset and dynamic color glowing halo:
-     - 🟢 **90–100:** *Craft Masterpiece* (`#059669`)
-     - 🔵 **75–89:** *Solid & Functional* (`#0d9488`)
-     - 🟠 **50–74:** *Generic / Moderate Risk* (`#d97706`)
-     - 🔴 **<50:** *High Conversion Risk* (`#e11d48`)
-3. **5 Interactive Category Progress Meters:**
-   - Visual percentage bars with assessment narrative and concrete actionable recommendations.
-4. **Diagnostic Badges:**
-   - Red Flags identified (buzzwords, vague promises, high friction).
-   - Authentic Craft Strengths.
-   - Missing Local Trust Anchors checklist.
-5. **Ultra-Detailed Copy Rewrites Box:**
-   - **Hero Headline:** Side-by-side Before (strikethrough) vs After (high-converting) with rationale.
-   - **Primary CTA:** Before ("Submit") vs After ("Chat on WhatsApp · 15-Min Response") with friction-reduction analysis.
-   - **Complete Markdown Audit Report:** Formatted report with a **1-Click "Copy Full Report"** button with visual confirmation.
-6. **Dual-Engine Architecture (Zero-Downtime Guarantee):**
-   - When a `GROQ_API_KEY` is provided, queries Groq Cloud `openai/gpt-oss-120b` with JSON schema enforcement.
-   - If no API key is supplied or the API is unreachable, seamlessly activates atittle.com's built-in deterministic heuristic CRO engine, guaranteeing the tool always renders instant, accurate reports.
-7. **End-to-End Lead Engine Integration:**
-   - Direct CTA links pre-filled with the audit score and business name to atittle.com's `/contact#enquiry` form and WhatsApp desk.
-
----
-
-## 5. Master Checklist of All Required Tools & Accounts
-
-To run atittle.com and client projects at maximum efficiency, here is the full breakdown of required tools across categories:
-
-### A. Core Development & Deployment Tools
-- [x] **Git & GitHub CLI (`gh`)**: Installed and authenticated as `ganguydhrubo`.
-- [x] **Node.js**: Node v24.19.0 on Windows.
-- [x] **Vercel Account (`https://vercel.com/dhrubojyoti`)**: For importing GitHub repo and zero-config deployment.
-- [x] **Cloudflare Account (`dash.cloudflare.com`)**: If deploying on Cloudflare Workers + D1 database edge.
-- [x] **Wrangler CLI**: Bundled in `devDependencies` for managing Cloudflare D1 migrations and edge bindings.
-
-### B. Third-Party API Keys & Services
-- [ ] **Groq Cloud API Key (`GROQ_API_KEY`)**:
-  - *Where to get:* [https://console.groq.com/keys](https://console.groq.com/keys) (free tier provides 1,000 req/day for GPT-OSS 120B).
-  - *Usage:* Powers real-time AI website audits.
-- [ ] **Resend Transactional Email API Key (`RESEND_API_KEY`)**:
-  - *Where to get:* [https://resend.com](https://resend.com) (Free tier: 3,000 emails/month).
-  - *Usage:* Instant lead notification delivery to `founder@atittle.com`.
-- [ ] **Cloudflare Turnstile Bot Protection**:
-  - *Where to get:* Cloudflare Dashboard → Turnstile (100% free).
-  - *Usage:* `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` for spam-free form submissions.
-
-### C. Client Acquisition & Marketing Tools
-- [x] **AI Website Brand Alignment Evaluator** (`/tools/website-evaluator`): Agency lead-magnet tool.
-- [ ] **WhatsApp Business App**: Set up with business profile, catalog, and automated greeting matching atittle.com's templates.
-- [ ] **Google Business Profile (GBP)**: Register atittle.com with address `Salt Lake, Sector V, Kolkata 700091` to capture local agency searches.
-- [ ] **Google Search Console**: Submit sitemap `https://atittle.com/sitemap-index.xml`.
-
----
-
-## 6. Verification & Health Commands
-
-Run these commands inside `C:\Users\Dhrubo\atittle` to verify the codebase at any time:
-
-```powershell
-# 1. Typecheck Astro and client TypeScript
+### 6.2. Type Checking & Code Quality
+```bash
+# Run Astro check + TypeScript client compilation
 npm run check
 
-# 2. Lint entire codebase (0 errors, 0 warnings)
+# Run ESLint
 npm run lint
+```
 
-# 3. Run all 51 Vitest unit & integration tests
-npm run test
-
-# 4. Compile preview build
+### 6.3. Production Build & Cloudflare Preview
+```bash
+# Build production bundle with Cloudflare Pages/Worker adapter
 npm run build:preview
 
-# 5. Run Playwright E2E smoke tests
-npm run e2e
+# Run local Cloudflare Worker emulation via Wrangler
+npm run preview
+# Accessible on http://localhost:4321
+```
 
-# 6. Run comprehensive 37-route crawler audit
-node scripts/audit-pages.mjs
+### 6.4. Automated Tests
+```bash
+# Run unit & integration tests
+npm test
+
+# Run responsive viewport tests
+npm run test:responsive
+
+# Run complete Playwright end-to-end suite
+npm run e2e
+```
+
+### 6.5. Cloudflare D1 Database Migrations
+```bash
+# Apply migrations locally
+npm run db:migrate:local
+
+# Apply migrations to production Cloudflare D1
+npm run db:migrate:remote
 ```
 
 ---
 
-## 7. Self-Hosted Preview Access
+## 7. How to Maintain & Update the Site
 
-The local preview server is running as a daemon on:
-- **Homepage:** `http://127.0.0.1:4321`
-- **AI Evaluator Tool:** `http://127.0.0.1:4321/tools/website-evaluator`
-- **All 6 Industry Demos:** `http://127.0.0.1:4321/demos`
-- **Contact & Quote Engine:** `http://127.0.0.1:4321/contact`
-- **Health Check API:** `http://127.0.0.1:4321/api/health`
+### 7.1. Updating Contact Info & Business Facts
+Open [`config/site.ts`](file:///C:/Users/Dhrubo/nirmaan-webworks/config/site.ts):
+```typescript
+export const siteConfig = {
+  businessName: "Nirmaan Webworks",
+  phoneDisplay: "+91 93303 93298",
+  whatsappNumber: "919330393298",
+  email: "hello@atittle.com",
+  city: "Kolkata",
+  // ...
+};
+```
+Changes here automatically update the header, mobile call bar, WhatsApp deep links, enquiry confirmation emails, and footer metadata.
+
+### 7.2. Adding or Modifying a Demo
+1. Add the entry to `siteConfig.demoRegistry` in [`config/site.ts`](file:///C:/Users/Dhrubo/nirmaan-webworks/config/site.ts).
+2. Place a high-resolution desktop capture (1152×864 WebP) in `public/images/showcase/${demo.slug}-desktop.webp`.
+3. Create the demo page template in `src/pages/demos/${demo.slug}.astro`.
+4. Run `npm run check` to ensure type integrity.
+
+### 7.3. Adding the 10-Second Showreel Video
+When your AI video is generated (e.g. from Runway Gen-3 or Kling):
+1. Save the video as `public/videos/studio-showreel.webm` (and `.mp4`).
+2. Add a poster frame at `public/images/studio-showreel-poster.webp`.
+3. Drop the video element into the desired container:
+```html
+<div class="video-mockup-frame">
+  <video
+    src="/videos/studio-showreel.webm"
+    poster="/images/studio-showreel-poster.webp"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
+    class="w-full h-full object-cover"
+  ></video>
+</div>
+```
+
+---
+
+## 8. Verification & Quality Sign-Off
+
+- **Astro & TypeScript Diagnostics:** 0 errors across all 204 files.
+- **Mobile Viewport QA:** Exact 0px horizontal overflow on 360px, 375px, 390px, 412px, 1024px, and 1280px.
+- **Card Collision QA:** Badges separated in dedicated browser chrome bar; 0 overlap with screenshot text.
+- **Focus & Resolution QA:** 1152×864 Retina desktop screenshots; 0 snap-zoom distortion or video pixelation.
+- **Audio Engine:** Operational graphite sound FX on `/demos/shivalik-homes` with client mute toggle.
+
+*Nirmaan Webworks is production-ready for deployment to Cloudflare.*

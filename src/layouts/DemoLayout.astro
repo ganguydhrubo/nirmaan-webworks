@@ -10,7 +10,6 @@
 import { siteConfig } from "@config/site";
 import { waLink } from "@/lib/contact-links";
 import Icon from "@/components/ui/Icon.astro";
-import CinematicDemoTheatre from "@/components/ui/CinematicDemoTheatre.astro";
 import "@/styles/global.css";
 
 interface Props {
@@ -50,18 +49,16 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
       }
     </script>
     <style>
-      :global(html.in-theatre [data-demo-banner]),
-      :global(html.in-theatre .demo-floating-dock),
-      :global(html.in-theatre #demo-theatre-wrapper) {
+      :global(html.in-theatre [data-demo-banner]) {
         display: none !important;
       }
 
-      /* Executive Cinematic Demo Bar */
+      /* Executive Studio Sound Bar */
       .demo-banner {
         position: sticky;
         top: 0;
         z-index: 50;
-        background: rgba(12, 12, 16, 0.95);
+        background: rgba(14, 14, 18, 0.95);
         backdrop-filter: blur(12px);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         padding: 0.4rem 0.75rem;
@@ -106,55 +103,57 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
         color: rgba(255, 255, 255, 0.6);
       }
 
-      /* 3D Cinematic Reel & Studio Buttons in Banner */
-      .banner-reel-btn {
+      /* Sound & Atmosphere Toggle (like Inventiko SoundToggle) */
+      .demo-sound-toggle-btn {
         display: inline-flex;
         align-items: center;
-        gap: 0.45rem;
+        gap: 0.5rem;
         padding: 0.35rem 0.85rem;
         border-radius: 9999px;
-        background: rgba(234, 88, 12, 0.2);
-        border: 1.5px solid rgba(234, 88, 12, 0.6);
-        color: #fed7aa;
-        font-size: 0.75rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 180ms ease;
-        box-shadow: 0 0 15px rgba(234, 88, 12, 0.2);
-      }
-      .banner-reel-btn:hover {
-        background: #ea580c;
-        border-color: #f97316;
-        color: #fff;
-        transform: translateY(-1px);
-        box-shadow: 0 0 20px rgba(234, 88, 12, 0.45);
-      }
-      .banner-pulse-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #22c55e;
-        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
-      }
-      .banner-stage-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 9999px;
         background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #fff;
         font-size: 0.75rem;
         font-weight: 600;
         cursor: pointer;
-        transition: all 180ms ease;
+        transition: all 200ms ease;
       }
-      .banner-stage-btn:hover {
-        background: rgba(255, 255, 255, 0.16);
-        color: #fff;
-        transform: translateY(-1px);
+      .demo-sound-toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.3);
       }
+      .demo-sound-toggle-btn.is-active {
+        background: rgba(234, 88, 12, 0.2);
+        border-color: rgba(234, 88, 12, 0.6);
+        color: #fed7aa;
+        box-shadow: 0 0 12px rgba(234, 88, 12, 0.25);
+      }
+      .sound-eq-bars {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        height: 12px;
+      }
+      .sound-eq-bars i {
+        width: 2px;
+        height: 6px;
+        background: currentColor;
+        border-radius: 1px;
+        transition: transform 150ms ease;
+      }
+      .demo-sound-toggle-btn.is-active .sound-eq-bars i {
+        animation: eqBounce 1.2s ease-in-out infinite;
+      }
+      .demo-sound-toggle-btn.is-active .sound-eq-bars i:nth-child(1) { height: 7px; animation-delay: 0s; }
+      .demo-sound-toggle-btn.is-active .sound-eq-bars i:nth-child(2) { height: 12px; animation-delay: 0.2s; }
+      .demo-sound-toggle-btn.is-active .sound-eq-bars i:nth-child(3) { height: 9px; animation-delay: 0.4s; }
+      .demo-sound-toggle-btn.is-active .sound-eq-bars i:nth-child(4) { height: 11px; animation-delay: 0.15s; }
+
+      @keyframes eqBounce {
+        0%, 100% { transform: scaleY(0.4); }
+        50% { transform: scaleY(1.2); }
+      }
+
       .banner-cta-link {
         font-size: 0.74rem;
         color: rgba(255, 255, 255, 0.75);
@@ -184,76 +183,22 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
         color: #fff;
       }
 
-      /* Floating 3D Studio Dock */
-      .demo-floating-dock {
-        position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        z-index: 45;
-        max-width: calc(100vw - 2rem);
-      }
-      .dock-theatre-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.65rem 1.15rem;
-        border-radius: 9999px;
-        background: rgba(15, 15, 20, 0.88);
-        border: 1.5px solid rgba(234, 88, 12, 0.5);
-        color: #fff;
-        font-size: 0.8rem;
-        font-weight: 700;
-        cursor: pointer;
-        backdrop-filter: blur(16px);
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 88, 12, 0.25);
-        transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .dock-theatre-btn:hover {
-        background: #ea580c;
-        border-color: #f97316;
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.8), 0 0 30px rgba(234, 88, 12, 0.5);
-      }
-      .dock-pulse-beacon {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #22c55e;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.4);
-        animation: pulse-dot 1.8s infinite;
-      }
-      @keyframes pulse-dot {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.3); opacity: 0.7; }
-      }
-
-      /* Responsive Mobile Constraints */
       @media (max-width: 768px) {
         .demo-banner-inner {
           justify-content: space-between;
           gap: 0.4rem;
         }
         .demo-industry-pill,
-        .banner-stage-btn,
         .banner-cta-link {
           display: none;
         }
-        .banner-reel-btn {
-          padding: 0.3rem 0.65rem;
+        .demo-sound-toggle-btn {
+          padding: 0.3rem 0.6rem;
           font-size: 0.72rem;
-          gap: 0.35rem;
         }
         .banner-wa-btn {
           padding: 0.3rem 0.55rem;
           font-size: 0.72rem;
-        }
-        .demo-floating-dock {
-          bottom: 1.1rem;
-          right: 1.1rem;
-        }
-        .dock-theatre-btn {
-          padding: 0.55rem 0.95rem;
-          font-size: 0.75rem;
         }
       }
     </style>
@@ -279,25 +224,15 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
         <div class="demo-banner-center">
           <button
             type="button"
-            class="banner-reel-btn"
-            data-open-theatre={demo.slug}
-            data-theatre-mode="reel"
-            title="Watch 60fps 3D Cinematic Reel"
+            class="demo-sound-toggle-btn"
+            id="demo-sound-toggle"
+            aria-label="Toggle cinematic sound and atmosphere"
+            title="Toggle atmospheric sound design"
           >
-            <span class="banner-pulse-dot" aria-hidden="true"></span>
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span>Watch 3D Reel</span>
-          </button>
-
-          <button
-            type="button"
-            class="banner-stage-btn"
-            data-open-theatre={demo.slug}
-            data-theatre-mode="mobile"
-            title="Inspect in 3D Device Stage"
-          >
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-            <span>3D Studio Stage</span>
+            <span class="sound-eq-bars" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </span>
+            <span id="demo-sound-status">Sound FX</span>
           </button>
         </div>
 
@@ -328,29 +263,31 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
 
     <div id="demo-content" tabindex="-1"><slot /></div>
 
-    <!-- Floating 3D Studio Dock on Demo Sites -->
-    <aside class="demo-floating-dock" aria-label="3D Cinematic Controls">
-      <button
-        type="button"
-        class="dock-theatre-btn"
-        data-open-theatre={demo.slug}
-        data-theatre-mode="reel"
-        aria-label={`Watch 3D video reel and explore 3D stage for ${demo.businessName}`}
-        title="Open 3D Cinematic Reel & Studio Staging"
-        data-magnetic
-      >
-        <span class="dock-pulse-beacon" aria-hidden="true"></span>
-        <span>🎬 3D Reel · Studio View</span>
-      </button>
-    </aside>
-
-    <div id="demo-theatre-wrapper">
-      <CinematicDemoTheatre />
-    </div>
-
     <script src="../scripts/analytics-client.ts"></script>
     <script src="../scripts/reveal.ts"></script>
     <script src="../scripts/kinetic-motion.ts"></script>
-    <script src="../scripts/theatre-controller.ts"></script>
+    <script is:inline>
+      (function() {
+        const btn = document.getElementById('demo-sound-toggle');
+        const label = document.getElementById('demo-sound-status');
+        if (!btn || !label) return;
+
+        function update() {
+          const active = window.atittleAudio ? window.atittleAudio.isSoundEnabled() : false;
+          btn.classList.toggle('is-active', active);
+          label.textContent = active ? 'Sound FX: ON' : 'Sound FX';
+        }
+
+        update();
+        window.addEventListener('atittle:sound-toggled', update);
+
+        btn.addEventListener('click', function() {
+          if (window.atittleAudio) {
+            window.atittleAudio.toggle();
+            update();
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

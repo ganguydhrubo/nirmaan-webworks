@@ -26,16 +26,6 @@ const {
       <span class="text-xs sm:text-sm font-medium text-ink-600 hidden sm:inline">
         {subtitle}
       </span>
-      <button
-        type="button"
-        class="cinematic-theatre-trigger-btn"
-        data-open-theatre=""
-        data-magnetic
-      >
-        <span class="theatre-btn-pulse" aria-hidden="true"></span>
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
-        <span>Cinematic Theatre</span>
-      </button>
     </div>
   </div>
   
@@ -43,58 +33,34 @@ const {
     {siteConfig.demoRegistry.map(demo => {
       const industry = siteConfig.industryRegistry.find(item => item.slug === demo.industrySlug)!;
       return (
-        <a href={`/demos/${demo.slug}`} class="demo-card group" data-demo-card data-kinetic-tilt data-kinetic-glow>
+        <a href={`/demos/${demo.slug}`} class="demo-card group" data-demo-card>
+          <!-- Browser Frame Window Topbar: Badges sit cleanly in chrome, NEVER overlapping website content -->
+          <div class="demo-card-topbar">
+            <div class="demo-window-dots" aria-hidden="true">
+              <span class="w-dot dot-r"></span>
+              <span class="w-dot dot-y"></span>
+              <span class="w-dot dot-g"></span>
+            </div>
+            <div class="demo-topbar-pills">
+              <span class="demo-category-pill">{industry.shortName}</span>
+              <span class="demo-live-pill">
+                <span class="demo-live-dot" aria-hidden="true"></span>
+                <span>Live Site</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Crisp Retina Desktop Preview (Zero zoom blur, zero overlaps) -->
           <div class="demo-media">
-            <!-- Poster Snapshot (Instant Paint & Crisp Retina Quality) -->
             <img
-              src={`/images/demos/${demo.slug}/thumb.webp`}
-              alt={`Preview snapshot of ${demo.businessName}`}
-              width="540"
-              height="340"
+              src={`/images/showcase/${demo.slug}-desktop.webp`}
+              alt={`Live preview snapshot of ${demo.businessName}`}
+              width="1152"
+              height="864"
               loading="lazy"
               decoding="async"
               class="demo-thumb"
             />
-
-            <!-- Snap-Zoom Mini Video Reel (Hover Activated) -->
-            <video
-              src={`/videos/demos/${demo.slug}.webm`}
-              muted
-              loop
-              playsinline
-              preload="none"
-              class="demo-video"
-              data-demo-video
-              aria-hidden="true"
-            ></video>
-
-            <!-- Glossy Sheen Sweep Effect -->
-            <div class="demo-sheen" aria-hidden="true"></div>
-
-            <!-- Category Pill -->
-            <div class="demo-category-pill">
-              {industry.shortName}
-            </div>
-
-            <!-- Live Status Dot Pill -->
-            <div class="demo-live-pill">
-              <span class="demo-live-dot"></span>
-              <span>Live Site</span>
-            </div>
-
-            <!-- Hover Snap Preview Hint with Theatre Trigger -->
-            <div class="demo-hover-banner">
-              <button
-                type="button"
-                class="demo-theatre-reel-btn"
-                data-open-theatre={demo.slug}
-                aria-label={`Watch 3D reel for ${demo.businessName}`}
-              >
-                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-                <span>3D Reel</span>
-              </button>
-              <span class="demo-cta-tag">Open site ↗</span>
-            </div>
           </div>
 
           <div class="demo-content">
@@ -102,7 +68,7 @@ const {
             <p class="demo-tagline">{demo.tagline}</p>
             <div class="demo-meta">
               <span class="demo-city">{demo.city}</span>
-              <span class="demo-link-label">Explore ↗</span>
+              <span class="demo-link-label">Explore Demo ↗</span>
             </div>
           </div>
         </a>
@@ -113,7 +79,7 @@ const {
 
 <style>
   .demo-directory {
-    border-top: 1px solid var(--color-ink-200);
+    border-top: 1px solid var(--color-ink-200, #e2e8f0);
     margin-top: 2rem;
     padding-top: 2rem;
   }
@@ -155,11 +121,11 @@ const {
   @media (max-width: 640px) {
     .demo-directory-grid {
       grid-template-columns: minmax(0, 1fr);
-      gap: 1rem;
+      gap: 1.25rem;
     }
   }
 
-  /* Card Container */
+  /* Card Container - Crisp & Steady (No snap zoom) */
   .demo-card {
     display: flex;
     flex-direction: column;
@@ -167,22 +133,97 @@ const {
     border-radius: 0.875rem;
     overflow: hidden;
     background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    border: 1px solid rgba(226, 232, 240, 0.95);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
     transform: translateZ(0);
-    will-change: transform, box-shadow;
   }
 
   .demo-card:hover,
   .demo-card:focus-visible {
-    transform: translateY(-4px) scale(1.015);
-    border-color: rgba(217, 119, 6, 0.5);
-    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(217, 119, 6, 0.08);
+    transform: translateY(-4px);
+    border-color: rgba(217, 119, 6, 0.45);
+    box-shadow: 0 14px 28px -6px rgba(15, 23, 42, 0.09), 0 4px 10px -2px rgba(217, 119, 6, 0.05);
     outline: none;
   }
 
-  /* Media Frame */
+  /* Dedicated Browser Chrome Top Bar */
+  .demo-card-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background: #f8fafc;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+    min-height: 2rem;
+  }
+
+  .demo-window-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .w-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+  }
+
+  .dot-r {
+    background: #fca5a5;
+  }
+
+  .dot-y {
+    background: #fde047;
+  }
+
+  .dot-g {
+    background: #86efac;
+  }
+
+  .demo-topbar-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* Category Badge in Chrome (Never overlaps website content) */
+  .demo-category-pill {
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: rgba(15, 23, 42, 0.82);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* Live Status Pill in Chrome */
+  .demo-live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    background: rgba(6, 78, 59, 0.88);
+    color: #6ee7b7;
+    border: 1px solid rgba(52, 211, 153, 0.4);
+  }
+
+  .demo-live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background-color: #34d399;
+    box-shadow: 0 0 5px #34d399;
+  }
+
+  /* Media Frame - Clean 16/10 Aspect Ratio */
   .demo-media {
     position: relative;
     aspect-ratio: 16 / 10;
@@ -191,167 +232,15 @@ const {
     background-color: #0f172a;
   }
 
+  /* Crisp High-Res Image - No scaling blur */
   .demo-thumb {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-  }
-
-  /* Snap Zoom on Hover */
-  .demo-card:hover .demo-thumb,
-  .demo-card:focus-visible .demo-thumb {
-    transform: scale(1.08);
-  }
-
-  .demo-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.35s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    transform: scale(1.02);
-    pointer-events: none;
-  }
-
-  .demo-card:hover .demo-video,
-  .demo-card:focus-visible .demo-video,
-  .demo-card.is-playing .demo-video {
-    opacity: 1;
-    transform: scale(1.08);
-  }
-
-  /* Glossy Sheen Sweep Effect */
-  .demo-sheen {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.32),
-      transparent
-    );
-    transform: skewX(-25deg);
-    pointer-events: none;
-    z-index: 5;
-    transition: none;
-  }
-
-  .demo-card:hover .demo-sheen,
-  .demo-card:focus-visible .demo-sheen {
-    animation: sheen 0.75s ease-out forwards;
-  }
-
-  @keyframes sheen {
-    0% {
-      left: -100%;
-    }
-    100% {
-      left: 200%;
-    }
-  }
-
-  /* Badges */
-  .demo-category-pill {
-    position: absolute;
-    top: 0.625rem;
-    left: 0.625rem;
-    z-index: 10;
-    padding: 0.2rem 0.55rem;
-    border-radius: 9999px;
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: rgba(15, 23, 42, 0.75);
-    color: #f8fafc;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  .demo-live-pill {
-    position: absolute;
-    top: 0.625rem;
-    right: 0.625rem;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 9999px;
-    font-size: 0.625rem;
-    font-weight: 600;
-    background: rgba(6, 78, 59, 0.82);
-    color: #6ee7b7;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(52, 211, 153, 0.35);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-  }
-
-  .demo-card:hover .demo-live-pill {
-    transform: scale(1.05);
-  }
-
-  .demo-live-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 9999px;
-    background-color: #34d399;
-    box-shadow: 0 0 6px #34d399;
-  }
-
-  /* Bottom Hover Banner */
-  .demo-hover-banner {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: 10;
-    padding: 0.625rem 0.875rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.6875rem;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .demo-card:hover .demo-hover-banner,
-  .demo-card:focus-visible .demo-hover-banner {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .demo-reel-tag {
-    color: #e2e8f0;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .demo-reel-tag::before {
-    content: "▶";
-    font-size: 0.55rem;
-    color: #f59e0b;
-  }
-
-  .demo-cta-tag {
-    color: #fbbf24;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    object-position: top center;
+    display: block;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   /* Content Section */
@@ -366,7 +255,7 @@ const {
   .demo-title {
     margin: 0;
     font-family: Fraunces, Georgia, serif;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: 600;
     color: var(--color-ink-950, #0f172a);
     line-height: 1.35;
@@ -400,12 +289,12 @@ const {
   }
 
   .demo-city {
-    color: #475569;
+    color: #64748b;
     font-weight: 500;
   }
 
   .demo-link-label {
-    color: #92400e;
+    color: #b45309;
     font-weight: 600;
     transition: transform 0.2s ease;
   }
@@ -421,166 +310,8 @@ const {
 
   /* Reduced Motion Compliance */
   @media (prefers-reduced-motion: reduce) {
-    .demo-card,
-    .demo-thumb,
-    .demo-video,
-    .demo-sheen,
-    .demo-hover-banner {
+    .demo-card {
       transition: none !important;
-      animation: none !important;
     }
-    .demo-sheen {
-      display: none !important;
-    }
-  }
-
-  /* Touch devices: no hover, so the reel is triggered by scroll-into-view (see script below) instead */
-  @media (hover: none) {
-    .demo-card:hover {
-      transform: none !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
-      border-color: rgba(226, 232, 240, 0.9) !important;
-    }
-    .demo-card:hover .demo-thumb {
-      transform: none !important;
-    }
-    .demo-hover-banner {
-      display: none !important;
-    }
-    .demo-sheen {
-      display: none !important;
-    }
-  }
-
-  /* Cinematic Theatre Trigger Button */
-  .cinematic-theatre-trigger-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.95rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
-    border: 1px solid rgba(234, 88, 12, 0.4);
-    border-radius: 9999px;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08), 0 0 15px rgba(234, 88, 12, 0.15);
-    transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .cinematic-theatre-trigger-btn:hover {
-    background: linear-gradient(135deg, #c1522e 0%, #a13f22 100%);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 18px rgba(193, 82, 46, 0.35);
-    transform: translateY(-1px);
-  }
-
-  .theatre-btn-pulse {
-    position: absolute;
-    top: 50%;
-    left: 14px;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background: #ea580c;
-    border-radius: 9999px;
-    opacity: 0.75;
-    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  /* Reel trigger inside card */
-  .demo-theatre-reel-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.25rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #fff;
-    background: rgba(193, 82, 46, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 9999px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: all 150ms ease;
-  }
-
-  .demo-theatre-reel-btn:hover {
-    background: #ea580c;
-    transform: scale(1.06);
-    border-color: #fff;
   }
 </style>
-
-<script>
-  function initDemoCards() {
-    if (typeof window === 'undefined') return;
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isTouch = window.matchMedia('(hover: none)').matches;
-    const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
-    const savesData = !!nav.connection?.saveData || nav.connection?.effectiveType === '2g' || nav.connection?.effectiveType === 'slow-2g';
-    if (mediaQuery.matches) return;
-    // On mobile data, skip the always-on scroll autoplay entirely rather than burn data silently.
-    if (isTouch && savesData) return;
-
-    const cards = document.querySelectorAll<HTMLElement>('[data-demo-card]');
-
-    cards.forEach(card => {
-      const video = card.querySelector<HTMLVideoElement>('[data-demo-video]');
-      if (!video) return;
-
-      let playPromise: Promise<void> | null = null;
-
-      const handleEnter = () => {
-        card.classList.add('is-playing');
-        try {
-          video.currentTime = 0;
-          playPromise = video.play();
-          if (playPromise) {
-            playPromise.catch(() => {
-              // Browser autoplay policy or abort
-            });
-          }
-        } catch {}
-      };
-
-      const handleLeave = () => {
-        card.classList.remove('is-playing');
-        if (playPromise) {
-          playPromise.then(() => {
-            video.pause();
-            video.currentTime = 0;
-          }).catch(() => {
-            video.pause();
-          });
-        } else {
-          video.pause();
-          video.currentTime = 0;
-        }
-      };
-
-      if (isTouch) {
-        // No hover on touch — fetch just enough to start fast, then play once the card is mostly on screen.
-        video.preload = 'metadata';
-        const observer = new IntersectionObserver(entries => {
-          entries.forEach(entry => (entry.isIntersecting ? handleEnter() : handleLeave()));
-        }, { threshold: 0.6 });
-        observer.observe(card);
-      } else {
-        card.addEventListener('mouseenter', handleEnter);
-        card.addEventListener('mouseleave', handleLeave);
-        card.addEventListener('focusin', handleEnter);
-        card.addEventListener('focusout', handleLeave);
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDemoCards);
-  } else {
-    initDemoCards();
-  }
-  document.addEventListener('astro:page-load', initDemoCards);
-</script>

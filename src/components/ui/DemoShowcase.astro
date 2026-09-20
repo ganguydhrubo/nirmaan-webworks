@@ -13,52 +13,23 @@ const demos = siteConfig.demoRegistry.map(demo => ({
 <section id={id} class:list={["showcase", compact && "showcase--compact"]} data-showcase aria-label="Live website showcase" aria-roledescription="carousel">
   <div class="showcase-topline">
     <span><span class="showcase-live-dot" aria-hidden="true"></span> Real websites. Ready to explore.</span>
-    <button
-      type="button"
-      class="showcase-theatre-header-btn"
-      data-open-theatre=""
-      data-magnetic
-      aria-label="Launch 3D Cinematic Demo Theatre"
-    >
-      <span class="theatre-pulse-icon" aria-hidden="true">🎬</span>
-      <span>Watch 3D Theatre</span>
-      <span class="theatre-pill-count">15 Demos</span>
-    </button>
+    <span class="showcase-edition">CURATED EXHIBIT · {demos.length} LIVE DEMOS</span>
   </div>
   <div class="showcase-stage" data-stage>
     {demos.map((demo, index) => (
       <article class:list={["showcase-scene", index === 0 && "is-active"]} data-scene data-index={index} data-name={demo.businessName} data-category={demo.category} aria-roledescription="slide" aria-label={`${index + 1} of ${demos.length}: ${demo.businessName}`} aria-hidden={index !== 0 ? "true" : undefined} inert={index !== 0}>
         <div class="showcase-visual">
-          <div class="showcase-window" data-kinetic-tilt data-kinetic-glow data-tilt-max="5">
+          <div class="showcase-window" data-kinetic-glow>
             <div class="showcase-chrome" aria-hidden="true">
               <span class="showcase-window-dots"><i></i><i></i><i></i></span>
               <span>{demo.slug}.example</span>
               <span class="showcase-window-label">DEMO</span>
             </div>
-            <div class="showcase-media-stage">
+            <div class="showcase-media-stage" data-parallax-image data-parallax-strength="14">
               <picture>
                 <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp`} width="585" height="780" />
-                <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" class="showcase-screen-poster" />
+                <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" class="showcase-screen-poster" data-parallax-layer />
               </picture>
-              <video
-                class="showcase-screen-video"
-                src={`/videos/demos/${demo.slug}.webm`}
-                loop
-                muted
-                playsinline
-                preload={index === 0 ? "auto" : "none"}
-                aria-hidden="true"
-              ></video>
-              <button
-                type="button"
-                class="showcase-overlay-theatre-chip"
-                data-open-theatre={demo.slug}
-                data-theatre-mode="reel"
-                aria-label={`Open full 3D Cinematic Theatre for ${demo.businessName}`}
-              >
-                <span class="chip-live-dot" aria-hidden="true"></span>
-                <span>🎬 3D Reel · Tap to Expand</span>
-              </button>
             </div>
           </div>
         </div>
@@ -67,20 +38,10 @@ const demos = siteConfig.demoRegistry.map(demo => ({
           <h2>{demo.businessName}</h2>
           <p class="showcase-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{demo.city}</p>
           <div class="showcase-actions">
-            <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`}>
+            <a href={`/demos/${demo.slug}`} class="showcase-open" aria-label={`Open live demo: ${demo.businessName}`} data-magnetic data-magnetic-strength="0.3">
               <span>Open live demo</span>
               <span aria-hidden="true">↗</span>
             </a>
-            <button
-              type="button"
-              class="showcase-theatre-secondary-btn"
-              data-open-theatre={demo.slug}
-              aria-label={`Open 3D Demo Theatre for ${demo.businessName}`}
-              title="Expand into full 3D Cinematic Theatre"
-            >
-              <span aria-hidden="true">🎬</span>
-              <span>Watch 3D Demo Theatre</span>
-            </button>
           </div>
         </div>
       </article>

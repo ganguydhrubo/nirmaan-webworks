@@ -18,10 +18,11 @@ const demos = siteConfig.demoRegistry.map((demo) => {
   role="dialog"
   aria-modal="true"
   aria-label="Cinematic Demo Theatre"
+  data-ambient-spotlight
 >
   <!-- Ambient Deep Space Backdrop -->
   <div class="theatre-backdrop" data-theatre-close></div>
-  <div class="theatre-ambient-glow" id="theatre-glow" aria-hidden="true"></div>
+  <div class="theatre-ambient-glow" id="theatre-glow" data-ambient-follow aria-hidden="true"></div>
 
   <!-- Theatre Shell -->
   <div class="theatre-shell">
@@ -345,10 +346,9 @@ const demos = siteConfig.demoRegistry.map((demo) => {
     background: radial-gradient(circle, rgba(193, 82, 46, 0.28) 0%, rgba(200, 145, 44, 0.12) 45%, transparent 70%);
     filter: blur(80px);
     pointer-events: none;
-    transform: translate(-50%, -50%);
     top: 45%;
     left: 45%;
-    transition: all 800ms ease;
+    transform: translate3d(-50%, -50%, 0);
   }
 
   .theatre-shell {

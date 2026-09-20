@@ -12,7 +12,7 @@ const categories=['All',...new Set(tests.map(t=>t.category))];
 <section class="cl-hero"><div class="cl-hero-copy sd-wrap"><p class="sd-eyebrow">Chandigarh · Fictional diagnostics lab</p><h1><span class="sd-hero-line">CLARITY,</span><span class="sd-hero-line">AT EVERY <em>STEP.</em></span></h1><p>Know what a test involves, what it costs and how to read the result — before you ever need to ask.</p><a class="sd-button" href="#directory">Browse the test directory <span aria-hidden="true">↗</span></a></div><div class="cl-hero-image"><Image src={lab} alt="Scientist reviewing a sample under a microscope in a laboratory; illustrative photograph, not actual staff" widths={[480,800,1280,1600]} sizes="100vw" width={1600} height={1067} loading="eager" fetchpriority="high" class="sd-hero-photo"/></div></section>
 
 <section id="directory" class="sd-wrap sd-section" data-test-directory>
-  <div class="sd-section-head"><div><p class="sd-eyebrow">01 / The test directory</p><h2>KNOW BEFORE<br/><span>YOU BOOK.</span></h2></div><p>Sample preparation, specimen and turnaround for a few commonly ordered tests. Always confirm exact instructions with your provider before a real test.</p></div>
+  <div class="sd-section-head"><div class="chapter-numeral" data-numeral="01"><p class="sd-eyebrow">01 / The test directory</p><h2>KNOW BEFORE<br/><span>YOU BOOK.</span></h2></div><p>Sample preparation, specimen and turnaround for a few commonly ordered tests. Always confirm exact instructions with your provider before a real test.</p></div>
   <div class="cl-controls" hidden data-test-controls>
     <input type="search" data-test-search placeholder="Search tests, e.g. thyroid" aria-label="Search tests"/>
     <div class="sd-filters" aria-label="Filter by category">{categories.map((c,i)=><button type="button" data-test-filter={c} aria-pressed={i===0?'true':'false'}>{c}</button>)}</div>
@@ -34,7 +34,7 @@ const categories=['All',...new Set(tests.map(t=>t.category))];
 </section>
 
 <section id="report" class="cl-report sd-wrap sd-section">
-  <div class="sd-section-head"><div><p class="sd-eyebrow">02 / Read a report with confidence</p><h2>YOUR FIRST REPORT,<br/><span>EXPLAINED.</span></h2></div><p>A sample report layout, walked through part by part. This is not a real result — select a highlighted row to see what it means.</p></div>
+  <div class="sd-section-head"><div class="chapter-numeral" data-numeral="02"><p class="sd-eyebrow">02 / Read a report with confidence</p><h2>YOUR FIRST REPORT,<br/><span>EXPLAINED.</span></h2></div><p>A sample report layout, walked through part by part. This is not a real result — select a highlighted row to see what it means.</p></div>
   <div class="cl-report-grid">
     <div class="cl-report-sheet" role="list" aria-label="Sample report, illustrative only">
       <p class="cl-report-note">SAMPLE REPORT — WALKTHROUGH ONLY, NOT A REAL RESULT</p>
@@ -49,7 +49,7 @@ const categories=['All',...new Set(tests.map(t=>t.category))];
 </section>
 
 <section id="journey" class="cl-journey sd-wrap sd-section">
-  <div class="cl-journey-heading"><p class="sd-eyebrow">03 / From sample to report</p><h2>WHAT HAPPENS<br/><span>AFTER YOU BOOK.</span></h2></div>
+  <div class="cl-journey-heading chapter-numeral" data-numeral="03"><p class="sd-eyebrow">03 / From sample to report</p><h2>WHAT HAPPENS<br/><span>AFTER YOU BOOK.</span></h2></div>
   <div class="cl-journey-steps">{journey.map(s=>(
     <article class="sd-story-step"><span class="cl-journey-number">{s.n}</span><h3>{s.title}</h3><p>{s.body}</p></article>
   ))}</div>

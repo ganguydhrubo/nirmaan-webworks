@@ -250,6 +250,100 @@
 }
 
 @layer utilities {
+  /* Reusable luminous glass surface — crisp optical blur + hairline border. */
+  .glass-panel {
+    background: rgba(20, 20, 24, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  @supports not ((-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px))) {
+    .glass-panel {
+      background: rgba(20, 20, 24, 0.88);
+    }
+  }
+
+  /* Ambient spotlight tracking handoff: base state centers the glow via
+     top/left % + translate(-50%,-50%); once JS starts following the
+     cursor it adds this class to pin the anchor at the container origin
+     so its own translate3d(px, px, 0) math is unambiguous pixels. */
+  [data-ambient-follow].is-tracking {
+    top: 0;
+    left: 0;
+  }
+
+  /* Cinematic hero entrance — staggered line rise (text opaque from
+     frame one, just slides up) + a subtle Ken Burns zoom on the hero
+     photo. Same technique already proven in studio-foundation.css
+     (sd-hero-line/sd-kenburns) for the six "studio" demos; this is the
+     same primitive generalised for every other hero. Give each line
+     its own `style="animation-delay: Nms"` — inline, not nth-child,
+     since hero markup isn't uniformly structured across demos. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-line {
+      animation: hero-line-rise 850ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-kenburns {
+      animation: hero-kenburns-zoom 1800ms ease-out both;
+    }
+  }
+  @keyframes hero-line-rise {
+    from {
+      transform: translateY(35px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes hero-kenburns-zoom {
+    from {
+      transform: scale(1.07);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  /* Cursor-follower ring — trails the real (still visible) cursor. */
+  .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 28px;
+    height: 28px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(217, 119, 6, 0.55);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms ease, width 220ms var(--ease-spring), height 220ms var(--ease-spring), background 220ms ease;
+  }
+  .cursor-follower.is-active {
+    opacity: 1;
+  }
+  .cursor-follower.is-interactive {
+    width: 44px;
+    height: 44px;
+    background: rgba(217, 119, 6, 0.12);
+    border-color: rgba(217, 119, 6, 0.75);
+  }
+
+  /* Atmospheric film grain — fixed, full-viewport, non-interactive. */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .grain-overlay {
+      display: none;
+    }
+  }
+
   .skip-link {
     position: absolute;
     width: 1px;
@@ -485,6 +579,167 @@
     .wa-icon-wiggle {
       animation: none !important;
       transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* ============================================================
+     Reference-site motion primitives (research: inventiko.com's
+     portfolio pieces + comparable premium sites). Vanilla CSS/WAAPI
+     only, no runtime dependency, shared across the main site and
+     all demo sites via DemoLayout + reveal.ts's IntersectionObserver.
+     ============================================================ */
+
+  /* Italic-serif inline emphasis word inside a headline. */
+  .type-emphasis {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* Giant, low-contrast background numeral behind a section heading —
+     used as a chapter/step marker. Needs `position:relative` on the
+     host (supplied here) and a heading z-index of auto+in-flow, which
+     naturally paints above the numeral once it's pushed to z-index -1
+     inside the host's own isolated stacking context. */
+  .chapter-numeral {
+    position: relative;
+    isolation: isolate;
+  }
+  .chapter-numeral::before {
+    content: attr(data-numeral);
+    position: absolute;
+    z-index: -1;
+    top: -0.25em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 18vw, 13rem);
+    font-weight: 700;
+    line-height: 1;
+    color: currentColor;
+    opacity: 0.07;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* Small monospace "craft log" tag pinned to a photo corner. Host
+     needs `position:relative`. */
+  .photo-annotation {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 2;
+    padding: 0.25rem 0.6rem;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(10, 10, 12, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 0.25rem;
+    pointer-events: none;
+  }
+
+  /* Floating stat/trust card overlapping a hero image's edge for depth.
+     Host image wrapper needs `position:relative`; place this card with
+     an inline `style="top/left/right/bottom: -Npx"` per instance. */
+  .hero-float-stat {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.05rem;
+    border-radius: 0.85rem;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.25), 0 4px 10px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Scroll-into-view SVG line draw. Apply `.sketch-draw` to an <svg>;
+     reveal.ts measures each shape's real path length on load and
+     triggers the draw when `.is-visible` is added by the shared
+     IntersectionObserver. */
+  .sketch-draw path,
+  .sketch-draw line,
+  .sketch-draw polyline,
+  .sketch-draw circle,
+  .sketch-draw rect {
+    stroke-dasharray: var(--sketch-len, 300);
+    stroke-dashoffset: var(--sketch-len, 300);
+    transition: stroke-dashoffset 1400ms var(--ease-spring);
+  }
+  .sketch-draw.is-visible path,
+  .sketch-draw.is-visible line,
+  .sketch-draw.is-visible polyline,
+  .sketch-draw.is-visible circle,
+  .sketch-draw.is-visible rect {
+    stroke-dashoffset: 0;
+  }
+
+  /* Numbered vertical process timeline — nodes fill in and the
+     connecting line reveals as each step scrolls into view. */
+  .motion-timeline {
+    position: relative;
+  }
+  .motion-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 1.25rem;
+    width: 2px;
+    background: currentColor;
+    opacity: 0.15;
+  }
+  .motion-timeline-node {
+    position: relative;
+    padding-left: 3.5rem;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 600ms var(--ease-spring), transform 600ms var(--ease-spring);
+  }
+  .motion-timeline-node.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .motion-timeline-node::before {
+    content: attr(data-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: var(--color-cream, #fbf6ee);
+    border: 2px solid currentColor;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 500ms 150ms var(--ease-spring), transform 500ms 150ms var(--ease-spring);
+  }
+  .motion-timeline-node.is-visible::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sketch-draw path,
+    .sketch-draw line,
+    .sketch-draw polyline,
+    .sketch-draw circle,
+    .sketch-draw rect,
+    .motion-timeline-node,
+    .motion-timeline-node::before {
+      opacity: 1 !important;
+      transform: none !important;
+      stroke-dashoffset: 0 !important;
       transition: none !important;
     }
   }

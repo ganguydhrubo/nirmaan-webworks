@@ -30,7 +30,7 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
             <rect x="2" y="2" width="36" height="36" rx="4" fill="var(--color-shivalik-700)"></rect>
             <path d="M6 28 14 15l6 8 5-11 9 16Z" fill="var(--color-shivalik-brass)"></path>
           </svg>
-          <span class="font-['Spectral'] text-lg font-semibold leading-none text-shivalik-900">Shivalik Homes<span class="block text-xs font-normal tracking-wide text-shivalik-600">& Developers</span></span>
+          <span class="font-['Architects_Daughter'] text-xl leading-none text-shivalik-900">Shivalik Homes<span class="block text-xs font-['Work_Sans'] font-normal tracking-wide text-shivalik-600">& Developers</span></span>
         </a>
         <nav aria-label="Primary" class="hidden gap-6 text-sm font-medium md:flex">
           <a href="/demos/shivalik-homes/projects" class="hover:text-shivalik-brass">Projects</a>
@@ -43,17 +43,23 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
 
     <section class="relative overflow-hidden border-b border-shivalik-300/40">
       <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+        <defs>
+          <filter id="sketchy-wobble" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
         <rect width="1200" height="420" fill="var(--color-shivalik-100)"></rect>
-        <path d="M0 300 L150 180 L280 260 L420 140 L560 240 L700 120 L860 250 L1000 160 L1200 280 L1200 420 L0 420 Z" fill="var(--color-shivalik-300)" opacity="0.6"></path>
-        <path d="M0 360 L200 260 L360 320 L520 220 L680 310 L840 230 L1000 330 L1200 260 L1200 420 L0 420 Z" fill="var(--color-shivalik-500)" opacity="0.5"></path>
+        <path d="M0 300 L150 180 L280 260 L420 140 L560 240 L700 120 L860 250 L1000 160 L1200 280 L1200 420 L0 420 Z" fill="var(--color-shivalik-300)" opacity="0.6" filter="url(#sketchy-wobble)"></path>
+        <path d="M0 360 L200 260 L360 320 L520 220 L680 310 L840 230 L1000 330 L1200 260 L1200 420 L0 420 Z" fill="var(--color-shivalik-500)" opacity="0.5" filter="url(#sketchy-wobble)"></path>
       </svg>
       <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-        <p class="text-sm font-semibold uppercase tracking-widest text-shivalik-brass">Dehradun, Uttarakhand</p>
-        <h1 class="mt-4 max-w-2xl font-['Spectral'] text-4xl font-semibold leading-tight text-shivalik-900 sm:text-5xl">Foothill homes, built to last.</h1>
-        <p class="mt-5 max-w-xl text-lg text-shivalik-700">
+        <p class="hero-line text-sm font-semibold uppercase tracking-widest text-shivalik-brass" style="animation-delay:0ms">Dehradun, Uttarakhand</p>
+        <h1 class="hero-line mt-4 max-w-2xl font-['Architects_Daughter'] text-5xl leading-tight text-shivalik-900 sm:text-6xl" style="animation-delay:120ms">Foothill homes, <span class="text-shivalik-brass">built to last.</span></h1>
+        <p class="hero-line mt-5 max-w-xl text-lg text-shivalik-700" style="animation-delay:240ms">
           Three generations of building in Dehradun. Shivalik Homes designs residences around how families in this city actually live — close to schools, away from traffic, facing the hills.
         </p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div class="hero-line mt-8 flex flex-col gap-3 sm:flex-row" style="animation-delay:360ms">
           <a href="/demos/shivalik-homes/projects" class="rounded-md bg-shivalik-700 px-6 py-3.5 text-center font-semibold text-shivalik-50 hover:bg-shivalik-900">Browse current projects</a>
           <a href={contactHref} class="rounded-md border border-shivalik-500 px-6 py-3.5 text-center font-semibold text-shivalik-800 hover:bg-shivalik-100">Book a site visit</a>
         </div>
@@ -62,15 +68,23 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
     <DemoPhoto name="shivalik" />
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div class="flex items-end justify-between gap-4">
-        <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">Current projects</h2>
+      <div class="chapter-numeral flex items-end justify-between gap-4" data-numeral="01">
+        <h2 class="font-['Architects_Daughter'] text-3xl sm:text-4xl">Current projects<svg class="block mt-1 h-2 w-36" viewBox="0 0 140 10" fill="none" aria-hidden="true"><path d="M2 6c11-7 21 7 32 0s21-7 32 0 21 7 32 0 21-7 32 0" stroke="var(--color-shivalik-brass)" stroke-width="2.5" stroke-linecap="round"/></svg></h2>
         <a href="/demos/shivalik-homes/projects" class="text-sm font-semibold text-shivalik-brass hover:underline">See all with filters →</a>
       </div>
       <div class="mt-8 grid gap-6 md:grid-cols-3">
         {projects.map((p) => (
-          <a href={`/demos/shivalik-homes/projects/${p.slug}`} class="min-w-0 overflow-hidden rounded-xl border border-shivalik-300/50 bg-white transition hover:border-shivalik-brass hover:shadow-md">
-            <div class="flex h-36 items-center justify-center bg-shivalik-100 px-4 text-center">
-              <p class="font-['Spectral'] text-lg font-semibold text-shivalik-800">{p.heroTagline}</p>
+          <a href={`/demos/shivalik-homes/projects/${p.slug}`} class="group min-w-0 overflow-hidden rounded-xl border border-shivalik-300/50 bg-white transition hover:border-shivalik-brass hover:shadow-lg">
+            <div class="relative flex h-40 items-center justify-center overflow-hidden bg-shivalik-100 px-4 text-center">
+              <svg viewBox="0 0 360 160" class="sketch-draw absolute inset-0 h-full w-full opacity-35 transition-opacity duration-300 group-hover:opacity-60" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                <rect x="20" y="50" width="320" height="95" stroke="var(--color-shivalik-600)" stroke-width="1.5" />
+                <path d="M 10 50 L 180 15 L 350 50" stroke="var(--color-shivalik-brass)" stroke-width="2" />
+                <rect x="50" y="70" width="45" height="50" stroke="var(--color-shivalik-600)" stroke-width="1.2" />
+                <rect x="140" y="65" width="80" height="80" stroke="var(--color-shivalik-700)" stroke-width="1.4" />
+                <rect x="265" y="70" width="45" height="50" stroke="var(--color-shivalik-600)" stroke-width="1.2" />
+                <line x1="20" y1="145" x2="340" y2="145" stroke="var(--color-shivalik-800)" stroke-width="2.5" />
+              </svg>
+              <p class="relative z-10 font-['Spectral'] text-lg font-semibold text-shivalik-900 bg-white/85 px-3 py-1.5 rounded border border-shivalik-200/80 shadow-sm backdrop-blur-sm">{p.heroTagline}</p>
             </div>
             <div class="p-5">
               <p class="text-xs font-semibold uppercase tracking-wide text-shivalik-brass">{p.status.replace(/-/g, " ")}</p>
@@ -83,9 +97,174 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
       </div>
     </section>
 
-    <section id="amenities" class="border-y border-shivalik-300/40 bg-shivalik-100/60 py-16">
+    <!-- Interactive Blueprint & Architectural Drafter Studio (Hearthstone / Inventiko Style) -->
+    <section id="blueprint-studio" class="border-y border-shivalik-300/50 bg-[#faf8f4] py-16">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">What every Shivalik home includes</h2>
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-shivalik-brass">Tactile CAD & Spatial Planning</p>
+            <h2 class="mt-1 font-['Architects_Daughter'] text-3xl sm:text-4xl text-shivalik-900">Interactive Blueprint & Drafter Studio</h2>
+            <p class="mt-2 max-w-2xl text-sm text-shivalik-700">
+              Pick up the architect's pencil. Sketch modifications, mark your dream room dimensions, and explore foothill villa layouts with authentic graphite pencil sound FX.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-shivalik-200/70 px-3 py-1 text-xs font-medium text-shivalik-800">
+              <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live Drafter Canvas
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6 overflow-hidden rounded-2xl border border-shivalik-300/80 bg-[#fffdf9] shadow-sm">
+          <!-- Canvas & Blueprint Interactive Stage -->
+          <div id="blueprint-studio-stage" class="relative w-full aspect-[16/10] min-h-[340px] max-h-[560px] overflow-hidden select-none bg-[#fbf9f4]">
+            <!-- Architectural Background Blueprint SVG -->
+            <svg
+              viewBox="0 0 800 500"
+              preserveAspectRatio="xMidYMid meet"
+              class="absolute inset-0 h-full w-full pointer-events-none"
+              aria-hidden="true"
+            >
+              <defs>
+                <pattern id="cad-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(120, 100, 80, 0.08)" stroke-width="0.8" />
+                </pattern>
+                <pattern id="cad-major-grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                  <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(120, 100, 80, 0.16)" stroke-width="1.2" />
+                </pattern>
+              </defs>
+
+              <rect width="800" height="500" fill="#faf8f3" />
+              <rect width="800" height="500" fill="url(#cad-grid)" />
+              <rect width="800" height="500" fill="url(#cad-major-grid)" />
+
+              <!-- Outer Boundary Wall -->
+              <rect x="50" y="40" width="700" height="420" fill="none" stroke="#2d261e" stroke-width="4" />
+
+              <!-- Outer Wall Inner Line (Cavity wall) -->
+              <rect x="58" y="48" width="684" height="404" fill="none" stroke="#665846" stroke-width="1.2" stroke-dasharray="8,4" />
+
+              <!-- Room Partition Walls -->
+              <!-- Living & Great Room (West Wing) -->
+              <rect x="58" y="48" width="380" height="250" fill="rgba(240, 235, 225, 0.45)" stroke="#3f372d" stroke-width="2.5" />
+              <!-- Master Bedroom (East Wing North) -->
+              <rect x="438" y="48" width="304" height="230" fill="rgba(240, 235, 225, 0.35)" stroke="#3f372d" stroke-width="2.5" />
+              <!-- Hill View Deck (South Deck) -->
+              <rect x="58" y="298" width="450" height="154" fill="rgba(224, 236, 228, 0.4)" stroke="#3f372d" stroke-width="2.5" />
+              <!-- Kitchen & Dining (East Wing South) -->
+              <rect x="508" y="278" width="234" height="174" fill="rgba(240, 235, 225, 0.35)" stroke="#3f372d" stroke-width="2.5" />
+
+              <!-- Door Swings (Arcs) -->
+              <path d="M 220 298 A 50 50 0 0 0 270 348" fill="none" stroke="#b45309" stroke-width="1.4" stroke-dasharray="3,3" />
+              <line x1="220" y1="298" x2="270" y2="298" stroke="#b45309" stroke-width="1.8" />
+
+              <path d="M 438 120 A 45 45 0 0 1 483 165" fill="none" stroke="#b45309" stroke-width="1.4" stroke-dasharray="3,3" />
+              <line x1="438" y1="120" x2="438" y2="165" stroke="#b45309" stroke-width="1.8" />
+
+              <!-- Windows -->
+              <line x1="120" y1="40" x2="280" y2="40" stroke="#0284c7" stroke-width="5" />
+              <line x1="520" y1="40" x2="660" y2="40" stroke="#0284c7" stroke-width="5" />
+              <line x1="100" y1="452" x2="380" y2="452" stroke="#0284c7" stroke-width="5" />
+
+              <!-- Blueprint Dimension Callouts -->
+              <text x="248" y="150" font-family="'Spectral', serif" font-size="18" font-weight="600" fill="#2d261e" text-anchor="middle">GREAT ROOM & LIVING</text>
+              <text x="248" y="174" font-family="sans-serif" font-size="12" font-weight="600" fill="#786a58" text-anchor="middle">24' 0" × 16' 4" · Double-height Ceiling</text>
+
+              <text x="590" y="145" font-family="'Spectral', serif" font-size="17" font-weight="600" fill="#2d261e" text-anchor="middle">MASTER SUITE</text>
+              <text x="590" y="168" font-family="sans-serif" font-size="12" font-weight="600" fill="#786a58" text-anchor="middle">16' 0" × 14' 2" · Hill-Facing Bay Window</text>
+
+              <text x="283" y="370" font-family="'Spectral', serif" font-size="16" font-weight="600" fill="#166534" text-anchor="middle">PANORAMIC HILL VIEW DECK</text>
+              <text x="283" y="392" font-family="sans-serif" font-size="12" font-weight="600" fill="#15803d" text-anchor="middle">28' 0" × 9' 6" · Facing Mussoorie Ridge</text>
+
+              <text x="625" y="355" font-family="'Spectral', serif" font-size="16" font-weight="600" fill="#2d261e" text-anchor="middle">KITCHEN & PANTRY</text>
+              <text x="625" y="377" font-family="sans-serif" font-size="12" font-weight="600" fill="#786a58" text-anchor="middle">14' 6" × 11' 0" · Granite Breakfast Bar</text>
+
+              <!-- Dimension Lines -->
+              <g stroke="#b45309" stroke-width="1" opacity="0.75">
+                <line x1="58" y1="28" x2="438" y2="28" />
+                <line x1="58" y1="22" x2="58" y2="34" />
+                <line x1="438" y1="22" x2="438" y2="34" />
+                <text x="248" y="24" font-family="sans-serif" font-size="10" font-weight="bold" fill="#b45309" text-anchor="middle">24' - 0"</text>
+
+                <line x1="438" y1="28" x2="742" y2="28" />
+                <line x1="742" y1="22" x2="742" y2="34" />
+                <text x="590" y="24" font-family="sans-serif" font-size="10" font-weight="bold" fill="#b45309" text-anchor="middle">18' - 6"</text>
+              </g>
+
+              <!-- Watermark Stamp -->
+              <g transform="translate(620, 410) rotate(-4)">
+                <rect x="-10" y="-18" width="115" height="32" rx="4" fill="none" stroke="rgba(180, 83, 9, 0.4)" stroke-width="1.5" stroke-dasharray="4,2" />
+                <text x="47" y="2" font-family="sans-serif" font-size="9" font-weight="bold" fill="rgba(180, 83, 9, 0.65)" text-anchor="middle" letter-spacing="1">ARCHITECT VERIFIED</text>
+              </g>
+            </svg>
+
+            <!-- Touch & Pointer Sketching Canvas -->
+            <canvas
+              id="blueprint-drafter-canvas"
+              class="pencil-cursor absolute inset-0 h-full w-full touch-none z-10"
+              aria-label="Interactive blueprint sketching area. Drag with finger or cursor to draw."
+            ></canvas>
+          </div>
+
+          <!-- Drafter Studio Tactical Toolbar -->
+          <div class="border-t border-shivalik-200/80 bg-[#f7f4ed] p-3 sm:p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <!-- Drawing Tools -->
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2" role="toolbar" aria-label="Blueprint drafter pens">
+                <button type="button" class="drafter-tool-btn is-active" data-drafter-tool="graphite" aria-label="Charcoal graphite pencil">
+                  <span class="h-2.5 w-2.5 rounded-full bg-[#2b2823]"></span>
+                  <span>Charcoal Pencil</span>
+                </button>
+                <button type="button" class="drafter-tool-btn" data-drafter-tool="blueprint" aria-label="Blueprint cyan ink">
+                  <span class="h-2.5 w-2.5 rounded-full bg-[#0284c7]"></span>
+                  <span>Architect Ink</span>
+                </button>
+                <button type="button" class="drafter-tool-btn" data-drafter-tool="terracotta" aria-label="Terracotta brass pencil">
+                  <span class="h-2.5 w-2.5 rounded-full bg-[#b45309]"></span>
+                  <span>Terracotta</span>
+                </button>
+                <button type="button" class="drafter-tool-btn" data-drafter-tool="highlighter" aria-label="Yellow layout highlighter">
+                  <span class="h-2.5 w-2.5 rounded-full bg-[#eab308]"></span>
+                  <span>Highlight Zone</span>
+                </button>
+              </div>
+
+              <!-- Utilities -->
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  id="blueprint-sound-btn"
+                  class="drafter-tool-btn"
+                  aria-label="Toggle pencil sketching audio"
+                  title="Toggle graphite pencil sketching sound FX"
+                >
+                  <span aria-hidden="true">✏️</span>
+                  <span class="sound-btn-text">Pencil FX: ON</span>
+                </button>
+                <button
+                  type="button"
+                  id="blueprint-clear-btn"
+                  class="drafter-tool-btn"
+                  aria-label="Clear sketch from blueprint"
+                  title="Clear drawing strokes"
+                >
+                  <span aria-hidden="true">🧹</span>
+                  <span>Clear</span>
+                </button>
+              </div>
+            </div>
+            <p class="mt-2.5 text-center text-xs text-shivalik-600 sm:text-left">
+              ✍️ <em>Drag your finger or cursor across the blueprint to sketch wall adjustments, measure rooms, and hear the graphite pencil.</em>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="amenities" class="border-b border-shivalik-300/40 bg-shivalik-100/60 py-16">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 class="font-['Architects_Daughter'] text-3xl sm:text-4xl">What every Shivalik home includes</h2>
         <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {["24x7 security with CCTV", "Covered car parking", "Rainwater harvesting", "Backup power for common areas"].map((a) => (
             <div class="min-w-0 rounded-lg border border-shivalik-300/50 bg-white p-5">
@@ -97,7 +276,7 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
     </section>
 
     <section id="credentials" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-      <h2 class="font-['Spectral'] text-2xl font-semibold sm:text-3xl">Builder credentials</h2>
+      <h2 class="font-['Architects_Daughter'] text-3xl sm:text-4xl">Builder credentials</h2>
       <div class="mt-6 grid gap-6 sm:grid-cols-2">
         <div class="min-w-0 rounded-xl border border-shivalik-300/50 bg-white p-6">
           <p class="font-semibold text-shivalik-800">RERA registration</p>
@@ -112,7 +291,7 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
 
     <section class="border-t border-shivalik-300/40 bg-shivalik-900 py-16 text-shivalik-50">
       <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 class="font-['Spectral'] text-2xl font-semibold text-white sm:text-3xl">Considering a project?</h2>
+        <h2 class="font-['Architects_Daughter'] text-3xl sm:text-4xl text-white">Considering a project?</h2>
         <p class="mt-3 text-shivalik-300">Book a site visit or ask us anything — no obligation.</p>
         <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <a href={contactHref} class="rounded-md bg-shivalik-brass px-6 py-3.5 font-bold text-white hover:opacity-90">Book a site visit</a>
@@ -125,4 +304,45 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
       <p>Shivalik Homes & Developers — Dehradun, Uttarakhand (demo site)</p>
     </footer>
   </div>
+
+  <style>
+    /* CSS-only custom cursor — zero JS. Pencil tip anchored at (2, 22)
+       to match where a real pencil nib touches the page. */
+    .pencil-cursor {
+      cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M3 23l1-5.5L16.5 5 21 9.5 8.5 22 3 23z' fill='%23fdfbf7' stroke='%233f372d' stroke-width='1.4' stroke-linejoin='round'/%3E%3Cpath d='M16.5 5L21 9.5l2.5-2.5a2 2 0 0 0-2.5-2.5L16.5 5z' fill='%23b45309' stroke='%233f372d' stroke-width='1.4' stroke-linejoin='round'/%3E%3Cpath d='M4 22l3-1-2-2-1 3z' fill='%232b2823'/%3E%3C/svg%3E")
+          2 22,
+        crosshair;
+    }
+    .drafter-tool-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid rgba(120, 100, 80, 0.25);
+      background: #ffffff;
+      color: #3f372d;
+      cursor: pointer;
+      transition: all 160ms ease;
+      touch-action: manipulation;
+    }
+    .drafter-tool-btn:hover {
+      border-color: #b45309;
+      background: #fdfbf7;
+    }
+    .drafter-tool-btn.is-active {
+      background: #3f372d;
+      border-color: #3f372d;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(63, 55, 45, 0.25);
+    }
+    .drafter-tool-btn.is-muted {
+      opacity: 0.55;
+    }
+  </style>
+
+  <script src="../../../scripts/demos/shivalik-homes-drafting.ts"></script>
 </DemoLayout>
