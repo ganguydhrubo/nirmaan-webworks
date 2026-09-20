@@ -1,3 +1,5 @@
+import { lockBodyScroll, unlockBodyScroll, primeScrollLock } from "./scroll-lock";
+
 const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
 const panel = document.querySelector<HTMLElement>("[data-nav-panel]");
 const closeBtn = document.querySelector<HTMLButtonElement>("[data-nav-close]");
@@ -5,7 +7,6 @@ const scrim = document.querySelector<HTMLElement>("[data-nav-scrim]");
 
 if (toggle && panel) {
   let lastFocused: HTMLElement | null = null;
-  let scrollY = 0;
   let typingTimers: number[] = [];
   let closeTimeout: number | null = null;
 
@@ -112,10 +113,7 @@ if (toggle && panel) {
     }
 
     lastFocused = document.activeElement as HTMLElement;
-    scrollY = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
+    lockBodyScroll();
 
     panel!.hidden = false;
     if (scrim) scrim.hidden = false;
@@ -148,12 +146,13 @@ if (toggle && panel) {
       closeTimeout = null;
     }, 280);
 
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.width = "";
-    window.scrollTo(0, scrollY);
+    unlockBodyScroll();
 
-    lastFocused?.focus();
+    // preventScroll: the trigger button lives in a `position: sticky`
+    // header, so a normal .focus() call can trigger the browser's
+    // default scroll-into-view behavior and fight the scroll position
+    // unlockBodyScroll() just restored, snapping the page back to top.
+    lastFocused?.focus({ preventScroll: true });
   }
 
   function onKeydown(e: KeyboardEvent) {
@@ -175,6 +174,10 @@ if (toggle && panel) {
     }
   }
 
+  // The toggle lives in the sticky header — prime the scroll-lock on
+  // pointerdown, before the browser's native focus-on-click can reset
+  // window.scrollY (see the comment on primeScrollLock for why).
+  toggle.addEventListener("pointerdown", primeScrollLock);
   toggle.addEventListener("click", () => (panel.hidden ? open() : close()));
   closeBtn?.addEventListener("click", close);
   scrim?.addEventListener("click", close);

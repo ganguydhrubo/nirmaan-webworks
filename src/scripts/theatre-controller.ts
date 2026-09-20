@@ -5,6 +5,8 @@
  * category filtering, and audio integration.
  */
 
+import { lockBodyScroll, unlockBodyScroll } from "./scroll-lock";
+
 interface DemoEntry {
   slug: string;
   businessName: string;
@@ -255,7 +257,7 @@ function initTheatreController() {
   const openTheatre = (slug?: string, initialMode?: "reel" | "mobile" | "desktop") => {
     theatre.classList.add("is-open");
     theatre.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+    lockBodyScroll();
 
     if (initialMode) {
       setMode(initialMode);
@@ -274,7 +276,7 @@ function initTheatreController() {
   const closeTheatre = () => {
     theatre.classList.remove("is-open");
     theatre.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+    unlockBodyScroll();
 
     if (videoReel) {
       videoReel.pause();

@@ -4,6 +4,8 @@
  * scroll-spy tracking, and accessible focus management.
  */
 
+import { lockBodyScroll, unlockBodyScroll, primeScrollLock } from "./scroll-lock";
+
 function initDock(): void {
   const dock = document.getElementById("floating-dock");
   if (!dock) return;
@@ -189,6 +191,7 @@ function initDock(): void {
   function openSheet(): void {
     if (!sheet) return;
     lastFocusedEl = document.activeElement as HTMLElement;
+    lockBodyScroll();
     sheet.hidden = false;
     sectionsBtn?.setAttribute("aria-expanded", "true");
     document.addEventListener("keydown", onSheetKeydown);
@@ -203,7 +206,10 @@ function initDock(): void {
     sheet.hidden = true;
     sectionsBtn?.setAttribute("aria-expanded", "false");
     document.removeEventListener("keydown", onSheetKeydown);
-    lastFocusedEl?.focus();
+    unlockBodyScroll();
+    // preventScroll: don't fight the scroll position unlockBodyScroll()
+    // just restored (see the identical fix/comment in mobile-nav.ts).
+    lastFocusedEl?.focus({ preventScroll: true });
   }
 
   function onSheetKeydown(e: KeyboardEvent): void {
@@ -230,6 +236,7 @@ function initDock(): void {
     }
   }
 
+  sectionsBtn?.addEventListener("pointerdown", primeScrollLock);
   sectionsBtn?.addEventListener("click", () => {
     const isHidden = sheet?.hidden ?? true;
     if (isHidden) {
