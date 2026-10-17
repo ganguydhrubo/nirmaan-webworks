@@ -162,9 +162,9 @@ test("pages: add a page, navigate via the canvas menu", async ({ page }) => {
 
 test("download ZIP: valid archive that works without the editor", async ({ page, browser }) => {
   await openTemplate(page, "agency");
-  await page.getByRole("button", { name: "Download" }).first().click();
+  await page.getByRole("button", { name: "Publish", exact: true }).click();
   await expect(page.getByRole("dialog")).toContainText("Sample testimonials", { timeout: 2000 }).catch(() => undefined);
-  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download website (.zip)" }).click()]);
+  const [download] = await Promise.all([page.waitForEvent("download"), page.locator("[data-action=download-website]").click()]);
   expect(download.suggestedFilename()).toBe("northwind-creative-website.zip");
   const zipPath = await download.path();
   const entries = readZip(new Uint8Array(fs.readFileSync(zipPath!)));
@@ -324,8 +324,8 @@ test("upload image → shows in canvas → survives reload → included in ZIP",
   await page.reload();
   await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1, { timeout: 15_000 });
 
-  await page.getByRole("button", { name: "Download" }).first().click();
-  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download website (.zip)" }).click()]);
+  await page.getByRole("button", { name: "Publish", exact: true }).click();
+  const [download] = await Promise.all([page.waitForEvent("download"), page.locator("[data-action=download-website]").click()]);
   const entries = readZip(new Uint8Array(fs.readFileSync((await download.path())!)));
   const img = entries.find((e) => e.path.startsWith("assets/images/"));
   expect(img, entries.map((e) => e.path).join(",")).toBeDefined();

@@ -17,6 +17,7 @@ export function StartScreen(props: {
   onOpen: (id: string) => void;
   onDelete: (id: string) => void;
   onImport: (file: File) => void;
+  onLeave: () => void;
   showTemplates: boolean;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -27,9 +28,10 @@ export function StartScreen(props: {
   return (
     <div class="atb-start">
       <header class="atb-start-head">
-        <a href="/free-website-builder" class="atb-back-link">
-          <Icon name="back" size={16} /> ATITTLE
-        </a>
+        <button type="button" class="atb-back-link" onClick={props.onLeave} aria-label="Back to the previous page (or the ATITTLE homepage)">
+          <Icon name="back" size={16} /> Back
+        </button>
+        <a href="/" class="atb-home-link">ATITTLE home</a>
       </header>
       <main class="atb-start-main">
         <h1>How would you like to start?</h1>

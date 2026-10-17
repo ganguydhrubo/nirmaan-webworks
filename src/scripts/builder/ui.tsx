@@ -27,6 +27,8 @@ const PATHS: Record<string, string> = {
   upload: "M12 16V4M7 9l5-5 5 5M5 20h14",
   save: "M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6",
   external: "M14 4h6v6M20 4l-9 9M18 14v6H4V6h6",
+  globe: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3Z",
+  refresh: "M20 11a8 8 0 0 0-14.6-4.5M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5M20 20v-4h-4",
 };
 
 export function Icon({ name, size = 18, label }: { name: string; size?: number; label?: string }) {

@@ -46,6 +46,25 @@ export function exportZip(doc: SiteDoc): { bytes: Uint8Array<ArrayBuffer>; fileN
   return { bytes: createZip(buildSiteFiles(doc)), fileName: `${slugify(doc.name, "website")}-website.zip` };
 }
 
+/**
+ * Content version of a built site: SHA-256 over every file's path and bytes,
+ * in order. The ZIP download and the published site are built by the same
+ * buildSiteFiles(), so equal versions mean byte-identical website files (ZIP
+ * timestamps aside). Works in the browser and in Node/Workers (Web Crypto).
+ */
+export async function siteVersion(files: ZipEntry[]): Promise<string> {
+  const enc = new TextEncoder();
+  const parts = files.flatMap((f) => [enc.encode(f.path), new Uint8Array([0]), typeof f.data === "string" ? enc.encode(f.data) : f.data, new Uint8Array([0])]);
+  const all = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+  let pos = 0;
+  for (const p of parts) {
+    all.set(p, pos);
+    pos += p.length;
+  }
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", all));
+  return [...digest.slice(0, 12)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 /** Asset ids actually referenced by some section (unused uploads are left out of the export). */
 export function usedAssetIds(doc: SiteDoc): string[] {
   const ids = new Set<string>();

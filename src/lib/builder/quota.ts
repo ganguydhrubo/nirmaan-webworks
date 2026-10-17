@@ -5,6 +5,9 @@
  *   BUILDER_AI_DAILY_LIMIT_GLOBAL      default 150 text AI requests across all visitors per day
  *   BUILDER_IMAGE_DAILY_LIMIT_PER_IP   default 4   AI images per visitor per day
  *   BUILDER_IMAGE_DAILY_LIMIT_GLOBAL   default 40  AI images across all visitors per day
+ *   BUILDER_PUBLISH_DAILY_LIMIT_PER_IP  default 10  live publishes per visitor per day
+ *   BUILDER_PUBLISH_DAILY_LIMIT_GLOBAL  default 300 live publishes across all visitors per day
+ *     (Cloudflare KV free plan: 1,000 writes/day — one write per publish)
  *
  * Failed requests are refunded (refund()), so a provider outage never eats a
  * visitor's free allowance. One AI request per visitor runs at a time
@@ -21,7 +24,7 @@ import { getRuntimeEnv } from "@/lib/runtime-env";
 import { getClientIp, hashIp } from "@/lib/ip";
 import { dayBucket, incrementAndCheck } from "@/lib/rate-limit";
 
-export type QuotaKind = "text" | "image";
+export type QuotaKind = "text" | "image" | "publish";
 
 export interface QuotaResult {
   allowed: boolean;
@@ -52,6 +55,7 @@ function intEnv(value: unknown, fallback: number): number {
 
 export async function getQuotaLimits(kind: QuotaKind = "text"): Promise<{ perIp: number; global: number }> {
   const env = await getRuntimeEnv();
+  if (kind === "publish") return { perIp: intEnv(env.BUILDER_PUBLISH_DAILY_LIMIT_PER_IP, 10), global: intEnv(env.BUILDER_PUBLISH_DAILY_LIMIT_GLOBAL, 300) };
   return kind === "image"
     ? { perIp: intEnv(env.BUILDER_IMAGE_DAILY_LIMIT_PER_IP, 4), global: intEnv(env.BUILDER_IMAGE_DAILY_LIMIT_GLOBAL, 40) }
     : { perIp: intEnv(env.BUILDER_AI_DAILY_LIMIT_PER_IP, 8), global: intEnv(env.BUILDER_AI_DAILY_LIMIT_GLOBAL, 150) };
@@ -71,7 +75,7 @@ export async function consumeCredit(request: Request, kind: QuotaKind = "text"):
   const limits = await getQuotaLimits(kind);
   const ipHash = await visitorKey(request);
   const bucket = dayBucket(new Date());
-  const prefix = kind === "image" ? "builder-img" : "builder";
+  const prefix = kind === "image" ? "builder-img" : kind === "publish" ? "builder-pub" : "builder";
   const visitorScope = `${prefix}-ip:${ipHash}`;
   const globalScope = `${prefix}-global`;
   let refunded = false;

@@ -9,17 +9,13 @@ import { generateSite, newRequestId } from "./api";
 import { StartScreen, Wizard, Generating, EMPTY_BRIEF } from "./Onboarding";
 import { Editor } from "./Editor";
 import { Toasts, toast, confirmDialog } from "./ui";
+import { initNav, pushRoute, replaceRoute, routeFromLocation, canGoBackInApp, leaveBuilder, type Route } from "./nav";
 import "./builder.css";
 
 type Screen = { name: "loading" } | { name: "start"; showTemplates?: boolean } | { name: "wizard" } | { name: "generating"; error: { code: string; message: string; retryable: boolean } | null } | { name: "editor" };
 
 const BRIEF_DRAFT_KEY = "atittle-builder-brief";
 
-function setUrl(params: Record<string, string>): void {
-  const url = new URL(window.location.href);
-  url.search = new URLSearchParams(params).toString();
-  window.history.replaceState(null, "", url);
-}
 
 function loadBriefDraft(): Brief {
   try {
@@ -49,12 +45,12 @@ export default function App() {
     }
   };
 
-  const openDoc = async (doc: SiteDoc, message?: string) => {
+  const openDoc = async (doc: SiteDoc, message?: string, push = false) => {
     if (storageOk) {
       try {
         const rec = await createProject(doc);
         initEditor(rec.doc, rec.id, rec.rev);
-        setUrl({ project: rec.id });
+        (push ? pushRoute : replaceRoute)({ name: "editor", project: rec.id });
       } catch {
         initEditor(doc, null);
         setState({ saveState: "unavailable" });
@@ -73,12 +69,12 @@ export default function App() {
       const rec = await getProject(id);
       if (!rec) {
         toast("That project wasn't found in this browser. Projects are saved per device and browser.", "error");
-        setUrl({});
+        replaceRoute({ name: "start" });
         setScreen({ name: "start" });
         return;
       }
       initEditor(rec.doc, rec.id, rec.rev);
-      setUrl({ project: rec.id });
+      replaceRoute({ name: "editor", project: rec.id });
       setScreen({ name: "editor" });
     } catch {
       toast("Couldn't open that project.", "error");
@@ -86,7 +82,26 @@ export default function App() {
     }
   };
 
+  /** Show the screen for a route (used on load and on browser Back/Forward). */
+  const showRoute = async (route: Route) => {
+    if (route.name === "editor") return openProject(route.project);
+    if (route.name === "wizard") return setScreen({ name: "wizard" });
+    await refreshProjects();
+    setScreen({ name: "start", showTemplates: !!route.templates });
+  };
+
   useEffect(() => {
+    const onPop = () => {
+      // Leaving a running generation via Back cancels it (nothing is charged for a failed/cancelled request).
+      abortRef.current?.abort();
+      void saveNow().finally(() => void showRoute(routeFromLocation()));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  useEffect(() => {
+    initNav();
     startAutosave();
     void (async () => {
       const ok = await storageAvailable();
@@ -127,7 +142,8 @@ export default function App() {
     abortRef.current = null;
     if (typeof result.remaining === "number") setRemaining(result.remaining);
     if (!result.ok) {
-      if (result.code === "aborted") return setScreen({ name: "wizard" });
+      // Cancelled, or left via browser Back: show whatever screen the URL now points at.
+      if (result.code === "aborted") return void showRoute(routeFromLocation());
       return setScreen({ name: "generating", error: { code: result.code, message: result.message, retryable: result.retryable !== false } });
     }
     await openDoc(result.doc, "Your website is ready! Click any text to edit it, or select a section to change its layout.");
@@ -137,9 +153,25 @@ export default function App() {
     await saveNow();
     const s = getState();
     if (!s.projectId && !confirmDialog("This project isn't saved in this browser. Leave anyway? Download a backup first if you want to keep it.")) return;
-    setUrl({});
+    // Use real history when the previous entry is a builder screen, so Back/Forward stay consistent.
+    if (canGoBackInApp()) return history.back();
+    replaceRoute({ name: "start" });
     await refreshProjects();
     setScreen({ name: "start" });
+  };
+
+  const goWizard = () => {
+    pushRoute({ name: "wizard" });
+    setScreen({ name: "wizard" });
+  };
+  const wizardBack = () => {
+    if (canGoBackInApp()) return history.back();
+    replaceRoute({ name: "start" });
+    void showRoute({ name: "start" });
+  };
+  const goTemplates = () => {
+    replaceRoute({ name: "start", templates: true });
+    void showRoute({ name: "start", templates: true });
   };
 
   return (
@@ -154,10 +186,11 @@ export default function App() {
           projects={projects}
           storageOk={storageOk}
           showTemplates={!!screen.showTemplates}
-          onAi={() => setScreen({ name: "wizard" })}
+          onAi={goWizard}
+          onLeave={leaveBuilder}
           onTemplate={(id) => {
             const doc = templateDoc(id);
-            if (doc) void openDoc(doc, "Template loaded. Click any text in the preview to change it.");
+            if (doc) void openDoc(doc, "Template loaded. Click any text in the preview to change it.", true);
           }}
           onOpen={(id) => void openProject(id)}
           onDelete={(id) => {
@@ -173,7 +206,7 @@ export default function App() {
           }}
         />
       )}
-      {screen.name === "wizard" && <Wizard initial={brief} remaining={remaining} onBack={() => setScreen({ name: "start" })} onSubmit={(b) => void generate(b)} />}
+      {screen.name === "wizard" && <Wizard initial={brief} remaining={remaining} onBack={wizardBack} onSubmit={(b) => void generate(b)} />}
       {screen.name === "generating" && (
         <Generating
           brief={brief}
@@ -181,7 +214,7 @@ export default function App() {
           onCancel={() => abortRef.current?.abort()}
           onRetry={() => void generate(brief)}
           onEdit={() => setScreen({ name: "wizard" })}
-          onTemplates={() => setScreen({ name: "start", showTemplates: true })}
+          onTemplates={goTemplates}
         />
       )}
       {screen.name === "editor" && <Editor onExit={() => void exitEditor()} remaining={remaining} setRemaining={setRemaining} storageOk={storageOk} />}
