@@ -1821,3 +1821,31 @@
   gap: 6px;
   align-items: flex-start;
 }
+
+/* AI image unavailable — friendly, premium notice */
+.atb-notice-witty {
+  background: linear-gradient(135deg, #fffaf0 0%, #fbe9d6 100%);
+  color: var(--atb-ink);
+  border: 1px solid #ecd2b4;
+  padding: 18px 18px 16px;
+}
+.atb-notice-witty strong {
+  font-size: 1.02rem;
+  line-height: 1.35;
+}
+.atb-notice-emoji {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 8px -2px rgba(33, 26, 21, 0.25);
+  font-size: 1.3rem;
+}
+.atb-notice-cta {
+  display: inline-flex;
+  margin: 12px 0 2px;
+  text-decoration: none;
+}

@@ -372,7 +372,10 @@ test("AI image (mocked AI): honest unavailable notice, then a generated image is
   await openTemplate(page, "restaurant");
   await openHeroImage(page);
   await page.locator(".atb-image-sources").getByRole("button", { name: "AI image" }).click();
-  await expect(page.getByText("AI image generation is unavailable right now.")).toBeVisible();
+  await expect(page.getByText("Trust us, AI-generated images aren't exactly free magic!")).toBeVisible();
+  await expect(page.getByText("Our AI image generator is currently unavailable.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Contact Us/ })).toHaveAttribute("href", "/contact");
+  await expect(page.getByRole("button", { name: "Generate image" })).toHaveCount(0); // no fake generation path
   await page.keyboard.press("Escape");
 
   available = true;

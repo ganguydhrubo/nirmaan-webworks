@@ -111,12 +111,17 @@ function AiTab({ suggestion, onApply }: { suggestion: string; onApply: (a: Asset
   if (status && !status.available) {
     return (
       <div class="atb-studio-pane">
-        <div class="atb-notice">
-          <Icon name="alert" />
+        <div class="atb-notice atb-notice-witty" role="status">
+          <span class="atb-notice-emoji" aria-hidden="true">
+            😏
+          </span>
           <div>
-            <strong>AI image generation is unavailable right now.</strong>
-            <p>{status.reason}</p>
-            <p class="atb-muted atb-small">You can upload your own photo, reuse one from your images, or add an illustration in your site's colours.</p>
+            <strong>Trust us, AI-generated images aren't exactly free magic!</strong>
+            <p>Our AI image generator is currently unavailable. Need a stunning visual? Get in touch with us, and we'll help bring your vision to life.</p>
+            <a class="atb-btn atb-btn-primary atb-btn-sm atb-notice-cta" href="/contact" target="_blank" rel="noopener" data-analytics-event="builder_image_unavailable_contact">
+              Contact Us <span aria-hidden="true">→</span>
+            </a>
+            <p class="atb-muted atb-small">Meanwhile, you can upload your own photo, reuse one from your images, or add an illustration in your site's colours.</p>
           </div>
         </div>
       </div>
