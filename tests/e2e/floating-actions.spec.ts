@@ -19,6 +19,11 @@ const VIEWPORTS = [
 ];
 const ROUTES = ["/", "/pricing", "/contact", "/industries", "/faq"];
 
+/** Stub only the two CTA destinations, so navigation can be asserted without leaving the test. */
+async function stubDestinations(p: Page) {
+  for (const url of [BUILD_URL, AUDIT_URL]) await p.route(url, (r) => r.fulfill({ status: 200, contentType: "text/html", body: "<title>ok</title>" }));
+}
+
 const build = (p: Page) => p.locator("[data-fga] a.fga-build");
 const audit = (p: Page) => p.locator("[data-fga] a.fga-audit");
 
@@ -42,6 +47,8 @@ for (const vp of VIEWPORTS) {
       await expect(build(page)).toHaveAttribute("href", BUILD_URL);
       await expect(audit(page)).toHaveAttribute("href", AUDIT_URL);
       await expect(page.locator("[data-fga]")).toHaveCount(1); // no duplicate instances
+      // Tucked (hidden while a form is on screen, small screens) → nothing visible to collide.
+      if (await page.locator("[data-fga].is-tucked").count()) continue;
       const b = (await build(page).boundingBox())!;
       const a = (await audit(page).boundingBox())!;
       // inside the viewport, not overlapping each other
@@ -90,12 +97,12 @@ test("keyboard: both actions are reachable, focus is visible, Enter navigates", 
   await page.keyboard.press("Tab");
   await expect(audit(page)).toBeFocused();
   // navigation itself (to the production URL) is a plain anchor; intercept it to assert the target
-  await page.route("https://atittle.com/**", (r) => r.fulfill({ status: 200, contentType: "text/html", body: "<title>ok</title>" }));
+  await stubDestinations(page);
   await Promise.all([page.waitForURL(AUDIT_URL), page.keyboard.press("Enter")]);
 });
 
 test("mouse click opens the builder URL", async ({ page }) => {
-  await page.route("https://atittle.com/**", (r) => r.fulfill({ status: 200, contentType: "text/html", body: "<title>ok</title>" }));
+  await stubDestinations(page);
   await page.goto("/faq");
   // Real pointer input at the bubble's current position (Playwright's element
   // click waits for the gently floating element to be "stable", which it never is;
@@ -107,7 +114,7 @@ test("mouse click opens the builder URL", async ({ page }) => {
 test("touch tap opens the audit URL on mobile", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const page = await ctx.newPage();
-  await page.route("https://atittle.com/**", (r) => r.fulfill({ status: 200, contentType: "text/html", body: "<title>ok</title>" }));
+  await stubDestinations(page);
   await page.goto("/");
   const a = (await audit(page).boundingBox())!;
   await Promise.all([page.waitForURL(AUDIT_URL), page.touchscreen.tap(a.x + a.width / 2, a.y + a.height / 2)]);
