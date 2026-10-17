@@ -8,6 +8,7 @@ export interface TranslationDictionary {
   };
   common: Record<string, string>;
   nav: Record<string, string>;
+  growth: Record<string, string>;
   hero: Record<string, string>;
   enquiryCards: Record<string, { name: string; category: string; city: string; text: string; time: string; tag: string }>;
   categories: Record<string, string>;

@@ -3,6 +3,7 @@ import Header from "@/components/sections/Header.astro";
 import Footer from "@/components/sections/Footer.astro";
 import Dock from "@/components/Dock.astro";
 import WhatsAppFloating from "@/components/sections/WhatsAppFloating.astro";
+import FloatingGrowthActions from "@/components/FloatingGrowthActions.astro";
 import CinematicDemoTheatre from "@/components/ui/CinematicDemoTheatre.astro";
 import { siteConfig } from "@config/site";
 import { organizationJsonLd, websiteJsonLd, localBusinessJsonLd } from "@/lib/seo";
@@ -109,6 +110,7 @@ const structuredData = [organizationJsonLd(), websiteJsonLd(), localBusinessJson
     <Footer />
     {!hideStickyBar && <Dock />}
     <WhatsAppFloating />
+    <FloatingGrowthActions />
     <CinematicDemoTheatre />
 
     <script src="../scripts/reveal.ts"></script>

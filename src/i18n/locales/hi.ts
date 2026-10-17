@@ -19,6 +19,14 @@ export const hi: TranslationDictionary = {
     success: 'सफल',
     error: 'त्रुटि',
   },
+  growth: {
+    build: 'अपनी वेबसाइट फ्री बनाएं',
+    buildShort: 'फ्री वेबसाइट बनाएं',
+    buildSub: 'AI से वेबसाइट बनाइए। कोडिंग की ज़रूरत नहीं।',
+    audit: 'फ्री वेबसाइट ऑडिट',
+    auditShort: 'फ्री वेबसाइट ऑडिट',
+    auditSub: 'अपनी वेबसाइट जाँचिए, जानिए क्या सुधारना है।',
+  },
   nav: {
     industries: 'उद्योग',
     demos: 'डेमो',
