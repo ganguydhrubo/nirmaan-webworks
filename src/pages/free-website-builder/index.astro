@@ -1,0 +1,394 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
+import { TEMPLATE_LIST } from "@/lib/builder/templates";
+import { THEME_PRESETS } from "@/lib/builder/themes";
+
+export const prerender = true;
+
+const meta = {
+  title: "Free AI Website Builder: Generate, Edit & Download Your Website | ATITTLE",
+  description:
+    "Describe your business, let AI draft your website, edit it visually without code, and download the files to host anywhere, including GoDaddy. Free within daily AI limits.",
+};
+
+const faqs = [
+  {
+    q: "Is it really free?",
+    a: "Yes. Building, editing, saving and downloading your website is free. AI generation is free within a daily limit per visitor so the service stays available for everyone. If you reach it, you can keep editing by hand or start from a template.",
+  },
+  {
+    q: "Do I need to buy hosting or a domain from ATITTLE?",
+    a: "No. You download your website as plain files and can put them on any hosting you like: GoDaddy, Hostinger, Netlify, Cloudflare Pages and others. Hosting and domain names are separate purchases from the provider you choose.",
+  },
+  {
+    q: "Where are my projects saved?",
+    a: "In your own browser, on your device. There are no ATITTLE accounts yet, so nothing is stored on our servers. To move a project to another device or keep a safe copy, download a project backup file from the Download menu.",
+  },
+  {
+    q: "Will the AI make things up about my business?",
+    a: "It's instructed not to, and the builder enforces it: contact details only come from what you type, and any testimonials are clearly labelled as samples until you replace them with real customer feedback. Always read your website before publishing.",
+  },
+  {
+    q: "Can my website have a contact form?",
+    a: "Your downloaded site is plain HTML with no server, so by default it shows your phone, email and WhatsApp links. To add a working form, paste the address of a form service such as Formspree or Web3Forms into your contact section.",
+  },
+  {
+    q: "Can I edit on my phone?",
+    a: "You can generate, preview and make edits on a phone, but the visual editor is most comfortable on a laptop or tablet. Previews for desktop, tablet and mobile are built in.",
+  },
+];
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Free AI Website Builder", url: `${siteConfig.siteUrl}/free-website-builder` },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "ATITTLE Free AI Website Builder",
+    url: `${siteConfig.siteUrl}/free-website-builder`,
+    applicationCategory: "DesignApplication",
+    operatingSystem: "Any (web browser)",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+    provider: { "@type": "Organization", name: siteConfig.businessName, url: siteConfig.siteUrl },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
+
+const heroTemplates = ["restaurant", "consultant", "agency"];
+const steps = [
+  { n: "1", title: "Describe your business", text: "Answer a few simple questions: what you do, who it's for, and the look you like." },
+  { n: "2", title: "AI drafts your website", text: "Pages, headlines, sections and colours, written for your business in under a minute." },
+  { n: "3", title: "Make it yours", text: "Click any text to type over it. Swap photos, reorder sections, change colours. No code." },
+  { n: "4", title: "Download & publish", text: "Get a ZIP of plain HTML files and upload them to GoDaddy or any host you choose." },
+];
+const features = [
+  { title: "Visual editing", text: "Click-to-edit text, drag-and-drop sections, layouts, colours, fonts and spacing — with undo and redo." },
+  { title: "Real device previews", text: "See every page at true desktop, tablet and phone widths before you publish." },
+  { title: "Ask AI to edit", text: "\"Make it more premium.\" \"Rewrite the hero.\" \"Add an FAQ.\" Changes you can preview and undo." },
+  { title: "Multi-page sites", text: "Home, About, Services, Pricing, Gallery, FAQ, Contact — up to eight pages with automatic navigation." },
+  { title: "You own the files", text: "Standard HTML and CSS, no lock-in, no ATITTLE branding to remove, no subscription to keep it online." },
+  { title: "Fast & accessible output", text: "Lightweight pages with no JavaScript, readable contrast, keyboard-friendly menus and proper headings." },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} jsonLd={jsonLd}>
+  <section class="relative overflow-hidden bg-cream border-b border-ink-200">
+    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 lg:px-8 lg:py-20">
+      <div>
+        <p class="mb-3 inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-brand-700">
+          <span class="h-2 w-2 rounded-full bg-emerald-600" aria-hidden="true"></span> ATITTLE Free AI Website Builder
+        </p>
+        <h1 class="font-display text-4xl font-semibold leading-[1.08] text-ink-950 sm:text-5xl lg:text-6xl">
+          Build your website with AI. Customize it yourself. Host it anywhere.
+        </h1>
+        <p class="mt-5 max-w-xl text-lg text-ink-700">
+          Describe your business, generate your website, edit it visually, and download your files. No coding required.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/free-website-builder/app?start=ai" class="inline-flex min-h-12 items-center justify-center rounded-full bg-brand-600 px-7 py-3 text-base font-semibold text-cream shadow-sm transition hover:bg-brand-700" data-analytics-event="builder_cta_hero">
+            Create My Website Free
+          </a>
+          <a href="#templates" class="inline-flex min-h-12 items-center justify-center rounded-full border border-ink-300 px-7 py-3 text-base font-semibold text-ink-900 transition hover:border-ink-700">
+            Explore Templates
+          </a>
+        </div>
+        <ul class="mt-7 grid gap-2 text-sm text-ink-700 sm:grid-cols-2">
+          <li class="flex items-center gap-2"><span class="text-emerald-700" aria-hidden="true">✓</span> No sign-up needed</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-700" aria-hidden="true">✓</span> Download as plain HTML</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-700" aria-hidden="true">✓</span> Works with GoDaddy & any host</li>
+          <li class="flex items-center gap-2"><span class="text-emerald-700" aria-hidden="true">✓</span> Free AI drafts daily</li>
+        </ul>
+      </div>
+
+      <div class="builder-hero-stage" aria-label="Examples of websites made with the builder" aria-live="off">
+        <div class="builder-browser">
+          <div class="builder-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>yourbusiness.com</em></div>
+          <div class="builder-browser-screen">
+            {
+              heroTemplates.map((id, i) => (
+                <iframe
+                  src={`/free-website-builder/template-preview/${id}.html`}
+                  title={`Example website: ${TEMPLATE_LIST.find((t) => t.id === id)?.label} template`}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  tabindex="-1"
+                  sandbox=""
+                  class={`builder-hero-frame builder-hero-frame-${i}`}
+                />
+              ))
+            }
+          </div>
+        </div>
+        <div class="builder-float builder-float-a" aria-hidden="true"><span>✦</span> Headline written by AI</div>
+        <div class="builder-float builder-float-b" aria-hidden="true">Click any text to edit</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20" aria-labelledby="how-heading">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 id="how-heading" class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">From idea to live website in four steps</h2>
+      <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((s) => (
+            <li class="rounded-2xl border border-ink-200 bg-cream p-6">
+              <span class="grid h-10 w-10 place-items-center rounded-full bg-brand-600 font-display text-lg font-semibold text-cream">{s.n}</span>
+              <h3 class="mt-4 text-lg font-semibold text-ink-950">{s.title}</h3>
+              <p class="mt-2 text-ink-700">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="templates" class="scroll-mt-24 bg-cream py-16 sm:py-20" aria-labelledby="templates-heading">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <h2 id="templates-heading" class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Start from a template</h2>
+        <p class="mt-3 text-lg text-ink-700">Ten ready-made, fully editable designs. These are live previews of the real output — pick one and replace the sample content with yours.</p>
+      </div>
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {
+          TEMPLATE_LIST.map((t) => {
+            const preset = THEME_PRESETS.find((p) => p.preset === t.preset)!;
+            return (
+              <li class="group flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg">
+                <div class="builder-thumb" style={`background:${preset.colors.bg}`}>
+                  <iframe src={`/free-website-builder/template-preview/${t.id}.html`} title={`Preview of the ${t.label} template`} loading="lazy" tabindex="-1" sandbox="" />
+                </div>
+                <div class="flex flex-1 flex-col p-4">
+                  <h3 class="font-semibold text-ink-950">{t.label}</h3>
+                  <p class="mt-1 flex-1 text-sm text-ink-700">{t.description}</p>
+                  <a href={`/free-website-builder/app?template=${t.id}`} class="mt-4 inline-flex min-h-10 items-center justify-center rounded-full border border-ink-300 px-4 py-2 text-sm font-semibold text-ink-900 transition group-hover:border-brand-600 group-hover:text-brand-700" aria-label={`Use the ${t.label} template`}>
+                    Use this template
+                  </a>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-white py-16 sm:py-20" aria-labelledby="features-heading">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 id="features-heading" class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Everything you need, nothing confusing</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          features.map((f) => (
+            <div class="rounded-2xl border border-ink-200 p-6">
+              <h3 class="text-lg font-semibold text-ink-950">{f.title}</h3>
+              <p class="mt-2 text-ink-700">{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-teal-900 py-16 text-cream sm:py-20" aria-labelledby="host-heading">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+      <div>
+        <h2 id="host-heading" class="font-display text-3xl font-semibold sm:text-4xl">Host your website anywhere</h2>
+        <p class="mt-4 text-lg text-cream/85">
+          Your download is a folder of standard files. Upload it to GoDaddy, Hostinger, Bluehost, Netlify, Cloudflare Pages or any other web host. Domain names, hosting and email are separate purchases from the provider you choose — ATITTLE never requires them.
+        </p>
+        <a href="/free-website-builder/hosting-guide" class="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-cream px-6 py-3 font-semibold text-teal-900 transition hover:bg-white">
+          Read the step-by-step hosting guide
+        </a>
+      </div>
+      <ol class="grid gap-3 text-cream/90">
+        {["Download the ZIP", "Extract it on your computer", "Open your hosting control panel", "Upload the files to your site's main folder", "Connect your domain and turn on HTTPS", "Open your website and test every page"].map((s, i) => (
+          <li class="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3">
+            <span class="grid h-7 w-7 flex-none place-items-center rounded-full bg-gold-400 text-sm font-bold text-ink-950">{i + 1}</span> {s}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-cream py-16 sm:py-20" aria-labelledby="faq-heading">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 id="faq-heading" class="font-display text-3xl font-semibold text-ink-950 sm:text-4xl">Good to know</h2>
+      <div class="mt-8 grid gap-3">
+        {
+          faqs.map((f) => (
+            <details class="group rounded-xl border border-ink-200 bg-white px-5 py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink-950">
+                {f.q}
+                <span class="text-brand-600 transition group-open:rotate-45" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <p class="mt-3 text-ink-700">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-brand-600 py-14 text-center text-cream">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="font-display text-3xl font-semibold sm:text-4xl">Your website could be ready before your chai cools down.</h2>
+      <a href="/free-website-builder/app?start=ai" class="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-cream px-8 py-3 text-base font-semibold text-brand-700 transition hover:bg-white" data-analytics-event="builder_cta_footer">
+        Create My Website Free
+      </a>
+      <p class="mt-4 text-sm text-cream/85">Prefer a team to build it for you? <a href="/contact" class="font-semibold underline underline-offset-4">Talk to ATITTLE</a>.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .builder-hero-stage {
+    position: relative;
+    padding: 12px 8px 28px;
+  }
+  .builder-browser {
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--color-ink-200);
+    box-shadow:
+      0 2px 4px rgba(33, 26, 21, 0.06),
+      0 30px 60px -20px rgba(33, 26, 21, 0.35);
+    overflow: hidden;
+    transform: rotate(-1deg);
+  }
+  .builder-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: var(--color-ink-50);
+    border-bottom: 1px solid var(--color-ink-200);
+  }
+  .builder-browser-bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 99px;
+    background: var(--color-ink-300);
+  }
+  .builder-browser-bar em {
+    margin-left: 10px;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--color-ink-500);
+    background: #fff;
+    border-radius: 99px;
+    padding: 2px 12px;
+  }
+  .builder-browser-screen {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: var(--color-cream);
+  }
+  /* Iframes render at a real 1280px desktop width, scaled to fit. */
+  .builder-browser-screen iframe,
+  .builder-thumb iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 880px;
+    border: 0;
+    transform-origin: 0 0;
+    pointer-events: none;
+  }
+  .builder-browser-screen iframe {
+    transform: scale(calc(var(--stage-w, 560) / 1280));
+  }
+  .builder-hero-frame {
+    opacity: 0;
+    animation: builder-cycle 15s infinite;
+  }
+  .builder-hero-frame-0 {
+    animation-delay: 0s;
+  }
+  .builder-hero-frame-1 {
+    animation-delay: 5s;
+  }
+  .builder-hero-frame-2 {
+    animation-delay: 10s;
+  }
+  @keyframes builder-cycle {
+    0% {
+      opacity: 0;
+    }
+    4%,
+    30% {
+      opacity: 1;
+    }
+    35%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .builder-hero-frame {
+      animation: none;
+    }
+    .builder-hero-frame-0 {
+      opacity: 1;
+    }
+  }
+  .builder-float {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 600;
+    background: #fff;
+    color: var(--color-ink-900);
+    border: 1px solid var(--color-ink-200);
+    border-radius: 999px;
+    padding: 7px 14px;
+    box-shadow: 0 10px 24px -10px rgba(33, 26, 21, 0.35);
+    white-space: nowrap;
+  }
+  .builder-float span {
+    color: var(--color-brand-600);
+  }
+  .builder-float-a {
+    top: 0;
+    right: 4%;
+  }
+  .builder-float-b {
+    bottom: 6px;
+    left: 2%;
+    background: var(--color-brand-600);
+    color: var(--color-cream);
+    border-color: transparent;
+  }
+  .builder-thumb {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-ink-200);
+  }
+  .builder-thumb iframe {
+    transform: scale(calc(var(--thumb-w, 260) / 1280));
+  }
+</style>
+
+<script>
+  // Scale the 1280px-wide preview iframes to their containers. Purely
+  // presentational; without JS the CSS fallback widths still look right.
+  const fit = (selector: string, prop: string) => {
+    for (const el of document.querySelectorAll<HTMLElement>(selector)) {
+      const ro = new ResizeObserver(([entry]) => {
+        if (entry) el.style.setProperty(prop, String(entry.contentRect.width));
+      });
+      ro.observe(el);
+    }
+  };
+  fit(".builder-browser-screen", "--stage-w");
+  fit(".builder-thumb", "--thumb-w");
+</script>

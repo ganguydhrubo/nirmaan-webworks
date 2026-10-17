@@ -1,0 +1,49 @@
+---
+/**
+ * The builder application itself. A full-screen, client-rendered Preact
+ * island — deliberately NOT wrapped in BaseLayout: the site header, dock,
+ * WhatsApp button and theatre would fight the editor for space, and none of
+ * the editor's JavaScript should load on the rest of atittle.com. The
+ * editor's own toolbar links back to the builder landing page.
+ *
+ * noindex: this is a private working surface (projects live in the
+ * visitor's own browser), not content for search engines.
+ */
+import App from "@/scripts/builder/App";
+import "@/styles/fonts.css";
+
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbf6ee" />
+    <title>Website Builder Editor | ATITTLE</title>
+    <meta name="description" content="Create, edit and download your website with the ATITTLE Free AI Website Builder." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://atittle.com/free-website-builder" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/manrope-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <style is:global>
+      html,
+      body {
+        margin: 0;
+        background: #fbf6ee;
+      }
+      noscript p {
+        font-family: system-ui, sans-serif;
+        max-width: 560px;
+        margin: 15vh auto;
+        padding: 0 20px;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <App client:only="preact" />
+    <noscript><p>The ATITTLE website builder needs JavaScript to run. Please enable JavaScript in your browser, or <a href="/free-website-builder">go back</a>.</p></noscript>
+  </body>
+</html>

@@ -22,9 +22,11 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",
+    "@astrojs/preact": "^6.1.0",
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.10",
     "astro": "^7.3.2",
+    "preact": "^10.29.8",
     "zod": "^4.6.4"
   },
   "devDependencies": {

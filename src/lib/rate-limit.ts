@@ -16,11 +16,11 @@ function hourBucket(now: Date): string {
   return `${now.toISOString().slice(0, 13)}h`; // e.g. 2026-09-13T10h
 }
 
-function dayBucket(now: Date): string {
+export function dayBucket(now: Date): string {
   return now.toISOString().slice(0, 10); // e.g. 2026-09-13
 }
 
-async function incrementAndCheck(db: D1Database, scope: string, bucket: string, limit: number): Promise<RateLimitCheck> {
+export async function incrementAndCheck(db: D1Database, scope: string, bucket: string, limit: number): Promise<RateLimitCheck> {
   await db
     .prepare(
       `INSERT INTO rate_limit_counters (scope, bucket, count) VALUES (?1, ?2, 1)
