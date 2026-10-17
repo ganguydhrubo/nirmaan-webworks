@@ -7,7 +7,11 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"], "@config/*": ["config/*"] }
   },
-  "include": ["src/scripts/**/*.ts"]
+  "include": ["src/scripts/**/*.ts", "src/scripts/**/*.tsx", "src/env.d.ts"]
 }

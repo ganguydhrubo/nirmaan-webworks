@@ -9,6 +9,9 @@ const navItems = [
   { href: "/industries", label: "Industries", key: "industries" },
   { href: "/demos", label: "Demos", key: "demos" },
   { href: "/services", label: "More Services", key: "services", hasDot: true },
+  // mobileOnly: the desktop bar is already full at its 1280px max width; the
+  // builder is promoted on the homepage (BuilderTeaser) and in the footer instead.
+  { href: "/free-website-builder", label: "Free AI Builder", key: "builder", mobileOnly: true },
   { href: "/tools/website-evaluator", label: "AI Evaluator", key: "evaluator" },
   { href: "/pricing", label: "Pricing", key: "pricing" },
   { href: "/work-process", label: "Process", key: "process" },
@@ -37,7 +40,7 @@ const currentPath = Astro.url.pathname;
 
     <nav aria-label="Primary" class="hidden lg:block">
       <ul class="flex items-center gap-0.5 xl:gap-1">
-        {navItems.map((item) => (
+        {navItems.filter((item) => !item.mobileOnly).map((item) => (
           <li>
             <a
               href={item.href}

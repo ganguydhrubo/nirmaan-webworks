@@ -94,3 +94,14 @@ Original typographic art direction. Reuses the existing locally hosted OFL Instr
 ### Demo expansion — Clearline Diagnostics — 2026-09-15
 
 | `src/assets/demos/expansion/lab-hero.jpg` | Edward Jenner | https://www.pexels.com/photo/a-man-using-a-microscope-in-a-laboratory-4033019/ | [Pexels License](https://www.pexels.com/license/) | Illustrative; not actual lab staff, no accreditation or real-lab claim |
+
+
+### AI Website Builder — OpenPage (MIT) — 2026-10-17
+
+The builder's JSON-first document model (a site as typed "block + variant + props" sections, edited visually and by AI), its theme-preset approach and editor layout were adapted from **OpenPage** — https://github.com/buildingopen/openpage — used under the MIT License. No OpenPage source files are copied verbatim; the renderer, exporter, editor UI, AI pipeline and security model in `src/lib/builder/` and `src/scripts/builder/` are ATITTLE's own code. The licence notice is reproduced here as the licence requires for substantial portions:
+
+> MIT License — Copyright (c) 2026 Federico De Ponte
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Runtime dependency added for the editor: **Preact** (MIT) via **@astrojs/preact** (MIT). Generated websites load the visitor's chosen fonts from Google Fonts (SIL Open Font License fonts).
