@@ -1,0 +1,151 @@
+ATITTLE AI WEBSITE BUILDER — DOWNLOAD + ONE-CLICK LIVE PUBLISHING
+Implementation report — 2026-10-17
+(Contains no credentials. All secrets live only in server environment
+variables / the gitignored .dev.vars.)
+
+======================================================================
+1. WHAT WAS BUILT
+======================================================================
+Editor toolbar "Publish" opens one dialog with two options:
+
+  DOWNLOAD WEBSITE    ZIP of plain HTML/CSS (same as before).
+  PUBLISH LIVE FREE   "Put your website online instantly with a free
+                      ATITTLE link you can share. No hosting or setup
+                      needed."
+
+Publish states shown to the user:
+  Not ready (no sections) -> Checking your website -> Preparing files ->
+  Uploading (real upload %) -> Deploying -> Confirming it's live ->
+  Published | Failed (one automatic retry for transient errors: Retrying)
+
+When published: Open Website, Copy Link, Download Website, Publish Again,
+Take offline, publish time, and a warning when the project changed since
+it was published. Publish info is saved with the project (IndexedDB), so
+reopening the dialog, reloading or Back/Forward keep it.
+
+"Published" is only shown after the live URL itself serves the exact
+content version just built (X-Atittle-Version header). An upload response
+alone never produces a success message or a link.
+
+======================================================================
+2. ARCHITECTURE (verified against Cloudflare docs, 2026-10-17)
+======================================================================
+Rejected: Cloudflare Pages per site — free plan: 100 projects / account,
+500 builds / month; a direct upload replaces the project's production
+deployment, so a shared project would let users overwrite each other.
+Not available: R2 — the account returns error 10042 ("enable R2 through
+the dashboard"); enabling it requires a payment method.
+
+Chosen: one Cloudflare Worker + Workers KV (free plan):
+  KV: 1 GB storage, 25 MiB per value, 1,000 writes/day, 100,000 reads/day,
+      1,024-byte metadata.
+  Workers: 100,000 requests/day, 10 ms CPU/request.
+
+  Browser --(SiteDoc JSON)--> Vercel /api/builder/publish
+     validate (normalizeDoc) -> content screen -> rebuild site server-side
+     with the SAME buildSiteFiles()+createZip() used by Download ->
+     unique slug + owner check -> Cloudflare KV REST write (server token)
+  Browser --poll--> GET /api/builder/publish?slug&v -> fetches live URL,
+     compares X-Atittle-Version
+  Visitor --> https://atittle-sites.<sub>.workers.dev/<slug>/
+     Worker (read-only, no write surface) reads KV key site:<slug> (the
+     ZIP), extracts the requested file via the ZIP central directory.
+
+Same artifact: download and publish are built by identical code from the
+same document; a content version (SHA-256 over every file path + bytes)
+proves it. A unit test asserts byte-identical files in both archives.
+
+Files:
+  worker/sites/index.js                 the Worker
+  src/lib/builder/publish.ts            server lib (slug, token, KV, verify)
+  src/pages/api/builder/publish.ts      POST / GET / DELETE
+  src/scripts/builder/publish.ts        client state machine
+  src/scripts/builder/Editor.tsx        dialog UI
+  src/scripts/builder/persistence.ts    ProjectRecord.publish
+  src/lib/builder/export.ts             siteVersion()
+  src/lib/builder/quota.ts              "publish" quota kind
+  scripts/provision-sites.mjs           one-time Cloudflare setup
+  docs/AI-WEBSITE-BUILDER.md §3b        full design notes
+
+======================================================================
+3. SECURITY
+======================================================================
+- Credentials: server env only (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN,
+  SITES_KV_NAMESPACE_ID, SITES_BASE_URL). Not in frontend JS, public
+  config, local storage, API responses, URLs, logs, git, or downloadable
+  files. Verified: build output + all repo files scanned for every secret
+  value in .dev.vars and for the variable names in client JS — none found.
+  Server logs keep only Cloudflare's error code/message.
+- R2 S3 keys were stored in .dev.vars but are NOT used (R2 is not enabled
+  and S3 keys are not interchangeable with the API token).
+- No uploaded HTML/JS is accepted: the server rebuilds every site from the
+  validated document. Published pages contain no scripts.
+- Worker headers: CSP (script-src 'none', default-src 'none',
+  frame-ancestors 'none', object-src 'none', base-uri 'none'), nosniff,
+  X-Frame-Options DENY, Referrer-Policy, Permissions-Policy, COOP,
+  X-Robots-Tag noindex + robots.txt Disallow (default; SITES_NOINDEX=0 to
+  allow indexing). Paths validated (no traversal), GET/HEAD only.
+- No cross-user overwrite: random slug suffix + collision check; first
+  publish returns a 256-bit manage token once, only its SHA-256 is stored
+  (KV metadata); update/delete require it (constant-time compare). A site
+  that was taken offline is never revived at its old address.
+- Abuse: per-visitor 10/day and global 300/day publish limits, one publish
+  in flight per visitor, 4.4 MB request / 4 MB archive caps, empty sites
+  rejected, phishing-copy screen (password/OTP/card/"verify your account"/
+  bank-impersonation phrases), noindex by default, optional ABUSE_EMAIL on
+  the Worker's root page, owner "Take offline".
+
+======================================================================
+4. TESTS
+======================================================================
+Mocked Cloudflare (no network):
+  tests/unit/builder-publish.test.ts — 12 tests, PASS. In-memory fake of
+  the KV REST API + the real Worker script serving from it: publish ->
+  verify live -> republish same address -> non-owner update/delete
+  refused (403) -> owner delete; unique addresses for same name;
+  validation before quota/Cloudflare; rate limit + refund on failure;
+  Cloudflare 429 daily-limit and auth errors mapped without leaking
+  details; not-configured; Worker headers/CSP/traversal/404/304/405;
+  ZIP lookup; same-build proof; slug/token rules; metadata <=1 KB.
+  tests/e2e/builder-publish.spec.ts — 3 tests, PASS (API mocked): state
+  progression, no success before the live check passes, live link +
+  Open/Copy/Download/Publish Again, persistence across reopen, republish
+  sends slug+token, honest failure + Download instead, download.
+Full suites: vitest 111/111 PASS; builder e2e PASS (incl. updated download
+tests); astro check 0 errors; client tsc OK; production build OK.
+
+REAL DEPLOYMENT: NOT YET TESTED. Only mocked responses were used so far.
+Blockers (account owner actions):
+  a) The Cloudflare account has no workers.dev subdomain yet (API error
+     10007). Open https://dash.cloudflare.com -> Workers & Pages once.
+  b) Running scripts/provision-sites.mjs (creates the KV namespace and
+     uploads the Worker) needs the account owner to run it.
+Token check (read-only) result: token active; can read Workers, Pages, KV.
+Write permissions will be confirmed by the provisioning run.
+
+======================================================================
+5. TO GO LIVE
+======================================================================
+  1. Cloudflare dashboard -> Workers & Pages (creates the subdomain).
+  2. node scripts/provision-sites.mjs --write
+  3. Vercel env (Production): CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN,
+     SITES_KV_NAMESPACE_ID, SITES_BASE_URL; redeploy.
+  4. Real synthetic test: publish a test site, confirm the live URL, take
+     it offline.
+Recommended: create a separate runtime API token limited to
+"Workers KV Storage: Edit" for Vercel, and rotate every credential that
+was pasted into chat.
+
+======================================================================
+6. KNOWN LIMITATIONS
+======================================================================
+- Free link is a shared workers.dev address; no custom domains yet.
+- KV propagation can take up to ~60 s; the UI waits up to 2 minutes and
+  then offers "Check again" (it never claims success early).
+- Vercel rate-limit counters are per serverless instance; Cloudflare's
+  1,000 writes/day is the hard backstop.
+- Images over ~3 MB total exceed Vercel's request limit: the user is told
+  to use smaller images or download instead.
+- No automatic expiry of old published sites (1 GB free storage).
+- The manage token lives only in the browser that published; from another
+  device the site can't be updated (publishing creates a new address).

@@ -107,6 +107,23 @@ ATITTLE has no user accounts and the Vercel deployment has no database, so the b
 
 To add cloud saving later: an auth provider (e.g. email magic links via Resend once `atittle.com` is verified) + a `builder_projects(id, owner_id, doc_json, rev, updated_at)` table (D1 on Cloudflare, or a hosted DB on Vercel) + `GET/PUT /api/builder/projects/:id` that derives the owner from the session (never from the request body) and checks `owner_id` on every read/write, plus the same revision check `persistence.ts` already does client-side. The `ProjectRecord` shape and `normalizeDoc` gate are already in place.
 
+## 3b. Download + one-click publishing (2026-10-17)
+
+The editor's **Publish** button opens one dialog with two options: **Download Website** (ZIP, unchanged) and **Publish Live Free**.
+
+**Hosting choice (Cloudflare docs checked 2026-10-17).** Cloudflare Pages was rejected for per-site hosting: the free plan allows 100 projects and 500 builds/month per account, and a direct upload replaces a project's production deployment (a shared project would let one visitor overwrite another). R2 needs to be enabled with a payment method (the account returns error 10042). **Workers KV** is on the free plan (1 GB storage, 25 MiB per value, 1,000 writes/day, 100,000 reads/day; Workers: 100,000 requests/day, 10 ms CPU), so:
+
+- **Worker** `atittle-sites` (`worker/sites/index.js`, plain JS, read-only) serves `https://atittle-sites.<sub>.workers.dev/<slug>/…`.
+- Each site is **one KV value** `site:<slug>` = the exact STORE ZIP that "Download Website" produces (`buildSiteFiles` → `createZip`). The Worker finds files through the ZIP central directory (no decompression). KV metadata (≤1 KB) holds the owner-token hash, content version, timestamps, size. One write per publish.
+- **Backend** `POST /api/builder/publish` (`src/pages/api/builder/publish.ts` + `src/lib/builder/publish.ts`) re-validates the document with `normalizeDoc`, rejects empty sites and obvious phishing copy, rebuilds the site server-side (uploaded HTML/JS is never accepted), allocates a unique slug (`<business-name>-<6 random>`; collision-checked), and writes it to KV through the Cloudflare REST API with the server-side token.
+- **Ownership**: the first publish returns a random 256-bit manage token once; only its SHA-256 is stored. Re-publish and `DELETE` (take offline) require it (constant-time compare). The browser keeps it with the project in IndexedDB (`ProjectRecord.publish`); it is a per-site capability, not a platform secret.
+- **Real confirmation**: the API response means Cloudflare confirmed the write; the UI then polls `GET /api/builder/publish?slug&v`, which fetches the live URL and checks its `X-Atittle-Version` header equals the version just built. Only then does it show "Published". KV propagation can take up to ~60 s; after 2 minutes the UI says so and offers "Check again" — never a fake success.
+- **States**: Not ready (no sections) → Checking → Preparing → Uploading (XHR progress) → Deploying → Confirming it's live → Published / Failed (+ one automatic retry for transient errors: "Retrying"). Published shows Open Website / Copy Link / Download Website / Publish Again / Take offline, and warns when the project changed since publishing (content version differs).
+- **Limits**: request body ≤4.4 MB (Vercel's ~4.5 MB function limit — roughly 3 MB of images), archive ≤4 MB, per-visitor `BUILDER_PUBLISH_DAILY_LIMIT_PER_IP` (10) and global `BUILDER_PUBLISH_DAILY_LIMIT_GLOBAL` (300) per day, one publish in flight per visitor; failed uploads are refunded. On Vercel these counters are per instance (see §7); Cloudflare's 1,000 writes/day is the hard backstop and maps to an honest "today's limit" message.
+- **Served pages**: `Content-Security-Policy: script-src 'none'; frame-ancestors 'none'; …`, `nosniff`, `X-Frame-Options: DENY`, and `X-Robots-Tag: noindex` + `robots.txt Disallow` by default (shared free domain; abuse/SEO-spam protection). Set `SITES_NOINDEX=0` before provisioning to allow indexing.
+- **Setup**: `node scripts/provision-sites.mjs --write` (idempotent): verifies the token, requires the account's workers.dev subdomain, creates/reuses the KV namespace, uploads the Worker with its binding, enables the workers.dev route, health-checks it, and prints `SITES_KV_NAMESPACE_ID` + `SITES_BASE_URL`. Then set `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` (runtime needs only *Workers KV Storage: Edit*), `SITES_KV_NAMESPACE_ID`, `SITES_BASE_URL` in Vercel (Production) and redeploy. Without them the dialog shows "Live publishing isn't available right now" and download still works.
+- **Operations**: take a site down by deleting its KV key (dashboard → KV → `atittle-sites` → `site:<slug>`). Storage grows with published sites (1 GB free); there is no automatic expiry yet.
+
 ## 4. Security model
 
 - **Untrusted documents**: every document (AI, import, storage) goes through `normalizeDoc`; unknown types/fields dropped, strings bounded, links restricted to `page:`, `#anchor`, `http(s)`, `mailto:`, `tel:`; images to `https` raster URLs or validated uploads; theme values to hex colours / allowlisted fonts. The renderer escapes everything again (defence in depth). Unit tests cover XSS payloads in every channel.
@@ -129,6 +146,7 @@ On Cloudflare (when D1 is provisioned), quota counters automatically become dura
 
 ## 6. Tests
 
+- `tests/unit/builder-publish.test.ts` — publishing against a mocked Cloudflare (in-memory KV REST API + the real Worker script): same-build download/publish, slug/token rules, owner-only update/delete, quota + refund, Cloudflare error mapping, security headers. `tests/e2e/builder-publish.spec.ts` (mocked API) and `tests/e2e/builder-nav.spec.ts` (browser history).
 - `npx vitest run` — `tests/unit/builder.test.ts` (sanitising, normalisation, rendering/XSS, export, ZIP round-trip and traversal, templates) and `tests/unit/builder-ai.test.ts` (provider chain fallback/bounds/key routing, fact guards, quota).
 - `npx playwright test tests/e2e/builder.spec.ts` (needs the dev server) — landing/SEO, template → inline + panel editing, undo/redo, sections add/duplicate/delete/reorder, theme, autosave + reload, pages + canvas navigation, ZIP download → extract → open from disk on a phone viewport, mocked AI success/quota errors (double-click sends one request), server input limits, sandbox isolation, mobile editor. `BUILDER_REAL_AI=1` adds one real generation.
 - Note: Playwright's own `click()` ignores the preview iframe's CSS scale; the spec uses a `clickInCanvas` helper. Real browsers hit-test correctly.
@@ -139,7 +157,7 @@ On Cloudflare (when D1 is provisioned), quota counters automatically become dura
 - Vercel quota counters are per serverless instance (no shared store there); provider quotas are the hard backstop.
 - Free provider tiers bound real capacity: Groq ≈ 1 generation/minute (8K TPM); Gemini Flash free tier and OpenRouter free models add headroom but are slower. AI images need a paid tier (see §2b).
 - Exported sites are static: forms need a third-party form service URL; no booking/payments/database.
-- No automatic GoDaddy publishing (manual upload guide only; no credentials are ever requested).
+- No automatic GoDaddy publishing (manual upload guide only; no credentials are ever requested). Free one-click publishing goes to a shared `workers.dev` address (see §3b); custom domains for published sites are not supported yet.
 - The editor works on phones (tabbed panes) but is most comfortable on a laptop/tablet.
 - No licensed stock-photo integration (no Unsplash/Pexels keys). Empty image slots show a deliberate theme-coloured block; illustrations are available.
 

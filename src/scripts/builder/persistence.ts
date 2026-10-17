@@ -12,6 +12,21 @@
  */
 import { normalizeDoc, type SiteDoc } from "@/lib/builder/schema";
 
+/**
+ * Where this project is published (see /api/builder/publish). `manageToken`
+ * is this site's own update/unpublish key — returned once by the server and
+ * kept only with the project in this browser. It is not a platform secret.
+ */
+export interface PublishInfo {
+  slug: string;
+  url: string;
+  manageToken: string;
+  version: string;
+  publishedAt: number;
+  /** "verifying" until the live URL serves `version`. */
+  status: "verifying" | "published";
+}
+
 export interface ProjectRecord {
   id: string;
   name: string;
@@ -19,6 +34,7 @@ export interface ProjectRecord {
   rev: number;
   createdAt: number;
   updatedAt: number;
+  publish?: PublishInfo;
 }
 
 export interface ProjectSummary {
@@ -118,12 +134,37 @@ export async function saveProject(id: string, doc: SiteDoc, baseRev: number, new
         return;
       }
       const now = Date.now();
-      store.put({ id, name: doc.name, doc, rev: newRev, createdAt: existing?.createdAt ?? now, updatedAt: now } satisfies ProjectRecord);
+      // Keep the publish record: autosaves must not forget where the site is live.
+      store.put({ id, name: doc.name, doc, rev: newRev, createdAt: existing?.createdAt ?? now, updatedAt: now, ...(existing?.publish ? { publish: existing.publish } : {}) } satisfies ProjectRecord);
     };
     t.oncomplete = () => (conflict ? reject(new ConflictError(conflict)) : resolve());
     t.onerror = () => reject(t.error ?? new Error("Storage error"));
     t.onabort = () => reject(t.error ?? new Error("Storage write was aborted"));
   });
+}
+
+/** Record (or clear, with null) where a project is published. Doesn't touch the document or its revision. */
+export async function setPublishInfo(id: string, info: PublishInfo | null): Promise<void> {
+  const db = await openDb();
+  await new Promise<void>((resolve, reject) => {
+    const t = db.transaction(STORE, "readwrite");
+    const store = t.objectStore(STORE);
+    const getReq = store.get(id) as IDBRequest<ProjectRecord | undefined>;
+    getReq.onsuccess = () => {
+      const existing = getReq.result;
+      if (!existing) return;
+      const { publish: _old, ...rest } = existing;
+      store.put(info ? { ...rest, publish: info } : rest);
+    };
+    t.oncomplete = () => resolve();
+    t.onerror = () => reject(t.error ?? new Error("Storage error"));
+    t.onabort = () => reject(t.error ?? new Error("Storage write was aborted"));
+  });
+}
+
+export async function getPublishInfo(id: string): Promise<PublishInfo | null> {
+  const rec = await tx<ProjectRecord>("readonly", (s) => s.get(id) as IDBRequest<ProjectRecord>);
+  return rec?.publish ?? null;
 }
 
 export async function deleteProject(id: string): Promise<void> {
