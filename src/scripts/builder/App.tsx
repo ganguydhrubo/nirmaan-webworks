@@ -5,13 +5,13 @@ import type { SiteDoc } from "@/lib/builder/schema";
 import { initEditor, getState, setState } from "./store";
 import { startAutosave, saveNow } from "./autosave";
 import { createProject, deleteProject, getProject, listProjects, readBackup, storageAvailable, type ProjectSummary } from "./persistence";
-import { generateSite } from "./api";
+import { generateSite, newRequestId } from "./api";
 import { StartScreen, Wizard, Generating, EMPTY_BRIEF } from "./Onboarding";
 import { Editor } from "./Editor";
 import { Toasts, toast, confirmDialog } from "./ui";
 import "./builder.css";
 
-type Screen = { name: "loading" } | { name: "start"; showTemplates?: boolean } | { name: "wizard" } | { name: "generating"; error: { code: string; message: string } | null } | { name: "editor" };
+type Screen = { name: "loading" } | { name: "start"; showTemplates?: boolean } | { name: "wizard" } | { name: "generating"; error: { code: string; message: string; retryable: boolean } | null } | { name: "editor" };
 
 const BRIEF_DRAFT_KEY = "atittle-builder-brief";
 
@@ -39,6 +39,7 @@ export default function App() {
   const [remaining, setRemaining] = useState<number | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const inFlight = useRef(false);
+  const lastAttempt = useRef<{ key: string; id: string; reuse: boolean } | null>(null);
 
   const refreshProjects = async () => {
     try {
@@ -116,13 +117,18 @@ export default function App() {
     setScreen({ name: "generating", error: null });
     const controller = new AbortController();
     abortRef.current = controller;
-    const result = await generateSite(b, controller.signal);
+    // Same brief retried after a dropped connection → same request id, so the
+    // server can hand back a site it already generated instead of paying twice.
+    const key = JSON.stringify(b);
+    if (!lastAttempt.current || lastAttempt.current.key !== key || !lastAttempt.current.reuse) lastAttempt.current = { key, id: newRequestId(), reuse: false };
+    const result = await generateSite(b, lastAttempt.current.id, controller.signal);
+    lastAttempt.current.reuse = !result.ok && (result.code === "network" || result.code === "bad_response");
     inFlight.current = false;
     abortRef.current = null;
     if (typeof result.remaining === "number") setRemaining(result.remaining);
     if (!result.ok) {
       if (result.code === "aborted") return setScreen({ name: "wizard" });
-      return setScreen({ name: "generating", error: { code: result.code, message: result.message } });
+      return setScreen({ name: "generating", error: { code: result.code, message: result.message, retryable: result.retryable !== false } });
     }
     await openDoc(result.doc, "Your website is ready! Click any text to edit it, or select a section to change its layout.");
   };

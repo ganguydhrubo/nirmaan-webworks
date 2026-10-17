@@ -11,11 +11,10 @@ import {
   removeSection,
   moveSection,
   currentPage,
-  setUploadedImage,
   type EditorState,
 } from "./store";
-import { processUpload, ACCEPT_ATTR } from "./images";
-import { Icon, toast, confirmDialog } from "./ui";
+import { ImageStudio, type StudioTab } from "./ImageStudio";
+import { Icon, confirmDialog } from "./ui";
 
 export function Properties({ onAskAi }: { onAskAi: () => void }) {
   const selectedId = useEditor((s) => s.selectedId);
@@ -109,13 +108,15 @@ function StyleControls({ section }: { section: Section }) {
       <summary>Section style</summary>
       <div class="atb-field">
         <span>Background</span>
-        <div class="atb-seg" role="radiogroup" aria-label="Background">
+        <div class="atb-seg atb-seg-grid" role="radiogroup" aria-label="Background">
           {(
             [
               ["default", "Page"],
               ["surface", "Soft"],
               ["accent", "Brand"],
               ["dark", "Dark"],
+              ["gradient", "Glow"],
+              ["pattern", "Dots"],
             ] as const
           ).map(([v, label]) => (
             <button key={v} type="button" role="radio" aria-checked={section.style.background === v} onClick={() => updateSection(section.id, { style: { ...section.style, background: v } })}>
@@ -308,12 +309,12 @@ function LinkField({ section, field, path, value, id }: { section: Section; fiel
 
 function ImageField({ section, field, path, value, focus }: { section: Section; field: Extract<FieldSpec, { kind: "image" }>; path: string; value: ImageValue; focus: boolean }) {
   const assets = useEditor((s) => s.doc.assets);
-  const fileRef = useRef<HTMLInputElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
-  const [busy, setBusy] = useState(false);
+  const [studio, setStudio] = useState<StudioTab | null>(null);
   const [urlDraft, setUrlDraft] = useState(value.src.startsWith("https://") ? value.src : "");
   const src = safeImageSrc(value.src, new Set(Object.keys(assets)));
-  const preview = src.startsWith(ASSET_PREFIX) ? assets[src.slice(ASSET_PREFIX.length)]?.dataUrl : src;
+  const asset = src.startsWith(ASSET_PREFIX) ? assets[src.slice(ASSET_PREFIX.length)] : undefined;
+  const preview = asset ? asset.dataUrl : src;
 
   useEffect(() => {
     if (focus && boxRef.current) {
@@ -322,48 +323,43 @@ function ImageField({ section, field, path, value, focus }: { section: Section; 
     }
   }, [focus]);
 
-  const onFile = async (file: File) => {
-    setBusy(true);
-    try {
-      const asset = await processUpload(file);
-      setUploadedImage(section.id, path, asset, value.alt || asset.name.replace(/[-_]+/g, " "));
-      toast("Image added.", "success", undefined, 2500);
-    } catch (err) {
-      toast(err instanceof Error ? err.message : "Couldn't use that image.", "error");
-    } finally {
-      setBusy(false);
-    }
-  };
+  // Prompt suggestion for AI images: the alt text the AI wrote, else the section's headline.
+  const p = section.props as Record<string, unknown>;
+  const suggestion = value.alt || String(p.headline ?? p.heading ?? "").slice(0, 200);
 
   return (
     <div class={`atb-field atb-image-field${focus ? " atb-focus-ring" : ""}`} ref={boxRef}>
       <span>{field.label}</span>
       <div class="atb-image-row">
-        <div class="atb-thumb">{preview ? <img src={preview} alt="" /> : <Icon name="image" size={22} />}</div>
-        <div class="atb-image-actions">
-          <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" disabled={busy} onClick={() => fileRef.current?.click()}>
-            <Icon name="upload" size={16} /> {busy ? "Processing…" : preview ? "Replace" : "Upload"}
-          </button>
+        <button type="button" class="atb-thumb atb-thumb-btn" onClick={() => setStudio(preview ? "library" : "ai")} aria-label={preview ? "Change image" : "Add an image"}>
+          {preview ? <img src={preview} alt="" /> : <Icon name="image" size={22} />}
+        </button>
+        <div class="atb-image-meta">
+          {asset?.source && <span class={`atb-tag atb-tag-${asset.source}`}>{asset.source === "ai" ? "AI-generated" : asset.source === "illustration" ? "Illustration" : "Uploaded"}</span>}
+          {!preview && <span class="atb-muted atb-small">No image yet — a soft colour block is shown.</span>}
           {preview && (
-            <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => updateProp(section.id, path, { src: "", alt: value.alt })}>
-              Remove
+            <button type="button" class="atb-link-btn atb-small" onClick={() => updateProp(section.id, path, { src: "", alt: value.alt })}>
+              Remove image
             </button>
           )}
         </div>
-        <input
-          ref={fileRef}
-          type="file"
-          accept={ACCEPT_ATTR}
-          hidden
-          onChange={(e) => {
-            const f = e.currentTarget.files?.[0];
-            if (f) void onFile(f);
-            e.currentTarget.value = "";
-          }}
-        />
+      </div>
+      <div class="atb-image-sources">
+        <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={() => setStudio("ai")}>
+          <Icon name="sparkles" size={15} /> AI image
+        </button>
+        <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => setStudio("upload")}>
+          <Icon name="upload" size={15} /> Upload
+        </button>
+        <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => setStudio("library")}>
+          <Icon name="image" size={15} /> Your images
+        </button>
+        <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => setStudio("illustration")}>
+          <Icon name="palette" size={15} /> Illustration
+        </button>
       </div>
       <details class="atb-sub">
-        <summary>Use an image address instead</summary>
+        <summary>Use an image web address instead</summary>
         <input
           type="url"
           placeholder="https://…/photo.jpg"
@@ -377,12 +373,13 @@ function ImageField({ section, field, path, value, focus }: { section: Section; 
           }}
         />
         {urlDraft && !safeImageSrc(urlDraft) && <small class="atb-error">Use an https:// link to a JPG, PNG, WebP or GIF image.</small>}
-        <small class="atb-muted">Only use images you own or have permission to use.</small>
+        <small class="atb-muted">Linked images load from that website, so they must stay online. Uploading is more reliable. Only use images you have permission to use.</small>
       </details>
       <label class="atb-field atb-tight">
         <span>Image description (for screen readers and Google)</span>
         <input value={value.alt} maxLength={160} onInput={(e) => updateProp(section.id, `${path}.alt`, e.currentTarget.value)} />
       </label>
+      {studio && <ImageStudio sectionId={section.id} path={path} alt={value.alt} suggestion={suggestion} initialTab={studio} onClose={() => setStudio(null)} />}
     </div>
   );
 }

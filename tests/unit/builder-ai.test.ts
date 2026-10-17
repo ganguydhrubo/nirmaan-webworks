@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { chatJson, chatJsonValidated, ChatError, parseJsonLoose } from "@/lib/ai/chat-provider";
+import { chatJson, chatJsonValidated, ChatError, parseJsonLoose, _resetProviderHealth } from "@/lib/ai/chat-provider";
 import { briefSchema, docFromGeneration, docFromEdit, sectionFromEdit, systemPrompt } from "@/lib/builder/ai";
 import { consumeAiCredit, _resetMemoryQuota } from "@/lib/builder/quota";
 import { templateDoc } from "@/lib/builder/templates";
@@ -17,6 +17,7 @@ beforeEach(() => {
   process.env.GEMINI_API_KEY = "m";
   process.env.OPENROUTER_API_KEY = "o";
   delete process.env.BUILDER_AI_PROVIDERS;
+  _resetProviderHealth();
   vi.spyOn(console, "warn").mockImplementation(() => {});
 });
 afterEach(() => {
@@ -124,7 +125,7 @@ describe("AI output guards (no fabricated facts)", () => {
     expect(contact.props.address).toBe("");
     expect(contact.props.hours).toBe(""); // user gave no times
     expect(sections.find((s) => s.type === "testimonials")!.props.isSample).toBe(true);
-    expect(doc.theme.preset).toBe("fresh");
+    expect(doc.theme.preset).toBe("organic"); // old "fresh" id maps to the organic direction
   });
 
   it("AI edits keep the user's contact details, ids and real-testimonial choice", () => {

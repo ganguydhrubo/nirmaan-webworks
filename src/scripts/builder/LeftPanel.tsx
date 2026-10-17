@@ -235,12 +235,29 @@ function PagesTab() {
 
 const COLOR_FIELDS: [keyof ThemeColors, string][] = [
   ["accent", "Brand / buttons"],
+  ["secondary", "Second colour (details)"],
   ["bg", "Page background"],
   ["surface", "Soft sections & cards"],
   ["text", "Main text"],
   ["muted", "Secondary text"],
   ["dark", "Dark sections (footer)"],
+  ["border", "Lines & borders"],
 ];
+
+function Seg<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: [T, string][]; onChange: (v: T) => void }) {
+  return (
+    <div class="atb-field">
+      <span>{label}</span>
+      <div class={`atb-seg atb-full${options.length > 3 ? " atb-seg-grid" : ""}`} role="radiogroup" aria-label={label}>
+        {options.map(([v, l]) => (
+          <button key={v} type="button" role="radio" aria-checked={value === v} onClick={() => onChange(v)}>
+            {l}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function DesignTab() {
   const theme = useEditor((s) => s.doc.theme);
@@ -310,22 +327,17 @@ function DesignTab() {
             ))}
           </select>
         </label>
-        <div class="atb-field">
-          <span>Corners</span>
-          <div class="atb-seg" role="radiogroup" aria-label="Corners">
-            {(
-              [
-                ["sharp", "Sharp"],
-                ["soft", "Soft"],
-                ["round", "Round"],
-              ] as const
-            ).map(([v, l]) => (
-              <button key={v} type="button" role="radio" aria-checked={theme.radius === v} onClick={() => setTheme({ ...theme, radius: v })}>
-                {l}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Seg label="Corners" value={theme.radius} options={[["sharp", "Sharp"], ["soft", "Soft"], ["round", "Round"]]} onChange={(v) => setTheme({ ...theme, radius: v })} />
+      </details>
+      <details class="atb-more" open>
+        <summary>Layout & components</summary>
+        <Seg label="Buttons" value={theme.buttonShape} options={[["square", "Square"], ["rounded", "Rounded"], ["pill", "Pill"]]} onChange={(v) => setTheme({ ...theme, buttonShape: v })} />
+        <Seg label="Cards" value={theme.cardStyle} options={[["flat", "Flat"], ["bordered", "Outlined"], ["elevated", "Shadow"]]} onChange={(v) => setTheme({ ...theme, cardStyle: v })} />
+        <Seg label="Page width" value={theme.contentWidth} options={[["narrow", "Narrow"], ["normal", "Normal"], ["wide", "Wide"]]} onChange={(v) => setTheme({ ...theme, contentWidth: v })} />
+        <Seg label="Headings" value={theme.headingStyle} options={[["light", "Light"], ["normal", "Normal"], ["bold", "Bold"], ["uppercase", "CAPS"]]} onChange={(v) => setTheme({ ...theme, headingStyle: v })} />
+        <Seg label="Text size" value={theme.typeScale} options={[["compact", "Small"], ["normal", "Medium"], ["large", "Large"]]} onChange={(v) => setTheme({ ...theme, typeScale: v })} />
+        <Seg label="Scroll animation" value={theme.motion} options={[["none", "Off"], ["subtle", "Subtle"]]} onChange={(v) => setTheme({ ...theme, motion: v })} />
+        <small class="atb-muted">Animation is automatically turned off for visitors who prefer reduced motion.</small>
       </details>
       <details class="atb-more" open>
         <summary>Site details (SEO)</summary>

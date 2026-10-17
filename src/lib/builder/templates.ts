@@ -53,7 +53,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "small-business",
     label: "Small business",
     description: "A clear one-page site for any local shop or business.",
-    preset: "warm",
+    preset: "local",
     name: "Greenleaf Stores",
     siteDescription: "Everyday essentials and friendly service in your neighbourhood.",
     pages: [
@@ -113,7 +113,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "consultant",
     label: "Consultant",
     description: "Build trust with services, process and an easy way to book a call.",
-    preset: "clean",
+    preset: "editorial",
     name: "Clearpath Advisory",
     siteDescription: "Practical business and finance advice for growing small companies.",
     pages: [
@@ -121,8 +121,8 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("Clearpath Advisory", "Book a call"),
-          sec("hero", "split", { eyebrow: "Independent business advisor", headline: "Clear advice for the decisions that shape your business", subheadline: "I help small business owners plan growth, fix cash flow, and make confident decisions — without jargon.", primaryLabel: "Book a free 20-minute call", primaryHref: "#contact", secondaryLabel: "How I help", secondaryHref: "#services" }, { background: "default", align: "left", spacing: "spacious" }),
-          sec("services", "cards", {
+          sec("hero", "editorial", { eyebrow: "Independent business advisor", headline: "Clear advice for the decisions that shape your business", subheadline: "I help small business owners plan growth, fix cash flow, and make confident decisions — without jargon.", primaryLabel: "Book a free 20-minute call", primaryHref: "#contact", secondaryLabel: "How I help", secondaryHref: "#services" }, { background: "default", align: "left", spacing: "spacious" }),
+          sec("services", "numbered", {
             heading: "How I can help",
             intro: "",
             items: [
@@ -131,13 +131,13 @@ const TEMPLATES: TemplateDef[] = [
               { title: "Pricing strategy", description: "Price your services with confidence, based on value and real costs.", price: "" },
             ],
           }),
-          sec("features", "checklist", {
+          sec("steps", "timeline", {
             heading: "How we work together",
             intro: "",
             items: [
-              { title: "1. Free intro call", description: "We talk about where you are and where you want to be." },
-              { title: "2. Clear proposal", description: "You get a fixed scope and price before any work starts." },
-              { title: "3. Practical results", description: "Short sessions, written summaries, and next steps you can act on." },
+              { title: "Free intro call", description: "We talk about where you are and where you want to be." },
+              { title: "Clear proposal", description: "You get a fixed scope and price before any work starts." },
+              { title: "Practical results", description: "Short sessions, written summaries, and next steps you can act on." },
             ],
           }, { background: "surface", align: "left", spacing: "normal" }),
           sec("faq", "accordion", { heading: "Common questions", items: [{ question: "Do you work with businesses outside my city?", answer: "Yes. Most sessions happen over video call, so location is rarely a problem." }, { question: "How much does it cost?", answer: "It depends on the scope. After a free intro call you get a fixed quote, so there are no surprises." }] }, { background: "default", align: "left", spacing: "normal" }),
@@ -151,7 +151,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "freelancer",
     label: "Freelancer",
     description: "Services, pricing packages and a contact form for solo professionals.",
-    preset: "bold",
+    preset: "studio",
     name: "Arjun Builds",
     siteDescription: "Freelance web and brand design for small businesses.",
     pages: [
@@ -181,7 +181,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "agency",
     label: "Agency",
     description: "A multi-page site for a creative or marketing agency.",
-    preset: "night",
+    preset: "dark-tech",
     name: "Northwind Creative",
     siteDescription: "A small creative agency for brands that want to stand out.",
     pages: [
@@ -215,7 +215,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "restaurant",
     label: "Restaurant or café",
     description: "Menu highlights, photos, opening hours and directions.",
-    preset: "warm",
+    preset: "hospitality",
     name: "The Courtyard Café",
     siteDescription: "A relaxed neighbourhood café serving fresh food and great coffee.",
     pages: [
@@ -245,7 +245,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "local-service",
     label: "Local service provider",
     description: "For plumbers, electricians, tutors, cleaners and other services.",
-    preset: "calm",
+    preset: "corporate",
     name: "SparkFix Repairs",
     siteDescription: "Reliable home electrical and appliance repairs.",
     pages: [
@@ -256,6 +256,7 @@ const TEMPLATES: TemplateDef[] = [
           sec("hero", "split", { eyebrow: "Home repairs", headline: "Reliable electrical repairs, usually the same day", subheadline: "Trained technicians, upfront prices, and a tidy job — every time.", primaryLabel: "Book a visit", primaryHref: "#contact", secondaryLabel: "Our services", secondaryHref: "#services" }, { background: "default", align: "left", spacing: "spacious" }),
           sec("services", "cards", { heading: "Services", intro: "Not sure what you need? Call us and describe the problem.", items: [{ title: "Wiring & switchboards", description: "Fault finding, rewiring, new points and safety checks.", price: "" }, { title: "Fans, lights & fittings", description: "Installation and repair of fans, lights and fixtures.", price: "" }, { title: "Appliance repair", description: "Washing machines, geysers, mixers and more.", price: "" }] }),
           sec("features", "checklist", { heading: "Why customers call us", intro: "", items: [{ title: "Upfront pricing", description: "You approve the price before any work starts." }, { title: "On time", description: "We give you a time window and stick to it." }, { title: "Clean and safe", description: "We follow safety standards and clean up after the job." }] }, { background: "surface", align: "left", spacing: "normal" }),
+          sec("steps", "cards", { heading: "Booking is simple", intro: "", items: [{ title: "Call or WhatsApp", description: "Tell us the problem and your area." }, { title: "We confirm a time", description: "You get a visit window and an upfront estimate." }, { title: "Fixed, tested, tidy", description: "We finish the job, test it, and clean up." }] }, { background: "default", align: "left", spacing: "normal" }),
           sec("faq", "accordion", { heading: "Questions", items: [{ question: "Which areas do you cover?", answer: "List the neighbourhoods or pin codes you serve here." }, { question: "Do you charge for a visit?", answer: "Explain your visit or inspection charge here, if any." }] }),
           contact("Book a repair", "Call or WhatsApp us with the problem and your area."),
           footer("SparkFix Repairs", "Home electrical and appliance repairs."),
@@ -267,7 +268,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "personal-brand",
     label: "Personal brand",
     description: "For coaches, speakers, creators and writers.",
-    preset: "premium",
+    preset: "luxury",
     name: "Neha Kapoor",
     siteDescription: "Career coach helping professionals find work they love.",
     pages: [
@@ -300,7 +301,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "startup",
     label: "Startup landing page",
     description: "Explain your product, show features and collect sign-ups.",
-    preset: "night",
+    preset: "playful",
     name: "Taskly",
     siteDescription: "Taskly is a simple task board for small teams.",
     pages: [
@@ -322,7 +323,7 @@ const TEMPLATES: TemplateDef[] = [
     id: "product",
     label: "Product or service",
     description: "Sell one product or service with benefits, pricing and FAQs.",
-    preset: "fresh",
+    preset: "organic",
     name: "Hearth Candles",
     siteDescription: "Hand-poured soy candles made in small batches.",
     pages: [

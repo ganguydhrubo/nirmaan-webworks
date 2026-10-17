@@ -48,6 +48,7 @@ export type SectionType =
   | "testimonials"
   | "pricing"
   | "faq"
+  | "steps"
   | "contact"
   | "cta"
   | "text"
@@ -103,6 +104,7 @@ export const SECTION_DEFS: SectionDef[] = [
     variants: [
       { id: "centered", label: "Centered" },
       { id: "split", label: "Text + image" },
+      { id: "editorial", label: "Editorial (big type)" },
       { id: "banner", label: "Image background" },
     ],
     fields: [
@@ -138,6 +140,7 @@ export const SECTION_DEFS: SectionDef[] = [
     description: "What you offer, as cards.",
     variants: [
       { id: "cards", label: "Cards" },
+      { id: "numbered", label: "Numbered" },
       { id: "list", label: "List" },
     ],
     fields: [
@@ -295,6 +298,33 @@ export const SECTION_DEFS: SectionDef[] = [
         default: [
           { question: "A question customers ask", answer: "A clear, helpful answer." },
           { question: "Another common question", answer: "A clear, helpful answer." },
+        ],
+      },
+    ],
+  },
+  {
+    type: "steps",
+    label: "Steps / How it works",
+    description: "Your process in 3–5 simple steps.",
+    variants: [
+      { id: "timeline", label: "Timeline" },
+      { id: "cards", label: "Cards" },
+    ],
+    fields: [
+      t("heading", "Heading", 100, "How it works"),
+      ta("intro", "Intro text", 280, ""),
+      {
+        kind: "list",
+        key: "items",
+        label: "Steps",
+        itemLabel: "Step",
+        minItems: 2,
+        maxItems: 6,
+        fields: [t("title", "Step title", 60, "Step"), ta("description", "Description", 240, "What happens in this step.")],
+        default: [
+          { title: "Tell us what you need", description: "A quick call or message about your goals." },
+          { title: "Get a clear plan", description: "A simple plan and price, before any work starts." },
+          { title: "Enjoy the result", description: "We deliver, check in, and make sure you're happy." },
         ],
       },
     ],

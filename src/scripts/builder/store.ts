@@ -333,6 +333,39 @@ export function setUploadedImage(sectionId: string, path: string, asset: SiteDoc
   );
 }
 
+/** Point an image field at an image already in the project's library. */
+export function applyLibraryImage(sectionId: string, path: string, assetId: string, alt: string): void {
+  if (!state.doc.assets[assetId]) return;
+  commit(mapSection(state.doc, sectionId, (s) => ({ ...s, props: setIn(s.props, parsePath(path), { src: `asset:${assetId}`, alt }) as Record<string, unknown> })), { origin: "panel" });
+}
+
+export function renameAsset(assetId: string, name: string): void {
+  const asset = state.doc.assets[assetId];
+  if (!asset) return;
+  commit({ ...state.doc, assets: { ...state.doc.assets, [assetId]: { ...asset, name: name.slice(0, 80) } } }, { coalesceKey: `asset-name:${assetId}`, origin: "system" });
+}
+
+/** Remove an image from the library. Only allowed when no section uses it. */
+export function deleteAsset(assetId: string): boolean {
+  if (assetUsage(state.doc, assetId) > 0) return false;
+  const rest = { ...state.doc.assets };
+  delete rest[assetId];
+  commit({ ...state.doc, assets: rest }, { origin: "system" });
+  return true;
+}
+
+export function assetUsage(doc: SiteDoc, assetId: string): number {
+  const ref = `asset:${assetId}`;
+  let n = 0;
+  const visit = (v: unknown) => {
+    if (v === ref) n++;
+    else if (Array.isArray(v)) v.forEach(visit);
+    else if (v && typeof v === "object") Object.values(v).forEach(visit);
+  };
+  for (const p of doc.pages) for (const s of p.sections) visit(s.props);
+  return n;
+}
+
 /** Drop uploaded images no section references any more (keeps saved projects small). */
 export function pruneAssets(doc: SiteDoc, used: string[]): SiteDoc {
   const keep = new Set(used);

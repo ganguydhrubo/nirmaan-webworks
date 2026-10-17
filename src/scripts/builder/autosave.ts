@@ -2,8 +2,7 @@
  * Debounced autosave of the editor document to browser storage, with
  * explicit saving / saved / failed / conflict states.
  */
-import { getState, setState, subscribe, initEditor, pruneAssets } from "./store";
-import { usedAssetIds } from "@/lib/builder/export";
+import { getState, setState, subscribe, initEditor } from "./store";
 import { ConflictError, describeStorageError, getProject, saveProject } from "./persistence";
 
 const DEBOUNCE_MS = 1200;
@@ -41,7 +40,7 @@ export async function saveNow(): Promise<void> {
   if (!s.projectId || s.rev === s.savedRev || s.saveState === "conflict" || s.saveState === "unavailable") return;
   const { projectId, doc, rev, savedRev } = s;
   setState({ saveState: "saving", saveMessage: "" });
-  inFlight = saveProject(projectId, pruneAssets(doc, usedAssetIds(doc)), savedRev, rev)
+  inFlight = saveProject(projectId, doc, savedRev, rev)
     .then(() => {
       const now = getState();
       // Only mark saved if no newer save superseded this one.

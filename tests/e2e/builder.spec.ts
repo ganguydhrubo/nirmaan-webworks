@@ -1,5 +1,9 @@
 import { test, expect, type Page, type FrameLocator, type Locator } from "@playwright/test";
 import { readZip } from "../../src/lib/builder/zip";
+import { templateDoc } from "../../src/lib/builder/templates";
+import { themeFromPreset } from "../../src/lib/builder/themes";
+
+const templateDocJson = (id: string) => JSON.parse(JSON.stringify(templateDoc(id)));
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -127,8 +131,11 @@ test("template → visual editing → undo/redo → persistence", async ({ page 
 
   // Theme change reaches the canvas.
   await page.getByRole("tab", { name: "Design" }).click();
-  await page.getByRole("button", { name: /Bold & energetic/ }).click();
-  await expect.poll(async () => frame.locator("body").evaluate((b) => getComputedStyle(b).getPropertyValue("--accent").trim())).toBe("#d63d1f");
+  await page.getByRole("button", { name: /Bold creative studio/ }).click();
+  await expect.poll(async () => frame.locator("body").evaluate((b) => getComputedStyle(b).getPropertyValue("--accent").trim())).toBe(themeFromPreset("studio").colors.accent);
+  // Component tokens reach the canvas too.
+  await page.getByRole("radiogroup", { name: "Buttons" }).getByRole("radio", { name: "Pill" }).click();
+  await expect.poll(async () => frame.locator("body").evaluate((b) => getComputedStyle(b).getPropertyValue("--r-btn").trim())).toBe("999px");
 
   // Autosave, then reload: the project reopens from browser storage.
   await expect(page.locator(".atb-save")).toContainText("Saved", { timeout: 10_000 });
@@ -269,4 +276,125 @@ test("real AI generation end-to-end", async ({ page }) => {
   await expect(page.locator(".atb-editor")).toBeVisible({ timeout: 90_000 });
   await expect(canvas(page).locator("h1")).toBeVisible();
   await expect(canvas(page).locator(".sec-navbar")).toHaveCount(1);
+});
+
+// ---------------------------------------------------------------------------
+// Image workflows
+// ---------------------------------------------------------------------------
+
+async function makeJpeg(page: Page, w = 640, h = 420): Promise<Buffer> {
+  const dataUrl = await page.evaluate(
+    ({ w, h }) => {
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = h;
+      const g = c.getContext("2d")!;
+      const grad = g.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, "#c1522e");
+      grad.addColorStop(1, "#2b5f5c");
+      g.fillStyle = grad;
+      g.fillRect(0, 0, w, h);
+      return c.toDataURL("image/jpeg", 0.9);
+    },
+    { w, h },
+  );
+  return Buffer.from(dataUrl.split(",")[1]!, "base64");
+}
+
+async function openHeroImage(page: Page) {
+  await page.locator(".atb-section-item", { hasText: "Hero" }).click();
+  await expect(page.locator(".atb-image-sources")).toBeVisible();
+}
+
+test("upload image → shows in canvas → survives reload → included in ZIP", async ({ page }) => {
+  await openTemplate(page, "small-business");
+  await openHeroImage(page);
+  await page.locator(".atb-image-sources").getByRole("button", { name: "Upload" }).click();
+  await page.locator('.atb-studio-pane input[type="file"]').setInputFiles({ name: "shop.jpg", mimeType: "image/jpeg", buffer: await makeJpeg(page) });
+  await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1);
+  expect(await canvas(page).locator(".sec-hero img").evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(100);
+  await expect(page.locator(".atb-image-field .atb-tag")).toHaveText("Uploaded");
+
+  await expect(page.locator(".atb-save")).toContainText("Saved", { timeout: 10_000 });
+  await page.reload();
+  await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1, { timeout: 15_000 });
+
+  await page.getByRole("button", { name: "Download" }).first().click();
+  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download website (.zip)" }).click()]);
+  const entries = readZip(new Uint8Array(fs.readFileSync((await download.path())!)));
+  const img = entries.find((e) => e.path.startsWith("assets/images/"));
+  expect(img, entries.map((e) => e.path).join(",")).toBeDefined();
+  expect([...img!.data.slice(0, 3)]).toEqual([0xff, 0xd8, 0xff]); // real JPEG bytes
+  const index = new TextDecoder().decode(entries.find((e) => e.path === "index.html")!.data);
+  expect(index).toContain(`src="${img!.path}"`);
+});
+
+test("library reuse, rename and safe delete", async ({ page }) => {
+  await openTemplate(page, "small-business");
+  await openHeroImage(page);
+  await page.locator(".atb-image-sources").getByRole("button", { name: "Upload" }).click();
+  await page.locator('.atb-studio-pane input[type="file"]').setInputFiles({ name: "front.jpg", mimeType: "image/jpeg", buffer: await makeJpeg(page) });
+  await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1);
+  // Reuse it in the About section
+  await page.locator(".atb-section-item", { hasText: "About" }).click();
+  await page.locator(".atb-image-sources").getByRole("button", { name: "Your images" }).click();
+  await expect(page.locator(".atb-library li")).toHaveCount(1);
+  await page.getByLabel("Image name").fill("Shop front");
+  const del = page.getByRole("button", { name: "Delete Shop front" });
+  await expect(del).toBeDisabled(); // in use → can't be deleted
+  await page.getByRole("button", { name: "Use Shop front" }).click();
+  await expect(canvas(page).locator(".sec-about img")).toHaveCount(1);
+});
+
+test("illustration fallback is applied and labelled as an illustration", async ({ page }) => {
+  await openTemplate(page, "consultant");
+  await page.locator(".atb-section-item", { hasText: "Hero" }).click();
+  await page.getByLabel("Layout").selectOption("split");
+  await page.locator(".atb-image-sources").getByRole("button", { name: "Illustration" }).click();
+  await page.getByRole("button", { name: "Waves" }).click();
+  await page.getByRole("button", { name: "Use this illustration" }).click();
+  await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1);
+  await expect(page.locator(".atb-image-field .atb-tag")).toHaveText("Illustration");
+});
+
+test("AI image (mocked AI): honest unavailable notice, then a generated image is applied and tagged", async ({ page }) => {
+  let available = false;
+  await page.route("**/api/builder/image", async (route) => {
+    if (route.request().method() === "GET") return route.fulfill({ json: { ok: true, available, reason: available ? null : "AI image generation is temporarily unavailable (the image service's quota is used up)." } });
+    const jpeg = await makeJpeg(page, 800, 600);
+    return route.fulfill({ json: { ok: true, image: { dataUrl: `data:image/jpeg;base64,${jpeg.toString("base64")}`, mime: "image/jpeg", width: 800, height: 600, provider: "gemini", model: "mock", prompt: "a cafe" }, remaining: 3 } });
+  });
+  await openTemplate(page, "restaurant");
+  await openHeroImage(page);
+  await page.locator(".atb-image-sources").getByRole("button", { name: "AI image" }).click();
+  await expect(page.getByText("AI image generation is unavailable right now.")).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  available = true;
+  await page.locator(".atb-image-sources").getByRole("button", { name: "AI image" }).click();
+  await page.getByLabel("Describe the image").fill("A warm cafe interior with plants");
+  await page.getByRole("button", { name: "Generate image" }).click();
+  await page.getByRole("button", { name: "Use this image" }).click();
+  await expect(canvas(page).locator(".sec-hero img")).toHaveCount(1);
+  await expect(page.locator(".atb-image-field .atb-tag")).toHaveText("AI-generated");
+});
+
+test("AI generation (mocked AI): a failed attempt keeps the brief and isn't charged", async ({ page }) => {
+  let calls = 0;
+  await page.route("**/api/builder/generate", (route) => {
+    calls++;
+    return calls === 1
+      ? route.fulfill({ status: 429, json: { ok: false, code: "rate_limited", message: "All our AI services are busy at the moment.", remaining: 8, retryable: true } })
+      : route.fulfill({ json: { ok: true, doc: templateDocJson("consultant"), remaining: 7 } });
+  });
+  await page.goto("/free-website-builder/app?start=ai");
+  await page.getByLabel(/Business or website name/).fill("Clearpath");
+  await page.getByLabel(/Describe your business/).fill("Business advice for small companies in Pune.");
+  await page.getByRole("button", { name: "Generate my website" }).click();
+  await expect(page.getByRole("alert")).toContainText("busy");
+  await expect(page.getByText("Failed attempts don't use up your free AI requests")).toBeVisible();
+  await page.getByRole("button", { name: "Change my answers" }).click();
+  await expect(page.getByLabel(/Business or website name/)).toHaveValue("Clearpath"); // nothing to retype
+  await page.getByRole("button", { name: "Generate my website" }).click();
+  await expect(page.locator(".atb-editor")).toBeVisible({ timeout: 15_000 });
 });

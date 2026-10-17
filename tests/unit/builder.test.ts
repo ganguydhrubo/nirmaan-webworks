@@ -68,7 +68,7 @@ describe("builder: document normalisation", () => {
       ],
     });
     expect(doc.name).toBe("Test <b>Site</b>"); // kept as text; escaped at render time
-    expect(doc.theme.preset).toBe("night");
+    expect(doc.theme.preset).toBe("dark-tech"); // old "night" preset id maps to the new direction
     expect(doc.theme.colors.bg).toBe("#123456");
     expect(doc.theme.colors.accent).not.toBe("red");
     expect(doc.theme.fontHeading).toBe("Space Grotesk");

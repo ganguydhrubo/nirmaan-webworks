@@ -304,7 +304,7 @@ const STAGES = ["Planning your pages…", "Writing your headline and copy…", "
 
 export function Generating(props: {
   brief: Brief;
-  error: { code: string; message: string } | null;
+  error: { code: string; message: string; retryable: boolean } | null;
   onCancel: () => void;
   onRetry: () => void;
   onEdit: () => void;
@@ -318,7 +318,7 @@ export function Generating(props: {
     return () => window.clearInterval(t);
   }, [props.error]);
   const stage = STAGES[Math.min(STAGES.length - 1, Math.floor(elapsed / 5))]!;
-  const retryable = props.error && !["quota_exceeded", "not_configured", "invalid_input"].includes(props.error.code);
+  const retryable = props.error && props.error.retryable && !["quota_exceeded", "not_configured", "invalid_input", "unavailable"].includes(props.error.code);
 
   return (
     <div class="atb-start">
@@ -355,7 +355,7 @@ export function Generating(props: {
                 Start from a template instead
               </button>
             </div>
-            {retryable && <p class="atb-muted">Trying again uses another free AI request.</p>}
+            {retryable && <p class="atb-muted">Your answers are kept. Failed attempts don't use up your free AI requests.</p>}
           </>
         )}
       </main>

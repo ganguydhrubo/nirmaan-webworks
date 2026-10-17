@@ -14,11 +14,11 @@ import { normalizeTheme, DEFAULT_THEME, type Theme } from "./themes";
 export const SCHEMA_VERSION = 1;
 export const MAX_PAGES = 8;
 export const MAX_SECTIONS_PER_PAGE = 24;
-export const MAX_ASSETS = 24;
+export const MAX_ASSETS = 40;
 /** Per-image cap after the browser re-encodes uploads (see editor image upload). */
 export const MAX_ASSET_BYTES = 1_500_000;
 
-export type SectionBackground = "default" | "surface" | "accent" | "dark";
+export type SectionBackground = "default" | "surface" | "accent" | "dark" | "gradient" | "pattern";
 export type SectionAlign = "left" | "center";
 export type SectionSpacing = "compact" | "normal" | "spacious";
 
@@ -46,11 +46,17 @@ export interface Page {
 
 export type AssetMime = "image/jpeg" | "image/png" | "image/webp" | "image/gif";
 
+export type AssetSource = "upload" | "ai" | "illustration" | "url";
+
 export interface Asset {
   name: string;
   mime: AssetMime;
   /** base64 data: URL. Validated (type, signature, size) by normalizeDoc. */
   dataUrl: string;
+  /** Where the image came from — shown in the media library so AI images and illustrations are never mislabelled. */
+  source?: AssetSource;
+  /** The prompt, for AI-generated images. */
+  prompt?: string;
 }
 
 export interface SiteDoc {
@@ -107,13 +113,14 @@ export function validateAsset(raw: unknown): Asset | null {
     return null;
   }
   if (!SIGNATURES[mime](head)) return null;
-  return { name: cleanLine(a.name, 80) || "image", mime, dataUrl: a.dataUrl };
+  const source = a.source === "ai" || a.source === "illustration" || a.source === "url" ? a.source : "upload";
+  return { name: cleanLine(a.name, 80) || "image", mime, dataUrl: a.dataUrl, source, ...(source === "ai" && a.prompt ? { prompt: cleanLine(a.prompt, 600) } : {}) };
 }
 
 function normalizeStyle(raw: unknown): SectionStyle {
   const s = (raw && typeof raw === "object" ? raw : {}) as Partial<SectionStyle>;
   return {
-    background: s.background === "surface" || s.background === "accent" || s.background === "dark" ? s.background : "default",
+    background: (["surface", "accent", "dark", "gradient", "pattern"] as const).includes(s.background as never) ? (s.background as SectionBackground) : "default",
     align: s.align === "center" ? "center" : "left",
     spacing: s.spacing === "compact" || s.spacing === "spacious" ? s.spacing : "normal",
   };
@@ -134,7 +141,7 @@ export function defaultStyleFor(type: SectionType): SectionStyle {
   if (type === "footer") return { background: "dark", align: "left", spacing: "normal" };
   if (type === "cta") return { background: "accent", align: "center", spacing: "normal" };
   if (type === "hero") return { background: "default", align: "center", spacing: "spacious" };
-  if (type === "testimonials" || type === "faq") return { background: "surface", align: "left", spacing: "normal" };
+  if (type === "testimonials" || type === "faq" || type === "steps") return { background: "surface", align: "left", spacing: "normal" };
   return { background: "default", align: "left", spacing: "normal" };
 }
 

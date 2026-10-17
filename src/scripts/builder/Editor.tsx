@@ -5,7 +5,7 @@ import { getSectionDef } from "@/lib/builder/catalog";
 import { useEditor, undo, redo, setViewport, selectPage, getState, findSection, replaceDoc, replaceSection, currentPage, type Viewport } from "./store";
 import { saveNow, loadLatest, overwriteWithMine, retrySave } from "./autosave";
 import { backupBlob, downloadBlob } from "./persistence";
-import { editWithAi } from "./api";
+import { editWithAi, newRequestId } from "./api";
 import { previewDocument } from "./preview";
 import { Canvas } from "./Canvas";
 import { LeftPanel } from "./LeftPanel";
@@ -265,6 +265,7 @@ function AskAiDialog({ onClose, remaining, setRemaining }: { onClose: () => void
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const abortRef = useRef<AbortController | null>(null);
+  const attempt = useRef<{ key: string; id: string; reuse: boolean } | null>(null);
   useEffect(() => () => abortRef.current?.abort(), []);
 
   const run = async () => {
@@ -274,7 +275,10 @@ function AskAiDialog({ onClose, remaining, setRemaining }: { onClose: () => void
     const controller = new AbortController();
     abortRef.current = controller;
     const state = getState();
-    const result = await editWithAi(state.doc, instruction.trim(), scope === "section" ? selectedId : null, controller.signal);
+    const key = `${scope}:${selectedId}:${instruction.trim()}`;
+    if (!attempt.current || attempt.current.key !== key || !attempt.current.reuse) attempt.current = { key, id: newRequestId(), reuse: false };
+    const result = await editWithAi(state.doc, instruction.trim(), scope === "section" ? selectedId : null, attempt.current.id, controller.signal);
+    attempt.current.reuse = !result.ok && (result.code === "network" || result.code === "bad_response");
     setBusy(false);
     if (!result.ok) {
       if (typeof result.remaining === "number") setRemaining(result.remaining);
@@ -322,7 +326,7 @@ function AskAiDialog({ onClose, remaining, setRemaining }: { onClose: () => void
       )}
       <div class="atb-modal-actions">
         <span class="atb-muted atb-small">
-          Uses 1 free AI request{remaining !== null ? ` (${remaining} left today)` : ""}. Contact details and uploaded images are kept as they are. You can undo the change.
+          Uses 1 free AI request{remaining !== null ? ` (${remaining} left today)` : ""} — failed attempts are free. Your current website stays as it is until a change succeeds, and you can undo it.
         </span>
         {busy ? (
           <button type="button" class="atb-btn atb-btn-ghost" onClick={() => abortRef.current?.abort()}>

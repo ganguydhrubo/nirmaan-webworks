@@ -36,22 +36,70 @@ src/scripts/builder/       Preact editor island (client:only, loaded only on /fr
 
 The editor bundle (Preact + renderer + templates) is ~142 KB raw / ~45 KB gzip and is only requested by the editor page. The landing page ships one tiny inline script (iframe scaling).
 
-## 2. Configuration
+## 2. AI reliability (v2, 2026-10-17)
+
+### Root causes found in production logs
+
+1. **Only one provider in production.** Vercel production had `GROQ_API_KEY` only; `GEMINI_API_KEY` / `OPENROUTER_API_KEY` were never added, so every Groq failure ended with "no more providers". Logs show a visitor ("antagon") failing three times in a row this way.
+2. **Groq's free tier is ~8,000 tokens/minute** for `openai/gpt-oss-120b` (verified from `x-ratelimit-*` headers), and requests asked for `max_tokens: 9000`, which Groq reserves against that window — so after one or two generations everyone got HTTP 429.
+3. **Groq JSON mode rejects some of its own output** (`400 json_validate_failed`) even when it's usable; it was treated as a hard failure.
+4. Failed requests still consumed the visitor's free allowance, so retries ran them out faster.
+
+### Policy now (`src/lib/ai/chat-provider.ts`)
+
+| Situation | Behaviour |
+|---|---|
+| 429 / 5xx / timeout (transient) | Provider cooled down (Retry-After or rate-window reset, else 20 s); next provider tried. On the *last* eligible provider, one bounded wait if Retry-After ≤ 8 s. |
+| 401/403, 402 no credits, 404 model, 400 bad request (permanent) | Provider benched 10 min; never retried for that request. |
+| Groq `json_validate_failed` | `failed_generation` is salvaged, parsed and validated; only if unusable → next provider. |
+| Output fails validation / quality gate | Next provider (one call each, never loops). |
+| Groq rate window can't fit the request | Groq is skipped *before* calling (reads `x-ratelimit-remaining-tokens`). |
+| Every provider cooling down | Try the one that recovers soonest (unless all are misconfigured). |
+
+Plus: one overall deadline (≤56 s, inside Vercel `maxDuration: 60`), realistic `max_tokens` (4.8K generate, 2.5K section edit, 5.5K site edit), **request ids** (a retry after a dropped connection gets the cached answer, no second paid call), **one AI request in flight per visitor**, **failed requests refunded**, and a deterministic **quality gate** (`src/lib/builder/quality.ts`) that rejects headline-less/thin output and repairs monotone backgrounds, repeated layouts, broken page links, empty items and contrast.
+
+Measured after the fix (local, real keys, 6 varied briefs incl. Hindi): **6/6 succeeded**; Groq 2.6–3.5 s, Gemini 14–30 s when Groq's window was full (skipped without a wasted call) or when Groq returned bad JSON.
+
+### Configuration
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `GROQ_API_KEY` | Provider 1 (already used by the Website Evaluator) | — |
-| `GEMINI_API_KEY` | Provider 2 (Gemini OpenAI-compatible endpoint) | — |
-| `OPENROUTER_API_KEY` | Provider 3 (free models; slowest) | — |
-| `BUILDER_AI_PROVIDERS` | Order of the chain | `groq,gemini,openrouter` |
-| `BUILDER_GROQ_MODEL` / `BUILDER_GEMINI_MODEL` / `BUILDER_OPENROUTER_MODELS` | Model overrides | `openai/gpt-oss-120b` / `gemini-flash-latest` / 3 free models |
-| `BUILDER_AI_DAILY_LIMIT_PER_IP` | Free AI requests per visitor per UTC day | `5` |
-| `BUILDER_AI_DAILY_LIMIT_GLOBAL` | Across all visitors per day | `60` |
-| `IP_HASH_SALT` | Visitors are counted by salted hash, never raw IP | (existing) |
+| `GROQ_API_KEY` / `GEMINI_API_KEY` / `OPENROUTER_API_KEY` | Text providers | — |
+| `XAI_API_KEY` + `BUILDER_XAI_MODEL` | Optional Grok/xAI provider (used only when both are set — no unverified default model) | — |
+| `BUILDER_AI_PROVIDERS` | Order | `groq,gemini,openrouter,xai` |
+| `BUILDER_GROQ_MODEL` / `BUILDER_GEMINI_MODEL` / `BUILDER_OPENROUTER_MODELS` | Overrides | `openai/gpt-oss-120b` / `gemini-flash-latest` / 3 free models |
+| `BUILDER_IMAGE_PROVIDERS` | Image provider order | `gemini,openrouter` |
+| `BUILDER_GEMINI_IMAGE_MODELS` / `BUILDER_OPENROUTER_IMAGE_MODEL` | Image models | `gemini-3.1-flash-image,gemini-2.5-flash-image` / `google/gemini-3.1-flash-lite-image` |
+| `BUILDER_AI_DAILY_LIMIT_PER_IP` / `_GLOBAL` | Free text AI requests per day | `8` / `150` |
+| `BUILDER_IMAGE_DAILY_LIMIT_PER_IP` / `_GLOBAL` | Free AI images per day | `4` / `40` |
+| `BUILDER_ADMIN_TOKEN` | Enables `GET /api/builder/health` (Bearer auth); unset = endpoint 404 | — |
+| `IP_HASH_SALT` | Visitors counted by salted hash, never raw IP | (existing) |
 
-Chain behaviour: each request has one overall time budget (≤56 s, inside Vercel's `maxDuration: 60`). A provider that rate-limits, errors, times out, or returns output that fails validation (e.g. an incomplete site) is skipped and the next one gets the remaining budget. At most one call per configured provider — no loops. Every call logs one line: `{"event":"builder_ai","mode":…,"provider":…,"attempts":…,"tokens":…}` — no prompts, IPs or content.
+### Observability
 
-Measured on 2026-10-17 (local dev, real keys): Groq 2.4–3.8 s per site, Gemini ~13.6 s, OpenRouter free models ~51 s. One run showed the fallback live: Groq rejected its own JSON, Gemini completed the site.
+One JSON log line per request: `{"event":"builder_ai"|"builder_image", requestId, mode, ok, ms, provider, model, attempts, trace:[{provider, model, ms, ok, error|skipped, salvaged}], quality:[codes], error, kind}` — no prompts, IPs, keys or document content. `GET /api/builder/health` (admin token) shows per-provider availability from **real recent outcomes** (success rate, last error, cooldown), image availability and limits. Instance-local on serverless.
+
+## 2b. AI images
+
+- Real image models only (`src/lib/ai/image-provider.ts`): Gemini `generateContent` with `responseModalities: ["IMAGE"]` (image read from `parts[].inlineData`), OpenRouter `modalities: ["image","text"]` (image from `message.images[].image_url`). A text-only answer is never treated as an image; bytes are signature- and dimension-checked; the browser re-encodes to a web-size JPEG stored as a project asset with `source: "ai"` and the prompt.
+- **Status (verified 2026-10-17 with this project's keys): unavailable.** Gemini returns 429 `GenerateRequestsPerDayPerProjectPerModel-FreeTier` (free tier has no image quota; ~15 h retry delay); OpenRouter returns 402 "never purchased credits" and has no free image models. **To enable: turn on billing for the Google AI Studio project of `GEMINI_API_KEY`, or buy OpenRouter credits.** No code change needed; the provider is re-tried after its cooldown.
+- Until then the editor shows an honest "AI image generation is unavailable" notice, and offers Upload, Your images (library) and **Illustration** — theme-coloured abstract artwork rendered locally, always labelled "Illustration", never as a photo.
+- Licensed stock photos (Unsplash/Pexels) are **not integrated**: no API keys are configured and scraping is off-limits. The image tab design leaves room for it.
+
+## 2c. Design system
+
+12 design directions (`src/lib/builder/themes.ts`) — editorial, SaaS, corporate, studio, luxury, minimal, vibrant, local, hospitality, dark-tech, organic, playful — each a full token set: 10-colour palette (incl. secondary), heading/body fonts from a 25-font registry (incl. Devanagari: Mukta, Hind, Noto Serif Devanagari), corners, button shape, card style, content width, heading style, type scale, motion. Palettes are contrast-repaired (body text ≥ 4.5:1, aiming 7:1). The AI plans a `design` block first; Hindi content automatically gets Devanagari fonts and `lang="hi"`. New layouts: editorial hero, numbered services, a Steps/How-it-works section, "Glow" gradient and "Dots" pattern backgrounds, decorative hero accents, and CSS scroll-reveal that never hides content (animates only while entering; off for reduced motion; no JavaScript in exports).
+
+### Libraries evaluated (licences checked 2026-10-17 on GitHub)
+
+| Library | Licence | Decision |
+|---|---|---|
+| OpenPage | MIT | Design reference (JSON-first model) — see §1 |
+| shadcn/ui | MIT | Not adopted: React + Radix + Tailwind component source; our editor is Preact with ~50 KB gzip total, and exported sites must be dependency-free HTML. Patterns (segmented controls, dialogs with focus trap) implemented natively. |
+| Magic UI | MIT | Not adopted: React + motion library; AGENTS.md forbids heavyweight animation runtimes. Equivalent effects (reveal, glow backgrounds) done in CSS. |
+| React Bits | MIT **+ Commons Clause** | Not adopted: not a pure open-source licence, React-only. |
+| Aceternity UI | Custom licence | **Not allowed**: its licence prohibits "template creation … themes, templates, or derivative products" — a website builder is exactly that. |
+| Uppy | MIT | Evaluated; not needed: uploads are processed fully in the browser (no upload server exists), and the native drop-zone with validation/re-encoding is a few KB vs Uppy's dashboard bundle. |
 
 ## 3. Saving & accounts (current limitation)
 
@@ -89,8 +137,8 @@ On Cloudflare (when D1 is provisioned), quota counters automatically become dura
 
 - Guest mode only (see §3); projects don't sync across devices without the backup file.
 - Vercel quota counters are per serverless instance (no shared store there); provider quotas are the hard backstop.
-- Free provider tiers bound real capacity (Groq's free gpt-oss-120b allowance is roughly a few dozen generations/day shared with the Evaluator; Gemini and OpenRouter add headroom).
+- Free provider tiers bound real capacity: Groq ≈ 1 generation/minute (8K TPM); Gemini Flash free tier and OpenRouter free models add headroom but are slower. AI images need a paid tier (see §2b).
 - Exported sites are static: forms need a third-party form service URL; no booking/payments/database.
 - No automatic GoDaddy publishing (manual upload guide only; no credentials are ever requested).
 - The editor works on phones (tabbed panes) but is most comfortable on a laptop/tablet.
-- No stock photo library: image slots show a soft colour block until the user uploads or links an image.
+- No licensed stock-photo integration (no Unsplash/Pexels keys). Empty image slots show a deliberate theme-coloured block; illustrations are available.
