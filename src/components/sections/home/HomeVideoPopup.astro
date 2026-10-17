@@ -1,0 +1,440 @@
+---
+/**
+ * Homepage-only popup for the existing 60-second Hindi "how to build a free
+ * website" video — the same file, poster and transcript used in the
+ * /free-website-builder hero (public/videos/atittle-builder-ad-hi.*). No new
+ * video, no copy of it.
+ *
+ * Behaviour
+ * - Opens once per browsing session, shortly after load (after the mobile
+ *   first-view hook has finished). Dismissed → not reopened this session.
+ *   `/#how-to-video` always opens it (shareable deep link).
+ * - Native <dialog>.showModal(): top layer, focus moved in and trapped,
+ *   Escape closes, page behind is inert. Background scroll is locked while
+ *   open. Backdrop click and the × button close it.
+ * - The video is only fetched when the popup opens (preload="none" + the
+ *   source set on open). Muted autoplay is attempted; if the browser refuses,
+ *   the big Play button stays. Native controls are always available.
+ * - Not auto-opened for automated browsers (navigator.webdriver) so test
+ *   suites and audits aren't blocked; the deep link still works there.
+ */
+const VIDEO = "/videos/atittle-builder-ad-hi.mp4";
+const POSTER = "/videos/atittle-builder-ad-hi-poster.jpg";
+---
+
+<dialog class="hvp" data-home-video aria-modal="true" aria-labelledby="hvp-title" aria-describedby="hvp-desc">
+  <div class="hvp-panel">
+    <div class="hvp-head">
+      <div class="hvp-titles">
+        <p class="hvp-eyebrow"><span aria-hidden="true">▶</span> <span lang="hi">60 सेकंड · हिंदी</span></p>
+        <h2 id="hvp-title" class="hvp-title">How to build a free website</h2>
+        <p id="hvp-desc" class="hvp-desc">See how the ATITTLE Free AI Website Builder makes a complete website in minutes — no coding, no sign-up.</p>
+      </div>
+      <button type="button" class="hvp-close" data-hvp-close aria-label="Close video" autofocus>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+
+    <div class="hvp-frame">
+      <video
+        data-src={VIDEO}
+        poster={POSTER}
+        width="1920"
+        height="1080"
+        controls
+        playsinline
+        preload="none"
+        aria-label="60-second Hindi video: how the ATITTLE Free AI Website Builder works (Hindi captions are part of the video)"
+        aria-describedby="hvp-transcript"></video>
+      <button type="button" class="hvp-play" data-hvp-play>
+        <span class="hvp-play-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"></path></svg>
+        </span>
+        <span class="hvp-play-label">Play video <span lang="hi">· आवाज़ के साथ</span></span>
+      </button>
+      <button type="button" class="hvp-unmute" data-hvp-unmute hidden>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4ZM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"></path></svg>
+        <span lang="hi">आवाज़ चालू करें</span>
+      </button>
+    </div>
+
+    <div class="hvp-foot">
+      <a class="hvp-cta" href="/free-website-builder/app?start=ai" data-analytics-event="home_video_popup_build">Build my website free <span aria-hidden="true">→</span></a>
+      <details class="hvp-transcript" id="hvp-transcript">
+        <summary>Transcript <span lang="hi">(वीडियो का टेक्स्ट)</span></summary>
+        <p lang="hi">
+          आपका बिज़नेस शानदार है। पर वेबसाइट? महंगी, मुश्किल, और हफ़्तों का इंतज़ार। अब नहीं। पेश है — ATITTLE का फ्री AI वेबसाइट बिल्डर। बस अपने बिज़नेस के बारे में
+          बताइए — हिंदी में, या अंग्रेज़ी में। और AI, सेकंडों में आपकी पूरी वेबसाइट तैयार कर देता है — पेज, शब्द, रंग, सब कुछ। जो बदलना हो, बस क्लिक करके बदलिए —
+          रंग, फ़ॉन्ट, सेक्शन — बिना कोडिंग के। हर बिज़नेस के लिए अलग, प्रोफेशनल डिज़ाइन — और मोबाइल पर भी एकदम परफ़ेक्ट। तैयार होते ही डाउनलोड कीजिए, और GoDaddy
+          या किसी भी होस्टिंग पर लाइव कर दीजिए। वेबसाइट पूरी तरह आपकी। बिल्कुल फ्री, कोई साइन-अप नहीं। आज ही बनाइए अपनी वेबसाइट — atittle.com पर।
+        </p>
+      </details>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .hvp {
+    /* Video width: as wide as possible within the viewport (minus gutters and
+       safe areas) while the whole panel (≈ 9.5rem of header/footer) fits in height. */
+    --hvp-gutter: 16px;
+    --hvp-pad: 14px;
+    --hvp-top: max(var(--hvp-gutter), env(safe-area-inset-top, 0px), min(7vh, 64px));
+    /* header + footer + padding of the panel around the video */
+    --hvp-chrome: 12rem;
+    --hvp-w: min(
+      960px,
+      calc(100vw - 2 * var(--hvp-gutter) - 2 * var(--hvp-pad) - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)),
+      calc((100dvh - var(--hvp-chrome) - var(--hvp-top) - var(--hvp-gutter) - env(safe-area-inset-bottom, 0px)) * 16 / 9)
+    );
+    width: calc(var(--hvp-w) + 2 * var(--hvp-pad));
+    max-width: calc(100vw - 2 * var(--hvp-gutter));
+    max-height: calc(100dvh - var(--hvp-top) - var(--hvp-gutter));
+    margin: var(--hvp-top) auto auto;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    color: var(--color-ink-950);
+    overflow: visible;
+    outline: none;
+  }
+  .hvp:not([open]) {
+    display: none;
+  }
+  .hvp::backdrop {
+    background: rgba(22, 17, 13, 0.62);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .hvp-panel {
+    display: grid;
+    gap: 12px;
+    padding: var(--hvp-pad);
+    max-height: calc(100dvh - var(--hvp-top) - var(--hvp-gutter));
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-radius: 22px;
+    background: var(--color-cream);
+    border: 1px solid rgba(223, 169, 63, 0.35);
+    box-shadow:
+      0 2px 6px rgba(22, 17, 13, 0.2),
+      0 30px 80px -20px rgba(22, 17, 13, 0.65);
+  }
+  .hvp-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 4px 0 6px;
+  }
+  .hvp-titles {
+    min-width: 0;
+  }
+  .hvp-eyebrow {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-brand-600);
+  }
+  .hvp-title {
+    margin: 2px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .hvp-desc {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: var(--color-ink-600, #5f5146);
+  }
+  .hvp-close {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--color-ink-200, #e3d8ca);
+    background: #fffdf9;
+    color: var(--color-ink-950);
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .hvp-close:hover {
+    background: #fff;
+    transform: rotate(90deg);
+  }
+  .hvp-close:focus-visible,
+  .hvp-play:focus-visible,
+  .hvp-unmute:focus-visible,
+  .hvp-cta:focus-visible {
+    outline: 3px solid var(--color-gold-400);
+    outline-offset: 3px;
+  }
+  .hvp-frame {
+    position: relative;
+    width: var(--hvp-w);
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #16110d;
+  }
+  .hvp-frame video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #16110d;
+  }
+  .hvp-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 22px 10px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(251, 246, 238, 0.95);
+    color: var(--color-ink-950);
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .hvp-play:hover {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  .hvp-play-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--color-brand-600);
+    color: var(--color-cream);
+    padding-left: 3px;
+  }
+  .hvp-play[hidden],
+  .hvp-unmute[hidden] {
+    display: none;
+  }
+  .hvp-unmute {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(22, 17, 13, 0.78);
+    color: #fbf6ee;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .hvp-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 0 4px 2px 6px;
+  }
+  .hvp-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--color-brand-600);
+    color: var(--color-cream);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hvp-cta:hover {
+    filter: brightness(1.08);
+  }
+  .hvp-transcript {
+    font-size: 0.85rem;
+    color: var(--color-ink-600, #5f5146);
+    max-width: 100%;
+  }
+  .hvp-transcript summary {
+    cursor: pointer;
+    font-weight: 600;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .hvp-transcript[open] {
+    flex-basis: 100%;
+  }
+  .hvp-transcript p {
+    margin: 4px 0 0;
+    line-height: 1.6;
+  }
+  @media (max-width: 639px) {
+    .hvp {
+      --hvp-gutter: 12px;
+      --hvp-pad: 10px;
+      --hvp-chrome: 13rem;
+      border-radius: 18px;
+    }
+    .hvp-panel {
+      gap: 10px;
+      border-radius: 18px;
+    }
+    .hvp-desc {
+      display: none;
+    }
+    .hvp-play {
+      padding: 8px 16px 8px 8px;
+      font-size: 0.85rem;
+    }
+    .hvp-play-icon {
+      width: 40px;
+      height: 40px;
+    }
+    .hvp-cta {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+    .hvp-unmute {
+      left: 6px;
+      top: 6px;
+      min-height: 36px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hvp[open] .hvp-panel {
+      animation: hvp-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .hvp[open]::backdrop {
+      animation: hvp-fade 0.3s ease;
+    }
+  }
+  @keyframes hvp-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.97);
+    }
+  }
+  @keyframes hvp-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  :global(html.hvp-lock),
+  :global(html.hvp-lock body) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const KEY = "atittle-home-video-seen";
+  const dialog = document.querySelector<HTMLDialogElement>("[data-home-video]");
+
+  if (dialog && typeof dialog.showModal === "function") {
+    const video = dialog.querySelector("video")!;
+    const playBtn = dialog.querySelector<HTMLButtonElement>("[data-hvp-play]")!;
+    const unmuteBtn = dialog.querySelector<HTMLButtonElement>("[data-hvp-unmute]")!;
+
+    const seen = () => {
+      try {
+        return sessionStorage.getItem(KEY) === "1";
+      } catch {
+        return false;
+      }
+    };
+    const markSeen = () => {
+      try {
+        sessionStorage.setItem(KEY, "1");
+      } catch {
+        /* storage blocked: it may show again on the next page load, nothing else breaks */
+      }
+    };
+
+    const render = () => {
+      playBtn.hidden = !video.paused;
+      unmuteBtn.hidden = video.paused || !video.muted;
+    };
+    video.addEventListener("play", render);
+    video.addEventListener("pause", render);
+    video.addEventListener("volumechange", render);
+
+    const ensureSource = () => {
+      if (!video.getAttribute("src") && video.dataset.src) video.src = video.dataset.src;
+    };
+
+    const open = () => {
+      if (dialog.open) return;
+      ensureSource();
+      document.documentElement.classList.add("hvp-lock");
+      dialog.showModal();
+      markSeen();
+      // Muted autoplay where the browser allows it; otherwise the Play button stays.
+      video.muted = true;
+      video.play().catch(render);
+      render();
+    };
+
+    playBtn.addEventListener("click", () => {
+      ensureSource();
+      video.muted = false;
+      video.play().catch(() => {
+        video.muted = true;
+        void video.play().catch(render);
+      });
+    });
+    unmuteBtn.addEventListener("click", () => {
+      video.muted = false;
+      if (video.paused) void video.play().catch(render);
+    });
+
+    dialog.querySelector("[data-hvp-close]")!.addEventListener("click", () => dialog.close());
+    // Click on the backdrop (outside the panel) closes.
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener("close", () => {
+      video.pause();
+      document.documentElement.classList.remove("hvp-lock");
+      markSeen();
+      if (location.hash === "#how-to-video") history.replaceState(null, "", location.pathname + location.search);
+    });
+
+    const deepLinked = () => location.hash === "#how-to-video";
+    window.addEventListener("hashchange", () => deepLinked() && open());
+
+    if (deepLinked()) {
+      open();
+    } else if (!seen() && !navigator.webdriver) {
+      const delay = document.documentElement.classList.contains("hook") ? 2600 : 1200;
+      const schedule = () =>
+        setTimeout(() => {
+          // Don't interrupt someone who is already typing in a form or has another dialog open.
+          const active = document.activeElement;
+          const busy = (active instanceof HTMLElement && active.matches("input, textarea, select, [contenteditable='true']")) || document.querySelector("dialog[open]");
+          if (!busy && !seen()) open();
+        }, delay);
+      if (document.readyState === "complete") schedule();
+      else window.addEventListener("load", schedule, { once: true });
+    }
+  }
+</script>
