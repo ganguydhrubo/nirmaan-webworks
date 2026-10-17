@@ -65,8 +65,13 @@ test("landing page: entry point, CTAs, SEO and live template previews", async ({
   // Entry points: mobile menu + footer (the desktop bar is intentionally unchanged — it's full).
   await expect(page.locator('nav[aria-label="Mobile"] a[href="/free-website-builder"]')).toHaveCount(1);
   await expect(page.locator('footer a[href="/free-website-builder"]').first()).toBeAttached();
-  const first = page.frameLocator(".builder-hero-frame-0");
-  await expect(first.locator("h1")).toBeVisible();
+  // Hero ad video: lazy (no download until near the viewport), captions burned in, sound on tap.
+  const video = page.locator("[data-builder-video] video");
+  await expect(video).toHaveAttribute("data-src", "/videos/atittle-builder-ad-hi.mp4");
+  await expect(video).toHaveAttribute("preload", "none");
+  await expect(page.getByRole("button", { name: /वीडियो देखें/ })).toBeVisible();
+  await expect(page.locator("#builder-video-transcript")).toContainText("ATITTLE का फ्री AI वेबसाइट बिल्डर");
+  await expect(page.locator(".builder-thumb iframe").first()).toBeAttached();
   expect(errors, errors.join(" | ")).toEqual([]);
 });
 

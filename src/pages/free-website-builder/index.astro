@@ -62,7 +62,6 @@ const jsonLd = [
   },
 ];
 
-const heroTemplates = ["restaurant", "consultant", "agency"];
 const steps = [
   { n: "1", title: "Describe your business", text: "Answer a few simple questions: what you do, who it's for, and the look you like." },
   { n: "2", title: "AI drafts your website", text: "Pages, headlines, sections and colours, written for your business in under a minute." },
@@ -108,26 +107,36 @@ const features = [
         </ul>
       </div>
 
-      <div class="builder-hero-stage" aria-label="Examples of websites made with the builder" aria-live="off">
-        <div class="builder-browser">
-          <div class="builder-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>yourbusiness.com</em></div>
-          <div class="builder-browser-screen">
-            {
-              heroTemplates.map((id, i) => (
-                <iframe
-                  src={`/free-website-builder/template-preview/${id}.html`}
-                  title={`Example website: ${TEMPLATE_LIST.find((t) => t.id === id)?.label} template`}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  tabindex="-1"
-                  sandbox=""
-                  class={`builder-hero-frame builder-hero-frame-${i}`}
-                />
-              ))
-            }
-          </div>
-        </div>
-        <div class="builder-float builder-float-a" aria-hidden="true"><span>✦</span> Headline written by AI</div>
-        <div class="builder-float builder-float-b" aria-hidden="true">Click any text to edit</div>
+      <div class="builder-hero-stage">
+        <figure class="builder-video" data-builder-video>
+          <video
+            data-src="/videos/atittle-builder-ad-hi.mp4"
+            poster="/videos/atittle-builder-ad-hi-poster.jpg"
+            width="1920"
+            height="1080"
+            muted
+            playsinline
+            loop
+            preload="none"
+            aria-label="60-second Hindi video: how the ATITTLE Free AI Website Builder works (Hindi captions are part of the video)"
+            aria-describedby="builder-video-transcript"
+          ></video>
+          <button type="button" class="builder-video-btn" data-video-toggle aria-pressed="false">
+            <span class="builder-video-icon" aria-hidden="true">▶</span>
+            <span data-video-label>वीडियो देखें · आवाज़ के साथ</span>
+          </button>
+          <span class="builder-video-badge" aria-hidden="true">60 सेकंड · हिंदी</span>
+        </figure>
+        <details class="builder-transcript" id="builder-video-transcript">
+          <summary>वीडियो का पूरा टेक्स्ट (transcript)</summary>
+          <p lang="hi">
+            आपका बिज़नेस शानदार है। पर वेबसाइट? महंगी, मुश्किल, और हफ़्तों का इंतज़ार। अब नहीं। पेश है — ATITTLE का फ्री AI वेबसाइट बिल्डर। बस अपने
+            बिज़नेस के बारे में बताइए — हिंदी में, या अंग्रेज़ी में। और AI, सेकंडों में आपकी पूरी वेबसाइट तैयार कर देता है — पेज, शब्द, रंग, सब कुछ। जो बदलना हो,
+            बस क्लिक करके बदलिए — रंग, फ़ॉन्ट, सेक्शन — बिना कोडिंग के। हर बिज़नेस के लिए अलग, प्रोफेशनल डिज़ाइन — और मोबाइल पर भी एकदम परफ़ेक्ट। तैयार होते ही
+            डाउनलोड कीजिए, और GoDaddy या किसी भी होस्टिंग पर लाइव कर दीजिए। वेबसाइट पूरी तरह आपकी। बिल्कुल फ्री, कोई साइन-अप नहीं। आज ही बनाइए अपनी वेबसाइट —
+            atittle.com पर।
+          </p>
+        </details>
       </div>
     </div>
   </section>
@@ -251,49 +260,96 @@ const features = [
 <style>
   .builder-hero-stage {
     position: relative;
-    padding: 12px 8px 28px;
+    padding: 12px 0 8px;
   }
-  .builder-browser {
-    border-radius: 18px;
-    background: #fff;
+  .builder-video {
+    position: relative;
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--color-cream);
+    aspect-ratio: 16 / 9;
     border: 1px solid var(--color-ink-200);
     box-shadow:
       0 2px 4px rgba(33, 26, 21, 0.06),
-      0 30px 60px -20px rgba(33, 26, 21, 0.35);
-    overflow: hidden;
-    transform: rotate(-1deg);
+      0 30px 60px -22px rgba(33, 26, 21, 0.4);
   }
-  .builder-browser-bar {
-    display: flex;
+  .builder-video video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .builder-video-btn {
+    /* Top-left: the bottom band of the video carries its burned-in Hindi captions. */
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 10px 14px;
-    background: var(--color-ink-50);
-    border-bottom: 1px solid var(--color-ink-200);
+    gap: 10px;
+    min-height: 44px;
+    padding: 6px 16px 6px 8px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-brand-600);
+    color: var(--color-cream);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px -10px rgba(161, 63, 34, 0.7);
+    transition: transform 0.15s ease, background-color 0.15s ease;
   }
-  .builder-browser-bar span {
-    width: 10px;
-    height: 10px;
-    border-radius: 99px;
-    background: var(--color-ink-300);
+  .builder-video-btn:hover {
+    background: var(--color-brand-700);
+    transform: translateY(-1px);
   }
-  .builder-browser-bar em {
-    margin-left: 10px;
-    font-style: normal;
+  .builder-video-btn:focus-visible {
+    outline: 3px solid var(--color-gold-400);
+    outline-offset: 3px;
+  }
+  .builder-video-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    font-size: 13px;
+  }
+  .builder-video-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
     font-size: 12px;
-    color: var(--color-ink-500);
-    background: #fff;
-    border-radius: 99px;
-    padding: 2px 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(251, 246, 238, 0.92);
+    color: var(--color-ink-900);
   }
-  .builder-browser-screen {
-    position: relative;
-    aspect-ratio: 16 / 11;
-    overflow: hidden;
-    background: var(--color-cream);
+  .builder-transcript {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--color-ink-700);
   }
+  .builder-transcript summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-ink-800);
+  }
+  .builder-transcript p {
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .builder-video-btn {
+      transition: none;
+    }
+  }
+
   /* Iframes render at a real 1280px desktop width, scaled to fit. */
-  .builder-browser-screen iframe,
   .builder-thumb iframe {
     position: absolute;
     top: 0;
@@ -304,69 +360,7 @@ const features = [
     transform-origin: 0 0;
     pointer-events: none;
   }
-  .builder-browser-screen iframe {
-    transform: scale(calc(var(--stage-w, 560) / 1280));
-  }
-  .builder-hero-frame {
-    opacity: 0;
-    animation: builder-cycle 15s infinite;
-  }
-  .builder-hero-frame-0 {
-    animation-delay: 0s;
-  }
-  .builder-hero-frame-1 {
-    animation-delay: 5s;
-  }
-  .builder-hero-frame-2 {
-    animation-delay: 10s;
-  }
-  @keyframes builder-cycle {
-    0% {
-      opacity: 0;
-    }
-    4%,
-    30% {
-      opacity: 1;
-    }
-    35%,
-    100% {
-      opacity: 0;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .builder-hero-frame {
-      animation: none;
-    }
-    .builder-hero-frame-0 {
-      opacity: 1;
-    }
-  }
-  .builder-float {
-    position: absolute;
-    font-size: 13px;
-    font-weight: 600;
-    background: #fff;
-    color: var(--color-ink-900);
-    border: 1px solid var(--color-ink-200);
-    border-radius: 999px;
-    padding: 7px 14px;
-    box-shadow: 0 10px 24px -10px rgba(33, 26, 21, 0.35);
-    white-space: nowrap;
-  }
-  .builder-float span {
-    color: var(--color-brand-600);
-  }
-  .builder-float-a {
-    top: 0;
-    right: 4%;
-  }
-  .builder-float-b {
-    bottom: 6px;
-    left: 2%;
-    background: var(--color-brand-600);
-    color: var(--color-cream);
-    border-color: transparent;
-  }
+
   .builder-thumb {
     position: relative;
     aspect-ratio: 16 / 11;
@@ -379,8 +373,7 @@ const features = [
 </style>
 
 <script>
-  // Scale the 1280px-wide preview iframes to their containers. Purely
-  // presentational; without JS the CSS fallback widths still look right.
+  // Scale the 1280px-wide template preview iframes to their containers.
   const fit = (selector: string, prop: string) => {
     for (const el of document.querySelectorAll<HTMLElement>(selector)) {
       const ro = new ResizeObserver(([entry]) => {
@@ -389,6 +382,64 @@ const features = [
       ro.observe(el);
     }
   };
-  fit(".builder-browser-screen", "--stage-w");
   fit(".builder-thumb", "--thumb-w");
+
+  // Hero ad video: nothing is downloaded until the player is near the
+  // viewport. It then autoplays muted (the Hindi captions are burned in) —
+  // except under Data Saver or reduced motion, where it waits for a tap. The
+  // button switches to playing WITH sound, and back to muted.
+  const fig = document.querySelector<HTMLElement>("[data-builder-video]");
+  const video = fig?.querySelector("video");
+  const btn = fig?.querySelector<HTMLButtonElement>("[data-video-toggle]");
+  const label = fig?.querySelector<HTMLElement>("[data-video-label]");
+  const icon = fig?.querySelector<HTMLElement>(".builder-video-icon");
+  if (fig && video && btn && label && icon) {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const quiet = matchMedia("(prefers-reduced-motion: reduce)").matches || !!conn?.saveData;
+    const load = () => {
+      if (!video.src) video.src = video.dataset.src || "";
+    };
+    const render = () => {
+      const withSound = !video.paused && !video.muted;
+      btn.setAttribute("aria-pressed", String(withSound));
+      icon.textContent = withSound ? "🔊" : "▶";
+      label.textContent = withSound ? "आवाज़ बंद करें" : "वीडियो देखें · आवाज़ के साथ";
+    };
+    btn.addEventListener("click", () => {
+      load();
+      if (!video.paused && !video.muted) {
+        video.muted = true;
+      } else {
+        video.muted = false;
+        video.loop = false;
+        if (video.ended) video.currentTime = 0;
+        void video.play().catch(() => undefined);
+      }
+      render();
+    });
+    video.addEventListener("ended", () => {
+      video.muted = true;
+      video.loop = true;
+      render();
+    });
+    video.addEventListener("play", render);
+    video.addEventListener("pause", render);
+    video.addEventListener("volumechange", render);
+    if (!quiet && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              load();
+              if (video.muted) void video.play().catch(() => undefined);
+            } else if (video.muted) {
+              video.pause();
+            }
+          }
+        },
+        { rootMargin: "120px 0px", threshold: 0.35 },
+      );
+      io.observe(fig);
+    }
+  }
 </script>

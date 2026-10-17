@@ -142,3 +142,10 @@ On Cloudflare (when D1 is provisioned), quota counters automatically become dura
 - No automatic GoDaddy publishing (manual upload guide only; no credentials are ever requested).
 - The editor works on phones (tabbed panes) but is most comfortable on a laptop/tablet.
 - No licensed stock-photo integration (no Unsplash/Pexels keys). Empty image slots show a deliberate theme-coloured block; illustrations are available.
+
+## 8. Hindi hero ad video (`/free-website-builder` hero)
+
+- Files: `public/videos/atittle-builder-ad-hi.mp4` (60.0s, 1920×1080, H.264/AAC, 5.4 MB web encode, faststart) and `…-poster.jpg`. Cached 7 days via `vercel.json`.
+- Behaviour: no download until the player nears the viewport (`preload="none"` + IntersectionObserver), then muted autoplay (Hindi captions are burned in); skipped under Data Saver / reduced motion. The button plays **with sound**; a full Hindi transcript sits under the player for screen readers and search. The H1 and CTAs stay plain text (no LCP impact).
+- Source project (not in this repo): `C:\Users\Dhrubo\videos\atittle-builder-promo` — HyperFrames `product-launch-video` workflow: BRIEF.md, STORYBOARD.md, SCRIPT.md, 8 frame compositions, real product screenshots, Gemini TTS (`gemini-3.8-flash-tts`, voice Kore) Hindi voiceover, Google Lyria music, voiceover carve. Re-render: `npx hyperframes render --quality high --output renders/video.mp4`, then re-encode with `ffmpeg -i renders/video.mp4 -c:v libx264 -preset slow -crf 27 -movflags +faststart -c:a aac -b:a 128k atittle-builder-ad-hi.mp4`.
+- Claims in the ad match the product (no AI-image or "unlimited" claims).
