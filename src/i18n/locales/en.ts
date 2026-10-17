@@ -19,6 +19,14 @@ export const en: TranslationDictionary = {
     success: 'Success',
     error: 'Error',
   },
+  growth: {
+    build: 'Build Your Website Free',
+    buildShort: 'Build Website Free',
+    buildSub: 'Create a website with AI. No coding required.',
+    audit: 'Free Website Audit',
+    auditShort: 'Free Website Audit',
+    auditSub: 'Evaluate your website and discover what needs fixing.',
+  },
   nav: {
     industries: 'Industries',
     demos: 'Demos',

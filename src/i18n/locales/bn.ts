@@ -19,6 +19,14 @@ export const bn: TranslationDictionary = {
     success: 'সফল',
     error: 'ত্রুটি',
   },
+  growth: {
+    build: 'বিনামূল্যে আপনার ওয়েবসাইট তৈরি করুন',
+    buildShort: 'ফ্রি ওয়েবসাইট তৈরি',
+    buildSub: 'AI দিয়ে ওয়েবসাইট তৈরি করুন। কোডিং লাগবে না।',
+    audit: 'ফ্রি ওয়েবসাইট অডিট',
+    auditShort: 'ফ্রি ওয়েবসাইট অডিট',
+    auditSub: 'আপনার ওয়েবসাইট যাচাই করুন, কী ঠিক করতে হবে জানুন।',
+  },
   nav: {
     industries: 'শিল্প',
     demos: 'ডেমো',
