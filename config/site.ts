@@ -409,6 +409,18 @@ export const siteConfig = {
       crossLink: { label: "Try our live AI-powered tool on your site right now →", href: "/tools/website-evaluator" },
       whatsappMessage: "Hi, I'm interested in building a custom AI agent trained on my business services, pricing, and FAQs to handle customer inquiries.",
     },
+    {
+      id: "brand-studio",
+      name: "ATITTLE Brand Studio",
+      shortName: "Creative Design Suite",
+      headline: "Design high-converting marketing creatives, menus & banners in 60 seconds.",
+      analogy: "You know how hiring a graphic design agency often takes 3 days of back-and-forth just to change a price or create a quick festival offer? And complex desktop design tools feel overwhelming? We built an instant, high-end design canvas right inside your browser — pick a ready-made luxury Indian business template, type your offer, drag your logo or photo, and download in print-ready 4K or WhatsApp-ready quality with zero subscription fees.",
+      takeaway: "No waiting for designers or paying monthly software subscriptions. Every banner, food menu, offer card, and WhatsApp story your business needs, created and exported instantly with luxury aesthetic standards.",
+      icon: "palette",
+      badge: "In-Browser Visual Engine",
+      crossLink: { label: "Launch ATITTLE Brand Studio Free →", href: "/free-brand-studio" },
+      whatsappMessage: "Hi ATITTLE team, I want to explore ATITTLE Brand Studio and custom branded creative templates for my business.",
+    },
   ] satisfies OtherServiceEntry[],
 } as const;
 

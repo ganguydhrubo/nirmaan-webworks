@@ -21,13 +21,15 @@
  */
 const path = Astro.url.pathname.replace(/\/$/, "");
 const showBuild = !path.startsWith("/free-website-builder");
+const showStudio = !path.startsWith("/free-brand-studio");
 const showAudit = path !== "/tools/website-evaluator";
+const STUDIO_URL = "/free-brand-studio";
 const BUILD_URL = "https://atittle.com/free-website-builder/app?start=ai";
 const AUDIT_URL = "https://atittle.com/tools/website-evaluator";
 ---
 
 {
-  (showBuild || showAudit) && (
+  (showBuild || showStudio || showAudit) && (
     <nav class="fga" aria-label="Free tools" data-fga>
       {showBuild && (
         <a class="fga-item fga-build" href={BUILD_URL} data-analytics-event="floating_build_click">
@@ -45,6 +47,25 @@ const AUDIT_URL = "https://atittle.com/tools/website-evaluator";
                 <span class="fga-short" data-i18n="growth.buildShort">Build Website Free</span>
               </span>
               <span class="fga-sub" data-i18n="growth.buildSub">Create a website with AI. No coding required.</span>
+            </span>
+          </span>
+        </a>
+      )}
+            {showStudio && (
+        <a class="fga-item fga-studio" href={STUDIO_URL} data-analytics-event="floating_studio_click">
+          <span class="fga-float">
+            <span class="fga-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                <path class="fga-spark" d="M19.5 2.5v4M17.5 4.5h4" />
+              </svg>
+            </span>
+            <span class="fga-text">
+              <span class="fga-label">
+                <span class="fga-long" data-i18n="growth.studio">Free Brand & Logo Studio</span>
+                <span class="fga-short" data-i18n="growth.studioShort">Brand & Logo Studio</span>
+              </span>
+              <span class="fga-sub" data-i18n="growth.studioSub">Design logos, banners & social posts. 100% free.</span>
             </span>
           </span>
         </a>
@@ -216,6 +237,33 @@ const AUDIT_URL = "https://atittle.com/tools/website-evaluator";
   }
   .fga-build .fga-sub {
     color: rgba(251, 246, 238, 0.78);
+  }
+
+    /* C · Studio — obsidian luxury glass with warm gold glow */
+  .fga-studio .fga-float {
+    background: linear-gradient(135deg, #1f1b2e 0%, #120f1d 75%);
+    border-color: rgba(212, 175, 55, 0.35);
+    color: var(--color-cream);
+  }
+  .fga-studio .fga-icon {
+    color: #fbbf24;
+    background: rgba(212, 175, 55, 0.16);
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.38) inset;
+  }
+  .fga-studio .fga-icon::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.45), transparent 70%);
+    opacity: 0.6;
+    z-index: 0;
+  }
+  .fga-studio .fga-sub {
+    color: rgba(251, 246, 238, 0.82);
+  }
+  .fga-studio:hover .fga-icon svg {
+    transform: rotate(12deg) scale(1.1);
   }
 
   /* B · Audit — warm cream glass, terracotta icon, marigold scan ring */

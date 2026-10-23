@@ -1,0 +1,218 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
+import { STUDIO_TEMPLATES } from "@/scripts/brand-studio/templates";
+
+export const prerender = true;
+
+const meta = {
+  title: "ATITTLE Brand Studio: Free High-End Marketing Design Suite for Businesses",
+  description:
+    "Design luxury flyers, WhatsApp status promotions, festival offer banners, menus, and visiting cards directly in your browser. No designer fees, no watermarks, no login required.",
+};
+
+const faqs = [
+  {
+    q: "Is ATITTLE Brand Studio really free to use?",
+    a: "Yes, 100% free with no hidden charges, watermarks, or monthly subscriptions. You can design, edit, and export unlimited high-resolution graphics for your business.",
+  },
+  {
+    q: "Do I need to sign up or create an account?",
+    a: "No login or account is required. The studio runs entirely client-side in your web browser. Your designs and templates are saved locally on your device.",
+  },
+  {
+    q: "Can I export high-resolution graphics for print?",
+    a: "Yes. The export engine supports 1x, 2x Retina, and 3x Ultra 4K scaling in PNG, JPEG, scalable vector SVG, and print-ready PDF formats.",
+  },
+  {
+    q: "How does this compare to hiring a graphic designer?",
+    a: "Traditional agencies often take 2 to 3 days to turnaround minor text and price adjustments for a festive campaign. With Brand Studio, you can adapt a pre-built luxury template, type your new price, and download a ready-to-post graphic in 60 seconds.",
+  },
+  {
+    q: "Can I copy designs directly into WhatsApp?",
+    a: "Yes. Our 'Copy to Clipboard' feature renders the design to a direct image blob so you can paste it straight into WhatsApp Web, Instagram chats, or emails without downloading intermediate files.",
+  },
+];
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Brand Studio", url: `${siteConfig.siteUrl}/free-brand-studio` },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "ATITTLE Brand Studio",
+    applicationCategory: "DesignApplication",
+    operatingSystem: "Web",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "INR",
+    },
+  },
+];
+---
+
+<BaseLayout title={meta.title} description={meta.description} jsonLd={jsonLd}>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-stone-900 via-stone-950 to-stone-950 text-stone-100 py-16 sm:py-24">
+    <!-- Ambient Radial Glows -->
+    <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-32 left-1/3 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl"></div>
+      <div class="absolute top-1/2 right-10 h-80 w-80 rounded-full bg-rose-500/10 blur-3xl"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.06)_1px,transparent_1px)] [background-size:24px_24px]"></div>
+    </div>
+
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-300 backdrop-blur mb-6">
+        <span class="inline-block h-2 w-2 rounded-full bg-amber-400 animate-pulse" aria-hidden="true"></span>
+        Zero Designer Fees &middot; No Watermark &middot; In-Browser Creative Studio
+      </div>
+
+      <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        High-End Marketing Creatives. <br />
+        <span class="text-amber-400 italic font-serif">Designed in 60 Seconds.</span>
+      </h1>
+
+      <p class="mt-6 text-base sm:text-lg text-stone-300 max-w-2xl mx-auto leading-relaxed">
+        Stop waiting days for an agency just to change a price or post a festival flyer.
+        Pick a handcrafted luxury template, customize your offer, and export in 4K or print quality.
+      </p>
+
+      {/* CTA Buttons */}
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/free-brand-studio/app"
+          class="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 hover:from-amber-500 hover:to-amber-300 text-stone-950 font-bold px-7 py-3.5 text-base shadow-xl shadow-amber-500/20 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <span>Launch Brand Studio</span>
+          <svg class="w-4 h-4 text-stone-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        <a
+          href="#templates"
+          class="inline-flex items-center gap-2 rounded-xl border border-stone-700 bg-stone-900/80 hover:bg-stone-800 text-stone-200 font-semibold px-6 py-3.5 text-base transition-colors"
+        >
+          <span>Explore Templates</span>
+        </a>
+      </div>
+
+      <div class="mt-6 text-xs text-stone-400">
+        Runs 100% locally in your browser &middot; Private &middot; Works on Chrome, Safari & Edge
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Feature Pillars -->
+  <section class="py-16 bg-cream border-t border-ink-100 text-ink-900">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-brand-600">Built For Indian SMBs</span>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold text-ink-950 mt-1">
+          Everything You Need to Create Luxury Graphics
+        </h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-lg mb-4">
+            📐
+          </div>
+          <h3 class="font-display font-bold text-lg text-ink-950">Multi-Channel Aspect Ratios</h3>
+          <p class="mt-2 text-sm text-ink-600 leading-relaxed">
+            Instant presets for Instagram Posts (1:1), WhatsApp Status & Stories (9:16), YouTube Banners, Visiting Cards, and A4 Print Menus.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-xl bg-gold-100 text-gold-700 flex items-center justify-center font-bold text-lg mb-4">
+            🎨
+          </div>
+          <h3 class="font-display font-bold text-lg text-ink-950">Luxury Brand Kits</h3>
+          <p class="mt-2 text-sm text-ink-600 leading-relaxed">
+            Curated color palettes matching high-end Indian aesthetics — Royal Festive Gold, Clean Healthcare, Culinary Terracotta, and Luxury Dark Ink.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-lg mb-4">
+            ⚡
+          </div>
+          <h3 class="font-display font-bold text-lg text-ink-950">Direct WhatsApp Copy</h3>
+          <p class="mt-2 text-sm text-ink-600 leading-relaxed">
+            Render directly to clipboard memory. Paste instantly into WhatsApp Web or Telegram chats without cluttering your downloads folder.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Templates Preview Section -->
+  <section id="templates" class="py-16 bg-stone-950 text-stone-100">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-500">Ready-Made Collection</span>
+          <h2 class="font-display text-2xl sm:text-4xl font-bold text-white mt-1">
+            Pick a Template, Customize, and Export
+          </h2>
+        </div>
+        <a
+          href="/free-brand-studio/app"
+          class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 underline"
+        >
+          Open Editor with all templates &rarr;
+        </a>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {STUDIO_TEMPLATES.map((tmpl) => (
+          <a
+            href="/free-brand-studio/app"
+            class="group rounded-2xl border border-stone-800 bg-stone-900/80 p-4 hover:border-amber-500/70 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/5 block"
+          >
+            <div
+              class="h-44 w-full rounded-xl mb-4 flex items-center justify-center p-6 text-center shadow-inner overflow-hidden border border-stone-800"
+              style={{ background: tmpl.previewGradient }}
+            >
+              <span class="font-display font-bold text-sm text-white/90 drop-shadow line-clamp-3">
+                {tmpl.title}
+              </span>
+            </div>
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-stone-200 group-hover:text-amber-400 transition-colors">
+                {tmpl.title}
+              </h3>
+              <span class="text-[10px] font-mono text-stone-400 bg-stone-950 px-2 py-0.5 rounded">
+                {tmpl.width}x{tmpl.height}
+              </span>
+            </div>
+            <p class="text-xs text-stone-400 mt-1">{tmpl.category}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-cream text-ink-900">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6">
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-950 text-center mb-8">
+        Frequently Asked Questions
+      </h2>
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <div class="rounded-xl border border-ink-200 bg-white p-5">
+            <h3 class="font-display font-bold text-base text-ink-950">{faq.q}</h3>
+            <p class="mt-2 text-sm text-ink-700 leading-relaxed">{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

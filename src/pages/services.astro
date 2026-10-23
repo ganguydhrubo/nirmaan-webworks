@@ -15,12 +15,13 @@ import imgRepair from "@/assets/demos/expansion/car-hero.jpg";
 import imgIot from "@/assets/demos/expansion/lab-hero.jpg";
 import imgAiTransform from "@/assets/demos/expansion/ceramics-01.jpg";
 import imgAiAgent from "@/assets/demos/kayal.jpg";
+import imgBrandStudio from "@/assets/demos/expansion/ceramics-03.jpg";
 
 export const prerender = true;
 
 const meta = {
   title: "Beyond Websites — Digital Services for Growing Businesses | ATITTLE",
-  description: "Websites are where we started. Explore our 7 specialized practices: Meta & Google Ads, SEO & AEO, SaaS development, system repairs, IoT hardware, and custom AI agents.",
+  description: "Websites are where we started. Explore our 8 specialized practices: Meta & Google Ads, SEO & AEO, SaaS development, system repairs, IoT hardware, custom AI agents, and ATITTLE Brand Studio.",
 };
 
 const services = siteConfig.otherServices;
@@ -68,6 +69,12 @@ const relatableImages = [
     context: "Autonomous WhatsApp agent answering booking queries day and night",
     alt: "Tranquil resort backwater and guest hospitality retreat",
   },
+  {
+    image: imgBrandStudio,
+    caption: "Artisanal & Luxury Brand Creative Visual Studio",
+    context: "In-browser Canva-grade creative editor exporting 4K print & WhatsApp graphics in 60s",
+    alt: "High-end artisanal design studio canvas and visual marketing suite",
+  },
 ];
 
 const jsonLd = [
@@ -93,7 +100,7 @@ const jsonLd = [
         <!-- Live Discovery Badge -->
         <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/95 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-700 mb-6 shadow-xs backdrop-blur">
           <span class="inline-block h-2 w-2 rounded-full bg-brand-500 animate-pulse" aria-hidden="true"></span>
-          Beyond Websites &middot; 7 Specialized Practices
+          Beyond Websites &middot; 8 Specialized Practices
         </div>
 
         <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-ink-950 text-balance leading-[1.12]">
@@ -181,7 +188,7 @@ const jsonLd = [
 
               <div class="flex items-center gap-2">
                 <span class="text-xs font-mono font-semibold text-ink-500 bg-ink-50 border border-ink-200/80 px-2.5 py-1 rounded-md">
-                  Practice 0{idx + 1} / 07
+                  Practice 0{idx + 1} / 0{services.length}
                 </span>
               </div>
             </div>
