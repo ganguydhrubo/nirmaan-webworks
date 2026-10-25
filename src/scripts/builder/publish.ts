@@ -161,3 +161,149 @@ export async function unpublishSite(info: PublishInfo): Promise<{ ok: boolean; m
     return { ok: false, message: "Couldn't reach the server. Please try again." };
   }
 }
+
+// ---------------------------------------------------------------------------
+// Custom Domain & Payment Integrations (October 2026 Standard)
+// ---------------------------------------------------------------------------
+
+export interface CustomDomainResult {
+  ok: boolean;
+  domain?: string;
+  slug?: string;
+  status?: string;
+  domainConnectUrl?: string;
+  sslStatus?: string;
+  edgeStatus?: string;
+  dnsRecords?: { type: string; name: string; value: string; status: string; description?: string }[];
+  instructions?: { step1: string; step2: string; step3: string };
+  message?: string;
+}
+
+export interface DomainSearchResult {
+  ok: boolean;
+  query: string;
+  primary: {
+    domain: string;
+    tld: string;
+    available: boolean;
+    priceInr: number;
+    period: string;
+  };
+  alternatives: {
+    domain: string;
+    tld: string;
+    available: boolean;
+    priceInr: number;
+  }[];
+  message?: string;
+}
+
+export async function searchDomainAvailability(query: string): Promise<DomainSearchResult | null> {
+  try {
+    const res = await fetch(`/api/builder/domain/check?query=${encodeURIComponent(query)}`);
+    return (await res.json()) as DomainSearchResult;
+  } catch {
+    return null;
+  }
+}
+
+export async function connectCustomDomain(domain: string, slug: string): Promise<CustomDomainResult> {
+  try {
+    const res = await fetch("/api/builder/domain/connect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ domain, slug }),
+    });
+    return (await res.json()) as CustomDomainResult;
+  } catch {
+    return { ok: false, message: "Could not connect to domain service. Check your internet connection." };
+  }
+}
+
+export async function loadRazorpayScript(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  if ((window as any).Razorpay) return true;
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
+export async function startRazorpayPayment(opts: {
+  plan: "download" | "host" | "domain";
+  siteName: string;
+  domain?: string;
+  onSuccess: (paymentId: string) => void;
+  onDismiss?: () => void;
+}): Promise<void> {
+  try {
+    const res = await fetch("/api/builder/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan: opts.plan, siteName: opts.siteName, domain: opts.domain }),
+    });
+    const order = (await res.json()) as {
+      ok: boolean;
+      orderId: string;
+      keyId: string;
+      amountPaise: number;
+      currency: string;
+      planName: string;
+      description: string;
+      isPlaceholder: boolean;
+    };
+
+    if (!order.ok) {
+      alert("Could not initialize order. Please try again.");
+      return;
+    }
+
+    if (order.isPlaceholder) {
+      const proceed = confirm(
+        `[ATITTLE Payment Demo]\nPlan: ${order.planName}\nAmount: ₹${order.amountPaise / 100}\n\nRazorpay placeholder is active. Click OK to simulate a successful payment, or Cancel to dismiss.`
+      );
+      if (proceed) {
+        opts.onSuccess(`sim_${Date.now()}`);
+      } else {
+        opts.onDismiss?.();
+      }
+      return;
+    }
+
+    const loaded = await loadRazorpayScript();
+    if (!loaded || !(window as any).Razorpay) {
+      alert("Payment gateway could not be loaded. Please check your internet connection.");
+      return;
+    }
+
+    const rzp = new (window as any).Razorpay({
+      key: order.keyId,
+      amount: order.amountPaise,
+      currency: order.currency,
+      name: "ATITTLE",
+      description: order.description,
+      order_id: order.orderId,
+      image: "https://atittle.com/favicon.svg",
+      handler: (response: any) => {
+        opts.onSuccess(response.razorpay_payment_id || `pay_${Date.now()}`);
+      },
+      modal: {
+        ondismiss: () => {
+          opts.onDismiss?.();
+        },
+      },
+      theme: {
+        color: "#c85a32",
+      },
+    });
+
+    rzp.open();
+  } catch (err) {
+    console.error("Razorpay error:", err);
+    alert("Payment initialization error. Please try again.");
+  }
+}

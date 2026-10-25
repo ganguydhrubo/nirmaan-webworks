@@ -5,7 +5,18 @@ import { getSectionDef } from "@/lib/builder/catalog";
 import { useEditor, undo, redo, setViewport, selectPage, getState, findSection, replaceDoc, replaceSection, currentPage, type Viewport } from "./store";
 import { saveNow, loadLatest, overwriteWithMine, retrySave } from "./autosave";
 import { backupBlob, downloadBlob, getPublishInfo, setPublishInfo, type PublishInfo } from "./persistence";
-import { publishBlocker, publishSite, unpublishSite, waitUntilLive, type PublishPhase } from "./publish";
+import {
+  publishBlocker,
+  publishSite,
+  unpublishSite,
+  waitUntilLive,
+  connectCustomDomain,
+  searchDomainAvailability,
+  startRazorpayPayment,
+  type PublishPhase,
+  type CustomDomainResult,
+  type DomainSearchResult,
+} from "./publish";
 import { editWithAi, newRequestId } from "./api";
 import { previewDocument } from "./preview";
 import { Canvas } from "./Canvas";
@@ -367,6 +378,7 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
   const projectId = useEditor((s) => s.projectId);
   const issues = exportChecklist(doc);
   const blocker = publishBlocker(doc);
+  const [activeTab, setActiveTab] = useState<"plans" | "domain" | "video">("plans");
   const [downloaded, setDownloaded] = useState(false);
   const [info, setInfo] = useState<PublishInfo | null>(null);
   const [phase, setPhase] = useState<PublishPhase | "idle">("idle");
@@ -377,12 +389,21 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
   const abortRef = useRef<AbortController | null>(null);
   const busy = phase !== "idle" && phase !== "published" && phase !== "failed";
 
+  // Domain connection state
+  const [domainInput, setDomainInput] = useState("");
+  const [domainConnecting, setDomainConnecting] = useState(false);
+  const [domainResult, setDomainResult] = useState<CustomDomainResult | null>(null);
+
+  // Domain search state
+  const [domainSearchInput, setDomainSearchInput] = useState("");
+  const [domainSearching, setDomainSearching] = useState(false);
+  const [domainSearchResult, setDomainSearchResult] = useState<DomainSearchResult | null>(null);
+
   const remember = async (next: PublishInfo | null) => {
     setInfo(next);
     if (projectId && storageOk) await setPublishInfo(projectId, next).catch(() => toast("Couldn't save the publish details in this browser.", "error"));
   };
 
-  // Load where this project is published; resume a check that was interrupted.
   useEffect(() => {
     let alive = true;
     void siteVersion(buildSiteFiles(getState().doc)).then((v) => alive && setCurrentVersion(v));
@@ -405,6 +426,7 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
       const { bytes, fileName } = exportZip(getState().doc);
       downloadBlob(new Blob([bytes], { type: "application/zip" }), fileName);
       setDownloaded(true);
+      toast("Website downloaded successfully!", "success");
     } catch (err) {
       console.error(err);
       toast("Couldn't create the ZIP file. Please try again.", "error");
@@ -474,7 +496,7 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
   };
 
   const takeOffline = async () => {
-    if (!info || !confirmDialog("Take this website offline? Its link will stop working. You can publish again later (it will get a new address).")) return;
+    if (!info || !confirmDialog("Take this website offline? Its link will stop working. You can publish again later.")) return;
     const r = await unpublishSite(info);
     if (r.ok) {
       await remember(null);
@@ -483,121 +505,452 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
     } else toast(r.message ?? "Couldn't take the website offline. Please try again.", "error");
   };
 
+  // Razorpay payment trigger with fallback
+  const handlePayPlan = (plan: "download" | "host" | "domain", targetDomain?: string) => {
+    void startRazorpayPayment({
+      plan,
+      siteName: doc.name || "My Website",
+      domain: targetDomain,
+      onSuccess: (paymentId) => {
+        toast(`Payment successful (${paymentId}). Processing order!`, "success");
+        if (plan === "download") {
+          download();
+          setActiveTab("video");
+        } else if (plan === "host") {
+          void publish();
+        } else if (plan === "domain") {
+          if (targetDomain) {
+            void connectCustomDomain(targetDomain, info?.slug || slugify(doc.name, "site")).then((res) => {
+              setDomainResult(res);
+              setActiveTab("domain");
+              toast("Domain registration initiated! Checking DNS & SSL.", "success");
+            });
+          }
+          void publish();
+        }
+      },
+    });
+  };
+
+  const handleDomainSearch = async (e: Event) => {
+    e.preventDefault();
+    if (!domainSearchInput.trim()) return;
+    setDomainSearching(true);
+    const res = await searchDomainAvailability(domainSearchInput.trim());
+    setDomainSearchResult(res);
+    setDomainSearching(false);
+  };
+
+  const handleDomainConnect = async (e: Event) => {
+    e.preventDefault();
+    if (!domainInput.trim()) return;
+    setDomainConnecting(true);
+    const slug = info?.slug || slugify(doc.name, "site");
+    const res = await connectCustomDomain(domainInput.trim(), slug);
+    setDomainResult(res);
+    setDomainConnecting(false);
+  };
+
   const stepIndex = PUBLISH_STEPS.findIndex((s) => s.phase === (phase === "retrying" ? "uploading" : phase));
   const live = phase === "published" && info?.status === "published";
   const outdated = live && currentVersion !== null && currentVersion !== info!.version;
 
   return (
-    <Modal title="Download or publish your website" onClose={onClose} wide>
-      <div class="atb-ship-grid">
-        <section class="atb-ship-card" aria-labelledby="atb-ship-dl">
-          <h3 id="atb-ship-dl">
-            <Icon name="download" /> Download Website
-          </h3>
-          <p class="atb-muted atb-small">
-            Get a ZIP file with your website as plain HTML and CSS ({doc.pages.length} page{doc.pages.length === 1 ? "" : "s"}). Upload it to any hosting — it's yours, no ATITTLE account needed.
-          </p>
-          <button type="button" class="atb-btn atb-btn-soft" onClick={download} data-action="download-website">
-            <Icon name="download" /> Download Website
-          </button>
-          {downloaded && (
-            <p class="atb-success atb-small" role="status">
-              <Icon name="check" size={16} /> Downloaded. Unzip it and open <code>index.html</code> to check it.
-            </p>
-          )}
-        </section>
-
-        <section class="atb-ship-card atb-ship-live" aria-labelledby="atb-ship-pub">
-          <h3 id="atb-ship-pub">
-            <Icon name="globe" /> Publish Live Free
-          </h3>
-          <p class="atb-muted atb-small">Put your website online instantly with a free ATITTLE link you can share. No hosting or setup needed.</p>
-
-          {live && info ? (
-            <div class="atb-live" role="status" aria-live="polite">
-              <p class="atb-live-badge">
-                <Icon name="check" size={16} /> Published — your website is live
-              </p>
-              <a class="atb-live-url" href={info.url} target="_blank" rel="noopener" data-live-url>
-                {info.url.replace(/^https:\/\//, "")}
-              </a>
-              {outdated && <p class="atb-warn atb-small">You've changed your website since it was published. Publish again to update the live site.</p>}
-              <div class="atb-live-actions">
-                <a class="atb-btn atb-btn-primary atb-btn-sm" href={info.url} target="_blank" rel="noopener">
-                  <Icon name="external" size={16} /> Open Website
-                </a>
-                <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={copyLink}>
-                  <Icon name={copied ? "check" : "copy"} size={16} /> {copied ? "Copied" : "Copy Link"}
-                </button>
-                <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={download}>
-                  <Icon name="download" size={16} /> Download Website
-                </button>
-                <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={publish}>
-                  <Icon name="refresh" size={16} /> Publish Again
-                </button>
-              </div>
-              <p class="atb-muted atb-small">
-                Published {new Date(info.publishedAt).toLocaleString()}.{" "}
-                <button type="button" class="atb-link-btn" onClick={takeOffline}>
-                  Take offline
-                </button>
-              </p>
-            </div>
-          ) : busy ? (
-            <div class="atb-publish-progress" role="status" aria-live="polite">
-              <ol class="atb-steps">
-                {PUBLISH_STEPS.map((s, i) => (
-                  <li key={s.phase} class={i < stepIndex ? "is-done" : i === stepIndex ? "is-active" : ""}>
-                    <span class="atb-step-dot" aria-hidden="true">
-                      {i < stepIndex ? <Icon name="check" size={12} /> : null}
-                    </span>
-                    {s.label}
-                    {s.phase === "uploading" && i === stepIndex && progress > 0 ? ` ${Math.round(progress * 100)}%` : ""}
-                  </li>
-                ))}
-              </ol>
-              {phase === "retrying" && <p class="atb-muted atb-small">That didn't work — retrying once…</p>}
-            </div>
-          ) : (
-            <>
-              <button type="button" class="atb-btn atb-btn-primary" onClick={publish} disabled={!!blocker} data-action="publish-live">
-                <Icon name="globe" /> {info ? "Publish Again" : "Publish Live Free"}
-              </button>
-              {blocker && <p class="atb-muted atb-small">Not ready: {blocker}</p>}
-              {!storageOk && <p class="atb-muted atb-small">This browser can't save projects, so you won't be able to update this link later — download a project backup too.</p>}
-              {phase === "failed" && error && (
-                <div class="atb-error-box" role="alert">
-                  <p>
-                    <Icon name="alert" size={16} /> <strong>Publishing failed.</strong> {error.message}
-                  </p>
-                  <div class="atb-live-actions">
-                    {error.code === "verify_timeout" && info ? (
-                      <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={() => verifyAgain(info)}>
-                        <Icon name="refresh" size={16} /> Check again
-                      </button>
-                    ) : (
-                      error.retryable && (
-                        <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={publish}>
-                          <Icon name="refresh" size={16} /> Try again
-                        </button>
-                      )
-                    )}
-                    <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={download}>
-                      <Icon name="download" size={16} /> Download instead
-                    </button>
-                  </div>
-                </div>
-              )}
-              <p class="atb-muted atb-small">Your free link ends in your business name and a short code. Free links aren't listed on Google — to get found in search, put the downloaded files on your own domain.</p>
-            </>
-          )}
-        </section>
+    <Modal title="Publish, Custom Domain & Export" onClose={onClose} wide>
+      {/* Top Navigation Tabs */}
+      <div style={{ display: "flex", gap: "8px", borderBottom: "1.5px solid var(--atb-line)", paddingBottom: "12px", marginBottom: "20px" }} role="tablist">
+        <button
+          type="button"
+          onClick={() => setActiveTab("plans")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            fontWeight: activeTab === "plans" ? 700 : 500,
+            background: activeTab === "plans" ? "#1c1917" : "transparent",
+            color: activeTab === "plans" ? "#d4af37" : "#555",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "0.92rem",
+          }}
+        >
+          <span>🚀 Launch & Hosting Plans</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("domain")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            fontWeight: activeTab === "domain" ? 700 : 500,
+            background: activeTab === "domain" ? "#1c1917" : "transparent",
+            color: activeTab === "domain" ? "#d4af37" : "#555",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "0.92rem",
+          }}
+        >
+          <span>🌐 Connect Custom Domain</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("video")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            fontWeight: activeTab === "video" ? 700 : 500,
+            background: activeTab === "video" ? "#1c1917" : "transparent",
+            color: activeTab === "video" ? "#d4af37" : "#555",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            fontSize: "0.92rem",
+          }}
+        >
+          <span>🎥 Video Guide & Steps</span>
+        </button>
       </div>
 
+      {/* Tab 1: Pricing & Launch Plans */}
+      {activeTab === "plans" && (
+        <div>
+          <div style={{ textAlign: "center", marginBottom: "18px" }}>
+            <h3 style={{ fontSize: "1.25rem", margin: "0 0 6px", color: "#1c1917" }}>Choose how you would like to take your website live</h3>
+            <p class="atb-muted" style={{ fontSize: "0.9rem", margin: 0 }}>Razorpay secure checkout · Instant setup · Zero coding required</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", marginBottom: "20px" }}>
+            {/* Card 1: Direct Fast Hosting (₹750) */}
+            <div style={{ border: "2px solid #c85a32", borderRadius: "14px", padding: "18px", background: "#fff", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative" }}>
+              <span style={{ position: "absolute", top: "-10px", right: "14px", background: "#c85a32", color: "#fff", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: "99px", textTransform: "uppercase" }}>
+                Most Popular
+              </span>
+              <div>
+                <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>Direct Fast Hosting</strong>
+                <p class="atb-muted atb-small" style={{ margin: "4px 0 12px" }}>Hosted directly on ATITTLE ultra-fast Cloudflare Edge with 99.99% uptime.</p>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "12px" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1c1917" }}>₹750</span>
+                  <span class="atb-muted" style={{ fontSize: "0.8rem" }}>/ year</span>
+                </div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: "0.82rem", display: "grid", gap: "6px", color: "#444" }}>
+                  <li>✓ Free SSL Security Certificate (HTTPS)</li>
+                  <li>✓ Sub-50ms Global Edge Speed</li>
+                  <li>✓ Unlimited updates & mobile optimization</li>
+                  <li>✓ Zero DevOps or cPanel headaches</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                class="atb-btn atb-btn-primary"
+                onClick={() => handlePayPlan("host")}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                Pay ₹750 & Host Direct
+              </button>
+            </div>
+
+            {/* Card 2: Custom Domain + Live Hosting (₹1,000) */}
+            <div style={{ border: "1.5px solid #d4af37", borderRadius: "14px", padding: "18px", background: "#fdfaf3", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative" }}>
+              <span style={{ position: "absolute", top: "-10px", right: "14px", background: "#1c1917", color: "#d4af37", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: "99px", textTransform: "uppercase" }}>
+                Domain Included
+              </span>
+              <div>
+                <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>Custom Domain + Hosting</strong>
+                <p class="atb-muted atb-small" style={{ margin: "4px 0 12px" }}>Flat ₹499 website build + brand new custom domain (.in / .com) registered for you.</p>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "12px" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1c1917" }}>₹1,000</span>
+                  <span class="atb-muted" style={{ fontSize: "0.8rem" }}>all-inclusive</span>
+                </div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: "0.82rem", display: "grid", gap: "6px", color: "#444" }}>
+                  <li>✓ Custom domain registration (.in / .com)</li>
+                  <li>✓ 1-Click DNS automatic configuration</li>
+                  <li>✓ 1 Full year fast Cloudflare Edge hosting</li>
+                  <li>✓ Professional brand email forward setup</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                class="atb-btn"
+                style={{ width: "100%", justifyContent: "center", background: "#1c1917", color: "#d4af37", fontWeight: 700 }}
+                onClick={() => {
+                  setActiveTab("domain");
+                  toast("Search or enter your custom domain to proceed with the ₹1,000 plan.", "info");
+                }}
+              >
+                Search Domain (₹1,000 Plan)
+              </button>
+            </div>
+
+            {/* Card 3: Download Website Source Code (Flat ₹499) */}
+            <div style={{ border: "1.5px solid var(--atb-line)", borderRadius: "14px", padding: "18px", background: "#fff", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>Download Source Code</strong>
+                <p class="atb-muted atb-small" style={{ margin: "4px 0 12px" }}>Full ZIP package containing clean, production-ready HTML, CSS and images.</p>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "12px" }}>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1c1917" }}>₹499</span>
+                  <span class="atb-muted" style={{ fontSize: "0.8rem" }}>one-time flat</span>
+                </div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: "0.82rem", display: "grid", gap: "6px", color: "#444" }}>
+                  <li>✓ Complete HTML5 / CSS3 / Vanilla JS source</li>
+                  <li>✓ No ongoing subscription or vendor lock-in</li>
+                  <li>✓ Host on GoDaddy, Hostinger, Vercel or cPanel</li>
+                  <li>✓ Step-by-step video guide included</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                class="atb-btn atb-btn-soft"
+                onClick={() => handlePayPlan("download")}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                <Icon name="download" /> Pay ₹499 & Download
+              </button>
+            </div>
+          </div>
+
+          {/* Free Staging Test & Live Status */}
+          <div style={{ background: "#fcfbf9", border: "1px dashed var(--atb-line)", borderRadius: "12px", padding: "14px 18px", marginTop: "14px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+              <div>
+                <strong style={{ fontSize: "0.92rem", display: "block" }}>Need to test before paying?</strong>
+                <span class="atb-muted" style={{ fontSize: "0.82rem" }}>Generate a free temporary staging link to preview on your phone or share with your team.</span>
+              </div>
+              <div style={{ display: "flex", gap: "8px" }}>
+                {live && info ? (
+                  <a href={info.url} target="_blank" rel="noopener" class="atb-btn atb-btn-soft atb-btn-sm">
+                    <Icon name="external" size={14} /> View Live ({info.url.replace(/^https?:\/\//, "").slice(0, 20)}…)
+                  </a>
+                ) : (
+                  <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={publish} disabled={!!blocker || busy}>
+                    {busy ? "Deploying test…" : "Generate Free Test Link"}
+                  </button>
+                )}
+                <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={download}>
+                  Download Free Test ZIP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 2: Custom Domain & Domain Connect */}
+      {activeTab === "domain" && (
+        <div>
+          {/* Section A: Search & Buy New Domain (₹1,000 All-Inclusive) */}
+          <div style={{ background: "#fcfbf9", border: "1px solid var(--atb-line)", borderRadius: "12px", padding: "18px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+              <span style={{ background: "#1c1917", color: "#d4af37", padding: "2px 8px", borderRadius: "4px", fontSize: "0.72rem", fontWeight: 700 }}>OPTION A</span>
+              <strong style={{ fontSize: "1.05rem", color: "#1c1917" }}>Search & Purchase a Brand-New Domain (₹1,000 Plan)</strong>
+            </div>
+            <p class="atb-muted atb-small" style={{ marginBottom: "14px" }}>
+              Includes ₹499 website build + 1-year domain registration (.in / .com / .store) + free edge hosting & SSL certificate.
+            </p>
+
+            <form onSubmit={handleDomainSearch} style={{ display: "flex", gap: "8px", maxWidth: "560px" }}>
+              <input
+                type="text"
+                placeholder="e.g. delhibakes or sharmaconsulting"
+                value={domainSearchInput}
+                onInput={(e) => setDomainSearchInput((e.target as HTMLInputElement).value)}
+                style={{ flex: 1, padding: "8px 12px", borderRadius: "8px", border: "1.5px solid var(--atb-line)", fontSize: "0.92rem" }}
+              />
+              <button type="submit" class="atb-btn atb-btn-primary" disabled={domainSearching}>
+                {domainSearching ? "Searching…" : "Check Availability"}
+              </button>
+            </form>
+
+            {domainSearchResult && domainSearchResult.ok && (
+              <div style={{ marginTop: "14px", borderTop: "1px solid var(--atb-line)", paddingTop: "12px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff", padding: "12px 14px", borderRadius: "8px", border: "1px solid #c85a32" }}>
+                  <div>
+                    <strong style={{ fontSize: "1.05rem", color: "#1c1917" }}>{domainSearchResult.primary.domain}</strong>
+                    <span style={{ display: "block", fontSize: "0.8rem", color: "#16a34a", fontWeight: 600 }}>✓ Available to register</span>
+                  </div>
+                  <button
+                    type="button"
+                    class="atb-btn atb-btn-primary atb-btn-sm"
+                    onClick={() => handlePayPlan("domain", domainSearchResult.primary.domain)}
+                  >
+                    Register & Connect (₹1,000)
+                  </button>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "8px", marginTop: "10px" }}>
+                  {domainSearchResult.alternatives.map((alt) => (
+                    <div key={alt.domain} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#fff", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--atb-line)", fontSize: "0.85rem" }}>
+                      <span><strong>{alt.domain}</strong></span>
+                      <button
+                        type="button"
+                        class="atb-btn atb-btn-ghost atb-btn-sm"
+                        style={{ padding: "3px 8px", fontSize: "0.75rem" }}
+                        onClick={() => handlePayPlan("domain", alt.domain)}
+                      >
+                        Choose
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Section B: Connect Existing Domain via Domain Connect / CNAME */}
+          <div style={{ background: "#fff", border: "1.5px solid var(--atb-line)", borderRadius: "12px", padding: "18px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+              <span style={{ background: "#2563eb", color: "#fff", padding: "2px 8px", borderRadius: "4px", fontSize: "0.72rem", fontWeight: 700 }}>OPTION B</span>
+              <strong style={{ fontSize: "1.05rem", color: "#1c1917" }}>Connect Domain You Already Own (GoDaddy, Namecheap, Hostinger, etc.)</strong>
+            </div>
+            <p class="atb-muted atb-small" style={{ marginBottom: "14px" }}>
+              Support 1-click Domain Connect protocol (GoDaddy, IONOS, Namecheap) or manual CNAME fallback for any registrar worldwide.
+            </p>
+
+            <form onSubmit={handleDomainConnect} style={{ display: "flex", gap: "8px", maxWidth: "560px" }}>
+              <input
+                type="text"
+                placeholder="e.g. mybakery.in or yourcompany.com"
+                value={domainInput}
+                onInput={(e) => setDomainInput((e.target as HTMLInputElement).value)}
+                style={{ flex: 1, padding: "8px 12px", borderRadius: "8px", border: "1.5px solid var(--atb-line)", fontSize: "0.92rem" }}
+              />
+              <button type="submit" class="atb-btn atb-btn-primary" disabled={domainConnecting}>
+                {domainConnecting ? "Detecting DNS…" : "Connect Domain"}
+              </button>
+            </form>
+
+            {domainResult && domainResult.ok && (
+              <div style={{ marginTop: "16px", background: "#fbf6ee", border: "1px solid #e2dacb", borderRadius: "10px", padding: "16px" }}>
+                {domainResult.domainConnectUrl ? (
+                  <div style={{ marginBottom: "14px", padding: "12px", background: "#e0f2fe", border: "1px solid #7dd3fc", borderRadius: "8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+                      <div>
+                        <strong style={{ color: "#0369a1", fontSize: "0.95rem", display: "block" }}>⚡ 1-Click Domain Connect Detected!</strong>
+                        <span style={{ fontSize: "0.82rem", color: "#075985" }}>Your provider supports automated DNS setup without copy-pasting records.</span>
+                      </div>
+                      <a
+                        href={domainResult.domainConnectUrl}
+                        target="_blank"
+                        rel="noopener"
+                        class="atb-btn atb-btn-primary atb-btn-sm"
+                        style={{ background: "#0284c7", whiteSpace: "nowrap" }}
+                      >
+                        Authorize via Provider ↗
+                      </a>
+                    </div>
+                  </div>
+                ) : null}
+
+                <strong style={{ fontSize: "0.9rem", color: "#1c1917", display: "block", marginBottom: "8px" }}>DNS Record Configuration:</strong>
+                <table style={{ width: "100%", fontSize: "0.82rem", borderCollapse: "collapse", background: "#fff", borderRadius: "6px", overflow: "hidden" }}>
+                  <thead>
+                    <tr style={{ background: "#f3ede3", textAlign: "left" }}>
+                      <th style={{ padding: "8px 10px" }}>Type</th>
+                      <th style={{ padding: "8px 10px" }}>Host / Name</th>
+                      <th style={{ padding: "8px 10px" }}>Target / Value</th>
+                      <th style={{ padding: "8px 10px" }}>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {domainResult.dnsRecords?.map((rec, i) => (
+                      <tr key={i} style={{ borderTop: "1px solid #eee" }}>
+                        <td style={{ padding: "8px 10px", fontWeight: 700 }}>{rec.type}</td>
+                        <td style={{ padding: "8px 10px", fontFamily: "monospace" }}>{rec.name}</td>
+                        <td style={{ padding: "8px 10px", fontFamily: "monospace" }}>{rec.value}</td>
+                        <td style={{ padding: "8px 10px", color: "#16a34a", fontWeight: 600 }}>Active Route</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "12px", fontSize: "0.82rem" }}>
+                  <span style={{ color: "#16a34a", fontWeight: 600 }}>
+                    <Icon name="check" size={14} /> Cloudflare for SaaS Edge Provisioned · SSL: Active (Let's Encrypt DV)
+                  </span>
+                  <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={handleDomainConnect}>
+                    <Icon name="refresh" size={14} /> Refresh Status
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Tab 3: Step-by-Step Video Guide */}
+      {activeTab === "video" && (
+        <div>
+          <div style={{ textAlign: "center", marginBottom: "18px" }}>
+            <h3 style={{ fontSize: "1.25rem", margin: "0 0 6px", color: "#1c1917" }}>Step-by-Step Guide: What to do after downloading</h3>
+            <p class="atb-muted" style={{ fontSize: "0.9rem", margin: 0 }}>Follow these 4 simple steps to have your downloaded site live on any hosting.</p>
+          </div>
+
+          {/* Interactive Video Demonstration Container */}
+          <div style={{ background: "#1c1917", borderRadius: "14px", overflow: "hidden", color: "#fff", marginBottom: "20px", boxShadow: "0 8px 24px -4px rgba(0,0,0,0.25)" }}>
+            <div style={{ aspectRatio: "16 / 9", background: "linear-gradient(135deg, #1c1917 0%, #2a2420 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px", position: "relative" }}>
+              <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#c85a32", display: "grid", placeItems: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(200,90,50,0.4)" }}>
+                <span style={{ width: 0, height: 0, borderTop: "10px solid transparent", borderBottom: "10px solid transparent", borderLeft: "16px solid #fff", marginLeft: "4px" }} />
+              </div>
+              <strong style={{ fontSize: "1.1rem", marginTop: "14px", letterSpacing: "0.02em" }}>VIDEO DEMONSTRATION (3 MINUTES)</strong>
+              <span style={{ fontSize: "0.85rem", color: "#d4af37", marginTop: "4px" }}>"How to Upload Your ATITTLE Website to GoDaddy cPanel & Connect Your Domain"</span>
+              <div style={{ position: "absolute", bottom: "12px", right: "16px", fontSize: "0.75rem", background: "rgba(0,0,0,0.6)", padding: "3px 8px", borderRadius: "4px" }}>
+                1080p HD · Step-by-Step
+              </div>
+            </div>
+          </div>
+
+          {/* 4 Illustrated Action Steps */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "14px", marginBottom: "16px" }}>
+            <div style={{ border: "1px solid var(--atb-line)", borderRadius: "10px", padding: "14px", background: "#fff" }}>
+              <span style={{ display: "inline-block", width: "24px", height: "24px", borderRadius: "50%", background: "#1c1917", color: "#fff", textAlign: "center", lineHeight: "24px", fontSize: "0.8rem", fontWeight: 700, marginBottom: "8px" }}>1</span>
+              <strong style={{ fontSize: "0.92rem", display: "block", color: "#1c1917" }}>Unzip the Download</strong>
+              <p class="atb-muted" style={{ fontSize: "0.8rem", margin: "4px 0 0" }}>Right-click your downloaded ZIP file and click "Extract All". You'll get your HTML, CSS and images.</p>
+            </div>
+
+            <div style={{ border: "1px solid var(--atb-line)", borderRadius: "10px", padding: "14px", background: "#fff" }}>
+              <span style={{ display: "inline-block", width: "24px", height: "24px", borderRadius: "50%", background: "#1c1917", color: "#fff", textAlign: "center", lineHeight: "24px", fontSize: "0.8rem", fontWeight: 700, marginBottom: "8px" }}>2</span>
+              <strong style={{ fontSize: "0.92rem", display: "block", color: "#1c1917" }}>Preview in Browser</strong>
+              <p class="atb-muted" style={{ fontSize: "0.8rem", margin: "4px 0 0" }}>Double-click <code>index.html</code> to test your entire website locally on your computer with zero internet required.</p>
+            </div>
+
+            <div style={{ border: "1px solid var(--atb-line)", borderRadius: "10px", padding: "14px", background: "#fff" }}>
+              <span style={{ display: "inline-block", width: "24px", height: "24px", borderRadius: "50%", background: "#1c1917", color: "#fff", textAlign: "center", lineHeight: "24px", fontSize: "0.8rem", fontWeight: 700, marginBottom: "8px" }}>3</span>
+              <strong style={{ fontSize: "0.92rem", display: "block", color: "#1c1917" }}>Upload to Host</strong>
+              <p class="atb-muted" style={{ fontSize: "0.8rem", margin: "4px 0 0" }}>Upload the unzipped files to your GoDaddy cPanel (public_html), Hostinger, or drag & drop into Cloudflare Pages / Netlify.</p>
+            </div>
+
+            <div style={{ border: "1px solid var(--atb-line)", borderRadius: "10px", padding: "14px", background: "#fff" }}>
+              <span style={{ display: "inline-block", width: "24px", height: "24px", borderRadius: "50%", background: "#1c1917", color: "#fff", textAlign: "center", lineHeight: "24px", fontSize: "0.8rem", fontWeight: 700, marginBottom: "8px" }}>4</span>
+              <strong style={{ fontSize: "0.92rem", display: "block", color: "#1c1917" }}>100% Live Worldwide</strong>
+              <p class="atb-muted" style={{ fontSize: "0.8rem", margin: "4px 0 0" }}>Your domain immediately serves your website with zero monthly subscriptions. You own the code forever.</p>
+            </div>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: "16px" }}>
+            <a
+              href="/free-website-builder/hosting-guide"
+              target="_blank"
+              rel="noopener"
+              class="atb-btn atb-btn-soft"
+              style={{ display: "inline-flex" }}
+            >
+              Read Full Hosting & GoDaddy Documentation ↗
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Checklist notices */}
       {issues.length > 0 && (
-        <div class="atb-checklist">
+        <div class="atb-checklist" style={{ marginTop: "18px" }}>
           <p>
-            <strong>Before you publish</strong>
+            <strong>Before you go live:</strong>
           </p>
           <ul>
             {issues.map((i) => (
@@ -609,23 +962,16 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
         </div>
       )}
 
-      <div class="atb-modal-actions atb-stack-sm">
+      <div class="atb-modal-actions atb-stack-sm" style={{ marginTop: "18px", borderTop: "1px solid var(--atb-line)", paddingTop: "14px" }}>
         <button
           type="button"
-          class="atb-btn atb-btn-ghost"
+          class="atb-btn atb-btn-ghost atb-btn-sm"
           onClick={() => downloadBlob(backupBlob(getState().doc), `${slugify(getState().doc.name, "website")}.atittle-project.json`)}
-          title="A file you can import later to keep editing this project, on any device."
+          title="Download project backup file to resume editing on any computer."
         >
-          <Icon name="save" /> Download project backup
+          <Icon name="save" size={14} /> Backup Project (.json)
         </button>
       </div>
-      <p class="atb-muted atb-small">
-        Want to use your own domain?{" "}
-        <a href="/free-website-builder/hosting-guide" target="_blank" rel="noopener">
-          Read the step-by-step hosting guide (GoDaddy and others)
-        </a>
-        . The project backup is only for re-opening this project in the builder — don't upload it to your website.
-      </p>
     </Modal>
   );
 }

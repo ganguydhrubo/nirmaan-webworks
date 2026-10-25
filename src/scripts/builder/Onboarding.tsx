@@ -6,7 +6,23 @@ import type { ProjectSummary } from "./persistence";
 import { Icon } from "./ui";
 
 // ---------------------------------------------------------------------------
-// Start screen
+// Top 10 Trending Styles of 2026 (curated for modern conversion & aesthetic)
+// ---------------------------------------------------------------------------
+export const TRENDING_STYLES_2026 = [
+  { preset: "saas", rank: "#1", badge: "🔥 #1 Trend 2026", label: "Modern SaaS & Tech", tag: "Crisp indigo, tech borders & rounded cards" },
+  { preset: "corporate", rank: "#2", badge: "🏢 Top Corporate Trust", label: "Professional Corporate", tag: "Deep navy, structured authority & clean grid" },
+  { preset: "dark-tech", rank: "#3", badge: "🔮 Cyber Dark", label: "Dark Cyber & Metallic", tag: "Obsidian backdrop with electric cyan & purple neon" },
+  { preset: "luxury", rank: "#4", badge: "💎 High-End Luxury", label: "Gold & Ink Luxury", tag: "Warm gold & obsidian with Cormorant serif" },
+  { preset: "editorial", rank: "#5", badge: "📰 Editorial Insight", label: "Minimalist Serif", tag: "Instrument Serif headlines with generous air" },
+  { preset: "minimal", rank: "#6", badge: "⚪ Swiss Minimal", label: "Monochrome Minimal", tag: "Pure black & white with expansive breathing room" },
+  { preset: "studio", rank: "#7", badge: "🎨 Neo-Brutalism", label: "Bold Creative Studio", tag: "Oversized typography, punchy contrast & bold borders" },
+  { preset: "vibrant", rank: "#8", badge: "🍭 Vibrant Gen-Z", label: "Vibrant Consumer Brand", tag: "Playful berry & amber tones with bouncy pill shapes" },
+  { preset: "local", rank: "#9", badge: "🏺 Warm Artisanal", label: "Terracotta & Local Craft", tag: "Warm terracotta & cream, approachable friendly feel" },
+  { preset: "organic", rank: "#10", badge: "🌿 Nordic Organic", label: "Botanical & Wellness", tag: "Earthy sage greens & peaceful calm typography" },
+] as const;
+
+// ---------------------------------------------------------------------------
+// Start screen: "How would you like to start?"
 // ---------------------------------------------------------------------------
 
 export function StartScreen(props: {
@@ -22,9 +38,22 @@ export function StartScreen(props: {
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const templatesRef = useRef<HTMLElement>(null);
+  const [filter, setFilter] = useState<string>("all");
+
   useEffect(() => {
     if (props.showTemplates) templatesRef.current?.scrollIntoView({ block: "start" });
   }, [props.showTemplates]);
+
+  const filteredTemplates = TEMPLATE_LIST.filter((t) => {
+    if (filter === "all") return true;
+    if (filter === "trending") return !!t.tag?.includes("Trend") || !!t.tag?.includes("Corporate");
+    if (filter === "corporate") return t.category === "Corporate" || t.preset === "corporate" || t.preset === "editorial";
+    if (filter === "tech") return t.category === "Tech" || t.preset === "saas" || t.preset === "dark-tech";
+    if (filter === "luxury") return t.preset === "luxury" || t.preset === "editorial";
+    if (filter === "local") return t.category === "Local" || t.preset === "local" || t.preset === "hospitality";
+    return true;
+  });
+
   return (
     <div class="atb-start">
       <header class="atb-start-head">
@@ -34,28 +63,50 @@ export function StartScreen(props: {
         <a href="/" class="atb-home-link">ATITTLE home</a>
       </header>
       <main class="atb-start-main">
-        <h1>How would you like to start?</h1>
-        <p class="atb-muted">You can change everything afterwards — text, colours, sections and pages.</p>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <span style={{ display: "inline-block", background: "#fbf6ee", color: "#c85a32", border: "1px solid #ebd9c8", padding: "4px 12px", borderRadius: "99px", fontSize: "0.82rem", fontWeight: 600, marginBottom: "8px" }}>
+            ✨ ATITTLE Free Website Studio
+          </span>
+          <h1 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 700, margin: "0 0 10px", color: "#1c1917" }}>
+            How would you like to start?
+          </h1>
+          <p class="atb-muted" style={{ fontSize: "1.05rem", maxWidth: "600px", margin: "0 auto" }}>
+            Create an original, mobile-responsive website in minutes. You can change every single detail afterwards.
+          </p>
+        </div>
+
         <div class="atb-choice-grid">
-          <button type="button" class="atb-choice atb-choice-primary" onClick={props.onAi}>
+          <button type="button" class="atb-choice atb-choice-primary" onClick={props.onAi} style={{ position: "relative", overflow: "hidden" }}>
+            <span style={{ position: "absolute", top: "12px", right: "12px", background: "#c85a32", color: "#fff", fontSize: "0.7rem", padding: "2px 8px", borderRadius: "99px", fontWeight: 700, textTransform: "uppercase" }}>
+              Fast · 30 Sec
+            </span>
             <span class="atb-choice-icon">
               <Icon name="sparkles" size={26} />
             </span>
             <strong>Generate with AI</strong>
-            <span>Answer a few questions and get a first draft of your website in under a minute.</span>
+            <span>Describe what your business does and get a complete custom draft with pages and images.</span>
           </button>
-          <button type="button" class="atb-choice" onClick={() => templatesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+
+          <button
+            type="button"
+            class="atb-choice"
+            onClick={() => templatesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            <span style={{ position: "absolute", top: "12px", right: "12px", background: "#1c1917", color: "#d4af37", fontSize: "0.7rem", padding: "2px 8px", borderRadius: "99px", fontWeight: 700, textTransform: "uppercase" }}>
+              12+ Styles
+            </span>
             <span class="atb-choice-icon">
               <Icon name="layers" size={26} />
             </span>
-            <strong>Start with a template</strong>
-            <span>Pick a ready-made design and fill in your own details. No AI needed.</span>
+            <strong>Start with a Trending Template</strong>
+            <span>Pick a ready-made 2026 design (Corporate, SaaS, Minimalist, Luxury) and customize.</span>
           </button>
         </div>
 
         {props.projects.length > 0 && (
           <section class="atb-start-section" aria-labelledby="atb-your-projects">
-            <h2 id="atb-your-projects">Your projects on this device</h2>
+            <h2 id="atb-your-projects">Your saved projects on this device</h2>
             <ul class="atb-project-list">
               {props.projects.map((p) => (
                 <li key={p.id}>
@@ -75,17 +126,83 @@ export function StartScreen(props: {
         )}
 
         <section class="atb-start-section" aria-labelledby="atb-templates" ref={templatesRef}>
-          <h2 id="atb-templates">Templates</h2>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "12px", marginBottom: "16px" }}>
+            <div>
+              <h2 id="atb-templates" style={{ margin: 0 }}>Trending 2026 Ready Templates</h2>
+              <p class="atb-muted" style={{ margin: "4px 0 0", fontSize: "0.9rem" }}>Diverse aesthetic directions for companies, tech platforms, studios, and shops.</p>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }} role="tablist" aria-label="Template categories">
+              {[
+                { id: "all", label: "All (12)" },
+                { id: "trending", label: "🔥 Top Trending" },
+                { id: "corporate", label: "🏢 Corporate Profile" },
+                { id: "tech", label: "⚡ SaaS & Tech" },
+                { id: "luxury", label: "💎 Luxury Serif" },
+                { id: "local", label: "🏺 Local & Food" },
+              ].map((c) => (
+                <button
+                  type="button"
+                  key={c.id}
+                  onClick={() => setFilter(c.id)}
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: "99px",
+                    fontSize: "0.8rem",
+                    fontWeight: filter === c.id ? 700 : 500,
+                    border: filter === c.id ? "1.5px solid #1c1917" : "1px solid #dcd7ce",
+                    background: filter === c.id ? "#1c1917" : "#fff",
+                    color: filter === c.id ? "#fff" : "#444",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div class="atb-template-grid">
-            {TEMPLATE_LIST.map((t) => {
+            {filteredTemplates.map((t) => {
               const preset = THEME_PRESETS.find((p) => p.preset === t.preset)!;
               return (
-                <button type="button" key={t.id} class="atb-template" onClick={() => props.onTemplate(t.id)} data-template={t.id}>
-                  <span class="atb-template-thumb" aria-hidden="true" style={{ background: preset.colors.bg }}>
+                <button
+                  type="button"
+                  key={t.id}
+                  class="atb-template"
+                  onClick={() => props.onTemplate(t.id)}
+                  data-template={t.id}
+                  style={{ position: "relative", textAlign: "left" }}
+                >
+                  {t.tag && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                        zIndex: 3,
+                        background: "rgba(28, 25, 23, 0.9)",
+                        color: "#d4af37",
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        padding: "3px 8px",
+                        borderRadius: "6px",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      {t.tag}
+                    </span>
+                  )}
+                  <span class="atb-template-thumb" aria-hidden="true" style={{ background: preset.colors.bg, position: "relative", minHeight: "150px" }}>
                     <iframe src={`/free-website-builder/template-preview/${t.id}.html`} loading="lazy" tabIndex={-1} sandbox="" title="" />
                   </span>
-                  <strong>{t.label}</strong>
-                  <span class="atb-muted">{t.description}</span>
+                  <div style={{ padding: "10px 4px 4px" }}>
+                    <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>{t.label}</strong>
+                    <span class="atb-muted" style={{ fontSize: "0.85rem", lineHeight: 1.4, marginTop: "2px", display: "block" }}>
+                      {t.description}
+                    </span>
+                  </div>
                 </button>
               );
             })}
@@ -95,8 +212,8 @@ export function StartScreen(props: {
         <section class="atb-start-section atb-start-foot">
           <p class="atb-muted">
             {props.storageOk
-              ? "Projects are saved automatically in this browser on this device. There's no ATITTLE account yet, so download a backup file to move a project to another device."
-              : "This browser isn't allowing the builder to save (private browsing can do this). You can still build and download your website — download a project backup before closing the tab."}
+              ? "Projects are saved automatically in this browser on this device. Download a project backup to move a project to another computer."
+              : "This browser isn't allowing local storage. Download your project backup before closing the tab."}
           </p>
           <button type="button" class="atb-btn atb-btn-ghost" onClick={() => fileRef.current?.click()}>
             <Icon name="upload" /> Import a project backup
@@ -119,7 +236,7 @@ export function StartScreen(props: {
 }
 
 // ---------------------------------------------------------------------------
-// AI brief form
+// AI brief form with Top 10 Trending Styles
 // ---------------------------------------------------------------------------
 
 export const EMPTY_BRIEF: Brief = {
@@ -164,7 +281,7 @@ export function Wizard(props: { initial: Brief; remaining: number | null; onBack
             <span>
               Business or website name <em>*</em>
             </span>
-            <input value={b.businessName} maxLength={80} required placeholder="e.g. Sharma Dental Care" onInput={(e) => set("businessName", e.currentTarget.value)} />
+            <input value={b.businessName} maxLength={80} required placeholder="e.g. Meridian Corporate Advisory" onInput={(e) => set("businessName", e.currentTarget.value)} />
           </label>
           <label class="atb-field">
             <span>
@@ -187,32 +304,55 @@ export function Wizard(props: { initial: Brief; remaining: number | null; onBack
               rows={4}
               maxLength={1200}
               required
-              placeholder="e.g. Family dental clinic in Salt Lake, Kolkata. We do check-ups, cleaning, braces and implants. Friendly with nervous patients and children. Open Mon–Sat."
+              placeholder="e.g. Strategic business advisory firm in Ahmedabad. We advise founders and boards on growth, finance, and operations. Clean, professional and high-trust tone."
               onInput={(e) => set("description", e.currentTarget.value)}
             />
             <small class="atb-muted">What you do, where, for whom, and what makes you different. {1200 - b.description.length} characters left.</small>
           </label>
 
           <details class="atb-more" open>
-            <summary>Style, goal and pages (optional)</summary>
+            <summary>Top 10 Trending Styles & Options (2026)</summary>
             <div class="atb-field">
-              <span id="atb-style-label">Visual style</span>
+              <span id="atb-style-label" style={{ fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
+                <span>Visual Style (Top 10 Trending in 2026)</span>
+                <span style={{ background: "#c85a32", color: "#fff", fontSize: "0.68rem", padding: "1px 6px", borderRadius: "4px" }}>HOT</span>
+              </span>
               <div class="atb-style-grid" role="radiogroup" aria-labelledby="atb-style-label">
                 <button type="button" role="radio" aria-checked={b.style === "auto"} class="atb-style" onClick={() => set("style", "auto")}>
                   <span class="atb-style-swatch atb-style-auto" aria-hidden="true">
                     <Icon name="sparkles" />
                   </span>
-                  Let AI choose
+                  <div>
+                    <strong>Let AI choose</strong>
+                    <span style={{ fontSize: "0.75rem", display: "block", color: "#666" }}>Optimized for your industry</span>
+                  </div>
                 </button>
-                {THEME_PRESETS.map((p) => (
-                  <button type="button" key={p.preset} role="radio" aria-checked={b.style === p.preset} class="atb-style" onClick={() => set("style", p.preset)} title={p.description}>
-                    <span class="atb-style-swatch" aria-hidden="true" style={{ background: p.colors.bg, borderColor: p.colors.border }}>
-                      <span style={{ background: p.colors.accent }} />
-                      <span style={{ background: p.colors.text }} />
-                    </span>
-                    {p.label}
-                  </button>
-                ))}
+                {TRENDING_STYLES_2026.map((s) => {
+                  const p = THEME_PRESETS.find((tp) => tp.preset === s.preset)!;
+                  return (
+                    <button
+                      type="button"
+                      key={s.preset}
+                      role="radio"
+                      aria-checked={b.style === s.preset}
+                      class="atb-style"
+                      onClick={() => set("style", s.preset)}
+                      title={s.tag}
+                      style={{ textAlign: "left" }}
+                    >
+                      <span class="atb-style-swatch" aria-hidden="true" style={{ background: p.colors.bg, borderColor: p.colors.border }}>
+                        <span style={{ background: p.colors.accent }} />
+                        <span style={{ background: p.colors.text }} />
+                      </span>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                          <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#c85a32" }}>{s.badge}</span>
+                        </div>
+                        <strong style={{ display: "block", fontSize: "0.88rem" }}>{s.label}</strong>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
             <label class="atb-field">
@@ -227,7 +367,7 @@ export function Wizard(props: { initial: Brief; remaining: number | null; onBack
             </label>
             <label class="atb-field">
               <span>Who are your customers?</span>
-              <input value={b.audience} maxLength={200} placeholder="e.g. Families and working professionals nearby" onInput={(e) => set("audience", e.currentTarget.value)} />
+              <input value={b.audience} maxLength={200} placeholder="e.g. Founders, enterprises and professionals" onInput={(e) => set("audience", e.currentTarget.value)} />
             </label>
             <fieldset class="atb-field atb-pages">
               <legend>Extra pages (Home is always included)</legend>

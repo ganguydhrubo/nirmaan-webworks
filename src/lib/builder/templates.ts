@@ -15,6 +15,8 @@ export interface TemplateInfo {
   label: string;
   description: string;
   preset: string;
+  tag?: string;
+  category?: string;
 }
 
 type RawSection = { type: SectionType; variant?: string; props?: Record<string, unknown>; style?: Record<string, unknown> };
@@ -49,6 +51,117 @@ interface TemplateDef extends TemplateInfo {
 }
 
 const TEMPLATES: TemplateDef[] = [
+  {
+    id: "corporate-advisory",
+    label: "Meridian Corporate Advisory",
+    description: "Executive strategic counsel, capital advisory and corporate governance profile.",
+    preset: "corporate",
+    tag: "🏢 Top Corporate Trust",
+    category: "Corporate",
+    name: "Meridian Advisory Group",
+    siteDescription: "Strategic counsel and corporate advisory for mid-market and enterprise leadership.",
+    pages: [
+      {
+        title: "Home",
+        sections: [
+          nav("Meridian Advisory Group", "Schedule Consultation", "#contact", "simple"),
+          sec("hero", "split", {
+            eyebrow: "Strategic Corporate Counsel",
+            headline: "Clarity in decision-making for complex business crossroads",
+            subheadline: "We advise boards and founders on capital allocation, cross-border growth, and strategic transformation with senior-only engagement.",
+            primaryLabel: "Executive Briefing",
+            primaryHref: "#contact",
+            secondaryLabel: "Practice Areas",
+            secondaryHref: "#services",
+          }, { background: "default", align: "left", spacing: "spacious" }),
+          sec("features", "grid", {
+            heading: "Why leadership teams choose Meridian",
+            intro: "Institutional rigor combined with entrepreneurial speed.",
+            items: [
+              { title: "Senior Principals Only", description: "Direct oversight by partners who have managed P&Ls and navigated multi-stakeholder crises." },
+              { title: "Evidence-Led Strategy", description: "Every recommendation is backed by granular market modeling and audited financial data." },
+              { title: "Measurable Value", description: "Clear KPIs, governance milestones, and structured 90-day execution roadmaps." },
+            ],
+          }, { background: "surface", align: "left", spacing: "normal" }),
+          sec("services", "cards", {
+            heading: "Practice Areas",
+            intro: "Tailored engagements structured for decisive outcomes.",
+            items: [
+              { title: "Mergers and Capital Strategy", description: "Valuation, buy-side advisory, and balance-sheet optimization for expansion.", price: "" },
+              { title: "Governance and Risk Advisory", description: "Board advisory, regulatory compliance frameworks, and executive alignment.", price: "" },
+              { title: "Operational Turnaround", description: "Cost rationalization, supply chain resilience, and organizational performance.", price: "" },
+            ],
+          }),
+          sec("steps", "timeline", {
+            heading: "Our Engagement Framework",
+            intro: "A three-phase diagnostic and implementation cycle.",
+            items: [
+              { title: "01 / Diagnostic", description: "Comprehensive audit of business fundamentals, risk surfaces, and market positioning." },
+              { title: "02 / Strategy and Roadmap", description: "Co-creation of targeted intervention points with board and executive leadership." },
+              { title: "03 / Governance", description: "Structured bi-weekly reviews and milestone tracking to ensure ROI realization." },
+            ],
+          }, { background: "surface", align: "left", spacing: "normal" }),
+          contact("Initiate Consultation", "Confidential inquiries receive direct principal response within 24 hours.", { hours: "Mon–Fri, 9am – 6pm", email: "advisory@meridian.in" }),
+          footer("Meridian Advisory Group", "Independent corporate strategy and governance counsel.", "columns"),
+        ],
+      },
+    ],
+  },
+  {
+    id: "saas-platform",
+    label: "Nova AI and Cloud Platform",
+    description: "High-conversion tech landing page with feature bento grid and transparent pricing.",
+    preset: "saas",
+    tag: "⚡ #1 Tech Trend 2026",
+    category: "Tech",
+    name: "Nova Cloud AI",
+    siteDescription: "Intelligent workflow automation for high-growth engineering and operations teams.",
+    pages: [
+      {
+        title: "Home",
+        sections: [
+          nav("Nova Cloud", "Start 14-Day Free Trial", "#pricing", "simple"),
+          sec("hero", "centered", {
+            eyebrow: "⚡ Next-Gen Workflow Engine",
+            headline: "Automate complex workflows in minutes, not months",
+            subheadline: "Nova connects your APIs, databases, and customer channels into one ultra-fast, self-healing intelligence platform.",
+            primaryLabel: "Get Started Free",
+            primaryHref: "#pricing",
+            secondaryLabel: "Live Demo",
+            secondaryHref: "#features",
+          }, { background: "default", align: "center", spacing: "spacious" }),
+          sec("features", "grid", {
+            heading: "Engineered for speed and security",
+            intro: "Zero cold-starts, SOC2 Type II compliance, and global edge execution.",
+            items: [
+              { title: "Real-time Edge Execution", description: "Execute logic across 300+ global edge locations with sub-10ms response times." },
+              { title: "Instant API Integrations", description: "Pre-built connectors for PostgreSQL, Stripe, Razorpay, WhatsApp, and Slack." },
+              { title: "Autonomous Observability", description: "Automated telemetry, root-cause diagnostics, and instant rollback triggers." },
+            ],
+          }, { background: "surface", align: "left", spacing: "normal" }),
+          sec("pricing", "cards", {
+            heading: "Predictable, transparent pricing",
+            intro: "Start free for 14 days. Scale as your workload grows.",
+            plans: [
+              { name: "Starter", price: "₹1,499", period: "/month", features: ["Up to 50,000 tasks/mo", "5 active workflows", "Standard email support"], ctaLabel: "Start Free Trial", ctaHref: "#contact", highlighted: false },
+              { name: "Pro Scale", price: "₹4,999", period: "/month", features: ["500,000 tasks/mo", "Unlimited workflows", "Dedicated Slack channel", "Custom Webhooks"], ctaLabel: "Start Free Trial", ctaHref: "#contact", highlighted: true },
+              { name: "Enterprise", price: "₹19,999", period: "/month", features: ["Unlimited throughput", "Self-hosted edge runner", "Custom SLA and 24/7 phone"], ctaLabel: "Contact Sales", ctaHref: "#contact", highlighted: false },
+            ],
+          }),
+          sec("faq", "accordion", {
+            heading: "Frequently Asked Questions",
+            items: [
+              { question: "How does the 14-day trial work?", answer: "You get full access to Pro Scale features with no credit card required. Cancel or downgrade anytime." },
+              { question: "Can I connect my existing AWS or GCP infrastructure?", answer: "Yes, Nova integrates seamlessly with VPC peering, private endpoints, and major cloud providers." },
+            ],
+          }),
+          contact("Talk to Engineering", "Have custom compliance or infrastructure requirements? Let us know."),
+          footer("Nova Cloud AI", "Intelligent workflow automation engine.", "columns"),
+        ],
+      },
+    ],
+  },
+
   {
     id: "small-business",
     label: "Small business",
@@ -344,7 +457,7 @@ const TEMPLATES: TemplateDef[] = [
   },
 ];
 
-export const TEMPLATE_LIST: TemplateInfo[] = TEMPLATES.map(({ id, label, description, preset }) => ({ id, label, description, preset }));
+export const TEMPLATE_LIST: TemplateInfo[] = TEMPLATES.map(({ id, label, description, preset, tag, category }) => ({ id, label, description, preset, tag, category }));
 
 export function templateDoc(id: string): SiteDoc | null {
   const t = TEMPLATES.find((x) => x.id === id);
