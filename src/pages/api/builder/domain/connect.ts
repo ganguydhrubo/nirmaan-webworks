@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getRuntimeEnv } from "@/lib/runtime-env";
+import { getPublishConfig, putDomainMapping } from "@/lib/builder/publish";
 
 export const prerender = false;
 
@@ -21,12 +22,12 @@ async function checkDomainConnect(domain: string): Promise<string | null> {
   try {
     const doh = await fetch(`https://dns.google/resolve?name=_domainconnect.${encodeURIComponent(domain)}&type=TXT`, {
       headers: { Accept: "application/dns-json" },
+      signal: AbortSignal.timeout(3000),
     });
     if (!doh.ok) return null;
     const data = (await doh.json()) as { Answer?: { data?: string }[] };
     const txt = data?.Answer?.[0]?.data?.replace(/^"(.*)"$/, "$1")?.trim();
     if (txt) {
-      // Common Domain Connect service providers: GoDaddy, IONOS, Namecheap
       const url = txt.startsWith("http") ? txt : `https://${txt}`;
       return `${url}/v2/domainTemplates/providers/atittle.com/services/web-builder/apply?domain=${encodeURIComponent(domain)}`;
     }
@@ -34,6 +35,26 @@ async function checkDomainConnect(domain: string): Promise<string | null> {
     // fallback
   }
   return null;
+}
+
+/** Check if DNS has already propagated to ATITTLE */
+async function checkDnsPropagation(domain: string): Promise<boolean> {
+  try {
+    const doh = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=CNAME`, {
+      headers: { Accept: "application/dns-json" },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (doh.ok) {
+      const data = (await doh.json()) as { Answer?: { data?: string }[] };
+      const target = data?.Answer?.[0]?.data?.toLowerCase() || "";
+      if (target.includes("atittle.com") || target.includes("proxy.atittle.com")) {
+        return true;
+      }
+    }
+  } catch {
+    // fallback
+  }
+  return false;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -60,14 +81,30 @@ export const POST: APIRoute = async ({ request }) => {
   const zoneId = String(env.CLOUDFLARE_ZONE_ID || "").trim();
   const apiToken = String(env.CLOUDFLARE_API_TOKEN || "").trim();
 
+  // 1. Store domain mapping directly in Workers KV SITES
+  const cfg = await getPublishConfig();
+  if (cfg && slug) {
+    try {
+      await putDomainMapping(cfg, cleanDomain, slug);
+      if (!cleanDomain.startsWith("www.")) {
+        await putDomainMapping(cfg, `www.${cleanDomain}`, slug).catch(() => {});
+      }
+    } catch (err) {
+      console.warn("[builder/domain/connect] KV domain mapping warning:", err);
+    }
+  }
+
   let cfHostnameId: string | null = null;
   let cfStatus = "pending_dns";
   let cfSslStatus = "pending_validation";
 
-  // Check Domain Connect 1-click support
+  // 2. Check Domain Connect 1-click support
   const domainConnectUrl = await checkDomainConnect(cleanDomain);
 
-  // If Cloudflare zone is configured, register custom hostname with Cloudflare for SaaS API
+  // 3. Check real-time DNS propagation
+  const dnsPropagated = await checkDnsPropagation(cleanDomain);
+
+  // 4. Provision Cloudflare for SaaS Custom Hostname
   if (zoneId && apiToken) {
     try {
       const cfRes = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/custom_hostnames`, {
@@ -94,8 +131,8 @@ export const POST: APIRoute = async ({ request }) => {
 
       if (cfData?.success && cfData.result) {
         cfHostnameId = cfData.result.id || null;
-        cfStatus = cfData.result.status || "active";
-        cfSslStatus = cfData.result.ssl?.status || "active";
+        cfStatus = cfData.result.status || (dnsPropagated ? "active" : "pending_dns");
+        cfSslStatus = cfData.result.ssl?.status || (dnsPropagated ? "active" : "pending_validation");
       }
     } catch (err) {
       console.warn("[builder/domain/connect] Cloudflare for SaaS provisioning notice:", err);
@@ -107,15 +144,15 @@ export const POST: APIRoute = async ({ request }) => {
       type: "CNAME",
       name: cleanDomain.startsWith("www.") ? "www" : "@",
       value: "proxy.atittle.com",
-      status: "required",
-      description: "Points traffic to ATITTLE high-speed edge proxy",
+      status: dnsPropagated ? "connected" : "required",
+      description: "Points traffic to ATITTLE edge proxy",
     },
     {
       type: "A",
       name: "@",
       value: "172.67.180.12",
-      status: "optional_apex",
-      description: "Root apex record for registrars without CNAME flattening",
+      status: dnsPropagated ? "connected" : "optional_apex",
+      description: "Root apex record for DNS providers without CNAME flattening",
     },
   ];
 
@@ -123,17 +160,18 @@ export const POST: APIRoute = async ({ request }) => {
     ok: true,
     domain: cleanDomain,
     slug,
-    status: domainConnectUrl ? "domain_connect_available" : "dns_setup_required",
+    status: dnsPropagated ? "active" : domainConnectUrl ? "domain_connect_available" : "dns_setup_required",
+    dnsPropagated,
     domainConnectUrl,
     customHostnameId: cfHostnameId,
-    sslStatus: cfSslStatus,
-    edgeStatus: cfStatus,
+    sslStatus: dnsPropagated ? "active" : cfSslStatus,
+    edgeStatus: dnsPropagated ? "active" : cfStatus,
     dnsRecords,
     instructions: {
       step1: domainConnectUrl
         ? "Click '1-Click Connect' to authorize via GoDaddy / your registrar automatically."
         : "Log into your domain provider (GoDaddy, Namecheap, Hostinger, etc.).",
-      step2: "Go to DNS Management and add the CNAME record above.",
+      step2: "Go to DNS Settings and add the CNAME record above.",
       step3: "Once saved, verification and SSL certificate activate automatically within a few minutes.",
     },
   });

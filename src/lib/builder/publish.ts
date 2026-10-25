@@ -217,3 +217,17 @@ export async function checkLive(cfg: PublishConfig, slug: string, version: strin
     return "pending";
   }
 }
+
+export async function putDomainMapping(cfg: PublishConfig, domain: string, slug: string): Promise<void> {
+  const url = `${API}/accounts/${cfg.accountId}/storage/kv/namespaces/${cfg.namespaceId}/values/${encodeURIComponent(`domain:${domain}`)}`;
+  const res = await cfFetch(url, { method: "PUT", headers: { Authorization: `Bearer ${cfg.apiToken}` }, body: slug });
+  if (!res.ok) throw await cfFail(res);
+}
+
+export async function getDomainMapping(cfg: PublishConfig, domain: string): Promise<string | null> {
+  const url = `${API}/accounts/${cfg.accountId}/storage/kv/namespaces/${cfg.namespaceId}/values/${encodeURIComponent(`domain:${domain}`)}`;
+  const res = await cfFetch(url, { headers: { Authorization: `Bearer ${cfg.apiToken}` } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw await cfFail(res);
+  return await res.text();
+}

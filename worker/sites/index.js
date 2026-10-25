@@ -1,20 +1,16 @@
 /**
  * ATITTLE Sites — serves websites published from the ATITTLE AI Website Builder.
  *
- *   https://<worker>.<account>.workers.dev/<slug>/            → index.html
- *   https://<worker>.<account>.workers.dev/<slug>/about.html  → about.html
+ * Supports BOTH:
+ *   1. Free Staging Subdomains:
+ *      https://<worker>.<account>.workers.dev/<slug>/            → index.html
+ *   2. Custom Domains (Cloudflare for SaaS / Apex / CNAME):
+ *      https://yourbusiness.com/                                → index.html
+ *      https://yourbusiness.in/about                            → about.html
  *
- * Storage: Workers KV binding `SITES`. Key `site:<slug>` holds the exact
- * STORE-method ZIP that the builder's export produces (the same files a
- * visitor gets from "Download Website"); its KV metadata carries the content
- * version. One KV write per publish keeps the free plan's 1,000 writes/day
- * meaningful. The Worker is read-only: publishing happens from the ATITTLE
- * backend through the Cloudflare API, so this script has no write surface.
- *
- * Safety: published pages are static HTML/CSS rendered server-side by ATITTLE
- * (no user scripts). Every response still carries a CSP that forbids scripts,
- * framing and plugins, nosniff, and — by default — noindex. See
- * docs/AI-WEBSITE-BUILDER.md § Publishing.
+ * Storage: Workers KV binding `SITES`.
+ * Key `site:<slug>` holds the exact STORE-method ZIP.
+ * Key `domain:<hostname>` holds the associated `<slug>`.
  */
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,58}[a-z0-9]$/;
@@ -62,17 +58,12 @@ function page(env, status, title, body) {
   h.set("Cache-Control", "no-store");
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title>
 <style>body{font:16px/1.55 system-ui,sans-serif;max-width:560px;margin:12vh auto;padding:0 20px;color:#16110d;background:#fbf6ee}a{color:#9a3b1f}h1{font-size:1.6rem}</style></head>
-<body><h1>${title}</h1>${body}<p><a href="https://atittle.com/free-website-builder">Build your own free website with ATITTLE →</a></p></body></html>`;
+<body><h1>${title}</h1>${body}<p><a href="https://atittle.com/free-website-builder">Build your own website with ATITTLE →</a></p></body></html>`;
   return new Response(html, { status, headers: h });
 }
 
-/**
- * Find one file in a STORE-only ZIP via its central directory (no
- * decompression, no copying of other files). Returns null if absent.
- */
 export function findInZip(bytes, wanted) {
   const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-  // End of central directory: last 22 bytes (the builder writes no ZIP comment).
   const eocd = bytes.length - 22;
   if (eocd < 0 || dv.getUint32(eocd, true) !== 0x06054b50) return null;
   const count = dv.getUint16(eocd + 10, true);
@@ -114,24 +105,58 @@ export default {
       h.set("Content-Type", TYPES.txt);
       return new Response(env.NOINDEX !== "0" ? "User-agent: *\nDisallow: /\n" : "User-agent: *\nAllow: /\n", { headers: h });
     }
-    if (url.pathname === "/" || url.pathname === "") {
-      const abuse = env.ABUSE_EMAIL ? `<p>To report a site that breaks the rules, email <a href="mailto:${env.ABUSE_EMAIL}">${env.ABUSE_EMAIL}</a> with its link.</p>` : "";
-      return page(env, 200, "Websites made with ATITTLE", `<p>This address hosts free websites that small businesses built with the ATITTLE AI Website Builder.</p>${abuse}`);
+
+    const host = url.hostname.toLowerCase();
+    const isCustomDomain = !host.endsWith(".workers.dev") && host !== "localhost" && host !== "127.0.0.1";
+
+    let slug = "";
+    let file = "";
+
+    if (isCustomDomain) {
+      // 1. Resolve custom domain to site slug
+      slug = (await env.SITES.get(`domain:${host}`)) || "";
+      if (!slug && host.startsWith("www.")) {
+        slug = (await env.SITES.get(`domain:${host.replace(/^www\./, "")}`)) || "";
+      } else if (!slug) {
+        slug = (await env.SITES.get(`domain:www.${host}`)) || "";
+      }
+
+      if (!slug) {
+        return page(
+          env,
+          404,
+          "Domain Connected, Website Pending",
+          `<p>The domain <strong>${host}</strong> is pointing to ATITTLE edge, but has not been mapped to a published website yet.</p>
+           <p>Open <a href="https://atittle.com/free-website-builder">ATITTLE Website Builder</a> and click "Connect Custom Domain" to complete setup.</p>`
+        );
+      }
+
+      file = url.pathname.replace(/^\/+/, "");
+      if (file === "" || file.endsWith("/")) file += "index.html";
+      if (!isSafePath(file)) return page(env, 404, "Page not found", "<p>This page doesn't exist on this website.</p>");
+      if (!file.includes(".")) file += ".html";
+    } else {
+      // 2. Free Staging URL routing: /<slug>/...
+      if (url.pathname === "/" || url.pathname === "") {
+        const abuse = env.ABUSE_EMAIL ? `<p>To report a site that breaks the rules, email <a href="mailto:${env.ABUSE_EMAIL}">${env.ABUSE_EMAIL}</a>.</p>` : "";
+        return page(env, 200, "Websites made with ATITTLE", `<p>This address hosts websites built with the ATITTLE AI Website Builder.</p>${abuse}`);
+      }
+
+      const [, pathSlug = "", ...rest] = url.pathname.split("/");
+      if (!SLUG_RE.test(pathSlug)) return page(env, 404, "Website not found", "<p>There is no website at this address.</p>");
+      if (rest.length === 0) return Response.redirect(`${url.origin}/${pathSlug}/${url.search}`, 301);
+
+      slug = pathSlug;
+      file = rest.join("/");
+      if (file === "" || file.endsWith("/")) file += "index.html";
+      if (!isSafePath(file)) return page(env, 404, "Page not found", "<p>This page doesn't exist on this website.</p>");
+      if (!file.includes(".")) file += ".html";
     }
-
-    const [, slug = "", ...rest] = url.pathname.split("/");
-    if (!SLUG_RE.test(slug)) return page(env, 404, "Website not found", "<p>There is no website at this address.</p>");
-    if (rest.length === 0) return Response.redirect(`${url.origin}/${slug}/${url.search}`, 301);
-
-    let file = rest.join("/");
-    if (file === "" || file.endsWith("/")) file += "index.html";
-    if (!isSafePath(file)) return page(env, 404, "Page not found", "<p>This page doesn't exist on this website.</p>");
-    if (!file.includes(".")) file += ".html"; // /slug/about → about.html
 
     const { value, metadata } = await env.SITES.getWithMetadata(`site:${slug}`, { type: "arrayBuffer" });
     if (!value) return page(env, 404, "Website not found", "<p>There is no website at this address. It may have been taken offline by its owner.</p>");
     const data = findInZip(new Uint8Array(value), file);
-    if (!data) return page(env, 404, "Page not found", `<p>This page doesn't exist on this website. <a href="/${slug}/">Go to its home page</a>.</p>`);
+    if (!data) return page(env, 404, "Page not found", `<p>This page doesn't exist on this website. <a href="${isCustomDomain ? "/" : `/${slug}/`}">Go to home page</a>.</p>`);
 
     const version = (metadata && typeof metadata.v === "string" && metadata.v) || "0";
     const etag = `"${version}"`;

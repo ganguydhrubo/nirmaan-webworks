@@ -23,6 +23,39 @@ const TLD_PRICES: Record<string, number> = {
   net: 1199,
 };
 
+/** Authoritative real-time ICANN RDAP + DNS check */
+async function isDomainTaken(domain: string): Promise<boolean> {
+  // 1. Try ICANN RDAP standard protocol
+  try {
+    const rdapRes = await fetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`, {
+      headers: { "User-Agent": "ATITTLE-Domain-Engine/1.0" },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (rdapRes.status === 200) return true; // Domain is registered
+    if (rdapRes.status === 404) return false; // Domain is available
+  } catch {
+    // network timeout, fall through to DNS
+  }
+
+  // 2. DNS-over-HTTPS fallback (Google DNS)
+  try {
+    const dohRes = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`, {
+      headers: { Accept: "application/dns-json" },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (dohRes.ok) {
+      const doh = (await dohRes.json()) as { Status?: number; Answer?: unknown[] };
+      if (doh.Status === 0 && doh.Answer && doh.Answer.length > 0) {
+        return true;
+      }
+    }
+  } catch {
+    // fallback
+  }
+
+  return false;
+}
+
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
   const rawQuery = (url.searchParams.get("query") || url.searchParams.get("domain") || "").trim().toLowerCase();
@@ -40,36 +73,24 @@ export const GET: APIRoute = async ({ request }) => {
   const primaryDomain = `${sld}.${tld}`;
   const primaryPrice = TLD_PRICES[tld] ?? 899;
 
-  // Real-time DNS lookup check (Google DNS over HTTPS)
-  let isAvailable = true;
-  try {
-    const dohRes = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(primaryDomain)}&type=A`, {
-      headers: { Accept: "application/dns-json" },
-    });
-    if (dohRes.ok) {
-      const doh = (await dohRes.json()) as { Status?: number; Answer?: unknown[] };
-      // Status 0 with Answer means domain is registered and has A records
-      if (doh.Status === 0 && doh.Answer && doh.Answer.length > 0) {
-        isAvailable = false;
-      }
-    }
-  } catch {
-    // network fallback
-    isAvailable = true;
-  }
+  // Real-time authoritative check
+  const taken = await isDomainTaken(primaryDomain);
+  const isAvailable = !taken;
 
-  // Suggested alternative TLDs
-  const alternatives = ["in", "com", "store", "co"]
-    .filter((ext) => ext !== tld)
-    .map((ext) => {
+  // Check top alternative TLDs in parallel
+  const targetTlds = ["in", "com", "store", "co"].filter((ext) => ext !== tld);
+  const alternatives = await Promise.all(
+    targetTlds.map(async (ext) => {
       const altDomain = `${sld}.${ext}`;
+      const altTaken = await isDomainTaken(altDomain);
       return {
         domain: altDomain,
         tld: ext,
-        available: true,
+        available: !altTaken,
         priceInr: TLD_PRICES[ext] ?? 899,
       };
-    });
+    })
+  );
 
   return json({
     ok: true,
