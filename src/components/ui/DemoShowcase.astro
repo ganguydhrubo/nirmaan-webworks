@@ -27,8 +27,8 @@ const demos = siteConfig.demoRegistry.map(demo => ({
             </div>
             <div class="showcase-media-stage" data-parallax-image data-parallax-strength="14">
               <picture>
-                <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp`} width="585" height="780" />
-                <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" class="showcase-screen-poster" data-parallax-layer />
+                <source media="(max-width: 639px)" srcset={index === 0 ? `/images/showcase/${demo.slug}-mobile.webp?v=20261025` : undefined} data-srcset={`/images/showcase/${demo.slug}-mobile.webp?v=20261025`} width="585" height="780" />
+                <img src={index === 0 ? `/images/showcase/${demo.slug}-desktop.webp?v=20261025` : undefined} data-src={`/images/showcase/${demo.slug}-desktop.webp?v=20261025`} alt={`${demo.businessName} — actual ${demo.category.toLowerCase()} website preview`} width="1152" height="864" loading={index === 0 && !eager ? "lazy" : "eager"} fetchpriority={index === 0 && eager ? "high" : "auto"} decoding="async" class="showcase-screen-poster" data-parallax-layer />
               </picture>
             </div>
           </div>
