@@ -52,12 +52,15 @@ export const POST: APIRoute = async ({ request }) => {
   const plan = PRICING_PLANS[planId] || PRICING_PLANS.download;
   const domain = body.domain ? String(body.domain).trim() : undefined;
   const siteName = body.siteName ? String(body.siteName).trim() : "My Website";
+  const domainPrice = typeof body.domainPrice === "number" ? body.domainPrice : (planId === "domain" ? 499 : 0);
 
   const env = await getRuntimeEnv();
   const keyId = String(env.RAZORPAY_KEY_ID || env.PUBLIC_RAZORPAY_KEY_ID || "").trim() || "rzp_test_placeholder";
   const keySecret = String(env.RAZORPAY_KEY_SECRET || "").trim();
 
-  const amountPaise = plan.amountInr * 100;
+  // Dynamic pricing: flat ₹499 build fee + actual domain wholesale charge
+  const totalAmountInr = planId === "domain" ? 499 + domainPrice : plan.amountInr;
+  const amountPaise = totalAmountInr * 100;
   let orderId = `order_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
 
   // If live Razorpay credentials exist, create order via Razorpay API

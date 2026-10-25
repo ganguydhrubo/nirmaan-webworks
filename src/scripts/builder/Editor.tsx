@@ -506,11 +506,12 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
   };
 
   // Razorpay payment trigger with fallback
-  const handlePayPlan = (plan: "download" | "host" | "domain", targetDomain?: string) => {
+  const handlePayPlan = (plan: "download" | "host" | "domain", targetDomain?: string, domainPrice?: number) => {
     void startRazorpayPayment({
       plan,
       siteName: doc.name || "My Website",
       domain: targetDomain,
+      domainPrice,
       onSuccess: (paymentId) => {
         toast(`Payment successful (${paymentId}). Processing order!`, "success");
         if (plan === "download") {
@@ -656,23 +657,23 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
               </button>
             </div>
 
-            {/* Card 2: Custom Domain + Live Hosting (₹1,000) */}
+            {/* Card 2: Custom Domain + Website Build (Flat ₹499 + Actual Domain Cost) */}
             <div style={{ border: "1.5px solid #d4af37", borderRadius: "14px", padding: "18px", background: "#fdfaf3", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative" }}>
               <span style={{ position: "absolute", top: "-10px", right: "14px", background: "#1c1917", color: "#d4af37", fontSize: "0.68rem", fontWeight: 700, padding: "2px 8px", borderRadius: "99px", textTransform: "uppercase" }}>
-                Domain Included
+                Domain Setup
               </span>
               <div>
-                <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>Custom Domain + Hosting</strong>
-                <p class="atb-muted atb-small" style={{ margin: "4px 0 12px" }}>Flat ₹499 website build + brand new custom domain (.in / .com) registered for you.</p>
+                <strong style={{ fontSize: "1.05rem", color: "#1c1917", display: "block" }}>Custom Domain + Website</strong>
+                <p class="atb-muted atb-small" style={{ margin: "4px 0 12px" }}>Flat ₹499 build fee + actual domain wholesale charge (.in: ₹499, .com: ₹1,099). Zero hidden markup.</p>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "12px" }}>
-                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1c1917" }}>₹1,000</span>
-                  <span class="atb-muted" style={{ fontSize: "0.8rem" }}>all-inclusive</span>
+                  <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "#1c1917" }}>₹499</span>
+                  <span class="atb-muted" style={{ fontSize: "0.8rem" }}>+ domain at cost</span>
                 </div>
                 <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: "0.82rem", display: "grid", gap: "6px", color: "#444" }}>
-                  <li>✓ Custom domain registration (.in / .com)</li>
+                  <li>✓ Flat ₹499 website builder fee</li>
+                  <li>✓ Domain at cost (.in: ₹499, .com: ₹1,099)</li>
                   <li>✓ 1-Click DNS automatic configuration</li>
-                  <li>✓ 1 Full year fast Cloudflare Edge hosting</li>
-                  <li>✓ Professional brand email forward setup</li>
+                  <li>✓ Or connect your own domain (₹0 domain fee)</li>
                 </ul>
               </div>
               <button
@@ -681,10 +682,10 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
                 style={{ width: "100%", justifyContent: "center", background: "#1c1917", color: "#d4af37", fontWeight: 700 }}
                 onClick={() => {
                   setActiveTab("domain");
-                  toast("Search or enter your custom domain to proceed with the ₹1,000 plan.", "info");
+                  toast("Search a new domain or connect an existing one with 1-click.", "info");
                 }}
               >
-                Search Domain (₹1,000 Plan)
+                Search & Connect Domain
               </button>
             </div>
 
@@ -744,14 +745,14 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
       {/* Tab 2: Custom Domain & Domain Connect */}
       {activeTab === "domain" && (
         <div>
-          {/* Section A: Search & Buy New Domain (₹1,000 All-Inclusive) */}
+          {/* Section A: Search & Buy New Domain (Flat ₹499 + Domain Wholesale Cost) */}
           <div style={{ background: "#fcfbf9", border: "1px solid var(--atb-line)", borderRadius: "12px", padding: "18px", marginBottom: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
               <span style={{ background: "#1c1917", color: "#d4af37", padding: "2px 8px", borderRadius: "4px", fontSize: "0.72rem", fontWeight: 700 }}>OPTION A</span>
-              <strong style={{ fontSize: "1.05rem", color: "#1c1917" }}>Search & Purchase a Brand-New Domain (₹1,000 Plan)</strong>
+              <strong style={{ fontSize: "1.05rem", color: "#1c1917" }}>Search & Purchase a Brand-New Domain (Flat ₹499 + Domain Cost)</strong>
             </div>
             <p class="atb-muted atb-small" style={{ marginBottom: "14px" }}>
-              Includes ₹499 website build + 1-year domain registration (.in / .com / .store) + free edge hosting & SSL certificate.
+              Includes flat ₹499 website build + 1-year domain registration at wholesale cost (.in: ₹499, .com: ₹1,099) + edge hosting setup.
             </p>
 
             <form onSubmit={handleDomainSearch} style={{ display: "flex", gap: "8px", maxWidth: "560px" }}>
@@ -777,9 +778,9 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
                   <button
                     type="button"
                     class="atb-btn atb-btn-primary atb-btn-sm"
-                    onClick={() => handlePayPlan("domain", domainSearchResult.primary.domain)}
+                    onClick={() => handlePayPlan("domain", domainSearchResult.primary.domain, domainSearchResult.primary.priceInr)}
                   >
-                    Register & Connect (₹1,000)
+                    Register & Connect (₹499 + ₹{domainSearchResult.primary.priceInr} = ₹{499 + domainSearchResult.primary.priceInr})
                   </button>
                 </div>
 
@@ -791,9 +792,9 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
                         type="button"
                         class="atb-btn atb-btn-ghost atb-btn-sm"
                         style={{ padding: "3px 8px", fontSize: "0.75rem" }}
-                        onClick={() => handlePayPlan("domain", alt.domain)}
+                        onClick={() => handlePayPlan("domain", alt.domain, alt.priceInr)}
                       >
-                        Choose
+                        Choose (₹499 + ₹{alt.priceInr})
                       </button>
                     </div>
                   ))}
@@ -891,17 +892,26 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
             <p class="atb-muted" style={{ fontSize: "0.9rem", margin: 0 }}>Follow these 4 simple steps to have your downloaded site live on any hosting.</p>
           </div>
 
-          {/* Interactive Video Demonstration Container */}
+          {/* Real Interactive Video Demonstration */}
           <div style={{ background: "#1c1917", borderRadius: "14px", overflow: "hidden", color: "#fff", marginBottom: "20px", boxShadow: "0 8px 24px -4px rgba(0,0,0,0.25)" }}>
-            <div style={{ aspectRatio: "16 / 9", background: "linear-gradient(135deg, #1c1917 0%, #2a2420 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px", position: "relative" }}>
-              <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#c85a32", display: "grid", placeItems: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(200,90,50,0.4)" }}>
-                <span style={{ width: 0, height: 0, borderTop: "10px solid transparent", borderBottom: "10px solid transparent", borderLeft: "16px solid #fff", marginLeft: "4px" }} />
+            <video
+              src="/videos/atittle-builder-ad-hi.mp4"
+              poster="/videos/atittle-builder-ad-hi-poster.jpg"
+              controls
+              playsInline
+              preload="metadata"
+              style={{ width: "100%", maxHeight: "400px", display: "block", background: "#000" }}
+            >
+              Your browser does not support the video tag.
+            </video>
+            <div style={{ padding: "12px 16px", background: "#1c1917", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "8px", borderTop: "1px solid #2a2522" }}>
+              <div>
+                <strong style={{ fontSize: "0.95rem", color: "#fff", display: "block" }}>Full Video Guide: From Download to Live Website</strong>
+                <span style={{ fontSize: "0.8rem", color: "#d4af37" }}>Step-by-step walkthrough: unzipping files, previewing locally, and hosting on GoDaddy cPanel or Cloudflare.</span>
               </div>
-              <strong style={{ fontSize: "1.1rem", marginTop: "14px", letterSpacing: "0.02em" }}>VIDEO DEMONSTRATION (3 MINUTES)</strong>
-              <span style={{ fontSize: "0.85rem", color: "#d4af37", marginTop: "4px" }}>"How to Upload Your ATITTLE Website to GoDaddy cPanel & Connect Your Domain"</span>
-              <div style={{ position: "absolute", bottom: "12px", right: "16px", fontSize: "0.75rem", background: "rgba(0,0,0,0.6)", padding: "3px 8px", borderRadius: "4px" }}>
-                1080p HD · Step-by-Step
-              </div>
+              <span style={{ fontSize: "0.72rem", background: "#c85a32", color: "#fff", fontWeight: 700, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase" }}>
+                1080p Official
+              </span>
             </div>
           </div>
 

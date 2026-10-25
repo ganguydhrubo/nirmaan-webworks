@@ -237,6 +237,7 @@ export async function startRazorpayPayment(opts: {
   plan: "download" | "host" | "domain";
   siteName: string;
   domain?: string;
+  domainPrice?: number;
   onSuccess: (paymentId: string) => void;
   onDismiss?: () => void;
 }): Promise<void> {
@@ -244,7 +245,7 @@ export async function startRazorpayPayment(opts: {
     const res = await fetch("/api/builder/order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan: opts.plan, siteName: opts.siteName, domain: opts.domain }),
+      body: JSON.stringify({ plan: opts.plan, siteName: opts.siteName, domain: opts.domain, domainPrice: opts.domainPrice }),
     });
     const order = (await res.json()) as {
       ok: boolean;

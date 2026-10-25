@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import shivalikImg from "@/assets/demos/shivalik.jpg";
 import DemoPhoto from "@/components/ui/DemoPhoto.astro";
 import DemoLayout from "@/layouts/DemoLayout.astro";
 import { projects } from "@/content/demos/shivalik-homes/projects";
@@ -41,52 +43,32 @@ const contactHref = "/contact?category=Real%20Estate&demo=shivalik-homes";
       </div>
     </header>
 
-    <section class="relative overflow-hidden border-b border-shivalik-300/40">
-      <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
-        <defs>
-          <linearGradient id="shivalik-sky-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--color-shivalik-50)" />
-            <stop offset="100%" stop-color="var(--color-shivalik-100)" />
-          </linearGradient>
-          <linearGradient id="shivalik-mist-ridge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--color-shivalik-300)" stop-opacity="0.65" />
-            <stop offset="100%" stop-color="var(--color-shivalik-100)" stop-opacity="0.2" />
-          </linearGradient>
-          <linearGradient id="shivalik-front-ridge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--color-shivalik-500)" stop-opacity="0.55" />
-            <stop offset="100%" stop-color="var(--color-shivalik-300)" stop-opacity="0.4" />
-          </linearGradient>
-        </defs>
-        <!-- Soft natural Dehradun foothill backdrop -->
-        <rect width="1200" height="420" fill="url(#shivalik-sky-grad)"></rect>
-        
-        <!-- Distant Mussoorie ridge - gentle natural curved silhouettes -->
-        <path d="M0,230 C120,205 240,240 380,185 C490,140 620,175 740,150 C860,125 980,170 1100,160 C1160,155 1200,165 1200,165 L1200,420 L0,420 Z" fill="url(#shivalik-mist-ridge)"></path>
-        
-        <!-- Mid-range rolling foothill contour lines -->
-        <path d="M0,270 C160,250 280,290 440,235 C580,185 710,240 850,210 C990,180 1110,230 1200,215 L1200,420 L0,420 Z" fill="url(#shivalik-front-ridge)"></path>
-        
-        <!-- Natural organic pine slope & architectural topography lines -->
-        <path d="M0,320 C140,310 260,345 410,305 C560,265 690,315 840,285 C980,255 1100,300 1200,280 L1200,420 L0,420 Z" fill="var(--color-shivalik-500)" opacity="0.32"></path>
-        <path d="M0,360 C180,345 320,380 490,345 C640,315 780,365 920,335 C1060,310 1150,335 1200,330 L1200,420 L0,420 Z" fill="var(--color-shivalik-700)" opacity="0.18"></path>
-        
-        <!-- Subtle architectural contour grid traces -->
-        <path d="M0,250 Q600,230 1200,245" fill="none" stroke="var(--color-shivalik-brass)" stroke-width="0.75" stroke-dasharray="4 6" opacity="0.35"></path>
-        <path d="M0,300 Q600,280 1200,295" fill="none" stroke="var(--color-shivalik-brass)" stroke-width="0.75" stroke-dasharray="3 5" opacity="0.25"></path>
-      </svg>
-      <div class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+    <section class="relative overflow-hidden border-b border-shivalik-300/40 min-h-[540px] flex items-center">
+      <!-- Real Foothill Residential Architecture Photography -->
+      <div class="absolute inset-0 z-0">
+        <Image
+          src={shivalikImg}
+          alt="Shivalik Homes foothill residential residences in Dehradun with balconies and lush landscaped greenery"
+          class="h-full w-full object-cover object-center"
+          loading="eager"
+        />
+        <!-- Elegant Architectural Scrim for Pristine Contrast & Luxury Readability -->
+        <div class="absolute inset-0 bg-gradient-to-r from-shivalik-50/98 via-shivalik-50/90 to-shivalik-50/40 md:to-transparent"></div>
+        <div class="absolute inset-0 bg-shivalik-900/10 mix-blend-multiply"></div>
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <p class="hero-line text-sm font-semibold uppercase tracking-widest text-shivalik-brass" style="animation-delay:0ms">Dehradun, Uttarakhand</p>
         <h1 class="hero-line mt-4 max-w-2xl font-['Architects_Daughter'] text-5xl leading-tight text-shivalik-900 sm:text-6xl" style="animation-delay:120ms">Foothill homes, <span class="text-shivalik-brass">built to last.</span></h1>
-        <p class="hero-line mt-5 max-w-xl text-lg text-shivalik-700" style="animation-delay:240ms">
+        <p class="hero-line mt-5 max-w-xl text-lg text-shivalik-800" style="animation-delay:240ms">
           Three generations of building in Dehradun. Shivalik Homes designs residences around how families in this city actually live — close to schools, away from traffic, facing the hills.
         </p>
         <div class="hero-line mt-8 flex flex-col gap-3 sm:flex-row" style="animation-delay:360ms">
-          <a href="/demos/shivalik-homes/projects" class="rounded-md bg-shivalik-700 px-6 py-3.5 text-center font-semibold text-shivalik-50 hover:bg-shivalik-900">Browse current projects</a>
-          <a href={contactHref} class="rounded-md border border-shivalik-500 px-6 py-3.5 text-center font-semibold text-shivalik-800 hover:bg-shivalik-100">Book a site visit</a>
+          <a href="/demos/shivalik-homes/projects" class="rounded-md bg-shivalik-700 px-6 py-3.5 text-center font-semibold text-shivalik-50 hover:bg-shivalik-900 shadow-md">Browse current projects</a>
+          <a href={contactHref} class="rounded-md border border-shivalik-600 bg-white/80 backdrop-blur-sm px-6 py-3.5 text-center font-semibold text-shivalik-900 hover:bg-white shadow-sm">Book a site visit</a>
         </div>
       </div>
     </section>
-    <DemoPhoto name="shivalik" />
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="chapter-numeral flex items-end justify-between gap-4" data-numeral="01">
