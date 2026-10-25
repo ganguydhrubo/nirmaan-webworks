@@ -615,7 +615,7 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
             fontSize: "0.92rem",
           }}
         >
-          <span>🎥 Video Guide & Steps</span>
+          <span>📋 Step-by-Step Hosting Guide</span>
         </button>
       </div>
 
@@ -892,36 +892,84 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
             <p class="atb-muted" style={{ fontSize: "0.9rem", margin: 0 }}>Follow these 4 simple steps to have your downloaded site live on any hosting.</p>
           </div>
 
-          {/* Real Interactive Video Demonstration */}
+          {/* Detailed Visual Deployment Walkthrough */}
           <div style={{ background: "#1c1917", borderRadius: "14px", overflow: "hidden", color: "#fff", marginBottom: "20px", boxShadow: "0 8px 24px -4px rgba(0,0,0,0.25)" }}>
-            <video
-              poster="/videos/atittle-builder-ad-hi-poster.jpg"
-              controls
-              playsInline
-              preload="metadata"
-              style={{ width: "100%", maxHeight: "420px", display: "block", background: "#000" }}
-            >
-              <source src="/videos/atittle-builder-ad-hi.mp4" type="video/mp4" />
-              Your browser does not support HTML5 video. <a href="/videos/atittle-builder-ad-hi.mp4" target="_blank" rel="noopener" style={{ color: "#d4af37" }}>Click here to watch or download the video guide directly.</a>
-            </video>
-            <div style={{ padding: "12px 16px", background: "#1c1917", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "8px", borderTop: "1px solid #2a2522" }}>
-              <div>
-                <strong style={{ fontSize: "0.95rem", color: "#fff", display: "block" }}>Full Video Guide: From Download to Live Website</strong>
-                <span style={{ fontSize: "0.8rem", color: "#d4af37" }}>Step-by-step walkthrough: unzipping files, previewing locally, and hosting on GoDaddy cPanel or Cloudflare.</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <a
-                  href="/videos/atittle-builder-ad-hi.mp4"
-                  target="_blank"
-                  rel="noopener"
-                  style={{ fontSize: "0.75rem", color: "#d4af37", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "4px" }}
-                >
-                  <Icon name="external" size={13} /> Open Video in New Tab
-                </a>
-                <span style={{ fontSize: "0.72rem", background: "#c85a32", color: "#fff", fontWeight: 700, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase" }}>
-                  1080p Official
+            <div style={{ padding: "20px 24px", background: "linear-gradient(135deg, #1c1917 0%, #29231e 100%)", borderBottom: "1px solid #38302b" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px", marginBottom: "12px" }}>
+                <span style={{ fontSize: "0.75rem", background: "#c85a32", color: "#fff", fontWeight: 700, padding: "3px 10px", borderRadius: "99px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                  Official Deployment Guide
+                </span>
+                <span style={{ fontSize: "0.82rem", color: "#d4af37" }}>
+                  Estimated setup time: 3 - 5 minutes
                 </span>
               </div>
+              <h4 style={{ fontSize: "1.2rem", margin: "0 0 6px", color: "#fff" }}>
+                How to Put Your Downloaded ATITTLE Website Live
+              </h4>
+              <p style={{ fontSize: "0.88rem", color: "#d1c7bd", margin: 0, lineHeight: 1.5 }}>
+                Your downloaded package is 100% standard static HTML, CSS, and images. It requires zero server setup, zero node runtime, and runs lightning-fast on any host in the world.
+              </p>
+            </div>
+
+            {/* Interactive Step-by-Step Walkthrough Matrix */}
+            <div style={{ padding: "18px 24px", background: "#151312", display: "grid", gap: "12px" }}>
+              <div style={{ background: "#221d19", border: "1px solid #38302b", borderRadius: "10px", padding: "14px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                  <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#d4af37", color: "#1c1917", display: "grid", placeItems: "center", fontSize: "0.75rem", fontWeight: 800 }}>1</span>
+                  <strong style={{ fontSize: "0.95rem", color: "#fff" }}>Step 1: Extract the Downloaded .ZIP File</strong>
+                </div>
+                <p style={{ fontSize: "0.84rem", color: "#b5aaa0", margin: "0 0 8px 32px", lineHeight: 1.5 }}>
+                  Right-click the downloaded <code>website.zip</code> file and click <strong>Extract All</strong>. Inside you will find:
+                </p>
+                <div style={{ marginLeft: "32px", background: "#13100e", border: "1px solid #2e2620", borderRadius: "6px", padding: "8px 12px", fontFamily: "monospace", fontSize: "0.78rem", color: "#e6dfd5" }}>
+                  <div>📁 /website/</div>
+                  <div style={{ paddingLeft: "16px" }}>├── 📄 index.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: "#d4af37" }}>← Your main landing page</span></div>
+                  <div style={{ paddingLeft: "16px" }}>├── 📄 style.css &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: "#d4af37" }}>← Clean, production styles</span></div>
+                  <div style={{ paddingLeft: "16px" }}>└── 📁 assets/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: "#d4af37" }}>← Optimized images & web fonts</span></div>
+                </div>
+              </div>
+
+              <div style={{ background: "#221d19", border: "1px solid #38302b", borderRadius: "10px", padding: "14px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                  <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#d4af37", color: "#1c1917", display: "grid", placeItems: "center", fontSize: "0.75rem", fontWeight: 800 }}>2</span>
+                  <strong style={{ fontSize: "0.95rem", color: "#fff" }}>Step 2: Instant Local Preview (Zero Internet Needed)</strong>
+                </div>
+                <p style={{ fontSize: "0.84rem", color: "#b5aaa0", margin: "0 0 0 32px", lineHeight: 1.5 }}>
+                  Double-click <code>index.html</code> right on your computer. It opens instantly in your default web browser (Chrome, Edge, or Safari) with all navigation, buttons, and layouts 100% interactive.
+                </p>
+              </div>
+
+              <div style={{ background: "#221d19", border: "1px solid #38302b", borderRadius: "10px", padding: "14px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                  <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#d4af37", color: "#1c1917", display: "grid", placeItems: "center", fontSize: "0.75rem", fontWeight: 800 }}>3</span>
+                  <strong style={{ fontSize: "0.95rem", color: "#fff" }}>Step 3: Upload to GoDaddy cPanel or Hostinger</strong>
+                </div>
+                <div style={{ marginLeft: "32px", fontSize: "0.84rem", color: "#b5aaa0", lineHeight: 1.5 }}>
+                  <ol style={{ paddingLeft: "18px", margin: "0 0 8px" }}>
+                    <li>Log into your <strong>GoDaddy</strong> account &rarr; Click <strong>Web Hosting</strong> &rarr; Click <strong>cPanel Admin</strong>.</li>
+                    <li>Click <strong>File Manager</strong> &rarr; Double-click to enter the <code>public_html</code> directory.</li>
+                    <li>Click the <strong>Upload</strong> button at the top and select your extracted website files (or upload the ZIP and click <strong>Extract</strong>).</li>
+                  </ol>
+                  <span style={{ color: "#16a34a", fontWeight: 600, display: "block", fontSize: "0.8rem" }}>
+                    ✓ That's it! Your website is now live on your domain.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ padding: "12px 24px", background: "#1c1917", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "10px", borderTop: "1px solid #2a2522" }}>
+              <span style={{ fontSize: "0.8rem", color: "#d4af37" }}>
+                Want zero cPanel work? Choose the ₹750/yr Direct Hosting plan in Tab 1 and we host it for you with 1-click.
+              </span>
+              <a
+                href="/free-website-builder/hosting-guide"
+                target="_blank"
+                rel="noopener"
+                class="atb-btn atb-btn-primary atb-btn-sm"
+                style={{ padding: "6px 14px", textDecoration: "none" }}
+              >
+                Read Full GoDaddy Guide &rarr;
+              </a>
             </div>
           </div>
 
