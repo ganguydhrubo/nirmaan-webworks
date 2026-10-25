@@ -895,23 +895,33 @@ function ExportDialog({ onClose, storageOk }: { onClose: () => void; storageOk: 
           {/* Real Interactive Video Demonstration */}
           <div style={{ background: "#1c1917", borderRadius: "14px", overflow: "hidden", color: "#fff", marginBottom: "20px", boxShadow: "0 8px 24px -4px rgba(0,0,0,0.25)" }}>
             <video
-              src="/videos/atittle-builder-ad-hi.mp4"
               poster="/videos/atittle-builder-ad-hi-poster.jpg"
               controls
               playsInline
               preload="metadata"
-              style={{ width: "100%", maxHeight: "400px", display: "block", background: "#000" }}
+              style={{ width: "100%", maxHeight: "420px", display: "block", background: "#000" }}
             >
-              Your browser does not support the video tag.
+              <source src="/videos/atittle-builder-ad-hi.mp4" type="video/mp4" />
+              Your browser does not support HTML5 video. <a href="/videos/atittle-builder-ad-hi.mp4" target="_blank" rel="noopener" style={{ color: "#d4af37" }}>Click here to watch or download the video guide directly.</a>
             </video>
             <div style={{ padding: "12px 16px", background: "#1c1917", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "8px", borderTop: "1px solid #2a2522" }}>
               <div>
                 <strong style={{ fontSize: "0.95rem", color: "#fff", display: "block" }}>Full Video Guide: From Download to Live Website</strong>
                 <span style={{ fontSize: "0.8rem", color: "#d4af37" }}>Step-by-step walkthrough: unzipping files, previewing locally, and hosting on GoDaddy cPanel or Cloudflare.</span>
               </div>
-              <span style={{ fontSize: "0.72rem", background: "#c85a32", color: "#fff", fontWeight: 700, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase" }}>
-                1080p Official
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <a
+                  href="/videos/atittle-builder-ad-hi.mp4"
+                  target="_blank"
+                  rel="noopener"
+                  style={{ fontSize: "0.75rem", color: "#d4af37", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                >
+                  <Icon name="external" size={13} /> Open Video in New Tab
+                </a>
+                <span style={{ fontSize: "0.72rem", background: "#c85a32", color: "#fff", fontWeight: 700, padding: "3px 8px", borderRadius: "4px", textTransform: "uppercase" }}>
+                  1080p Official
+                </span>
+              </div>
             </div>
           </div>
 
