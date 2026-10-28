@@ -6,6 +6,9 @@ import {
   currentPage,
   selectSection,
   selectPage,
+  moveSection,
+  duplicateSection,
+  removeSection,
   updateProp,
   undo,
   redo,
@@ -27,6 +30,8 @@ interface BridgeMsg {
   __atb?: number;
   type?: string;
   id?: string;
+  action?: string;
+  focusPath?: string;
   image?: string | null;
   key?: string;
   value?: string;
@@ -170,6 +175,31 @@ export function Canvas() {
           if (target) {
             pendingAnchor.current = m.anchor ?? "";
             selectPage(target.id);
+          }
+          break;
+        }
+        case "action": {
+          if (typeof m.id !== "string" || typeof m.action !== "string") break;
+          const st = getState();
+          const page = currentPage(st);
+          const idx = page.sections.findIndex((s) => s.id === m.id);
+          if (idx < 0) break;
+          switch (m.action) {
+            case "moveUp":
+              if (idx > 0) moveSection(m.id, idx - 1);
+              break;
+            case "moveDown":
+              if (idx < page.sections.length - 1) moveSection(m.id, idx + 1);
+              break;
+            case "duplicate":
+              duplicateSection(m.id);
+              break;
+            case "delete":
+              removeSection(m.id);
+              break;
+            case "addBelow":
+              window.dispatchEvent(new CustomEvent("atb-add-section", { detail: { afterIndex: idx } }));
+              break;
           }
           break;
         }

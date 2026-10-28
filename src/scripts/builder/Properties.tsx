@@ -11,9 +11,11 @@ import {
   removeSection,
   moveSection,
   currentPage,
+  getState,
   type EditorState,
 } from "./store";
 import { ImageStudio, type StudioTab } from "./ImageStudio";
+import { saveNow } from "./autosave";
 import { Icon, confirmDialog } from "./ui";
 
 export function Properties({ onAskAi }: { onAskAi: () => void }) {
@@ -345,11 +347,27 @@ function ImageField({ section, field, path, value, focus }: { section: Section; 
         </div>
       </div>
       <div class="atb-image-sources">
+        <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={() => setStudio("stock")}>
+          <Icon name="search" size={15} /> Stock Media
+        </button>
         <button type="button" class="atb-btn atb-btn-soft atb-btn-sm" onClick={() => setStudio("ai")}>
           <Icon name="sparkles" size={15} /> AI image
         </button>
         <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => setStudio("upload")}>
           <Icon name="upload" size={15} /> Upload
+        </button>
+        <button
+          type="button"
+          class="atb-btn atb-btn-sm"
+          style={{ background: "#d4af37", color: "#1c1917", fontWeight: 700 }}
+          onClick={async () => {
+            const projectId = getState().projectId ?? "";
+            await saveNow();
+            window.location.href = `/free-brand-studio/app?returnTo=builder&projectId=${encodeURIComponent(projectId)}&targetSection=${encodeURIComponent(section.id)}&targetPath=${encodeURIComponent(path)}`;
+          }}
+          title="Open Logo & Design Studio"
+        >
+          <Icon name="sparkles" size={15} /> Create or Edit Logo
         </button>
         <button type="button" class="atb-btn atb-btn-ghost atb-btn-sm" onClick={() => setStudio("library")}>
           <Icon name="image" size={15} /> Your images

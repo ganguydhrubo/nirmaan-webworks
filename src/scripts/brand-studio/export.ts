@@ -1,3 +1,5 @@
+import { loadStudioFont } from "./fonts";
+import { SHAPE_PATHS } from "./shapes";
 import type { StudioElement, TextElement, ShapeElement, ImageElement, IconElement } from "./types";
 import type { CanvasBackground } from "./store";
 
@@ -15,6 +17,11 @@ export async function renderArtboardToCanvas(
   elements: StudioElement[],
   options: ExportOptions
 ): Promise<HTMLCanvasElement> {
+  await Promise.all(elements.filter((el) => el.type === "text").map(async (el) => {
+    if (el.type !== "text") return;
+    await loadStudioFont(el.fontFamily);
+    await document.fonts.load(`${el.fontStyle} ${el.fontWeight} ${el.fontSize}px "${el.fontFamily}"`);
+  }));
   const canvas = document.createElement("canvas");
   const scale = options.scale || 1;
   canvas.width = Math.round(width * scale);
@@ -43,7 +50,7 @@ export async function renderArtboardToCanvas(
   }
 
   // 2. Draw Elements sequentially
-  for (const el of elements) {
+  for (const el of elements.filter((el) => !el.hidden)) {
     ctx.save();
     ctx.globalAlpha = el.opacity;
     ctx.translate(el.x + el.width / 2, el.y + el.height / 2);
@@ -61,7 +68,12 @@ export async function renderArtboardToCanvas(
         ctx.shadowOffsetY = s.shadow.offsetY;
       }
 
-      if (s.shapeKind === "circle") {
+      if (SHAPE_PATHS[s.shapeKind]) {
+        ctx.scale(s.width / 100, s.height / 100);
+        const path = new Path2D(SHAPE_PATHS[s.shapeKind]);
+        ctx.fill(path);
+        if (s.strokeColor && s.strokeWidth) { ctx.strokeStyle = s.strokeColor; ctx.lineWidth = s.strokeWidth; ctx.stroke(path); }
+      } else if (s.shapeKind === "circle") {
         ctx.beginPath();
         ctx.arc(s.width / 2, s.height / 2, s.width / 2, 0, Math.PI * 2);
         ctx.fill();
@@ -98,8 +110,9 @@ export async function renderArtboardToCanvas(
 
       ctx.fillStyle = t.color;
       const fontStyle = t.fontStyle === "italic" ? "italic " : "";
-      const fontWeight = t.fontWeight === "bold" || t.fontWeight === "800" ? "bold " : "";
+      const fontWeight = `${t.fontWeight} `;
       ctx.font = `${fontStyle}${fontWeight}${t.fontSize}px ${t.fontFamily}, Manrope, sans-serif`;
+      ctx.letterSpacing = `${t.letterSpacing}px`;
       ctx.textAlign = t.textAlign;
       ctx.textBaseline = "middle";
 
@@ -107,11 +120,12 @@ export async function renderArtboardToCanvas(
         t.textAlign === "center"
           ? t.width / 2
           : t.textAlign === "right"
-          ? t.width - 12
-          : 12;
+          ? t.width - (t.backgroundPadding || 0)
+          : (t.backgroundPadding || 0);
       const textY = t.height / 2;
 
-      const lines = t.content.split("\n");
+      const printText = t.textTransform === "uppercase" ? t.content.toUpperCase() : t.textTransform === "lowercase" ? t.content.toLowerCase() : t.content;
+      const lines = wrapCanvasText(ctx, printText, Math.max(1, t.width - 2 * (t.backgroundPadding || 0)));
       const lineSpacing = t.fontSize * (t.lineHeight || 1.25);
       const startY = textY - ((lines.length - 1) * lineSpacing) / 2;
 
@@ -138,6 +152,9 @@ export async function renderArtboardToCanvas(
     } else if (el.type === "icon") {
       const ic = el as IconElement;
       ctx.fillStyle = ic.color;
+      const viewBox = (ic.viewBox || "0 0 24 24").split(/[ ,]+/).map(Number);
+      ctx.scale(ic.width / (viewBox[2] || 24), ic.height / (viewBox[3] || 24));
+      ctx.translate(-(viewBox[0] || 0), -(viewBox[1] || 0));
       const p = new Path2D(ic.svgPath);
       ctx.fill(p);
     }
@@ -146,6 +163,23 @@ export async function renderArtboardToCanvas(
   }
 
   return canvas;
+}
+
+function wrapCanvasText(ctx: CanvasRenderingContext2D, content: string, maxWidth: number): string[] {
+  return content.split("\n").flatMap(paragraph => {
+    if (!paragraph) return [""];
+    const lines: string[] = [];
+    let line = "";
+    for (const token of paragraph.match(/\S+\s*|\s+/g) || []) {
+      if (line && ctx.measureText(line + token).width > maxWidth) { lines.push(line.trimEnd()); line = ""; }
+      for (const character of token) {
+        if (line && ctx.measureText(line + character).width > maxWidth) { lines.push(line); line = ""; }
+        line += character;
+      }
+    }
+    lines.push(line.trimEnd());
+    return lines;
+  });
 }
 
 export function generateSvgString(
@@ -167,13 +201,14 @@ export function generateSvgString(
       </defs>
       <rect width="${width}" height="${height}" fill="url(#bgGrad)"/>`;
 
-  const elementSvg = elements
+  const elementSvg = elements.filter((el) => !el.hidden)
     .map((el) => {
       const transform = `transform="translate(${el.x}, ${el.y}) rotate(${el.rotation} ${el.width / 2} ${el.height / 2})" opacity="${el.opacity}"`;
 
       if (el.type === "shape") {
         const s = el as ShapeElement;
         const strokeAttr = s.strokeColor && s.strokeWidth ? `stroke="${s.strokeColor}" stroke-width="${s.strokeWidth}"` : "";
+        if (SHAPE_PATHS[s.shapeKind]) return `<g ${transform}><path transform="scale(${s.width / 100} ${s.height / 100})" d="${SHAPE_PATHS[s.shapeKind]}" fill="${s.fillColor}" ${strokeAttr}/></g>`;
         if (s.shapeKind === "circle") {
           return `<g ${transform}><circle cx="${s.width / 2}" cy="${s.height / 2}" r="${s.width / 2}" fill="${s.fillColor}" ${strokeAttr}/></g>`;
         }

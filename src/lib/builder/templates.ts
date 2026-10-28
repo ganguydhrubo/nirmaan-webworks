@@ -7,6 +7,8 @@
  * mistaken for a real business's claims.
  */
 import type { SectionType } from "./catalog";
+import templateMedia from "./template-media.json";
+import generatedTemplates from "./generated-templates.json";
 import { normalizeDoc, type SiteDoc } from "./schema";
 import { themeFromPreset } from "./themes";
 
@@ -50,8 +52,11 @@ interface TemplateDef extends TemplateInfo {
   pages: RawPage[];
 }
 
+const GENERATED_TEMPLATES = generatedTemplates as TemplateDef[];
+
 const TEMPLATES: TemplateDef[] = [
-  {
+...GENERATED_TEMPLATES,
+{
     id: "corporate-advisory",
     label: "Meridian Corporate Advisory",
     description: "Executive strategic counsel, capital advisory and corporate governance profile.",
@@ -65,7 +70,7 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("Meridian Advisory Group", "Schedule Consultation", "#contact", "simple"),
-          sec("hero", "split", {
+          sec("hero", "split", { image: { src: "/images/demos/meridian-advisory/card.jpg", alt: "corporate-advisory hero" },
             eyebrow: "Strategic Corporate Counsel",
             headline: "Clarity in decision-making for complex business crossroads",
             subheadline: "We advise boards and founders on capital allocation, cross-border growth, and strategic transformation with senior-only engagement.",
@@ -174,7 +179,7 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("Greenleaf Stores", "Visit us"),
-          sec("hero", "split", {
+          sec("hero", "split", { image: { src: "/images/demos/mogra-house/card.jpg", alt: "small-business hero" },
             eyebrow: "Your neighbourhood store",
             headline: "Everything you need, a short walk from home",
             subheadline: "Fresh groceries, household essentials and friendly service, open seven days a week.",
@@ -366,7 +371,7 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("SparkFix Repairs", "Call now"),
-          sec("hero", "split", { eyebrow: "Home repairs", headline: "Reliable electrical repairs, usually the same day", subheadline: "Trained technicians, upfront prices, and a tidy job — every time.", primaryLabel: "Book a visit", primaryHref: "#contact", secondaryLabel: "Our services", secondaryHref: "#services" }, { background: "default", align: "left", spacing: "spacious" }),
+          sec("hero", "split", { image: { src: "/images/demos/kayal-backwaters/card.jpg", alt: "local-service hero" }, eyebrow: "Home repairs", headline: "Reliable electrical repairs, usually the same day", subheadline: "Trained technicians, upfront prices, and a tidy job — every time.", primaryLabel: "Book a visit", primaryHref: "#contact", secondaryLabel: "Our services", secondaryHref: "#services" }, { background: "default", align: "left", spacing: "spacious" }),
           sec("services", "cards", { heading: "Services", intro: "Not sure what you need? Call us and describe the problem.", items: [{ title: "Wiring & switchboards", description: "Fault finding, rewiring, new points and safety checks.", price: "" }, { title: "Fans, lights & fittings", description: "Installation and repair of fans, lights and fixtures.", price: "" }, { title: "Appliance repair", description: "Washing machines, geysers, mixers and more.", price: "" }] }),
           sec("features", "checklist", { heading: "Why customers call us", intro: "", items: [{ title: "Upfront pricing", description: "You approve the price before any work starts." }, { title: "On time", description: "We give you a time window and stick to it." }, { title: "Clean and safe", description: "We follow safety standards and clean up after the job." }] }, { background: "surface", align: "left", spacing: "normal" }),
           sec("steps", "cards", { heading: "Booking is simple", intro: "", items: [{ title: "Call or WhatsApp", description: "Tell us the problem and your area." }, { title: "We confirm a time", description: "You get a visit window and an upfront estimate." }, { title: "Fixed, tested, tidy", description: "We finish the job, test it, and clean up." }] }, { background: "default", align: "left", spacing: "normal" }),
@@ -389,7 +394,7 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("Neha Kapoor", "Work with me"),
-          sec("hero", "split", { eyebrow: "Career coach", headline: "Find work that fits the person you are becoming", subheadline: "One-to-one coaching for professionals who feel stuck and want a clear next step.", primaryLabel: "Book a discovery call", primaryHref: "#contact", secondaryLabel: "About me", secondaryHref: "page:about" }, { background: "default", align: "left", spacing: "spacious" }),
+          sec("hero", "split", { image: { src: "/images/demos/manthan-institute/card.jpg", alt: "personal-brand hero" }, eyebrow: "Career coach", headline: "Find work that fits the person you are becoming", subheadline: "One-to-one coaching for professionals who feel stuck and want a clear next step.", primaryLabel: "Book a discovery call", primaryHref: "#contact", secondaryLabel: "About me", secondaryHref: "page:about" }, { background: "default", align: "left", spacing: "spacious" }),
           sec("services", "cards", { heading: "Ways to work with me", intro: "", items: [{ title: "Clarity session", description: "A single 90-minute session to map your options.", price: "" }, { title: "8-week coaching", description: "Weekly sessions to plan and make a career move.", price: "" }, { title: "Workshops", description: "Talks and workshops for teams and communities.", price: "" }] }),
           sampleTestimonials("Client stories"),
           sec("cta", "band", { heading: "Ready for your next chapter?", body: "Book a free 20-minute discovery call.", buttonLabel: "Book a call", buttonHref: "#contact" }),
@@ -444,7 +449,7 @@ const TEMPLATES: TemplateDef[] = [
         title: "Home",
         sections: [
           nav("Hearth Candles", "Order now"),
-          sec("hero", "split", { eyebrow: "Hand-poured in small batches", headline: "Natural soy candles for calmer evenings", subheadline: "Clean-burning, gently scented, and made by hand with plant-based wax.", primaryLabel: "See the collection", primaryHref: "#pricing", secondaryLabel: "", secondaryHref: "" }, { background: "default", align: "left", spacing: "spacious" }),
+          sec("hero", "split", { image: { src: "/images/demos/sunday-objects/card.jpg", alt: "product hero" }, eyebrow: "Hand-poured in small batches", headline: "Natural soy candles for calmer evenings", subheadline: "Clean-burning, gently scented, and made by hand with plant-based wax.", primaryLabel: "See the collection", primaryHref: "#pricing", secondaryLabel: "", secondaryHref: "" }, { background: "default", align: "left", spacing: "spacious" }),
           sec("features", "grid", { heading: "Why Hearth", intro: "", items: [{ title: "Plant-based wax", description: "Made with soy wax and cotton wicks." }, { title: "Long burn time", description: "Each 200g candle burns for roughly 40 hours." }, { title: "Gift-ready", description: "Every candle ships in a recyclable gift box." }] }),
           sec("pricing", "cards", { heading: "The collection", intro: "", plans: [{ name: "Single candle", price: "₹699", period: "", features: ["200g soy candle", "Choice of 4 scents"], ctaLabel: "Order", ctaHref: "#contact", highlighted: false }, { name: "Gift set of 3", price: "₹1,899", period: "", features: ["Three 200g candles", "Gift box and note"], ctaLabel: "Order the set", ctaHref: "#contact", highlighted: true }] }, { background: "surface", align: "center", spacing: "normal" }),
           sec("gallery", "grid", { heading: "Gallery", intro: "", images: Array.from({ length: 3 }, () => ({ image: { src: "", alt: "" }, caption: "" })) }),
@@ -454,15 +459,35 @@ const TEMPLATES: TemplateDef[] = [
         ],
       },
     ],
-  },
+  }
+
 ];
+
+/** Raw input remains available so validation can detect coercion and dropped fields. */
+export function templateInput(id: string) {
+  const t = TEMPLATES.find(x => x.id === id);
+  if (!t) return null;
+  const photo = (templateMedia as Record<string, { url: string; title: string }>)[id];
+  const replaceImages = (value: unknown): unknown => {
+    if (Array.isArray(value)) return value.map(replaceImages);
+    if (!value || typeof value !== "object") return value;
+    const obj = value as Record<string, unknown>;
+    if (typeof obj.src === "string" && obj.src && photo) return { src: photo.url, alt: photo.title };
+    return Object.fromEntries(Object.entries(obj).map(([key, v]) => [key, replaceImages(v)]));
+  };
+  const pages = replaceImages(t.pages) as RawPage[];
+  for (const page of pages) for (const s of page.sections) {
+    if (s.type === "hero" && photo) s.props = { ...s.props, image: { src: photo.url, alt: photo.title } };
+  }
+  return { name: t.name, description: t.siteDescription, theme: themeFromPreset(t.preset), pages };
+}
 
 export const TEMPLATE_LIST: TemplateInfo[] = TEMPLATES.map(({ id, label, description, preset, tag, category }) => ({ id, label, description, preset, tag, category }));
 
 export function templateDoc(id: string): SiteDoc | null {
   const t = TEMPLATES.find((x) => x.id === id);
   if (!t) return null;
-  return normalizeDoc({ name: t.name, description: t.siteDescription, theme: themeFromPreset(t.preset), pages: t.pages }).doc;
+  return normalizeDoc(templateInput(id)).doc;
 }
 
 /** A blank-but-usable starting document. */

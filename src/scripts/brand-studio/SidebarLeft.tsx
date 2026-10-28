@@ -1,5 +1,5 @@
-import { useState } from "preact/hooks";
-import type { StudioElement, StudioTemplate, BrandKitState } from "./types";
+import { useEffect, useState } from "preact/hooks";
+import type { StudioElement, StudioTemplate, BrandKitState, ShapeKind } from "./types";
 import type { CanvasBackground } from "./store";
 import { STUDIO_TEMPLATES, getTemplateThumbnail } from "./templates";
 import { BRAND_PALETTES } from "./presets";
@@ -45,6 +45,23 @@ export function SidebarLeft({
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [userUploads, setUserUploads] = useState<{ id: string; url: string; name: string }[]>([]);
   const [newColorHex, setNewColorHex] = useState("#d4af37");
+  const [stockPhotos, setStockPhotos] = useState<{ id: string; title: string; url: string; previewUrl: string; attribution: string; sourceUrl: string }[]>([]);
+  const [stockStatus, setStockStatus] = useState("");
+  useEffect(() => {
+    if (activeTab !== "media") return;
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setStockStatus("Searching stock photos…");
+      try {
+        const response = await fetch(`/api/media/search?q=${encodeURIComponent(searchQuery)}`, { signal: controller.signal });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error();
+        setStockPhotos(data.results);
+        setStockStatus(data.results.length ? "" : "No stock photos found. Try a broader search.");
+      } catch { if (!controller.signal.aborted) setStockStatus("Photo search is unavailable. Try again shortly."); }
+    }, 350);
+    return () => { controller.abort(); window.clearTimeout(timer); };
+  }, [activeTab, searchQuery]);
 
   const tabs: { key: TabKey; label: string; icon: string }[] = [
     { key: "templates", label: "Templates", icon: "📑" },
@@ -174,7 +191,7 @@ export function SidebarLeft({
   };
 
   // Shape insertion helpers
-  const addShape = (kind: "rectangle" | "circle" | "pill" | "divider") => {
+  const addShape = (kind: ShapeKind) => {
     const id = `shape-${Date.now()}`;
     if (kind === "rectangle") {
       onAddElement({
@@ -232,6 +249,8 @@ export function SidebarLeft({
         opacity: 0.8,
         fillColor: "#d4af37",
       });
+    } else {
+      onAddElement({ id, type: "shape", shapeKind: kind, x: 240, y: 240, width: 300, height: 300, rotation: 0, opacity: 1, fillColor: "#d4af37" });
     }
   };
 
@@ -437,6 +456,9 @@ export function SidebarLeft({
             <div class="studio-drawer-title">
               <span>Shapes & Primitives</span>
             </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }}>
+              {(["star", "badge", "arrow", "ribbon"] as const).map(kind => <button type="button" class="studio-template-card" onClick={() => addShape(kind)}>{kind.charAt(0).toUpperCase() + kind.slice(1)}</button>)}
+            </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "18px" }}>
               <button
@@ -527,6 +549,10 @@ export function SidebarLeft({
             <div class="studio-drawer-title">
               <span>Typography Presets</span>
             </div>
+            {[["Playfair Display", "Inter"], ["Bebas Neue", "Montserrat"], ["Dancing Script", "Poppins"]].map(([headingFont, bodyFont]) => <button type="button" class="studio-template-card" style={{ width: "100%", marginBottom: "8px", textAlign: "left" }} onClick={() => {
+              onAddElement({ id: crypto.randomUUID(), type: "text", content: "Your next great idea", x: 100, y: 200, width: 880, height: 140, rotation: 0, opacity: 1, fontFamily: headingFont!, fontSize: 72, fontWeight: "normal", fontStyle: "normal", color: "#d4af37", textAlign: "center", letterSpacing: 0, lineHeight: 1.2 });
+              onAddElement({ id: crypto.randomUUID(), type: "text", content: "Make something worth sharing.", x: 140, y: 360, width: 800, height: 80, rotation: 0, opacity: 1, fontFamily: bodyFont!, fontSize: 28, fontWeight: "normal", fontStyle: "normal", color: "#fafaf9", textAlign: "center", letterSpacing: 0, lineHeight: 1.4 });
+            }}>{headingFont} + {bodyFont}</button>)}
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <button
@@ -591,6 +617,16 @@ export function SidebarLeft({
         {/* TAB 4: PHOTOS & UPLOADS */}
         {activeTab === "media" && (
           <div>
+            <div class="studio-drawer-title">Global stock photography</div>
+            <p role="status">{stockStatus}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "20px" }}>
+              {stockPhotos.map(photo => <div key={photo.id}>
+                <button type="button" class="studio-template-card" title={`Insert ${photo.title}`} onClick={() => onAddElement({ id: crypto.randomUUID(), type: "image", src: photo.url, alt: photo.title, x: 120, y: 160, width: 600, height: 400, rotation: 0, opacity: 1 })}>
+                  <img src={photo.previewUrl || photo.url} alt={photo.title} loading="lazy" style={{ width: "100%", height: "80px", objectFit: "cover" }} />
+                </button>
+                <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: "10px", color: "var(--studio-text-muted)" }}>{photo.attribution}</a>
+              </div>)}
+            </div>
             <div class="studio-drawer-title">
               <span>Your Uploads</span>
             </div>
@@ -877,6 +913,8 @@ export function SidebarLeft({
                       </div>
 
                       <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                        <button type="button" class="studio-icon-btn" title={el.locked ? "Unlock layer" : "Lock layer"} aria-pressed={!!el.locked} onClick={(e) => { e.stopPropagation(); onUpdateElement(el.id, { locked: !el.locked }); }}>{el.locked ? "Unlock" : "Lock"}</button>
+                        <button type="button" class="studio-icon-btn" title={el.hidden ? "Show layer" : "Hide layer"} aria-pressed={!!el.hidden} onClick={(e) => { e.stopPropagation(); onUpdateElement(el.id, { hidden: !el.hidden }); }}>{el.hidden ? "Show" : "Hide"}</button>
                         <button
                           type="button"
                           onClick={(e) => {

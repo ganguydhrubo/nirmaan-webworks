@@ -1,0 +1,398 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@config/site";
+import { breadcrumbJsonLd } from "@/lib/seo";
+import { TEMPLATE_LIST } from "@/lib/builder/templates";
+
+export const prerender = true;
+
+const title = `Website Templates Marketplace | ${TEMPLATE_LIST.length}+ Free Responsive Business Designs | ATITTLE`;
+const description =
+  `Explore ${TEMPLATE_LIST.length}+ production-ready, professionally designed website templates for SaaS, AI, Corporate Advisory, Real Estate, Clinics, Restaurants, Studios, and Freelancers. Live preview on desktop, tablet and mobile — 100% free visual customisation.`;
+
+const categories = [
+  "All",
+  "SaaS & Software",
+  "AI & Deep Tech",
+  "Corporate & Professional Services",
+  "Marketing & Creative Agencies",
+  "Freelancers & Personal Portfolios",
+  "Small & Local Retail",
+  "Restaurants, Cafes & Dining",
+  "Ecommerce & Retail",
+  "Fashion, Apparel & Luxury Jewellery",
+  "Healthcare, Clinics & Wellness",
+  "Real Estate & Luxury Properties",
+  "Architecture & Interior Design",
+  "Education & Coaching",
+  "Finance, Legal & Accounting",
+  "Fitness, Gym & Athletics",
+  "Travel, Resorts & Tourism",
+  "Events, Weddings & Entertainment",
+  "Photography & Film Studios",
+  "Nonprofits & Community",
+  "Consulting & Executive Advisory",
+  "Landing Pages & Lead Gen",
+  "Blogs & Modern Editorial",
+];
+
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", url: siteConfig.siteUrl },
+    { name: "Website Templates", url: `${siteConfig.siteUrl}/templates` },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "ATITTLE Website Template Marketplace",
+    description: description,
+    url: `${siteConfig.siteUrl}/templates`,
+    numberOfItems: TEMPLATE_LIST.length,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- Marketplace Hero -->
+  <section class="border-b border-ink-200 bg-cream py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="mb-3 text-xs font-bold uppercase tracking-widest text-brand-600">
+          Template Marketplace · {TEMPLATE_LIST.length} Editable Designs
+        </p>
+        <h1 class="font-display text-4xl font-bold tracking-tight text-ink-950 sm:text-5xl">
+          Start with a design that already works.
+        </h1>
+        <p class="mt-4 text-lg text-ink-700 leading-relaxed">
+          Every template is a complete, multi-section website with authentic typography, balanced white space, and clear conversion journeys. Customize visually in our zero-code studio, or download clean HTML5/CSS3.
+        </p>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="relative flex-1 max-w-md">
+          <input
+            type="search"
+            id="template-search"
+            placeholder="Search templates (e.g. real estate, clinic, saas)..."
+            class="w-full rounded-xl border border-ink-300 bg-white px-4 py-3 pl-11 text-sm text-ink-900 shadow-xs focus:border-brand-600 focus:outline-hidden focus:ring-2 focus:ring-brand-600/20"
+          />
+          <svg class="absolute left-3.5 top-3.5 h-4 w-4 text-ink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="flex flex-wrap gap-2" id="category-filters" role="tablist">
+          {categories.map((cat, i) => (
+            <button
+              type="button"
+              class={`rounded-full px-4 py-2 text-xs font-semibold transition ${
+                i === 0
+                  ? "bg-ink-950 text-white shadow-xs filter-active"
+                  : "bg-white text-ink-700 hover:bg-ink-100 border border-ink-200"
+              }`}
+              data-cat={cat}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Templates Grid -->
+  <section class="py-16 bg-white min-h-[600px]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" id="templates-grid">
+        {TEMPLATE_LIST.map((t) => (
+          <article
+            class="template-card group flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-xs transition hover:shadow-xl hover:border-brand-500/50"
+            data-id={t.id}
+            data-category={t.category || "General"}
+            data-name={t.label.toLowerCase()}
+            data-desc={t.description.toLowerCase()}
+          >
+            <!-- Browser Mockup Window Preview -->
+            <div class="relative bg-ink-950 p-2 border-b border-ink-200">
+              <div class="flex items-center justify-between pb-2 px-2">
+                <div class="flex gap-1.5">
+                  <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></span>
+                </div>
+                <span class="text-[10px] font-mono text-ink-400 truncate max-w-[140px]">
+                  {t.id}.atittle.site
+                </span>
+                <span class="text-[10px] uppercase font-bold text-amber-400/90 tracking-wider">
+                  {t.preset}
+                </span>
+              </div>
+              <div class="relative aspect-16/10 overflow-hidden rounded-lg bg-cream">
+                <iframe
+                  src={`/free-website-builder/template-preview/${t.id}.html`}
+                  title={`${t.label} preview`}
+                  loading="lazy"
+                  tabindex="-1"
+                  class="h-[800px] w-[1280px] origin-top-left pointer-events-none transform scale-[0.28] sm:scale-[0.30] border-0"
+                />
+                <!-- Hover Overlay -->
+                <div class="absolute inset-0 bg-ink-950/60 opacity-0 backdrop-blur-[2px] transition group-hover:opacity-100 flex items-center justify-center gap-3 p-4">
+                  <button
+                    type="button"
+                    class="btn-preview rounded-lg bg-white px-4 py-2 text-xs font-bold text-ink-950 shadow-md hover:bg-cream transition"
+                    data-preview-id={t.id}
+                    data-preview-name={t.label}
+                  >
+                    Live Preview 👁️
+                  </button>
+                  <a
+                    href={`/free-website-builder/app?template=${t.id}`}
+                    class="rounded-lg bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-brand-700 transition"
+                  >
+                    Customize &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="flex flex-1 flex-col justify-between p-6">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider">
+                    {t.category || "General"}
+                  </span>
+                  {t.tag && (
+                    <span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800">
+                      {t.tag}
+                    </span>
+                  )}
+                </div>
+                <h3 class="font-display text-xl font-bold text-ink-950">
+                  {t.label}
+                </h3>
+                <p class="mt-2 text-sm text-ink-600 line-clamp-2 leading-relaxed">
+                  {t.description}
+                </p>
+              </div>
+
+              <div class="mt-6 flex items-center justify-between border-t border-ink-100 pt-4">
+                <button
+                  type="button"
+                  class="btn-preview text-xs font-semibold text-ink-700 hover:text-ink-950"
+                  data-preview-id={t.id}
+                  data-preview-name={t.label}
+                >
+                  Responsive Preview ↗
+                </button>
+                <a
+                  href={`/free-website-builder/app?template=${t.id}`}
+                  class="inline-flex items-center gap-1.5 rounded-lg bg-ink-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-brand-600"
+                >
+                  Edit Template &rarr;
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div id="no-results" class="hidden py-16 text-center">
+        <p class="text-base font-semibold text-ink-900">No matching templates found</p>
+        <p class="mt-1 text-sm text-ink-500">Try searching for a different industry, or clear your filters.</p>
+        <button
+          type="button"
+          id="btn-reset-filters"
+          class="mt-4 rounded-full bg-ink-900 px-5 py-2 text-xs font-semibold text-white hover:bg-brand-600"
+        >
+          Reset All Filters
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Responsive Preview Modal -->
+  <dialog id="preview-modal" class="fixed inset-0 z-50 h-full w-full bg-ink-950/80 backdrop-blur-sm p-4 hidden backdrop:bg-transparent">
+    <div class="mx-auto flex h-full max-w-6xl flex-col rounded-2xl bg-white shadow-2xl overflow-hidden border border-ink-300">
+      <!-- Modal Topbar -->
+      <div class="flex items-center justify-between border-b border-ink-200 px-6 py-3.5 bg-cream">
+        <div>
+          <span class="text-xs uppercase font-bold text-brand-600 tracking-wider">Template Preview</span>
+          <h2 id="modal-template-title" class="font-display text-lg font-bold text-ink-950">Template</h2>
+        </div>
+
+        <!-- Viewport Switcher -->
+        <div class="flex items-center gap-1 rounded-lg bg-ink-200/80 p-1" id="viewport-switcher">
+          <button type="button" class="vp-btn rounded-md px-3 py-1 text-xs font-bold text-ink-950 bg-white shadow-xs" data-vp="desktop">
+            🖥️ Desktop
+          </button>
+          <button type="button" class="vp-btn rounded-md px-3 py-1 text-xs font-semibold text-ink-700 hover:text-ink-950" data-vp="tablet">
+            📱 Tablet
+          </button>
+          <button type="button" class="vp-btn rounded-md px-3 py-1 text-xs font-semibold text-ink-700 hover:text-ink-950" data-vp="mobile">
+            📲 Mobile
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            id="modal-customize-btn"
+            href="/free-website-builder/app"
+            class="rounded-lg bg-brand-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-brand-700 transition"
+          >
+            Customize in Studio &rarr;
+          </a>
+          <button
+            type="button"
+            id="modal-close"
+            class="rounded-lg p-2 text-ink-500 hover:bg-ink-200 hover:text-ink-950 transition"
+            aria-label="Close Preview"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Canvas Stage -->
+      <div class="flex-1 overflow-auto bg-ink-900 flex items-center justify-center p-4">
+        <div id="preview-stage" class="transition-all duration-300 h-full w-full max-w-[1280px] bg-white rounded-lg shadow-xl overflow-hidden">
+          <iframe
+            id="preview-iframe"
+            src="about:blank"
+            class="h-full w-full border-0"
+            title="Full Page Live Preview"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</BaseLayout>
+
+<script>
+  // Interactive Filtering & Search
+  const searchInput = document.getElementById("template-search") as HTMLInputElement;
+  const categoryFilters = document.getElementById("category-filters");
+  const cards = document.querySelectorAll<HTMLElement>(".template-card");
+  const noResults = document.getElementById("no-results");
+  const resetBtn = document.getElementById("btn-reset-filters");
+
+  let currentCat = "All";
+  let currentSearch = "";
+
+  function filterCards() {
+    let visibleCount = 0;
+    cards.forEach((card) => {
+      const cardCat = card.getAttribute("data-category") || "";
+      const name = card.getAttribute("data-name") || "";
+      const desc = card.getAttribute("data-desc") || "";
+
+      const matchesCat = currentCat === "All" || cardCat.toLowerCase().includes(currentCat.toLowerCase());
+      const matchesSearch = !currentSearch || name.includes(currentSearch) || desc.includes(currentSearch);
+
+      if (matchesCat && matchesSearch) {
+        card.style.display = "flex";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    if (noResults) {
+      noResults.style.display = visibleCount === 0 ? "block" : "none";
+    }
+  }
+
+  categoryFilters?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("button");
+    if (!btn) return;
+    categoryFilters.querySelectorAll("button").forEach((b) => {
+      b.classList.remove("bg-ink-950", "text-white", "shadow-xs");
+      b.classList.add("bg-white", "text-ink-700", "border", "border-ink-200");
+    });
+    btn.classList.remove("bg-white", "text-ink-700", "border", "border-ink-200");
+    btn.classList.add("bg-ink-950", "text-white", "shadow-xs");
+    currentCat = btn.getAttribute("data-cat") || "All";
+    filterCards();
+  });
+
+  searchInput?.addEventListener("input", () => {
+    currentSearch = searchInput.value.toLowerCase().trim();
+    filterCards();
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    if (searchInput) searchInput.value = "";
+    currentSearch = "";
+    currentCat = "All";
+    const firstBtn = categoryFilters?.querySelector("button");
+    if (firstBtn) firstBtn.click();
+    filterCards();
+  });
+
+  // Modal Live Preview
+  const modal = document.getElementById("preview-modal") as HTMLDialogElement;
+  const modalTitle = document.getElementById("modal-template-title");
+  const modalIframe = document.getElementById("preview-iframe") as HTMLIFrameElement;
+  const modalCustomizeBtn = document.getElementById("modal-customize-btn") as HTMLAnchorElement;
+  const modalClose = document.getElementById("modal-close");
+  const previewStage = document.getElementById("preview-stage");
+  const vpButtons = document.querySelectorAll<HTMLButtonElement>(".vp-btn");
+
+  document.querySelectorAll(".btn-preview").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = e.currentTarget as HTMLElement;
+      const id = target.getAttribute("data-preview-id");
+      const name = target.getAttribute("data-preview-name");
+      if (!id || !modal || !modalIframe) return;
+
+      if (modalTitle) modalTitle.textContent = name || id;
+      if (modalCustomizeBtn) modalCustomizeBtn.href = `/free-website-builder/app?template=${id}`;
+      modalIframe.src = `/free-website-builder/template-preview/${id}.html`;
+      modal.classList.remove("hidden");
+      modal.showModal?.();
+    });
+  });
+
+  modalClose?.addEventListener("click", () => {
+    if (modal) {
+      modal.close?.();
+      modal.classList.add("hidden");
+      if (modalIframe) modalIframe.src = "about:blank";
+    }
+  });
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.close?.();
+      modal.classList.add("hidden");
+      if (modalIframe) modalIframe.src = "about:blank";
+    }
+  });
+
+  // Viewport Switcher in Modal
+  vpButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      vpButtons.forEach((b) => {
+        b.classList.remove("bg-white", "text-ink-950", "shadow-xs");
+        b.classList.add("text-ink-700");
+      });
+      btn.classList.remove("text-ink-700");
+      btn.classList.add("bg-white", "text-ink-950", "shadow-xs");
+
+      const vp = btn.getAttribute("data-vp");
+      if (!previewStage) return;
+      if (vp === "mobile") {
+        previewStage.style.maxWidth = "390px";
+      } else if (vp === "tablet") {
+        previewStage.style.maxWidth = "768px";
+      } else {
+        previewStage.style.maxWidth = "1280px";
+      }
+    });
+  });
+</script>

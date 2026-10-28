@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import { MAX_ASSETS, type Asset } from "@/lib/builder/schema";
-import { useEditor, setUploadedImage, applyLibraryImage, renameAsset, deleteAsset, assetUsage, getState } from "./store";
+import { useEditor, setUploadedImage, applyLibraryImage, renameAsset, deleteAsset, assetUsage, getState, updateProp } from "./store";
 import { processUpload, ACCEPT_ATTR } from "./images";
 import { generateAiImage, imageAvailability, toWebAsset } from "./api";
 import { ILLUSTRATION_STYLES, illustrationAsset, type IllustrationStyle } from "./illustrations";
 import { Icon, Modal, toast, confirmDialog } from "./ui";
 
-export type StudioTab = "ai" | "upload" | "library" | "illustration";
+export type StudioTab = "stock" | "ai" | "upload" | "library" | "illustration";
 
 const ASPECTS: { id: string; label: string; ratio: number }[] = [
   { id: "16:9", label: "Wide 16:9", ratio: 16 / 9 },
@@ -24,7 +24,7 @@ const STYLES = [
 const SOURCE_LABEL: Record<string, string> = { upload: "Uploaded", ai: "AI-generated", illustration: "Illustration", url: "From link" };
 
 export function ImageStudio(props: { sectionId: string; path: string; alt: string; suggestion: string; initialTab?: StudioTab; onClose: () => void }) {
-  const [tab, setTab] = useState<StudioTab>(props.initialTab ?? "ai");
+  const [tab, setTab] = useState<StudioTab>(props.initialTab ?? "stock");
   const assets = useEditor((s) => s.doc.assets);
   const full = Object.keys(assets).length >= MAX_ASSETS;
 
@@ -43,6 +43,7 @@ export function ImageStudio(props: { sectionId: string; path: string; alt: strin
       <div class="atb-studio-tabs" role="tablist" aria-label="Image source">
         {(
           [
+            ["stock", "Stock Photos", "search"],
             ["ai", "Generate with AI", "sparkles"],
             ["upload", "Upload", "upload"],
             ["library", `Your images (${Object.keys(assets).length})`, "image"],
@@ -55,6 +56,16 @@ export function ImageStudio(props: { sectionId: string; path: string; alt: strin
         ))}
       </div>
       {full && tab !== "library" && <p class="atb-error">This project has the maximum {MAX_ASSETS} images. Delete unused ones in "Your images" to add more.</p>}
+      {tab === "stock" && (
+        <StockTab
+          suggestion={props.suggestion}
+          onApplyUrl={(url, title) => {
+            updateProp(props.sectionId, props.path, { src: url, alt: title || props.alt });
+            toast("Stock photo applied.", "success", undefined, 2000);
+            props.onClose();
+          }}
+        />
+      )}
       {tab === "ai" && <AiTab suggestion={props.suggestion} onApply={(a, alt) => apply(a, alt, "AI image added.")} />}
       {tab === "upload" && <UploadTab alt={props.alt} onApply={(a, alt) => apply(a, alt, "Image added.")} />}
       {tab === "library" && (
@@ -336,6 +347,164 @@ function IllustrationTab({ onApply }: { onApply: (a: Asset) => void }) {
           <Icon name="check" /> Use this illustration
         </button>
       </div>
+    </div>
+  );
+}
+
+
+const STOCK_CATEGORIES = [
+  { id: "all", label: "All Categories" },
+  { id: "business", label: "Business & Corporate" },
+  { id: "technology", label: "Technology & SaaS" },
+  { id: "healthcare", label: "Medical & Health" },
+  { id: "restaurant", label: "Food & Dining" },
+  { id: "real-estate", label: "Real Estate" },
+  { id: "fitness", label: "Fitness & Wellness" },
+  { id: "creative", label: "Creative & Agency" },
+  { id: "retail", label: "Fashion & Retail" },
+];
+
+function StockTab({ suggestion, onApplyUrl }: { suggestion: string; onApplyUrl: (url: string, alt: string) => void }) {
+  const [query, setQuery] = useState(suggestion || "business");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [photos, setPhotos] = useState<Array<{ id: string; title: string; url: string; previewUrl: string; attribution: string; provider: string; sourceUrl: string; licenseUrl: string }>>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const request = useRef<AbortController | null>(null);
+
+  const search = async (q: string, cat: string) => {
+    request.current?.abort();
+    const controller = new AbortController();
+    request.current = controller;
+    setLoading(true);
+    setError("");
+    try {
+      const p = new URLSearchParams();
+      if (q.trim()) p.set("q", q.trim());
+      if (cat && cat !== "all") p.set("category", cat);
+      const res = await fetch(`/api/media/search?${p.toString()}`, { signal: controller.signal });
+      const data = await res.json();
+      if (res.ok && data.ok && Array.isArray(data.results)) {
+        setPhotos(data.results);
+      } else {
+        setError(data.message || "Failed to load photos.");
+      }
+    } catch {
+      if (!controller.signal.aborted) setError("Network error loading photos.");
+    } finally {
+      if (!controller.signal.aborted) setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void search(query, activeCategory);
+    return () => request.current?.abort();
+  }, []);
+
+  const handleSearch = (e: Event) => {
+    e.preventDefault();
+    void search(query, activeCategory);
+  };
+
+  return (
+    <div class="atb-studio-pane">
+      <form onSubmit={handleSearch} style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+        <input
+          type="text"
+          value={query}
+          onInput={(e) => setQuery(e.currentTarget.value)}
+          placeholder="Search millions of free stock photos (e.g. coffee, architecture, team)..."
+          style={{ flex: 1, padding: "8px 12px", borderRadius: "8px", border: "1px solid var(--atb-line)" }}
+        />
+        <button type="submit" class="atb-btn atb-btn-primary" disabled={loading}>
+          <Icon name="search" size={16} /> Search
+        </button>
+      </form>
+
+      <div class="atb-chips" style={{ marginBottom: "16px" }}>
+        {STOCK_CATEGORIES.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            class={`atb-chip${activeCategory === c.id ? " atb-chip-on" : ""}`}
+            aria-pressed={activeCategory === c.id}
+            onClick={() => {
+              setActiveCategory(c.id);
+              void search(query, c.id);
+            }}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      {loading && <p class="atb-muted" style={{ padding: "30px 0", textAlign: "center" }}>Searching royalty-free photography...</p>}
+      {error && <p class="atb-error">{error}</p>}
+      {!loading && !error && photos.length === 0 && (
+        <p class="atb-muted" style={{ padding: "30px 0", textAlign: "center" }}>No photos found. Try another search keyword.</p>
+      )}
+
+      {!loading && photos.length > 0 && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "12px", maxHeight: "420px", overflowY: "auto", paddingRight: "4px" }}>
+          {photos.map((p) => (
+            <div
+              key={p.id}
+              style={{
+                border: "1px solid var(--atb-line)",
+                borderRadius: "10px",
+                overflow: "hidden",
+                background: "#fff",
+                display: "flex",
+                flexDirection: "column",
+                transition: "transform 0.15s ease, box-shadow 0.15s ease",
+              }}
+            >
+              <div style={{ position: "relative", width: "100%", height: "130px", background: "#f0f0f0", overflow: "hidden" }}>
+                <img
+                  src={p.previewUrl || p.url}
+                  alt={p.title}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "6px",
+                    right: "6px",
+                    background: "rgba(0,0,0,0.65)",
+                    color: "#fff",
+                    fontSize: "10px",
+                    fontWeight: 600,
+                    padding: "2px 6px",
+                    borderRadius: "4px",
+                    backdropFilter: "blur(4px)",
+                  }}
+                >
+                  {p.provider}
+                </span>
+              </div>
+              <div style={{ padding: "8px", display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between", gap: "6px" }}>
+                <div>
+                  <div style={{ fontSize: "12px", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "var(--atb-ink)" }} title={p.title}>
+                    {p.title}
+                  </div>
+                  <div style={{ fontSize: "11px", color: "var(--atb-ink-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer">{p.attribution}</a>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="atb-btn atb-btn-primary atb-btn-sm"
+                  style={{ width: "100%", justifyContent: "center" }}
+                  onClick={() => onApplyUrl(p.url, p.title)}
+                >
+                  <Icon name="check" size={14} /> Use Photo
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

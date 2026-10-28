@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-28T13:55:40.050Z",
+  "passed": [
+    "All requested routes return HTTP 200",
+    "Double-click canvas text, type multiline content and commit with Escape",
+    "Changing a font loads its stylesheet and updates the stage",
+    "Layer visibility and lock controls affect the selected text",
+    "Brand Studio stock search inserts a real photo",
+    "Section duplication, movement and undo persist correctly",
+    "Builder stock picker applies the selected photo",
+    "Logo handoff roundtrip survives save, navigation and reload",
+    "Marketplace filters templates and opens responsive preview"
+  ],
+  "pageErrors": [],
+  "success": true
+}

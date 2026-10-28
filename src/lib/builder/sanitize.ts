@@ -93,6 +93,12 @@ export function safeImageSrc(raw: unknown, assetIds?: ReadonlySet<string>): stri
     if (assetIds && !assetIds.has(id)) return "";
     return value;
   }
+  // Allow root-relative local paths like /images/... or /assets/...
+  if (value.startsWith("/") && !value.startsWith("//")) {
+    if (/\.svg(\?|#|$)/i.test(value)) return "";
+    if (/[<>"'\s]/.test(value)) return "";
+    return value;
+  }
   try {
     const url = new URL(value);
     if (url.protocol !== "https:") return "";

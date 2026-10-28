@@ -17,6 +17,7 @@ import { escapeAttr, escapeHtml as esc, safeHref, safeImageSrc, ASSET_PREFIX, PA
 import type { Page, Section, SiteDoc } from "./schema";
 import { pageFileName } from "./schema";
 import { FONTS, type Theme } from "./themes";
+import { videoSource } from "./video";
 
 export interface RenderOptions {
   mode: "editor" | "export";
@@ -89,8 +90,9 @@ function button(c: Ctx, s: Section, labelPath: string, label: string, rawHref: s
   if (!label) return "";
   const href = resolveHref(c, rawHref);
   const inner = text(c, s, labelPath, label, "span");
-  if (!href) return `<span class="btn ${cls}">${inner}</span>`;
-  return `<a class="btn ${cls}" ${linkAttrs(href)}>${inner}</a>`;
+  const dataBtn = editing(c) ? ` data-btn="${escapeAttr(`${s.id}:${labelPath.replace(/Label$/, "Href")}`)}"` : "";
+  if (!href) return `<span class="btn ${cls}"${dataBtn}>${inner}</span>`;
+  return `<a class="btn ${cls}" ${linkAttrs(href)}${dataBtn}>${inner}</a>`;
 }
 
 function image(c: Ctx, s: Section, path: string, value: unknown, cls: string, sizes = "100vw", eager = false): string {
@@ -143,6 +145,10 @@ const ICON = {
 // ---------------------------------------------------------------------------
 
 function navLinks(c: Ctx, cls: string): string {
+  if (c.doc.pages.length === 1) {
+    const labels: Record<string, string> = { about: "About", services: "Services", pricing: "Pricing", gallery: "Gallery", contact: "Contact" };
+    return c.page.sections.filter(s => labels[s.type]).slice(0, 5).map(s => `<li><a class="${cls}" href="#${escapeAttr(c.anchors.get(s.id) || s.type)}">${labels[s.type]}</a></li>`).join("");
+  }
   return c.doc.pages
     .map((p) => {
       const current = p.id === c.page.id ? ' aria-current="page"' : "";
@@ -153,10 +159,10 @@ function navLinks(c: Ctx, cls: string): string {
 
 function renderNavbar(c: Ctx, s: Section): string {
   const p = s.props;
-  const brand = text(c, s, "brand", str(p, "brand") || c.doc.name, "span");
+  const brand = (hasImage(c, p.logo) ? image(c, s, "logo", p.logo, "brand-logo", "160px", true) : "") + text(c, s, "brand", str(p, "brand") || c.doc.name, "span");
   const home = c.pageHref("index");
   const cta = button(c, s, "ctaLabel", str(p, "ctaLabel"), str(p, "ctaHref"), "btn-primary btn-sm");
-  const multiPage = c.doc.pages.length > 1;
+  const multiPage = c.doc.pages.length > 1 || c.page.sections.some(section => ["about", "services", "pricing", "gallery", "contact"].includes(section.type));
   return `${sectionOpen(c, s, "", "header")}
 <div class="wrap nav-inner">
   <a class="brand" href="${escapeAttr(home)}">${brand}</a>
@@ -186,6 +192,13 @@ ${text(c, s, "subheadline", str(p, "subheadline"), "p", "lead", true)}
     "btn-ghost",
   )}</div>
 </div>`;
+  if (s.variant === "video") {
+    const source = videoSource(p.videoUrl);
+    const poster = safeImageSrc((p.image as Partial<ImageValue>)?.src, c.assetIds);
+    const posterUrl = poster.startsWith(ASSET_PREFIX) ? c.assetUrl(poster.slice(ASSET_PREFIX.length)) : poster;
+    const bg = source?.kind === "mp4" ? `<video class="hero-video" autoplay muted loop playsinline preload="none"${posterUrl ? ` poster="${escapeAttr(posterUrl)}"` : ""} aria-hidden="true"><source src="${escapeAttr(source.src)}" type="video/mp4" /></video>` : "";
+    return `${sectionOpen(c, s, "has-bg")}${posterUrl ? `<div class="hero-bg">${image(c, s, "image", p.image, "media", "100vw", true)}</div>` : ""}${bg}<div class="wrap hero-banner">${copy}</div></section>`;
+  }
   if (s.variant === "split") {
     return `${sectionOpen(c, s)}<div class="wrap hero-split">${copy}<div class="hero-media">${image(c, s, "image", p.image, "media", "(min-width: 900px) 50vw, 100vw", true)}</div></div></section>`;
   }
@@ -199,6 +212,26 @@ ${text(c, s, "subheadline", str(p, "subheadline"), "p", "lead", true)}
   }
   // Decorative, theme-coloured shapes so a text-only hero never reads as a blank white page.
   return `${sectionOpen(c, s)}<div class="hero-deco" aria-hidden="true"><span></span><span></span></div><div class="wrap hero-centered">${copy}</div></section>`;
+}
+
+function renderVideo(c: Ctx, s: Section): string {
+  const source = videoSource(s.props.videoUrl);
+  if (!source && !editing(c)) return "";
+  const player = !source ? (editing(c) ? '<p class="muted">Add a YouTube, Vimeo or HTTPS MP4 URL in the properties panel.</p>' : '') : source.kind === "mp4"
+    ? `<video class="video-player" controls playsinline preload="metadata"><source src="${escapeAttr(source.src)}" type="video/mp4" />Your browser does not support this video.</video>`
+    : `<iframe class="video-player" src="${escapeAttr(source.src)}" title="${escapeAttr(str(s.props, "heading") || "Video")}" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  const content = s.variant === "modal" ? `<div class="video-modal">${hasImage(c, s.props.poster) ? image(c, s, "poster", s.props.poster, "media") : ""}<button type="button" class="btn btn-primary" popovertarget="video-${escapeAttr(s.id)}">Play video</button><div id="video-${escapeAttr(s.id)}" popover class="video-popover"><button type="button" class="btn btn-ghost" popovertarget="video-${escapeAttr(s.id)}" popovertargetaction="hide" aria-label="Close video">Close video</button>${player}</div></div>` : player;
+  const transcript = str(s.props, "transcript");
+  return `${sectionOpen(c, s)}<div class="wrap narrow">${heading(c, s, null, "heading", "intro")}${content}${transcript ? `<details><summary>Read transcript</summary>${text(c, s, "transcript", transcript, "p", "prose", true)}</details>` : ""}</div></section>`;
+}
+
+function renderLogos(c: Ctx, s: Section): string {
+  const items = list(s.props, "items");
+  return `${sectionOpen(c, s)}<div class="wrap">${heading(c, s, null, "heading", null)}${s.props.isSample ? '<p class="muted">Sample logos — replace with your approved client logos.</p>' : ''}<div class="logo-cloud">${items.map((item, i) => {
+    const content = hasImage(c, item.image) ? image(c, s, `items.${i}.image`, item.image, "client-logo", "160px") : text(c, s, `items.${i}.name`, str(item, "name"), "span", "foot-brand");
+    const href = resolveHref(c, str(item, "href"));
+    return href ? `<a ${linkAttrs(href)}>${content}</a>` : `<div>${content}</div>`;
+  }).join('')}</div></div></section>`;
 }
 
 function renderSteps(c: Ctx, s: Section): string {
@@ -322,10 +355,12 @@ function renderTestimonials(c: Ctx, s: Section): string {
 
 function renderPricing(c: Ctx, s: Section): string {
   const plans = list(s.props, "plans");
-  return `${sectionOpen(c, s)}<div class="wrap">${heading(c, s, null, "heading", "intro")}<div class="grid plans">${plans
+  const toggle = s.variant === "toggle";
+  const controls = toggle ? `<fieldset class="billing"><legend>Billing period</legend><label><input type="radio" name="billing-${escapeAttr(s.id)}" value="monthly" checked /> Monthly</label><label><input type="radio" name="billing-${escapeAttr(s.id)}" value="annual" /> Yearly</label></fieldset>` : "";
+  return `${sectionOpen(c, s)}<div class="wrap">${heading(c, s, null, "heading", "intro")}${controls}<div class="grid plans">${plans
     .map((pl, i) => {
       const features = Array.isArray(pl.features) ? (pl.features as unknown[]).filter((f): f is string => typeof f === "string" && !!f) : [];
-      return `<article class="plan${pl.highlighted ? " plan-hi" : ""}">${text(c, s, `plans.${i}.name`, str(pl, "name"), "h3", "h3")}<p class="plan-price">${text(c, s, `plans.${i}.price`, str(pl, "price"), "span", "amount")}${text(
+      return `<article class="plan${pl.highlighted ? " plan-hi" : ""}">${text(c, s, `plans.${i}.name`, str(pl, "name"), "h3", "h3")}<p class="plan-price"><span class="monthly-price">${text(c, s, `plans.${i}.price`, str(pl, "price"), "span", "amount")}</span>${toggle ? `<span class="annual-price">${text(c, s, `plans.${i}.annualPrice`, str(pl, "annualPrice") || str(pl, "price"), "span", "amount")}</span>` : ''}${text(
         c,
         s,
         `plans.${i}.period`,
@@ -382,6 +417,7 @@ function renderContact(c: Ctx, s: Section): string {
       action = `<form class="form card" action="${escapeAttr(endpoint)}" method="POST">
 <label>Your name<input name="name" autocomplete="name" required maxlength="100" /></label>
 <label>Email<input type="email" name="email" autocomplete="email" required maxlength="200" /></label>
+<label>Phone<input type="tel" name="phone" autocomplete="tel" maxlength="30" /></label>
 <label>Message<textarea name="message" rows="4" required maxlength="2000"></textarea></label>
 <button class="btn btn-primary" type="submit">Send message</button>
 </form>`;
@@ -418,6 +454,11 @@ function renderFooter(c: Ctx, s: Section): string {
   const owner = str(p, "copyright") || brand;
   const year = new Date().getFullYear();
   const links = c.doc.pages.length > 1 ? `<nav aria-label="Footer"><ul class="foot-links">${navLinks(c, "foot-link")}</ul></nav>` : "";
+  const extraLinks = (key: string) => list(p, key).map(item => { const href = resolveHref(c, str(item, "href")); return href ? `<li><a ${linkAttrs(href)}>${esc(str(item, "label"))}</a></li>` : ""; }).join("");
+  const sitemap = extraLinks("links");
+  const socials = extraLinks("socials");
+  const endpoint = safeHref(str(p, "newsletterEndpoint"));
+  const newsletter = endpoint.startsWith("https://") ? `<form class="form" action="${escapeAttr(endpoint)}" method="POST"><label>Newsletter email<input type="email" name="email" autocomplete="email" required maxlength="200" /></label><button class="btn btn-primary" type="submit">Subscribe</button></form>` : "";
   return `${sectionOpen(c, s, "", "footer")}<div class="wrap foot ${s.variant === "columns" ? "foot-cols" : ""}"><div>${text(c, s, "brand", brand, "p", "foot-brand")}${text(
     c,
     s,
@@ -426,12 +467,14 @@ function renderFooter(c: Ctx, s: Section): string {
     "p",
     "muted",
     true,
-  )}</div>${links}<p class="foot-copy muted">&copy; ${year} ${esc(owner)}</p></div></footer>`;
+  )}</div>${links}${sitemap ? `<nav aria-label="Sitemap"><ul class="foot-links">${sitemap}</ul></nav>` : ""}${socials ? `<nav aria-label="Social media"><ul class="foot-links">${socials}</ul></nav>` : ""}${newsletter}<p class="foot-copy muted">&copy; ${year} ${esc(owner)}</p></div></footer>`;
 }
 
 const RENDERERS: Record<string, (c: Ctx, s: Section) => string> = {
   navbar: renderNavbar,
   hero: renderHero,
+  video: renderVideo,
+  logos: renderLogos,
   about: renderAbout,
   services: renderServices,
   features: renderServices,
@@ -688,6 +731,14 @@ ul,ol{margin:0;padding:0;list-style:none}
 .steps-timeline .step:not(:last-child)::after{content:"";position:absolute;top:23px;left:58px;right:-12px;height:2px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--secondary) 60%,transparent))}
 .bg-accent .step-n{background:var(--accent-text);color:var(--accent)}
 @media (max-width:700px){.steps-timeline .step::after{display:none}}
+.brand{display:flex;align-items:center;gap:12px}.brand-logo{width:120px;max-height:64px;object-fit:contain}
+.logo-cloud{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-around;gap:32px}.client-logo{width:150px;max-height:72px;object-fit:contain}
+.video-player{display:block;width:100%;aspect-ratio:16/9;border:0;background:#111;border-radius:var(--r)}
+.video-modal{position:relative;text-align:center}.video-modal>.media{width:100%;max-height:480px;object-fit:cover;border-radius:var(--r);margin-bottom:16px}
+.video-popover{width:min(92vw,1000px);padding:20px;border:1px solid var(--border);border-radius:var(--r);background:var(--bg);color:var(--text)}.video-popover::backdrop{background:#000b}.video-popover>.btn{margin-bottom:12px}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}.v-video .hero-banner{position:relative;z-index:1}.v-video::after{content:"";position:absolute;inset:0;background:#0008;pointer-events:none}.v-video .hero-banner .lead{color:inherit}
+@media(prefers-reduced-motion:reduce){.hero-video{display:none}}
+.billing{display:flex;justify-content:center;gap:24px;border:0;margin:0 0 32px;padding:0}.billing legend{text-align:center;font-weight:600;margin-bottom:12px}.billing label{cursor:pointer}.annual-price{display:none}.wrap:has(.billing input[value=annual]:checked) .annual-price{display:inline}.wrap:has(.billing input[value=annual]:checked) .monthly-price{display:none}
 .gallery{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
 .gallery figure{margin:0}
 .gallery .media,.gallery .ph{aspect-ratio:1/1;min-height:0}

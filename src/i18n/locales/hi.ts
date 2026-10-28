@@ -29,6 +29,7 @@ export const hi: TranslationDictionary = {
   },
   nav: {
     industries: 'उद्योग',
+    templates: 'टेम्पलेट्स',
     demos: 'डेमो',
     services: 'अन्य सेवाएं',
     builder: 'फ्री AI बिल्डर',

@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { SECTION_DEFS, getSectionDef, type SectionType } from "@/lib/builder/catalog";
 import { MAX_PAGES } from "@/lib/builder/schema";
 import { FONTS, FONT_NAMES, THEME_PRESETS, themeFromPreset, readableTextOn, type ThemeColors } from "@/lib/builder/themes";
@@ -52,7 +52,19 @@ function SectionsTab({ onSelected }: { onSelected?: () => void }) {
   const [dragId, setDragId] = useState<string | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
   const [adding, setAdding] = useState(false);
+  const [targetIndex, setTargetIndex] = useState<number | undefined>(undefined);
   const [announce, setAnnounce] = useState("");
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const custom = e as CustomEvent<{ afterIndex?: number }>;
+      const after = custom.detail?.afterIndex;
+      setTargetIndex(typeof after === "number" ? after + 1 : undefined);
+      setAdding(true);
+    };
+    window.addEventListener("atb-add-section", handler);
+    return () => window.removeEventListener("atb-add-section", handler);
+  }, []);
 
   const label = (type: SectionType, i: number) => {
     const s = page.sections[i]!;
@@ -130,21 +142,41 @@ function SectionsTab({ onSelected }: { onSelected?: () => void }) {
       <span class="atb-sr" aria-live="polite">
         {announce}
       </span>
-      <button type="button" class="atb-btn atb-btn-primary atb-full" onClick={() => setAdding(true)}>
+      <button
+        type="button"
+        class="atb-btn atb-btn-primary atb-full"
+        onClick={() => {
+          setTargetIndex(undefined);
+          setAdding(true);
+        }}
+      >
         <Icon name="plus" /> Add section
       </button>
-      {adding && <AddSectionDialog onClose={() => setAdding(false)} />}
+      {adding && (
+        <AddSectionDialog
+          targetIndex={targetIndex}
+          onClose={() => {
+            setAdding(false);
+            setTargetIndex(undefined);
+          }}
+        />
+      )}
     </div>
   );
 }
 
-function AddSectionDialog({ onClose }: { onClose: () => void }) {
+function AddSectionDialog({ onClose, targetIndex }: { onClose: () => void; targetIndex?: number }) {
   const page = useEditor((s) => currentPage(s));
   const selectedId = useEditor((s) => s.selectedId);
-  const selectedIndex = page.sections.findIndex((s) => s.id === selectedId);
+  const selectedIndex =
+    typeof targetIndex === "number"
+      ? targetIndex
+      : page.sections.findIndex((s) => s.id === selectedId) >= 0
+        ? page.sections.findIndex((s) => s.id === selectedId) + 1
+        : undefined;
   return (
     <Modal title="Add a section" onClose={onClose} wide>
-      <p class="atb-muted">{selectedIndex >= 0 ? "The new section is added below the selected one." : "The new section is added at the end of the page."}</p>
+      <p class="atb-muted">{typeof selectedIndex === "number" ? "The new section is added below the selected position." : "The new section is added at the end of the page."}</p>
       <div class="atb-add-grid">
         {SECTION_DEFS.map((d) => {
           const taken = !!d.pinned && page.sections.some((s) => s.type === d.type);
@@ -155,7 +187,7 @@ function AddSectionDialog({ onClose }: { onClose: () => void }) {
               class="atb-add-card"
               disabled={taken}
               onClick={() => {
-                addSection(d.type, undefined, selectedIndex >= 0 ? selectedIndex + 1 : undefined);
+                addSection(d.type, undefined, selectedIndex);
                 onClose();
               }}
             >

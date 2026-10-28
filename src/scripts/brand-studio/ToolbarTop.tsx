@@ -19,6 +19,7 @@ interface ToolbarTopProps {
   onImportJSON: (file: File) => void;
   onOpenExportModal: () => void;
   onCopyToClipboard: () => void;
+  onUseInWebsite?: () => void;
 }
 
 export function ToolbarTop({
@@ -40,6 +41,7 @@ export function ToolbarTop({
   onImportJSON,
   onOpenExportModal,
   onCopyToClipboard,
+  onUseInWebsite,
 }: ToolbarTopProps) {
   return (
     <header class="studio-header">
@@ -169,6 +171,24 @@ export function ToolbarTop({
         >
           Clear
         </button>
+
+        {/* Use In Website Button (when opened from Website Builder) */}
+        {onUseInWebsite && (
+          <button
+            type="button"
+            onClick={onUseInWebsite}
+            class="studio-btn-export"
+            style={{
+              backgroundColor: "#d4af37",
+              color: "#1c1917",
+              fontWeight: 700,
+              boxShadow: "0 2px 8px rgba(212, 175, 55, 0.4)",
+            }}
+            title="Insert this logo into your active website builder project"
+          >
+            <span>✨ Use in My Website</span>
+          </button>
+        )}
 
         {/* Export / Download CTA */}
         <button

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import type { BriefShape as Brief } from "@/lib/builder/options";
 import { templateDoc } from "@/lib/builder/templates";
-import type { SiteDoc } from "@/lib/builder/schema";
-import { initEditor, getState, setState } from "./store";
+import { MAX_ASSETS, validateAsset, type SiteDoc } from "@/lib/builder/schema";
+import { fieldAtPath } from "@/lib/builder/catalog";
+import { initEditor, getState, setState, setUploadedImage, findSection } from "./store";
 import { startAutosave, saveNow } from "./autosave";
 import { createProject, deleteProject, getProject, listProjects, readBackup, storageAvailable, type ProjectSummary } from "./persistence";
 import { generateSite, newRequestId } from "./api";
@@ -110,7 +111,24 @@ export default function App() {
       const params = new URLSearchParams(window.location.search);
       const projectId = params.get("project");
       const template = params.get("template");
-      if (projectId && ok) return openProject(projectId);
+      if (projectId && ok) {
+        await openProject(projectId);
+        try {
+          const rawLogo = localStorage.getItem("atb_imported_logo");
+          if (rawLogo) {
+            const { src, targetSection, targetPath, projectId: logoProject } = JSON.parse(rawLogo);
+            const section = findSection(targetSection);
+            const asset = validateAsset({ name: "Brand Studio Logo", mime: "image/png", dataUrl: src, source: "upload" });
+            if (asset && section && (!logoProject || logoProject === projectId) && fieldAtPath(section.type, targetPath)?.kind === "image" && Object.keys(getState().doc.assets).length < MAX_ASSETS) {
+              setUploadedImage(targetSection, targetPath, asset, "Brand Studio Logo");
+              await saveNow();
+              localStorage.removeItem("atb_imported_logo");
+              toast("Logo imported from Brand Studio!", "success");
+            } else toast("The logo could not be imported. Check its size and the target image field.", "error");
+          }
+        } catch {}
+        return;
+      }
       if (template) {
         const doc = templateDoc(template);
         if (doc) return openDoc(doc, "Template loaded. Click any text in the preview to change it.");

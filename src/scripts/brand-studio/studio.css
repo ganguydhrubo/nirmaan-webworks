@@ -405,11 +405,12 @@
 .studio-element {
   position: absolute;
   cursor: move;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .studio-element.selected {
   outline: 2px solid var(--studio-selection);
   box-shadow: 0 0 0 4px var(--studio-selection-ring);
-  z-index: 30;
 }
 
 /* Handles */

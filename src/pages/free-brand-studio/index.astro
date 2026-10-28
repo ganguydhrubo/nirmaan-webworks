@@ -171,30 +171,67 @@ const jsonLd = [
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {STUDIO_TEMPLATES.map((tmpl) => (
-          <a
-            href="/free-brand-studio/app"
-            class="group rounded-2xl border border-stone-800 bg-stone-900/80 p-4 hover:border-amber-500/70 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/5 block"
-          >
-            <div
-              class="h-44 w-full rounded-xl mb-4 flex items-center justify-center p-6 text-center shadow-inner overflow-hidden border border-stone-800"
-              style={{ background: tmpl.previewGradient }}
+        {STUDIO_TEMPLATES.map((tmpl) => {
+          const headline = tmpl.elements.find((e) => e.type === "text" && (e as any).fontSize >= 28) as any;
+          const badge = tmpl.elements.find((e) => e.type === "text" && (e as any).fontSize < 24) as any;
+          return (
+            <a
+              href={`/free-brand-studio/app?template=${tmpl.id}`}
+              class="group relative rounded-2xl border border-stone-800 bg-stone-900/90 p-4 hover:border-amber-500/80 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10 block overflow-hidden"
             >
-              <span class="font-display font-bold text-sm text-white/90 drop-shadow line-clamp-3">
-                {tmpl.title}
-              </span>
-            </div>
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-stone-200 group-hover:text-amber-400 transition-colors">
-                {tmpl.title}
-              </h3>
-              <span class="text-[10px] font-mono text-stone-400 bg-stone-950 px-2 py-0.5 rounded">
-                {tmpl.width}x{tmpl.height}
-              </span>
-            </div>
-            <p class="text-xs text-stone-400 mt-1">{tmpl.category}</p>
-          </a>
-        ))}
+              {/* Poster Mockup Preview */}
+              <div
+                class="relative h-52 w-full rounded-xl mb-4 flex flex-col justify-between p-5 text-center shadow-inner overflow-hidden border border-stone-700/60"
+                style={{ background: tmpl.previewGradient }}
+              >
+                {/* Subtle Geometric Overlay */}
+                <div class="absolute inset-0 bg-[radial-gradient(#ffffff15_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-40"></div>
+
+                {/* Top Badge */}
+                <div class="relative z-10 flex justify-center">
+                  <span class="inline-block rounded-full border border-amber-400/60 bg-black/40 px-3 py-1 text-[10px] font-bold tracking-wider text-amber-300 uppercase backdrop-blur-xs">
+                    {badge ? badge.content : `✦ ${tmpl.category} ✦`}
+                  </span>
+                </div>
+
+                {/* Center Headline */}
+                <div class="relative z-10 my-auto py-2">
+                  <h4 class="font-display font-black text-xl sm:text-2xl text-white tracking-tight leading-snug drop-shadow-md">
+                    {headline ? headline.content : tmpl.title}
+                  </h4>
+                  <p class="mt-1 text-xs text-amber-200/80 font-medium line-clamp-1">
+                    {tmpl.title}
+                  </p>
+                </div>
+
+                {/* Bottom CTA Mockup */}
+                <div class="relative z-10 flex justify-center">
+                  <span class="rounded-full bg-amber-500/90 px-4 py-1 text-[11px] font-bold text-stone-950 shadow-xs">
+                    View & Customize
+                  </span>
+                </div>
+
+                {/* Hover Reveal Overlay */}
+                <div class="absolute inset-0 z-20 flex items-center justify-center bg-black/75 opacity-0 backdrop-blur-xs transition group-hover:opacity-100">
+                  <span class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-xs font-bold text-stone-950 shadow-lg">
+                    Open in Brand Studio &rarr;
+                  </span>
+                </div>
+              </div>
+
+              {/* Card Meta */}
+              <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-stone-200 group-hover:text-amber-400 transition-colors">
+                  {tmpl.title}
+                </h3>
+                <span class="text-[10px] font-mono text-stone-400 bg-stone-950 px-2 py-0.5 rounded border border-stone-800">
+                  {tmpl.width}x{tmpl.height}
+                </span>
+              </div>
+              <p class="text-xs text-stone-400 mt-1">{tmpl.category}</p>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>

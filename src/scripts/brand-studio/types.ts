@@ -10,6 +10,7 @@ export interface BaseElement {
   rotation: number;
   opacity: number;
   locked?: boolean;
+  hidden?: boolean;
 }
 
 export interface TextElement extends BaseElement {
@@ -35,7 +36,7 @@ export interface TextElement extends BaseElement {
   borderRadius?: number;
 }
 
-export type ShapeKind = "rectangle" | "circle" | "badge" | "star" | "pill" | "divider";
+export type ShapeKind = "rectangle" | "circle" | "badge" | "star" | "pill" | "divider" | "arrow" | "ribbon";
 
 export interface ShapeElement extends BaseElement {
   type: "shape";

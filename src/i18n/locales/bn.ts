@@ -29,6 +29,7 @@ export const bn: TranslationDictionary = {
   },
   nav: {
     industries: 'শিল্প',
+    templates: 'টেমপ্লেট',
     demos: 'ডেমো',
     services: 'অন্যান্য সেবা',
     builder: 'ফ্রি AI বিল্ডার',

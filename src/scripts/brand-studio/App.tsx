@@ -6,18 +6,37 @@ import { SidebarLeft } from "./SidebarLeft";
 import { CanvasStage } from "./CanvasStage";
 import { ExportModal } from "./ExportModal";
 import { StudioHomeView } from "./StudioHomeView";
+import { STUDIO_TEMPLATES } from "./templates";
+import { loadStudioFont } from "./fonts";
 import "./studio.css";
 
 export default function StudioApp() {
   const store = useStudioStore();
   const [isExportOpen, setIsExportOpen] = useState(false);
+  const [handoffError, setHandoffError] = useState("");
+  useEffect(() => { store.state.elements.forEach(el => { if (el.type === "text") void loadStudioFont(el.fontFamily); }); }, [store.state.elements]);
   const [viewMode, setViewMode] = useState<"home" | "editor">(() => {
     if (typeof window !== "undefined") {
       const p = new URLSearchParams(window.location.search);
-      if (p.get("view") === "editor") return "editor";
+      if (p.get("view") === "editor" || p.get("template") || p.get("returnTo") === "builder") return "editor";
     }
     return "home";
   });
+
+  // Load template from query param on initial mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search);
+      const tmplId = p.get("template");
+      if (tmplId) {
+        const found = STUDIO_TEMPLATES.find((t) => t.id === tmplId);
+        if (found) {
+          store.loadTemplate(found);
+          setViewMode("editor");
+        }
+      }
+    }
+  }, []);
 
   // Keyboard shortcut listener
   useEffect(() => {
@@ -78,8 +97,47 @@ export default function StudioApp() {
     );
   }
 
+  const isBuilderReturn =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("returnTo") === "builder";
+
+  const handleUseInWebsite = async () => {
+    setHandoffError("");
+    try {
+      const { renderArtboardToCanvas } = await import("./export");
+      const canvas = await renderArtboardToCanvas(
+        store.state.width,
+        store.state.height,
+        store.state.background,
+        store.state.elements,
+        { format: "png", scale: 1, transparentBg: true }
+      );
+      const dataUrl = canvas.toDataURL("image/png");
+      const p = new URLSearchParams(window.location.search);
+      const projectId = p.get("projectId") || "";
+      const targetSection = p.get("targetSection") || "";
+      const targetPath = p.get("targetPath") || "";
+
+      localStorage.setItem(
+        "atb_imported_logo",
+        JSON.stringify({
+          src: dataUrl,
+          projectId,
+          targetSection,
+          targetPath,
+        })
+      );
+
+      window.location.href = `/free-website-builder/app?project=${encodeURIComponent(projectId)}`;
+    } catch (err) {
+      console.error("Failed to export logo for website:", err);
+      setHandoffError("Could not send the logo. Browser storage may be full or an image may block export. Download your design before leaving.");
+    }
+  };
+
   return (
     <div class="studio-app">
+      {handoffError && <p role="alert">{handoffError}</p>}
       {/* 1. Header Toolbar (Canva-style) */}
       <ToolbarTop
         title={store.state.title}
@@ -100,6 +158,7 @@ export default function StudioApp() {
         onImportJSON={store.importProjectJSON}
         onOpenExportModal={() => setIsExportOpen(true)}
         onCopyToClipboard={() => setIsExportOpen(true)}
+        onUseInWebsite={isBuilderReturn ? handleUseInWebsite : undefined}
       />
 
       {/* 2. Contextual Properties Bar */}

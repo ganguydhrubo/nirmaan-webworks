@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "preact/hooks";
 import type { StudioElement, TextElement, ShapeElement, ImageElement, IconElement } from "./types";
 import type { CanvasBackground } from "./store";
+import { loadStudioFont } from "./fonts";
+import { SHAPE_PATHS } from "./shapes";
 
 interface CanvasStageProps {
   width: number;
@@ -31,6 +33,27 @@ export function CanvasStage({
 }: CanvasStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    elements.forEach((el) => { if (el.type === "text") void loadStudioFont(el.fontFamily); });
+    if (editingId && !elements.some((el) => el.id === editingId && !el.hidden && !el.locked)) setEditingId(null);
+  }, [elements]);
+
+  useEffect(() => {
+    if (!editingId || !editorRef.current) return;
+    const el = elements.find((item) => item.id === editingId);
+    if (el?.type !== "text") return;
+    // The DOM owns the caret while editing; state still receives every input.
+    editorRef.current.textContent = el.content;
+    editorRef.current.focus();
+    const range = document.createRange();
+    range.selectNodeContents(editorRef.current);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+  }, [editingId]);
 
   // Guide lines for center snapping
   const [guides, setGuides] = useState<{ x?: number; y?: number }>({});
@@ -64,7 +87,7 @@ export function CanvasStage({
       }
     };
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, [width, height]);
 
@@ -163,7 +186,7 @@ export function CanvasStage({
   const handleElementMouseDown = (e: MouseEvent, el: StudioElement) => {
     e.stopPropagation();
     onSelect(el.id);
-    if (el.locked) return;
+    if (el.locked || editingId === el.id || e.detail > 1) return;
 
     dragInfo.current = {
       isDragging: true,
@@ -209,7 +232,17 @@ export function CanvasStage({
     <div
       ref={containerRef}
       class="studio-canvas-container"
-      onClick={() => onSelect(null)}
+      onClick={(e) => {
+        const target = e.target as HTMLElement | null;
+        if (
+          target === containerRef.current ||
+          target?.id === "atittle-canvas-stage" ||
+          target?.classList.contains("studio-canvas-container") ||
+          target?.classList.contains("studio-artboard-wrapper")
+        ) {
+          onSelect(null);
+        }
+      }}
     >
       {/* Centered Scaled Artboard */}
       <div
@@ -267,7 +300,7 @@ export function CanvasStage({
             />
           )}
 
-          {elements.map((el) => {
+          {elements.filter((el) => !el.hidden).map((el) => {
             const isSelected = selectedId === el.id;
             return (
               <div
@@ -282,9 +315,50 @@ export function CanvasStage({
                   opacity: el.opacity,
                 }}
                 onMouseDown={(e) => handleElementMouseDown(e, el)}
+                tabIndex={0}
+                role="button"
+                aria-label={el.type === "text" ? `Edit text: ${el.content}` : `${el.type} layer`}
+                onDblClick={(e) => {
+                  if (el.type !== "text" || el.locked) return;
+                  e.stopPropagation();
+                  dragInfo.current = null;
+                  resizeInfo.current = null;
+                  setEditingId(el.id);
+                }}
+                onKeyDown={(e) => {
+                  if (e.target !== e.currentTarget) return;
+                  if ((e.key === "Enter" || e.key === "F2") && el.type === "text" && !el.locked) {
+                    e.preventDefault();
+                    setEditingId(el.id);
+                  }
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(el.id);
+                }}
               >
                 {/* Text Element */}
-                {el.type === "text" && renderTextElement(el as TextElement)}
+                {el.type === "text" && (editingId === el.id ? (
+                  <div style={{ ...textElementStyle(el), pointerEvents: "auto", userSelect: "text", cursor: "text" }}>
+                    <div
+                      ref={editorRef}
+                      class="studio-inline-text"
+                      contentEditable="plaintext-only"
+                      role="textbox"
+                      aria-label="Edit canvas text"
+                      aria-multiline="true"
+                      spellcheck
+                      style={{ width: "100%", outline: "none", minHeight: `${el.fontSize * el.lineHeight}px`, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onInput={(e) => onUpdateElement(el.id, { content: e.currentTarget.innerText })}
+                      onBlur={(e) => { onUpdateElement(el.id, { content: e.currentTarget.innerText }); setEditingId(null); }}
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                        if (e.key === "Escape") { e.preventDefault(); e.currentTarget.blur(); }
+                      }}
+                    />
+                  </div>
+                ) : renderTextElement(el))}
 
                 {/* Shape Element */}
                 {el.type === "shape" && renderShapeElement(el as ShapeElement)}
@@ -296,7 +370,7 @@ export function CanvasStage({
                 {el.type === "icon" && renderIconElement(el as IconElement)}
 
                 {/* 8-Point Bounding Box Handles */}
-                {isSelected && !el.locked && (
+                {isSelected && !el.locked && editingId !== el.id && (
                   <>
                     {/* Corners */}
                     <div
@@ -439,14 +513,8 @@ export function CanvasStage({
   );
 }
 
-function renderTextElement(el: TextElement) {
-  const shadowStyle = el.shadow
-    ? `${el.shadow.offsetX}px ${el.shadow.offsetY}px ${el.shadow.blur}px ${el.shadow.color}`
-    : "none";
-
-  return (
-    <div
-      style={{
+function textElementStyle(el: TextElement): import("preact").JSX.CSSProperties {
+  return {
         width: "100%",
         height: "100%",
         display: "flex",
@@ -462,20 +530,24 @@ function renderTextElement(el: TextElement) {
         letterSpacing: `${el.letterSpacing}px`,
         lineHeight: el.lineHeight,
         textTransform: el.textTransform || "none",
-        textShadow: shadowStyle,
+        textShadow: el.shadow ? `${el.shadow.offsetX}px ${el.shadow.offsetY}px ${el.shadow.blur}px ${el.shadow.color}` : "none",
         backgroundColor: el.backgroundColor || "transparent",
         padding: `${el.backgroundPadding || 0}px`,
         borderRadius: `${el.borderRadius || 0}px`,
         whiteSpace: "pre-wrap",
         wordBreak: "break-word",
-      }}
-    >
-      {el.content}
-    </div>
-  );
+        pointerEvents: "none",
+        userSelect: "none",
+  };
+}
+
+function renderTextElement(el: TextElement) {
+  return <div style={textElementStyle(el)}>{el.content}</div>;
 }
 
 function renderShapeElement(el: ShapeElement) {
+  const path = SHAPE_PATHS[el.shapeKind];
+  if (path) return <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" style={{ pointerEvents: "none" }}><path d={path} fill={el.fillColor} stroke={el.strokeColor || "none"} stroke-width={el.strokeWidth || 0} /></svg>;
   const shadowStyle = el.shadow
     ? `${el.shadow.offsetX}px ${el.shadow.offsetY}px ${el.shadow.blur}px ${el.shadow.color}`
     : "none";
@@ -490,6 +562,7 @@ function renderShapeElement(el: ShapeElement) {
           backgroundColor: el.fillColor,
           border: el.strokeColor && el.strokeWidth ? `${el.strokeWidth}px solid ${el.strokeColor}` : "none",
           boxShadow: shadowStyle,
+          pointerEvents: "none",
         }}
       />
     );
@@ -505,6 +578,7 @@ function renderShapeElement(el: ShapeElement) {
           backgroundColor: el.fillColor,
           border: el.strokeColor && el.strokeWidth ? `${el.strokeWidth}px solid ${el.strokeColor}` : "none",
           boxShadow: shadowStyle,
+          pointerEvents: "none",
         }}
       />
     );
@@ -519,6 +593,7 @@ function renderShapeElement(el: ShapeElement) {
           borderRadius: "2px",
           backgroundColor: el.fillColor,
           boxShadow: shadowStyle,
+          pointerEvents: "none",
         }}
       />
     );
@@ -533,6 +608,7 @@ function renderShapeElement(el: ShapeElement) {
         borderRadius: `${el.borderRadius || 0}px`,
         border: el.strokeColor && el.strokeWidth ? `${el.strokeWidth}px solid ${el.strokeColor}` : "none",
         boxShadow: shadowStyle,
+        pointerEvents: "none",
       }}
     />
   );

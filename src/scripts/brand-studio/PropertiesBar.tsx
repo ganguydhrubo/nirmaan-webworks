@@ -1,3 +1,4 @@
+import { GOOGLE_FONTS } from "./fonts";
 import type { StudioElement, TextElement, ShapeElement, ImageElement } from "./types";
 
 interface PropertiesBarProps {
@@ -130,17 +131,29 @@ function TextProperties({
   el: TextElement;
   onUpdate: (updates: Partial<TextElement>) => void;
 }) {
-  const fontFamilies = [
-    { label: "Fraunces (Luxury Serif)", val: "Fraunces" },
-    { label: "Manrope (Modern Sans)", val: "Manrope" },
-    { label: "Playfair Display", val: "Playfair Display" },
-    { label: "Montserrat", val: "Montserrat" },
-    { label: "Inter", val: "Inter" },
-    { label: "Cinzel", val: "Cinzel" },
-  ];
+  const fontFamilies = GOOGLE_FONTS.map((val) => ({ label: val, val }));
 
   return (
     <>
+      {/* Direct Content Input */}
+      <input
+        type="text"
+        value={el.content}
+        onInput={(e) => onUpdate({ content: (e.target as HTMLInputElement).value })}
+        placeholder="Edit text content..."
+        class="studio-input-sm"
+        style={{
+          width: "150px",
+          padding: "3px 8px",
+          fontSize: "12px",
+          borderRadius: "4px",
+          border: "1px solid var(--studio-border)",
+          background: "rgba(0,0,0,0.35)",
+          color: "#fff",
+        }}
+        title="Edit Text Content"
+      />
+
       {/* Font Family */}
       <select
         value={el.fontFamily}

@@ -13,6 +13,7 @@
  * not offered.
  */
 import { cleanLine, cleanText, safeHref, safeImageSrc } from "./sanitize";
+import { videoSource } from "./video";
 
 export interface ImageValue {
   src: string;
@@ -41,6 +42,8 @@ export type FieldSpec =
 export type SectionType =
   | "navbar"
   | "hero"
+  | "video"
+  | "logos"
   | "about"
   | "services"
   | "features"
@@ -95,7 +98,7 @@ export const SECTION_DEFS: SectionDef[] = [
       { id: "simple", label: "Logo left" },
       { id: "centered", label: "Centered" },
     ],
-    fields: [t("brand", "Brand name", 60, "Your Business"), t("ctaLabel", "Button label", 30, "Contact us"), link("ctaHref", "Button link", "#contact")],
+    fields: [t("brand", "Brand name", 60, "Your Business"), img("logo", "Brand logo"), t("ctaLabel", "Button label", 30, "Contact us"), link("ctaHref", "Button link", "#contact")],
   },
   {
     type: "hero",
@@ -106,6 +109,7 @@ export const SECTION_DEFS: SectionDef[] = [
       { id: "split", label: "Text + image" },
       { id: "editorial", label: "Editorial (big type)" },
       { id: "banner", label: "Image background" },
+      { id: "video", label: "Video background" },
     ],
     fields: [
       t("eyebrow", "Small label above headline", 60, ""),
@@ -116,7 +120,22 @@ export const SECTION_DEFS: SectionDef[] = [
       t("secondaryLabel", "Second button label", 30, ""),
       link("secondaryHref", "Second button link", ""),
       img("image", "Image"),
+      t("videoUrl", "Background MP4 URL", 2048, "", { help: "Direct HTTPS MP4. Add a poster image for reduced motion and loading." }),
     ],
+  },
+  {
+    type: "video",
+    label: "Video",
+    description: "YouTube, Vimeo or your own MP4, inline or in a popover.",
+    variants: [{ id: "inline", label: "Inline player" }, { id: "modal", label: "Thumbnail + player" }],
+    fields: [t("heading", "Heading", 100, "See it in action"), ta("intro", "Description", 320, ""), t("videoUrl", "YouTube, Vimeo or HTTPS MP4 URL", 2048, ""), img("poster", "Video thumbnail"), ta("transcript", "Transcript", 8000, "")],
+  },
+  {
+    type: "logos",
+    label: "Client logos",
+    description: "Add only logos you have permission to display. Sample labels stay visible until you replace them.",
+    variants: [{ id: "cloud", label: "Logo cloud" }],
+    fields: [t("heading", "Heading", 100, "Selected collaborators"), { kind: "bool", key: "isSample", label: "Show sample label", default: true }, { kind: "list", key: "items", label: "Logos", itemLabel: "Logo", minItems: 1, maxItems: 12, fields: [t("name", "Name", 60, "Your client"), img("image", "Logo"), link("href", "Link", "")], default: [{ name: "Your client", image: { src: "", alt: "" }, href: "" }] }],
   },
   {
     type: "about",
@@ -252,7 +271,7 @@ export const SECTION_DEFS: SectionDef[] = [
     type: "pricing",
     label: "Pricing",
     description: "Packages or plans with prices.",
-    variants: [{ id: "cards", label: "Cards" }],
+    variants: [{ id: "cards", label: "Cards" }, { id: "toggle", label: "Monthly / yearly" }],
     fields: [
       t("heading", "Heading", 100, "Simple pricing"),
       ta("intro", "Intro text", 280, ""),
@@ -266,6 +285,7 @@ export const SECTION_DEFS: SectionDef[] = [
         fields: [
           t("name", "Plan name", 40, "Plan"),
           t("price", "Price", 30, "₹0"),
+          t("annualPrice", "Yearly price", 30, ""),
           t("period", "Period (e.g. /month)", 30, ""),
           { kind: "lines", key: "features", label: "What's included (one per line)", maxItems: 10, maxEach: 90, default: ["Included item"] },
           t("ctaLabel", "Button label", 30, "Choose plan"),
@@ -383,7 +403,12 @@ export const SECTION_DEFS: SectionDef[] = [
       { id: "simple", label: "Simple" },
       { id: "columns", label: "Columns" },
     ],
-    fields: [t("brand", "Brand name", 60, "Your Business"), ta("tagline", "Tagline", 200, ""), t("copyright", "Copyright name", 80, "")],
+    fields: [
+      t("brand", "Brand name", 60, "Your Business"), ta("tagline", "Tagline", 200, ""), t("copyright", "Copyright name", 80, ""),
+      { kind: "list", key: "links", label: "Sitemap and legal links", itemLabel: "Link", minItems: 0, maxItems: 12, fields: [t("label", "Label", 50, ""), link("href", "Destination", "")], default: [] },
+      { kind: "list", key: "socials", label: "Social links", itemLabel: "Social", minItems: 0, maxItems: 6, fields: [t("label", "Network", 40, ""), link("href", "Profile URL", "")], default: [] },
+      link("newsletterEndpoint", "Newsletter form endpoint (HTTPS)", ""),
+    ],
   },
 ];
 
@@ -456,7 +481,12 @@ export function normalizeFields(fields: FieldSpec[], raw: Record<string, unknown
 export function normalizeProps(type: SectionType, raw: unknown, ctx: NormalizeContext = {}): Record<string, unknown> {
   const def = getSectionDef(type);
   if (!def) return {};
-  return normalizeFields(def.fields, raw as Record<string, unknown>, ctx);
+  const props = normalizeFields(def.fields, raw as Record<string, unknown>, ctx);
+  if ("videoUrl" in props) {
+    const source = videoSource(props.videoUrl);
+    props.videoUrl = source && (type !== "hero" || source.kind === "mp4") ? source.src : "";
+  }
+  return props;
 }
 
 /** Look up the spec for a dotted props path such as "items.2.title". */
